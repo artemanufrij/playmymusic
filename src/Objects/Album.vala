@@ -27,9 +27,14 @@
 
 namespace PlayMyMusic.Objects {
     public class Album : GLib.Object {
-        public Artist artist { get; private set; }
+        Artist _artist;
+        public Artist artist {
+            get {
+                return _artist;
+            }
+        }
 
-        public int64 ID { get; set; }
+        public int ID { get; set; }
         public string title { get; set; }
         public int year { get; set; }
 
@@ -42,11 +47,29 @@ namespace PlayMyMusic.Objects {
         }
 
         public Album (Artist artist) {
-            this.artist = artist;
+            this.set_artist (artist);
+        }
+
+        public void set_artist (Artist artist) {
+            this._artist = artist;
         }
 
         public void add_track (Track track) {
-            _tracks.append (track);
+            track.set_album (this);
+            this._tracks.append (track);
+        }
+
+        public Track? get_track_by_path (string path) {
+            Track? return_value = null;
+            lock (_tracks) {
+                foreach (var track in tracks) {
+                    if (track.path == path) {
+                        return_value = track;
+                        break;
+                    }
+                }
+            }
+            return return_value;
         }
     }
 }

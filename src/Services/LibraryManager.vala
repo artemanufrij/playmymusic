@@ -39,6 +39,8 @@ namespace PlayMyMusic.Services {
 
         public signal void local_scan_started ();
         public signal void local_scan_finished ();
+        public signal void tag_discover_started ();
+        public signal void tag_discover_finished ();
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
         public PlayMyMusic.Services.DataBaseManager db_manager { get; construct set; }
@@ -53,6 +55,8 @@ namespace PlayMyMusic.Services {
         construct {
             tg_manager = PlayMyMusic.Services.TagManager.instance;
             tg_manager.discovered_new_item.connect (discovered_new_local_item);
+            tg_manager.discover_started.connect ( () => { tag_discover_started (); });
+            tg_manager.discover_finished.connect ( () => { tag_discover_finished (); });
 
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
 
@@ -71,7 +75,7 @@ namespace PlayMyMusic.Services {
 
         private void found_local_music_file (string path) {
             if (!db_manager.music_file_exists (path)) {
-                tg_manager.discover_tags.begin (path);
+                tg_manager.add_discover_path (path);
             }
         }
 
@@ -85,8 +89,20 @@ namespace PlayMyMusic.Services {
             if (db_artist == null) {
                 db_manager.set_artist (artist);
                 db_manager.set_album (album);
-                //db_manager.set_track (track);
+                db_manager.set_track (track);
             } else {
+                var album_db = db_artist.get_album_by_title (album.title);
+                if (album_db == null) {
+                    db_artist.add_album (album);
+                    db_manager.set_album (album);
+                    db_manager.set_track (track);
+                } else {
+                    var track_db = album_db.get_track_by_path (track.path);
+                    if (track_db == null) {
+                        album_db.add_track (track);
+                        db_manager.set_track (track);
+                    }
+                }
             }
         }
     }

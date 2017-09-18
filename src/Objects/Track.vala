@@ -27,7 +27,25 @@
 
 namespace PlayMyMusic.Objects {
     public class Track : GLib.Object {
+        Album _album;
+        public Album album {
+            get {
+                return _album;
+            }
+        }
+
         public int ID { get; set; }
-        public string title { get; set; }
+        public string title { get; set; default = ""; }
+        public string genre { get; set; default = ""; }
+        public int track { get; set; default = 0; }
+        public string path { get; set; default = ""; }
+
+        public Track (Album album) {
+            this.set_album (album);
+        }
+
+        public void set_album (Album album) {
+            this._album = album;
+        }
     }
 }

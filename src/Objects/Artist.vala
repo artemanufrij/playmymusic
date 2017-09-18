@@ -44,7 +44,8 @@ namespace PlayMyMusic.Objects {
             _albums = new GLib.List<Album> ();
         }
 
-        public void add_album (Album album){
+        public void add_album (Album album) {
+            album.set_artist (this);
             _albums.append (album);
         }
 

@@ -36,11 +36,13 @@ namespace PlayMyMusic {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            library_manager.local_scan_started.connect (() => {
+            library_manager.tag_discover_started.connect (() => {
                 spinner.active = true;
+                stdout.printf ("tag_discover_started\n");
             });
-            library_manager.local_scan_finished.connect (() => {
+            library_manager.tag_discover_finished.connect (() => {
                 spinner.active = false;
+                stdout.printf ("tag_discover_finished\n");
             });
         }
 

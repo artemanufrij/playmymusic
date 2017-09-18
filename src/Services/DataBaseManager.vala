@@ -89,9 +89,9 @@ namespace PlayMyMusic.Services {
 
                 q = """CREATE TABLE albums (
                     ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    artist_id   INT     NOT NULL,
-                    title       TEXT    NOT NULL,
-                    year        INT     NULL,
+                    artist_id   INT         NOT NULL,
+                    title       TEXT        NOT NULL,
+                    year        INT         NULL,
                     CONSTRAINT unique_album UNIQUE (artist_id, title)
                     );""";
 
@@ -100,11 +100,13 @@ namespace PlayMyMusic.Services {
                 }
 
                 q = """CREATE TABLE tracks (
-                    album_id    INT     NOT NULL,
-                    path        TEXT    NOT NULL,
-                    title       TEXT    NOT NULL,
-                    genre       TEXT    NULL,
-                    track       INT     NOT NULL
+                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                    album_id    INT         NOT NULL,
+                    path        TEXT        NOT NULL,
+                    title       TEXT        NOT NULL,
+                    genre       TEXT        NULL,
+                    track       INT         NOT NULL,
+                    CONSTRAINT unique_track UNIQUE (path)
                     );""";
 
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
@@ -119,7 +121,7 @@ namespace PlayMyMusic.Services {
 
             Sqlite.Statement stmt;
             string sql = """
-                SELECT rowid, name FROM artists ORDER BY name;
+                SELECT id, name FROM artists ORDER BY name;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
@@ -131,19 +133,6 @@ namespace PlayMyMusic.Services {
                 return_value.append (item);
             }
             stmt.reset ();
-            return return_value;
-        }
-
-        public PlayMyMusic.Objects.Artist? get_artist_by_name (string name) {
-            PlayMyMusic.Objects.Artist? return_value = null;
-            lock (_artists) {
-                foreach (var artist in artists) {
-                    if (artist.name == name) {
-                        return_value = artist;
-                        break;
-                    }
-                }
-            }
             return return_value;
         }
 
@@ -171,7 +160,7 @@ namespace PlayMyMusic.Services {
 
                 if (stmt.step () == Sqlite.ROW) {
                     artist.ID = stmt.column_int (0);
-                    stdout.printf ("New Artist ID: %d\n", (int)artist.ID);
+                    stdout.printf ("Artist ID: %d\n", artist.ID);
                     _artists.append (artist);
                 } else {
                     warning ("Error: %d: %s", db.errcode (), db.errmsg ());
@@ -180,16 +169,30 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public PlayMyMusic.Objects.Artist? get_artist_by_name (string name) {
+            PlayMyMusic.Objects.Artist? return_value = null;
+            lock (_artists) {
+                foreach (var artist in artists) {
+                    if (artist.name == name) {
+                        return_value = artist;
+                        break;
+                    }
+                }
+            }
+            return return_value;
+        }
+
 // ALBUM REGION
         public GLib.List<PlayMyMusic.Objects.Album> get_album_collection (PlayMyMusic.Objects.Artist artist) {
             GLib.List<PlayMyMusic.Objects.Album> return_value = new GLib.List<PlayMyMusic.Objects.Album> ();
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT rowid, title, year FROM albums ORDER BY year;
+                SELECT id, title, year FROM album WHERE artist_id=$ARTIST_ID ORDER BY year;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ARTIST_ID", artist.ID);
 
             while (stmt.step () == Sqlite.ROW) {
                 var item = new PlayMyMusic.Objects.Album (artist);
@@ -206,10 +209,10 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                INSERT OR IGNORE INTO albums (artist_id, title, year) VALUES ($ARTISTID, $TITLE, $YEAR);
+                INSERT OR IGNORE INTO albums (artist_id, title, year) VALUES ($ARTIST_ID, $TITLE, $YEAR);
             """;
             db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_int (stmt, sql, "$ARTISTID", album.artist.ID);
+            set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
             set_parameter_str (stmt, sql, "$TITLE", album.title);
             set_parameter_int (stmt, sql, "$YEAR", album.year);
 
@@ -227,14 +230,38 @@ namespace PlayMyMusic.Services {
             set_parameter_str (stmt, sql, "$TITLE", album.title);
 
             if (stmt.step () == Sqlite.ROW) {
-                album.ID = stmt.column_int64 (0);
-                stdout.printf ("New Album ID: %d\n", (int)album.ID);
+                album.ID = stmt.column_int (0);
+                stdout.printf ("Album ID: %d\n", album.ID);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
             stmt.reset ();
         }
 
+// TRACK REGION
+        public GLib.List<PlayMyMusic.Objects.Track> get_track_collection (PlayMyMusic.Objects.Album album) {
+            GLib.List<PlayMyMusic.Objects.Track> return_value = new GLib.List<PlayMyMusic.Objects.Track> ();
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT id, title, genre, track, path FROM albums WHERE album_id=$ALBUM_ID ORDER BY track;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ALBUM_ID", album.ID);
+
+            while (stmt.step () == Sqlite.ROW) {
+                var item = new PlayMyMusic.Objects.Track (album);
+                item.ID = stmt.column_int (0);
+                item.title = stmt.column_text (1);
+                item.genre = stmt.column_text (2);
+                item.track = stmt.column_int (3);
+                item.path = stmt.column_text (4);
+                return_value.append (item);
+            }
+            stmt.reset ();
+            return return_value;
+        }
 
 // UTILITIES REGION
         public bool music_file_exists (string path) {
@@ -252,17 +279,50 @@ namespace PlayMyMusic.Services {
                 file_exists = stmt.column_int (0) > 0;
             }
             stmt.reset ();
-
             return file_exists;
         }
 
+        public void set_track (PlayMyMusic.Objects.Track track) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $PATH);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
+            set_parameter_str (stmt, sql, "$TITLE", track.title);
+            set_parameter_str (stmt, sql, "$GENRE", track.genre);
+            set_parameter_int (stmt, sql, "$TRACK", track.track);
+            set_parameter_str (stmt, sql, "$PATH", track.path);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+
+            sql = """
+                SELECT id FROM tracks WHERE path=$PATH;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$PATH", track.path);
+
+            if (stmt.step () == Sqlite.ROW) {
+                track.ID = stmt.column_int (0);
+                stdout.printf ("Track ID: %d\n", track.ID);
+            } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
 // PARAMENTER REGION
-        private void set_parameter_int (Sqlite.Statement stmt, string sql, string par, int val) {
+        private void set_parameter_int (Sqlite.Statement? stmt, string sql, string par, int val) {
             int par_position = stmt.bind_parameter_index (par);
             stmt.bind_int (par_position, val);
         }
 
-        private void set_parameter_str (Sqlite.Statement stmt, string sql, string par, string val) {
+        private void set_parameter_str (Sqlite.Statement? stmt, string sql, string par, string val) {
             int par_position = stmt.bind_parameter_index (par);
             stmt.bind_text (par_position, val);
         }
