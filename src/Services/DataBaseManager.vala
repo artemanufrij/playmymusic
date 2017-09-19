@@ -37,6 +37,8 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public signal void added_new_album (PlayMyMusic.Objects.Album album);
+
         GLib.List<PlayMyMusic.Objects.Artist> _artists = null;
         public GLib.List<PlayMyMusic.Objects.Artist> artists { 
             get {
@@ -59,17 +61,7 @@ namespace PlayMyMusic.Services {
         }
 
         private void open_database () {
-            string database_path = GLib.Path.build_filename(GLib.Environment.get_user_cache_dir (), "com.github.artemanufrij.playmymusic");
-            try {
-                File cache = File.new_for_path (database_path);
-                if (!cache.query_exists ()) {
-                    cache.make_directory ();
-                }
-            } catch (Error e) {
-                warning (e.message);
-            }
-
-            database_path = GLib.Path.build_filename (database_path, "database.db");
+            var database_path = PlayMyMusic.PlayMyMusicApp.instance.DB_PATH;
 
             File cache = File.new_for_path (database_path);
             bool database_exists = cache.query_exists ();
@@ -136,7 +128,7 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public void set_artist (PlayMyMusic.Objects.Artist artist) {
+        public void insert_artist (PlayMyMusic.Objects.Artist artist) {
             lock (_artists) {
                 Sqlite.Statement stmt;
                 string sql = """
@@ -188,7 +180,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT id, title, year FROM album WHERE artist_id=$ARTIST_ID ORDER BY year;
+                SELECT id, title, year FROM albums WHERE artist_id=$ARTIST_ID ORDER BY year;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
@@ -205,7 +197,7 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public void set_album (PlayMyMusic.Objects.Album album) {
+        public void insert_album (PlayMyMusic.Objects.Album album) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -231,6 +223,7 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () == Sqlite.ROW) {
                 album.ID = stmt.column_int (0);
+                this.added_new_album (album);
                 stdout.printf ("Album ID: %d\n", album.ID);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
@@ -244,7 +237,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT id, title, genre, track, path FROM albums WHERE album_id=$ALBUM_ID ORDER BY track;
+                SELECT id, title, genre, track, path FROM tracks WHERE album_id=$ALBUM_ID ORDER BY track;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
@@ -263,26 +256,7 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-// UTILITIES REGION
-        public bool music_file_exists (string path) {
-            Sqlite.Statement stmt;
-
-            string sql = """
-                SELECT COUNT (*) FROM Tracks WHERE path=$PATH;
-            """;
-
-            db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_str (stmt, sql, "$PATH", path);
-
-            bool file_exists = true;
-            if (stmt.step () == Sqlite.ROW) {
-                file_exists = stmt.column_int (0) > 0;
-            }
-            stmt.reset ();
-            return file_exists;
-        }
-
-        public void set_track (PlayMyMusic.Objects.Track track) {
+        public void insert_track (PlayMyMusic.Objects.Track track) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -314,6 +288,25 @@ namespace PlayMyMusic.Services {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
             stmt.reset ();
+        }
+
+// UTILITIES REGION
+        public bool music_file_exists (string path) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT COUNT (*) FROM Tracks WHERE path=$PATH;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$PATH", path);
+
+            bool file_exists = true;
+            if (stmt.step () == Sqlite.ROW) {
+                file_exists = stmt.column_int (0) > 0;
+            }
+            stmt.reset ();
+            return file_exists;
         }
 
 // PARAMENTER REGION

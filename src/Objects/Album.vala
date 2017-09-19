@@ -37,6 +37,7 @@ namespace PlayMyMusic.Objects {
         public int ID { get; set; }
         public string title { get; set; }
         public int year { get; set; }
+        public Gdk.Pixbuf? cover { get; private set; default = null; }
 
         GLib.List<Track> _tracks;
         public GLib.List<Track> tracks { get { return _tracks; } }

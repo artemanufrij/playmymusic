@@ -29,6 +29,9 @@ namespace PlayMyMusic {
 
     public class PlayMyMusicApp : Gtk.Application {
 
+        public string DB_PATH { get; private set; }
+        public string COVER_FOLDER { get; private set; }
+
         static PlayMyMusicApp _instance = null;
 
         public static PlayMyMusicApp instance {
@@ -40,7 +43,27 @@ namespace PlayMyMusic {
         }
 
         construct {
+            var cache_folder = GLib.Path.build_filename(GLib.Environment.get_user_cache_dir (), "com.github.artemanufrij.playmymusic");
+            try {
+                File file = File.new_for_path (cache_folder);
+                if (!file.query_exists ()) {
+                    file.make_directory ();
+                }
+            } catch (Error e) {
+                warning (e.message);
+            }
+            DB_PATH = GLib.Path.build_filename (cache_folder, "database.db");
 
+            var cover_folder = GLib.Path.build_filename(cache_folder, "covers");
+            try {
+                File file = File.new_for_path (cover_folder);
+                if (!file.query_exists ()) {
+                    file.make_directory ();
+                }
+            } catch (Error e) {
+                warning (e.message);
+            }
+            COVER_FOLDER = cover_folder;
         }
 
         MainWindow mainwindow;

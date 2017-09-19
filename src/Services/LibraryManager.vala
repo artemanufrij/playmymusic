@@ -41,6 +41,7 @@ namespace PlayMyMusic.Services {
         public signal void local_scan_finished ();
         public signal void tag_discover_started ();
         public signal void tag_discover_finished ();
+        public signal void added_new_album (PlayMyMusic.Objects.Album album);
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
         public PlayMyMusic.Services.DataBaseManager db_manager { get; construct set; }
@@ -59,6 +60,7 @@ namespace PlayMyMusic.Services {
             tg_manager.discover_finished.connect ( () => { tag_discover_finished (); });
 
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
+            db_manager.added_new_album.connect ( (album) => { added_new_album (album); });
 
             lf_manager = PlayMyMusic.Services.LocalFilesManager.instance;
             lf_manager.found_music_file.connect (found_local_music_file);
@@ -84,23 +86,22 @@ namespace PlayMyMusic.Services {
             var album = artist.albums.first ().data;
             var track = album.tracks.first ().data;
 
-            // CHECK IF ARTIST ALREADY EXISTS
             var db_artist = db_manager.get_artist_by_name (artist.name);
             if (db_artist == null) {
-                db_manager.set_artist (artist);
-                db_manager.set_album (album);
-                db_manager.set_track (track);
+                db_manager.insert_artist (artist);
+                db_manager.insert_album (album);
+                db_manager.insert_track (track);
             } else {
                 var album_db = db_artist.get_album_by_title (album.title);
                 if (album_db == null) {
                     db_artist.add_album (album);
-                    db_manager.set_album (album);
-                    db_manager.set_track (track);
+                    db_manager.insert_album (album);
+                    db_manager.insert_track (track);
                 } else {
                     var track_db = album_db.get_track_by_path (track.path);
                     if (track_db == null) {
                         album_db.add_track (track);
-                        db_manager.set_track (track);
+                        db_manager.insert_track (track);
                     }
                 }
             }

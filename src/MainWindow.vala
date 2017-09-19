@@ -33,6 +33,7 @@ namespace PlayMyMusic {
         
         //CONTROLS
         Gtk.Spinner spinner;
+        Gtk.FlowBox albums;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -44,6 +45,11 @@ namespace PlayMyMusic {
                 spinner.active = false;
                 stdout.printf ("tag_discover_finished\n");
             });
+            library_manager.added_new_album.connect((album) => {
+                var a = new Widgets.Album (album);
+                a.show_all ();
+                albums.add (a);
+            });
         }
 
         public MainWindow () {
@@ -52,18 +58,45 @@ namespace PlayMyMusic {
 
             build_ui ();
 
-            library_manager.scan_local_library ("/home/artem/Musik/Interpreter/");
+            show_albums_from_database.begin ((obj, res) => {
+                stdout.printf ("READ FINISHED");
+                library_manager.scan_local_library ("/home/artem/Musik/Interpreter/");
+            });
         }
         
         public void build_ui () {
             var headerbar = new Gtk.HeaderBar ();
             headerbar.show_close_button = true;
+            this.set_titlebar (headerbar);
 
             spinner = new Gtk.Spinner ();
             headerbar.pack_end (spinner);
 
-            this.set_titlebar (headerbar);
+            albums = new Gtk.FlowBox ();
+            albums.margin = 24;
+            albums.homogeneous = true;
+            albums.row_spacing = 12;
+            albums.column_spacing = 24;
+            albums.selection_mode = Gtk.SelectionMode.NONE;
+            albums.max_children_per_line = 24;
+            albums.valign = Gtk.Align.START;
+            var scroll = new Gtk.ScrolledWindow (null, null);
+
+            scroll.add (albums);
+
+            this.add (scroll);
+            
             this.show_all ();
+        }
+
+        private async void show_albums_from_database () {
+            foreach (var artist in library_manager.artists) {
+                foreach (var album in artist.albums) {
+                    var a = new Widgets.Album (album);
+                    a.show_all ();
+                    albums.add (a);
+                }
+            }
         }
     }
 }
