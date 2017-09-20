@@ -94,12 +94,14 @@ namespace PlayMyMusic.Services {
             } else {
                 var album_db = db_artist.get_album_by_title (album.title);
                 if (album_db == null) {
+                    artist.remove_album (album);
                     db_artist.add_album (album);
                     db_manager.insert_album (album);
                     db_manager.insert_track (track);
                 } else {
                     var track_db = album_db.get_track_by_path (track.path);
                     if (track_db == null) {
+                        album.remove_track (track);
                         album_db.add_track (track);
                         db_manager.insert_track (track);
                     }

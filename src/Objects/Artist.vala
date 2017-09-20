@@ -41,12 +41,16 @@ namespace PlayMyMusic.Objects {
         }
 
         construct {
-            _albums = new GLib.List<Album> ();
+            this._albums = new GLib.List<Album> ();
         }
 
         public void add_album (Album album) {
             album.set_artist (this);
-            _albums.append (album);
+            this._albums.append (album);
+        }
+
+        public void remove_album (Album album) {
+            this._albums.remove (album);
         }
 
         public Album? get_album_by_title (string title) {

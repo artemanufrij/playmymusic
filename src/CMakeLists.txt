@@ -17,6 +17,7 @@ PACKAGES
     gtk+-3.0
     sqlite3
     gstreamer-pbutils-1.0
+    gstreamer-tag-1.0
 OPTIONS
     --vapidir=${CMAKE_SOURCE_DIR}/vapi
     --target-glib=2.32

@@ -28,11 +28,17 @@
 namespace PlayMyMusic.Widgets {
     public class Album : Gtk.FlowBoxChild {
         public PlayMyMusic.Objects.Album album { get; private set; }
-        
+
+        Gtk.Image cover;
+
         public Album (PlayMyMusic.Objects.Album album) {
             this.album = album;
 
             build_ui ();
+
+            this.album.cover_changed.connect (() => {
+                cover.pixbuf = this.album.cover;
+            });
         }
 
         private void build_ui () {
@@ -41,7 +47,11 @@ namespace PlayMyMusic.Widgets {
             content.margin = 12;
             content.halign = Gtk.Align.CENTER;
             content.row_spacing = 6;
-            var cover = new Gtk.Image.from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
+            if (this.album.cover == null) {
+                cover = new Gtk.Image.from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
+            } else {
+                cover = new Gtk.Image.from_pixbuf (this.album.cover);
+            }
 
             cover.height_request = 128;
             cover.width_request = 128;
