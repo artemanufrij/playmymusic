@@ -30,13 +30,15 @@ namespace PlayMyMusic {
     public class MainWindow : Gtk.Window {
 
         PlayMyMusic.Services.LibraryManager library_manager;
-        
+
         //CONTROLS
         Gtk.SearchEntry search_entry;
         Gtk.Spinner spinner;
         Gtk.FlowBox albums;
         Gtk.Box album_viewer;
         Gtk.Image cover;
+        Gtk.ListBox tracks;
+        Gtk.Button playButton;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -51,6 +53,16 @@ namespace PlayMyMusic {
                 a.show_all ();
                 albums.add (a);
             });
+            library_manager.player_state_changed.connect ((state) => {
+                if (state == Gst.State.PLAYING) {
+                    playButton.image = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+                    playButton.tooltip_text = _("Pause");
+                    mark_playing_track (library_manager.player.current_track);
+                } else {
+                    playButton.image = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+                    playButton.tooltip_text = _("Play");
+                }
+            });
         }
 
         public MainWindow () {
@@ -60,8 +72,7 @@ namespace PlayMyMusic {
             build_ui ();
 
             show_albums_from_database.begin ((obj, res) => {
-                stdout.printf ("READ FINISHED");
-                library_manager.scan_local_library ("/home/artem/Musik/Interpreter/");
+                library_manager.scan_local_library (GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC));
             });
         }
 
@@ -69,6 +80,28 @@ namespace PlayMyMusic {
             var headerbar = new Gtk.HeaderBar ();
             headerbar.show_close_button = true;
             this.set_titlebar (headerbar);
+
+            var previousButton = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            previousButton.tooltip_text = _("Previous");
+            previousButton.clicked.connect (() => {
+                library_manager.player.prev ();
+            });
+
+            playButton = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            playButton.tooltip_text = _("Play");
+            playButton.clicked.connect (() => {
+                library_manager.player.toggle_playing ();
+            });
+
+            var nextButton = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            nextButton.tooltip_text = _("Next");
+            nextButton.clicked.connect (() => {
+                library_manager.player.next ();
+            });
+
+            headerbar.pack_start (previousButton);
+            headerbar.pack_start (playButton);
+            headerbar.pack_start (nextButton);
 
             search_entry = new Gtk.SearchEntry ();
             search_entry.placeholder_text = _("Search Music");
@@ -105,7 +138,7 @@ namespace PlayMyMusic {
             this.add (box);
 
             this.show_all ();
-
+            album_viewer.hide ();
             search_entry.grab_focus ();
         }
 
@@ -113,14 +146,43 @@ namespace PlayMyMusic {
             album_viewer = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             cover = new Gtk.Image ();
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
+
+            tracks = new Gtk.ListBox ();
+            tracks.set_sort_func (tracks_sort_func);
+            tracks.selected_rows_changed.connect (play_track);
+            tracks_scroll.add (tracks);
+
             album_viewer.pack_start (cover, false, false, 0);
             album_viewer.pack_start (tracks_scroll, true, true, 0);
         }
 
         private void show_album_viewer (Gtk.FlowBoxChild item) {
             var album = (item as Widgets.Album);
-
+            this.tracks.@foreach ((child) => {
+                this.tracks.remove (child);
+            });
             cover.pixbuf = album.album.cover;
+            foreach (var track in album.album.tracks) {
+                this.tracks.add (new PlayMyMusic.Widgets.Track (track));
+            }
+            this.album_viewer.show_all ();
+
+            mark_playing_track (library_manager.player.current_track);
+        }
+
+        private void mark_playing_track (Objects.Track track) {
+            foreach (var item in tracks.get_children ()) {
+                if ((item as Widgets.Track).track.path == track.path) {
+                    (item as Widgets.Track).activate ();
+                }
+            }
+        }
+
+        private void play_track () {
+            var selected_row = tracks.get_selected_row ();
+            if (selected_row != null) {
+                library_manager.play ((selected_row as Widgets.Track).track);
+            }
         }
 
         private async void show_albums_from_database () {
@@ -133,6 +195,7 @@ namespace PlayMyMusic {
             }
         }
 
+// FILTER AND SORT
         private bool albums_filter_func (Gtk.FlowBoxChild child) {
             var query = search_entry.text.strip ().down ();
             if (query.length == 0) {
@@ -167,10 +230,21 @@ namespace PlayMyMusic {
                     if (item1.album.year > 0 && item2.album.year > 0) {
                         return item1.album.year - item2.album.year;
                     }
-                    return item1.album.title.collate (item2.album.title);
+                    return item1.title.collate (item2.title);
                 }
-                
                 return item1.album.artist.name.collate (item2.album.artist.name);
+            }
+            return 0;
+        }
+
+        private int tracks_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
+            var item1 = (Widgets.Track)child1;
+            var item2 = (Widgets.Track)child2;
+            if (item1 != null && item2 != null) {
+                if (item1.track_number > 0 && item2.track_number > 0){
+                    return item1.track_number - item2.track_number;
+                }
+                return item1.title.collate (item2.title);
             }
             return 0;
         }

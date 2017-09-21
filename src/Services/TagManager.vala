@@ -87,6 +87,7 @@ namespace PlayMyMusic.Services {
                 }
 
                 string uri = info.get_uri ();
+                uint64 duration = info.get_duration ();
                 File f = File.new_for_uri (uri);
                 string path = f.get_path ();
 
@@ -94,6 +95,7 @@ namespace PlayMyMusic.Services {
                 GLib.Date? d;
                 Gst.DateTime? dt;
                 uint u;
+                uint64 u64 = 0;
 
                 // ARTIST REGION
                 var artist = new PlayMyMusic.Objects.Artist ();
@@ -123,6 +125,7 @@ namespace PlayMyMusic.Services {
 
                 // TRACK REGION
                 var track = new PlayMyMusic.Objects.Track (album);
+                track.duration = duration;
                 track.path = path;
                 if (tags.get_string (Gst.Tags.TITLE, out o)) {
                     track.title = o;
@@ -132,6 +135,9 @@ namespace PlayMyMusic.Services {
                 }
                 if (tags.get_string (Gst.Tags.GENRE, out o)) {
                     track.genre = o;
+                }
+                if (track.duration == 0 && tags.get_uint64 (Gst.Tags.DURATION, out u64)) {
+                    track.duration = u64;
                 }
                 album.add_track (track);
 

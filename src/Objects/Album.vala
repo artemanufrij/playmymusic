@@ -27,16 +27,18 @@
 
 namespace PlayMyMusic.Objects {
     public class Album : GLib.Object {
+        public signal void cover_changed ();
+        public signal void track_added (Track track);
+        public signal void track_removed (Track track);
+
+        bool is_cover_loading = false;
+
         Artist _artist;
         public Artist artist {
             get {
                 return _artist;
             }
         }
-
-        public signal void cover_changed ();
-
-        bool is_cover_loading = false;
 
         int _ID = 0;
         public int ID {
@@ -87,10 +89,42 @@ namespace PlayMyMusic.Objects {
             track.set_album (this);
             this._tracks.append (track);
             load_cover_async.begin ();
+            track_added (track);
         }
 
         public void remove_track (Track track) {
             this._tracks.remove (track);
+            track_added (track);
+        }
+
+        public Track? get_next_track (Track current) {
+            _tracks.sort_with_data ((a, b) => {
+                if (a.track > 0 && b.track > 0){
+                    return a.track - b.track;
+                }
+                return a.title.collate (b.title);
+            });
+
+            int i = tracks.index (current) + 1;
+            if (i < tracks.length () - 1) {
+                return tracks.nth_data (i);
+            }
+            return null;
+        }
+
+         public Track? get_prev_track (Track current) {
+            _tracks.sort_with_data ((a, b) => {
+                if (a.track > 0 && b.track > 0){
+                    return a.track - b.track;
+                }
+                return a.title.collate (b.title);
+            });
+
+            int i = tracks.index (current) - 1;
+            if (i > - 1) {
+                return tracks.nth_data (i);
+            }
+            return null;
         }
 
         public Track? get_track_by_path (string path) {
@@ -105,6 +139,8 @@ namespace PlayMyMusic.Objects {
             }
             return return_value;
         }
+
+// COVER REGION
 
         private async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {

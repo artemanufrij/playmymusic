@@ -38,8 +38,26 @@ namespace PlayMyMusic.Objects {
         public string title { get; set; default = ""; }
         public string genre { get; set; default = ""; }
         public int track { get; set; default = 0; }
-        public string path { get; set; default = ""; }
+        public uint64 duration { get; set; default = 0; }
 
+        //LOCATION
+        string _path = "";
+        public string path {
+            get {
+                return _path;
+            } set {
+                _path = value;
+                var f = File.new_for_path (_path);
+                _uri = f.get_uri ();
+            }
+        }
+        string _uri = "";
+        public string uri {
+            get {
+                return _uri;
+            }
+        }
+        
         public Track (Album album) {
             this.set_album (album);
         }

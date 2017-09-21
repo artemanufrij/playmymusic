@@ -98,6 +98,7 @@ namespace PlayMyMusic.Services {
                     title       TEXT        NOT NULL,
                     genre       TEXT        NULL,
                     track       INT         NOT NULL,
+                    duration    INT         NOT NULL,
                     CONSTRAINT unique_track UNIQUE (path)
                     );""";
 
@@ -237,7 +238,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT id, title, genre, track, path FROM tracks WHERE album_id=$ALBUM_ID ORDER BY track;
+                SELECT id, title, genre, track, duration, path FROM tracks WHERE album_id=$ALBUM_ID ORDER BY track;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
@@ -249,7 +250,8 @@ namespace PlayMyMusic.Services {
                 item.title = stmt.column_text (1);
                 item.genre = stmt.column_text (2);
                 item.track = stmt.column_int (3);
-                item.path = stmt.column_text (4);
+                item.duration = (uint64)stmt.column_int64 (4);
+                item.path = stmt.column_text (5);
                 return_value.append (item);
             }
             stmt.reset ();
@@ -260,13 +262,14 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $PATH);
+                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DURATION, $PATH);
             """;
             db.prepare_v2 (sql, sql.length, out stmt);
             set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
             set_parameter_str (stmt, sql, "$TITLE", track.title);
             set_parameter_str (stmt, sql, "$GENRE", track.genre);
             set_parameter_int (stmt, sql, "$TRACK", track.track);
+            set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
             set_parameter_str (stmt, sql, "$PATH", track.path);
 
             if (stmt.step () != Sqlite.DONE) {
@@ -295,7 +298,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT COUNT (*) FROM Tracks WHERE path=$PATH;
+                SELECT COUNT (*) FROM tracks WHERE path=$PATH;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
@@ -313,6 +316,11 @@ namespace PlayMyMusic.Services {
         private void set_parameter_int (Sqlite.Statement? stmt, string sql, string par, int val) {
             int par_position = stmt.bind_parameter_index (par);
             stmt.bind_int (par_position, val);
+        }
+
+        private void set_parameter_int64 (Sqlite.Statement? stmt, string sql, string par, int64 val) {
+            int par_position = stmt.bind_parameter_index (par);
+            stmt.bind_int64 (par_position, val);
         }
 
         private void set_parameter_str (Sqlite.Statement? stmt, string sql, string par, string val) {

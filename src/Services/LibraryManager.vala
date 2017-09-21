@@ -42,10 +42,12 @@ namespace PlayMyMusic.Services {
         public signal void tag_discover_started ();
         public signal void tag_discover_finished ();
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
+        public signal void player_state_changed (Gst.State state);
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
         public PlayMyMusic.Services.DataBaseManager db_manager { get; construct set; }
         public PlayMyMusic.Services.LocalFilesManager lf_manager { get; construct set; }
+        public PlayMyMusic.Services.Player player { get; construct set; }
 
         public GLib.List<PlayMyMusic.Objects.Artist> artists {
             get {
@@ -66,6 +68,9 @@ namespace PlayMyMusic.Services {
             lf_manager.found_music_file.connect (found_local_music_file);
             lf_manager.scan_started.connect ( () => { local_scan_started (); });
             lf_manager.scan_finished.connect ( () => { local_scan_finished (); });
+
+            player = PlayMyMusic.Services.Player.instance;
+            player.state_changed.connect ((state) => { player_state_changed (state); });
         }
 
         private LibraryManager () { }
@@ -107,6 +112,11 @@ namespace PlayMyMusic.Services {
                     }
                 }
             }
+        }
+
+        //PLAYER REGION
+        public void play (PlayMyMusic.Objects.Track track) {
+            player.set_track (track);
         }
     }
 }

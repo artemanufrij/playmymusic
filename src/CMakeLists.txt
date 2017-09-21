@@ -9,7 +9,9 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Services/LocalFilesManager.vala
     Services/TagManager.vala
     Services/LibraryManager.vala
+    Services/Player.vala
     Widgets/Album.vala
+    Widgets/Track.vala
     MainWindow.vala
     Application.vala
 PACKAGES
