@@ -22,7 +22,7 @@ git clone https://github.com/artemanufrij/playmymusic.git
 cd playmymusic
 ```
 
-Create **build** folder, compile and start Regextester
+Create **build** folder, compile and start application
 ```
 mkdir build
 cd build
