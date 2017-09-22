@@ -12,6 +12,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Services/Player.vala
     Widgets/Album.vala
     Widgets/Track.vala
+    Widgets/TrackTimeLine.vala
     MainWindow.vala
     Application.vala
 PACKAGES

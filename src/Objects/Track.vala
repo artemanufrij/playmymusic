@@ -65,5 +65,20 @@ namespace PlayMyMusic.Objects {
         public void set_album (Album album) {
             this._album = album;
         }
+
+        public string formated_duration () {
+            uint seconds = (uint)(duration / 1000 / 1000 / 1000);
+            if (seconds < 3600) {
+                uint minutes = seconds / 60;
+                seconds -= minutes * 60;
+                return "%u:%02u".printf (minutes, seconds);
+            }
+
+            uint hours = seconds / 3600;
+            seconds -= hours * 3600;
+            uint minutes = seconds / 60;
+            seconds -= minutes * 60;
+            return "%u:%02u:%02u".printf (hours, minutes, seconds);
+        }
     }
 }

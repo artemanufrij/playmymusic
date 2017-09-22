@@ -38,19 +38,32 @@ namespace PlayMyMusic.Services {
         }
 
         dynamic Gst.Element playbin;
+        Gst.Bus bus;
 
         public PlayMyMusic.Objects.Track current_track { get; private set; }
 
         public signal void state_changed (Gst.State state);
+        public signal void position_changed (double current_position);
+
+        bool playing;
 
         private Player () {
             playbin = Gst.ElementFactory.make ("playbin", "play");
-            Gst.Bus bus = playbin.get_bus ();
+
+            bus = playbin.get_bus ();
             bus.add_watch (0, bus_callback);
+            bus.enable_sync_message_emission();
 
             state_changed.connect ((state) => {
                 if (state != Gst.State.NULL) {
                     playbin.set_state (state);
+                }
+
+                if (state == Gst.State.PLAYING) {
+                    playing = true;
+                    position_watcher ();
+                } else {
+                    playing = false;
                 }
             });
         }
@@ -119,6 +132,26 @@ namespace PlayMyMusic.Services {
             }
 
             return true;
+        }
+
+        private void position_watcher () {
+            new Thread<void*>.try (null, () => {
+                double send_pos = 0;
+                Gst.Format fmt = Gst.Format.TIME;
+                int64 current = -1;
+                double duration = (double)1000 / current_track.duration;
+                while (playing) {
+                    if (this.playbin.query_position (fmt, out current)) {
+                        weak int p = (int)(duration * current);
+                        if (send_pos != p) {
+                            position_changed (p);
+                            send_pos = p;
+                        }
+                    }
+                    Thread.usleep (500);
+                }
+                return null;
+            });
         }
     }
 }

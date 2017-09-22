@@ -39,6 +39,7 @@ namespace PlayMyMusic {
         Gtk.Image cover;
         Gtk.ListBox tracks;
         Gtk.Button playButton;
+        Widgets.TrackTimeLine timeline;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -58,10 +59,14 @@ namespace PlayMyMusic {
                     playButton.image = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
                     playButton.tooltip_text = _("Pause");
                     mark_playing_track (library_manager.player.current_track);
+                    timeline.set_playing_track (library_manager.player.current_track);
                 } else {
                     playButton.image = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
                     playButton.tooltip_text = _("Play");
                 }
+            });
+            library_manager.player_position_changed.connect ((position) => {
+                timeline.set_position (position);
             });
         }
 
@@ -78,6 +83,7 @@ namespace PlayMyMusic {
 
         public void build_ui () {
             var headerbar = new Gtk.HeaderBar ();
+            headerbar.title = _("Play My Music");
             headerbar.show_close_button = true;
             this.set_titlebar (headerbar);
 
@@ -102,6 +108,9 @@ namespace PlayMyMusic {
             headerbar.pack_start (previousButton);
             headerbar.pack_start (playButton);
             headerbar.pack_start (nextButton);
+
+            timeline = new Widgets.TrackTimeLine ();
+            headerbar.set_custom_title (timeline);
 
             search_entry = new Gtk.SearchEntry ();
             search_entry.placeholder_text = _("Search Music");
@@ -167,7 +176,9 @@ namespace PlayMyMusic {
             }
             this.album_viewer.show_all ();
 
-            mark_playing_track (library_manager.player.current_track);
+            if (library_manager.player.current_track != null) {
+                mark_playing_track (library_manager.player.current_track);
+            }
         }
 
         private void mark_playing_track (Objects.Track track) {

@@ -48,26 +48,11 @@ namespace PlayMyMusic.Widgets {
             title.ellipsize = Pango.EllipsizeMode.END;
             content.pack_start (title, true, true, 0);
 
-            var duration = new Gtk.Label (duration_format(this.track.duration));
+            var duration = new Gtk.Label (this.track.formated_duration ());
             duration.halign = Gtk.Align.END;
             content.pack_end (duration, false, false, 0);
             this.add (content);
             this.halign = Gtk.Align.FILL;
-        }
-
-        private string duration_format (uint64 duration) {
-            uint seconds = (uint)(duration / 1000 / 1000 / 1000);
-            if (seconds < 3600) {
-                uint minutes = seconds / 60;
-                seconds -= minutes * 60;
-                return "%u:%02u".printf (minutes, seconds);
-            }
-
-            uint hours = seconds / 3600;
-            seconds -= hours * 3600;
-            uint minutes = seconds / 60;
-            seconds -= minutes * 60;
-            return "%u:%02u:%02u".printf (hours, minutes, seconds);
         }
     }
 }
