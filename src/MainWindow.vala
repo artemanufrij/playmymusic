@@ -94,6 +94,7 @@ namespace PlayMyMusic {
             headerbar.show_close_button = true;
             this.set_titlebar (headerbar);
 
+            // PLAY BUTTONS
             var previousButton = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             previousButton.tooltip_text = _("Previous");
             previousButton.clicked.connect (() => {
@@ -116,9 +117,34 @@ namespace PlayMyMusic {
             headerbar.pack_start (playButton);
             headerbar.pack_start (nextButton);
 
+            // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
             headerbar.set_custom_title (timeline);
 
+            // SETTINGS MENU
+            var app_menu = new Gtk.MenuButton ();
+            app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR));
+
+            var settings_menu = new Gtk.Menu ();
+            var menu_item_import = new Gtk.MenuItem.with_label (_("Import to Library…"));
+            var menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library…"));
+            menu_item_rescan.activate.connect (() => {
+                album_view.hide ();
+                foreach (var item in albums.get_children ()) {
+                    albums.remove (item);
+                }
+                library_manager.rescan_library ();
+            });
+
+            settings_menu.append (menu_item_import);
+            settings_menu.append (new Gtk.SeparatorMenuItem ());
+            settings_menu.append (menu_item_rescan);
+            settings_menu.show_all ();
+
+            app_menu.popup = settings_menu;
+            headerbar.pack_end (app_menu);
+
+            // SEARCH ENTRY
             search_entry = new Gtk.SearchEntry ();
             search_entry.placeholder_text = _("Search Music");
             search_entry.margin_right = 5;
@@ -127,6 +153,7 @@ namespace PlayMyMusic {
             });
             headerbar.pack_end (search_entry);
 
+            // SPINNER
             spinner = new Gtk.Spinner ();
             headerbar.pack_end (spinner);
 
@@ -176,7 +203,6 @@ namespace PlayMyMusic {
             }
         }
 
-// FILTER AND SORT
         private bool albums_filter_func (Gtk.FlowBoxChild child) {
             var query = search_entry.text.strip ().down ();
             if (query.length == 0) {

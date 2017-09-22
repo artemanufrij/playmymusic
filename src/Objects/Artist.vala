@@ -46,7 +46,9 @@ namespace PlayMyMusic.Objects {
 
         public void add_album (Album album) {
             album.set_artist (this);
-            this._albums.append (album);
+            lock (this._albums) {
+                this._albums.append (album);
+            }
         }
 
         public void remove_album (Album album) {

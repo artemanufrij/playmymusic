@@ -52,7 +52,7 @@ namespace PlayMyMusic.Widgets {
             if (this.album.cover == null) {
                 cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
                 cover.height_request = 128;
-            cover.width_request = 128;
+                cover.width_request = 128;
             } else {
                 cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }

@@ -61,12 +61,10 @@ namespace PlayMyMusic.Services {
         }
 
         private void open_database () {
-            var database_path = PlayMyMusic.PlayMyMusicApp.instance.DB_PATH;
-
-            File cache = File.new_for_path (database_path);
+            File cache = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
             bool database_exists = cache.query_exists ();
 
-            Sqlite.Database.open (database_path, out db);
+            Sqlite.Database.open (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH, out db);
 
             if (!database_exists) {
                 string q = """CREATE TABLE artists (
@@ -106,6 +104,14 @@ namespace PlayMyMusic.Services {
                     warning (errormsg);
                 }
             }
+        }
+
+        public void reset_database () {
+            _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
+            File cache = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
+            cache.delete_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                open_database ();
+            });
         }
 
 // ARTIST REGION
@@ -154,7 +160,9 @@ namespace PlayMyMusic.Services {
                 if (stmt.step () == Sqlite.ROW) {
                     artist.ID = stmt.column_int (0);
                     stdout.printf ("Artist ID: %d\n", artist.ID);
-                    _artists.append (artist);
+                    lock (_artists) {
+                        _artists.append (artist);
+                    }
                 } else {
                     warning ("Error: %d: %s", db.errcode (), db.errmsg ());
                 }

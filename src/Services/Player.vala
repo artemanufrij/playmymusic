@@ -60,7 +60,7 @@ namespace PlayMyMusic.Services {
             });
         }
 
-        public void set_track (PlayMyMusic.Objects.Track track) {
+        public void set_track (PlayMyMusic.Objects.Track? track) {
             if (track == current_track) {
                 return;
             }
@@ -89,7 +89,16 @@ namespace PlayMyMusic.Services {
             if (next_track != null) {
                 set_track (next_track);
             } else {
-                current_track = null;
+                if (play_mode_repeat) {
+                    next_track = current_track.album.get_first_track ();
+                    if (next_track != null) {
+                        set_track (next_track);
+                    } else {
+                        current_track = null;
+                    }
+                } else {
+                    current_track = null;
+                }
             }
         }
 

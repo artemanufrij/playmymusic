@@ -87,14 +87,20 @@ namespace PlayMyMusic.Objects {
 
         public void add_track (Track track) {
             track.set_album (this);
-            this._tracks.append (track);
+            lock (this._tracks) {
+                this._tracks.append (track);
+                track_added (track);
+            }
             load_cover_async.begin ();
-            track_added (track);
         }
 
         public void remove_track (Track track) {
             this._tracks.remove (track);
             track_added (track);
+        }
+
+        public Track? get_first_track () {
+            return tracks.nth_data (0);
         }
 
         public Track? get_next_track (Track current) {

@@ -43,7 +43,7 @@ namespace PlayMyMusic {
         }
 
         construct {
-            var cache_folder = GLib.Path.build_filename(GLib.Environment.get_user_cache_dir (), "com.github.artemanufrij.playmymusic");
+            var cache_folder = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), "com.github.artemanufrij.playmymusic");
             try {
                 File file = File.new_for_path (cache_folder);
                 if (!file.query_exists ()) {
@@ -54,7 +54,7 @@ namespace PlayMyMusic {
             }
             DB_PATH = GLib.Path.build_filename (cache_folder, "database.db");
 
-            var cover_folder = GLib.Path.build_filename(cache_folder, "covers");
+            var cover_folder = GLib.Path.build_filename (cache_folder, "covers");
             try {
                 File file = File.new_for_path (cover_folder);
                 if (!file.query_exists ()) {

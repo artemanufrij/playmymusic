@@ -38,6 +38,8 @@ namespace PlayMyMusic.Widgets {
         Gtk.Image icon_shuffle_on;
         Gtk.Image icon_shuffle_off;
 
+        PlayMyMusic.Objects.Album current_album;
+
         public AlbumView () {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             player = PlayMyMusic.Services.Player.instance;
@@ -121,14 +123,31 @@ namespace PlayMyMusic.Widgets {
         }
 
         public void show_album_viewer (PlayMyMusic.Objects.Album album) {
+            if (current_album != null) {
+                current_album.track_added.disconnect (add_track);
+            }
+            current_album = album;
             this.tracks.@foreach ((child) => {
                 this.tracks.remove (child);
             });
-            cover.pixbuf = album.cover;
-            foreach (var track in album.tracks) {
-                this.tracks.add (new PlayMyMusic.Widgets.Track (track));
+            if (album.cover == null) {
+                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
+                cover.height_request = 256;
+                cover.width_request = 256;
+            } else {
+                cover.pixbuf = album.cover;
             }
             this.show_all ();
+            foreach (var track in album.tracks) {
+                add_track (track);
+            }
+            current_album.track_added.connect (add_track);
+        }
+
+        private void add_track (PlayMyMusic.Objects.Track track) {
+            var item = new PlayMyMusic.Widgets.Track (track);
+            this.tracks.add (item);
+            item.show_all ();
         }
 
         private int tracks_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
