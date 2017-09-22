@@ -31,7 +31,7 @@ make
 ./src/com.github.artemanufrij.playmymusic
 ```
 
-(optional) Install PlayMyMusic on your system
+(optional) Install Play My Music on your system
 ```
 sudo make install
 ```
