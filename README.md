@@ -31,7 +31,7 @@ make
 ./src/com.github.artemanufrij.playmymusic
 ```
 
-(optional) Install Regextester on your system
+(optional) Install PlayMyMusic on your system
 ```
 sudo make install
 ```
