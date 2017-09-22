@@ -8,6 +8,7 @@ TODO:
 * Playlists
 * DBUS
 * Media keys
+* Welcome screen
 
 ## Install from Github.
 
