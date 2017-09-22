@@ -4,8 +4,10 @@
 
 ![screenshot](Screenshot.png)
 
-todo:
-* playlists
+TODO:
+* Playlists
+* DBUS
+* Media keys
 
 ## Install from Github.
 
