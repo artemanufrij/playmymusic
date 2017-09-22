@@ -48,7 +48,7 @@ namespace PlayMyMusic.Widgets {
             title.ellipsize = Pango.EllipsizeMode.END;
             content.pack_start (title, true, true, 0);
 
-            var duration = new Gtk.Label (this.track.formated_duration ());
+            var duration = new Gtk.Label (PlayMyMusic.Utils.get_formated_duration(this.track.duration));
             duration.halign = Gtk.Align.END;
             content.pack_end (duration, false, false, 0);
             this.add (content);

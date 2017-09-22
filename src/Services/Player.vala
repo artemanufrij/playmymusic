@@ -43,7 +43,6 @@ namespace PlayMyMusic.Services {
         public PlayMyMusic.Objects.Track current_track { get; private set; }
 
         public signal void state_changed (Gst.State state);
-        public signal void position_changed (double current_position);
 
         bool playing;
 
@@ -61,7 +60,6 @@ namespace PlayMyMusic.Services {
 
                 if (state == Gst.State.PLAYING) {
                     playing = true;
-                    position_watcher ();
                 } else {
                     playing = false;
                 }
@@ -79,7 +77,9 @@ namespace PlayMyMusic.Services {
         }
 
         public void play () {
-            state_changed (Gst.State.PLAYING);
+            if (current_track != null) {
+                state_changed (Gst.State.PLAYING);
+            }
         }
 
         public void pause () {
@@ -94,6 +94,8 @@ namespace PlayMyMusic.Services {
             var next_track = current_track.album.get_next_track (current_track);
             if (next_track != null) {
                 set_track (next_track);
+            } else {
+                current_track = null;
             }
         }
 
@@ -101,6 +103,8 @@ namespace PlayMyMusic.Services {
             var prev_track = current_track.album.get_prev_track (current_track);
             if (prev_track != null) {
                 set_track (prev_track);
+            } else {
+                current_track = null;
             }
         }
 
@@ -130,28 +134,23 @@ namespace PlayMyMusic.Services {
             default:
                 break;
             }
-
             return true;
         }
 
-        private void position_watcher () {
-            new Thread<void*>.try (null, () => {
-                double send_pos = 0;
-                Gst.Format fmt = Gst.Format.TIME;
-                int64 current = -1;
-                double duration = (double)1000 / current_track.duration;
-                while (playing) {
-                    if (this.playbin.query_position (fmt, out current)) {
-                        weak int p = (int)(duration * current);
-                        if (send_pos != p) {
-                            position_changed (p);
-                            send_pos = p;
-                        }
-                    }
-                    Thread.usleep (500);
-                }
-                return null;
-            });
+        public void seek_to_position (int64 position) {
+            Gst.Format fmt = Gst.Format.TIME;
+            playbin.seek_simple (fmt, Gst.SeekFlags.FLUSH, position);
+        }
+
+        public unowned double get_position_progress () {
+            Gst.Format fmt = Gst.Format.TIME;
+            int64 current = 0;
+            double duration = (double)1000 / current_track.duration;
+            if (this.playbin.query_position (fmt, out current)) {
+                int p = (int)(duration * current);
+                return (double)p;
+            }
+            return -1;
         }
     }
 }

@@ -2,6 +2,7 @@ set (CONFIG_FILE ${CMAKE_CURRENT_BINARY_DIR}/Config.vala)
 configure_file (${CMAKE_SOURCE_DIR}/Config.vala.cmake ${CONFIG_FILE})
 
 vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
+    Utils/Utils.vala
     Objects/Album.vala
     Objects/Artist.vala
     Objects/Track.vala
@@ -11,6 +12,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Services/LibraryManager.vala
     Services/Player.vala
     Widgets/Album.vala
+    Widgets/AlbumView.vala
     Widgets/Track.vala
     Widgets/TrackTimeLine.vala
     MainWindow.vala

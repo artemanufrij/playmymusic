@@ -106,7 +106,7 @@ namespace PlayMyMusic.Objects {
             });
 
             int i = tracks.index (current) + 1;
-            if (i < tracks.length () - 1) {
+            if (i < tracks.length ()) {
                 return tracks.nth_data (i);
             }
             return null;

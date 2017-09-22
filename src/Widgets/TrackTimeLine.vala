@@ -29,7 +29,12 @@ namespace PlayMyMusic.Widgets {
     public class TrackTimeLine : Gtk.Stack {
         Gtk.Label playing_track;
         Gtk.Label end_time;
+        Gtk.Label current_time;
         Gtk.Scale timeline;
+        Gtk.Grid empty;
+        Gtk.Grid content;
+
+        uint timer = 0;
 
         PlayMyMusic.Objects.Track current_track;
 
@@ -41,12 +46,12 @@ namespace PlayMyMusic.Widgets {
             this.margin_left = 32;
             this.margin_right = 32;
             this.width_request = 380;
-            this.transition_type = Gtk.StackTransitionType.CROSSFADE;
 
-            var content = new Gtk.Grid ();
+            content = new Gtk.Grid ();
             content.column_spacing = 6;
             content.row_spacing = 0;
-            var current_time = new Gtk.Label ("0:00");
+
+            current_time = new Gtk.Label ("0:00");
             content.attach (current_time, 0, 1);
 
             end_time = new Gtk.Label ("0:00");
@@ -61,25 +66,61 @@ namespace PlayMyMusic.Widgets {
             timeline.hexpand = true;
             timeline.draw_value = false;
             timeline.can_focus = false;
+            timeline.change_value.connect ((scroll, new_value) => {
+                if (scroll == Gtk.ScrollType.JUMP) {
+                    var seek_position = (int64)(current_track.duration / 1000 * new_value);
+                    PlayMyMusic.Services.Player.instance.seek_to_position (seek_position);
+                }
+                return false;
+            });
             content.attach (timeline, 1, 1);
 
-            var empty = new Gtk.Grid ();
+            empty = new Gtk.Grid ();
 
-            this.add_named (content, "timeline");
             this.add_named (empty, "empty");
+            this.add_named (content, "timeline");
 
             set_visible_child (empty);
         }
 
-        public void set_playing_track (PlayMyMusic.Objects.Track track) {
-            current_track = track;
-            playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title, track.album.title.replace ("&", "&amp;"), track.album.artist.name.replace ("&", "&amp;"));
-            end_time.label = track.formated_duration ();
+        public void stop_playing () {
+            if (timer != 0) {
+                Source.remove (timer);
+                timer = 0;
+            }
+            timeline.change_value (Gtk.ScrollType.NONE, 0);
+            current_time.label = "0:00";
+            playing_track.label = "";
+            set_visible_child (empty);
         }
 
-        public void set_position (double position) {
-            stdout.printf("%f \n", position);
-            //timeline.change_value (Gtk.ScrollType.NONE, position);
+        public void pause_playing () {
+            if (timer != 0) {
+                Source.remove (timer);
+            }
+        }
+
+        public void set_playing_track (PlayMyMusic.Objects.Track track) {
+            current_track = track;
+            set_visible_child (content);
+
+            playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title,
+                track.album.title.replace ("&", "&amp;"),
+                track.album.artist.name.replace ("&", "&amp;"));
+
+            end_time.label = PlayMyMusic.Utils.get_formated_duration (track.duration);
+
+            timer = GLib.Timeout.add (250, () => {
+                var pos_rel = PlayMyMusic.Services.Player.instance.get_position_progress ();
+                if (pos_rel < 0) {
+                    return true;
+                }
+                timeline.change_value (Gtk.ScrollType.NONE, pos_rel);
+
+                var pos_abs = (uint64)(track.duration * (pos_rel / 1000));
+                current_time.label = PlayMyMusic.Utils.get_formated_duration (pos_abs);
+                return true;
+            });
         }
     }
 }

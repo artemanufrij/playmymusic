@@ -43,7 +43,6 @@ namespace PlayMyMusic.Services {
         public signal void tag_discover_finished ();
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void player_state_changed (Gst.State state);
-        public signal void player_position_changed (double position);
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
         public PlayMyMusic.Services.DataBaseManager db_manager { get; construct set; }
@@ -72,7 +71,6 @@ namespace PlayMyMusic.Services {
 
             player = PlayMyMusic.Services.Player.instance;
             player.state_changed.connect ((state) => { player_state_changed (state); });
-            player.position_changed.connect ((position) => { player_position_changed (position); });
         }
 
         private LibraryManager () { }

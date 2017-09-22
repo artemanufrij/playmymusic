@@ -25,45 +25,19 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
-namespace PlayMyMusic.Objects {
-    public class Track : GLib.Object {
-        Album _album;
-        public Album album {
-            get {
-                return _album;
-            }
+namespace PlayMyMusic.Utils {
+    public static string get_formated_duration (uint64 duration) {
+        uint seconds = (uint)(duration / 1000000000);
+        if (seconds < 3600) {
+            uint minutes = seconds / 60;
+            seconds -= minutes * 60;
+            return "%u:%02u".printf (minutes, seconds);
         }
 
-        public int ID { get; set; }
-        public string title { get; set; default = ""; }
-        public string genre { get; set; default = ""; }
-        public int track { get; set; default = 0; }
-        public uint64 duration { get; set; default = 0; }
-
-        //LOCATION
-        string _path = "";
-        public string path {
-            get {
-                return _path;
-            } set {
-                _path = value;
-                var f = File.new_for_path (_path);
-                _uri = f.get_uri ();
-            }
-        }
-        string _uri = "";
-        public string uri {
-            get {
-                return _uri;
-            }
-        }
-
-        public Track (Album album) {
-            this.set_album (album);
-        }
-
-        public void set_album (Album album) {
-            this._album = album;
-        }
+        uint hours = seconds / 3600;
+        seconds -= hours * 3600;
+        uint minutes = seconds / 60;
+        seconds -= minutes * 60;
+        return "%u:%02u:%02u".printf (hours, minutes, seconds);
     }
 }
