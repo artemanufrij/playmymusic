@@ -41,10 +41,10 @@ namespace PlayMyMusic.Services {
         Gst.Bus bus;
 
         public PlayMyMusic.Objects.Track current_track { get; private set; }
+        public bool play_mode_repeat { get; set; default = false; }
+        public bool play_mode_shuffle { get; set; default = false; }
 
         public signal void state_changed (Gst.State state);
-
-        bool playing;
 
         private Player () {
             playbin = Gst.ElementFactory.make ("playbin", "play");
@@ -56,12 +56,6 @@ namespace PlayMyMusic.Services {
             state_changed.connect ((state) => {
                 if (state != Gst.State.NULL) {
                     playbin.set_state (state);
-                }
-
-                if (state == Gst.State.PLAYING) {
-                    playing = true;
-                } else {
-                    playing = false;
                 }
             });
         }

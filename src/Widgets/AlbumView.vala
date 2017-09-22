@@ -26,20 +26,27 @@
  */
 
 namespace PlayMyMusic.Widgets {
-    public class AlbumView : Gtk.Box {
+    public class AlbumView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Services.Player player;
 
         Gtk.Image cover;
         Gtk.ListBox tracks;
 
-        public AlbumView () {
-            Object (orientation: Gtk.Orientation.VERTICAL, spacing: 0);
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+        Gtk.Image icon_repeat_on;
+        Gtk.Image icon_repeat_off;
+        Gtk.Image icon_shuffle_on;
+        Gtk.Image icon_shuffle_off;
 
+        public AlbumView () {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            player = PlayMyMusic.Services.Player.instance;
             build_ui ();
         }
 
         private void build_ui () {
+            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            box.vexpand = true;
             cover = new Gtk.Image ();
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
 
@@ -51,17 +58,47 @@ namespace PlayMyMusic.Widgets {
             var album_toolbar = new Gtk.ActionBar ();
             album_toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR);
 
-            var random_button = new Gtk.Button.from_icon_name ("media-playlist-no-shuffle-symbolic");
-            random_button.tooltip_text = _("Random");
-            album_toolbar.pack_start (random_button);
+            icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
 
-            var repeat_button = new Gtk.Button.from_icon_name ("media-playlist-no-repeat-symbolic");
+            var shuffle_button = new Gtk.Button ();
+            shuffle_button.set_image (icon_shuffle_off);
+            shuffle_button.tooltip_text = _("Random");
+            shuffle_button.can_focus = false;
+            shuffle_button.clicked.connect (() => {
+                player.play_mode_shuffle = !player.play_mode_shuffle;
+                if (player.play_mode_shuffle) {
+                    shuffle_button.set_image (icon_shuffle_on);
+                } else {
+                    shuffle_button.set_image (icon_shuffle_off);
+                }
+            });
+            album_toolbar.pack_start (shuffle_button);
+
+            icon_repeat_on = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
+
+            var repeat_button = new Gtk.Button ();
+            repeat_button.set_image (icon_repeat_off);
             repeat_button.tooltip_text = _("Random");
+            repeat_button.can_focus = false;
+            repeat_button.clicked.connect (() => {
+                player.play_mode_repeat = !player.play_mode_repeat;
+                if (player.play_mode_repeat) {
+                    repeat_button.set_image (icon_repeat_on);
+                } else {
+                    repeat_button.set_image (icon_repeat_off);
+                }
+            });
             album_toolbar.pack_start (repeat_button);
 
-            this.pack_start (cover, false, false, 0);
-            this.pack_start (tracks_scroll, true, true, 0);
-            this.pack_end (album_toolbar, false, false, 0);
+            box.pack_start (cover, false, false, 0);
+            box.pack_start (tracks_scroll, true, true, 0);
+            box.pack_end (album_toolbar, false, false, 0);
+
+            var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
+            this.attach (separator, 0, 0);
+            this.attach (box, 1, 0);
         }
 
         public void mark_playing_track (Objects.Track? track) {
