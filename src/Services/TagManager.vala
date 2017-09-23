@@ -133,6 +133,9 @@ namespace PlayMyMusic.Services {
                 if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
                     track.track = (int)u;
                 }
+                if (tags.get_uint (Gst.Tags.ALBUM_VOLUME_NUMBER, out u)) {
+                    track.disc = (int)u;
+                }
                 if (tags.get_string (Gst.Tags.GENRE, out o)) {
                     track.genre = o;
                 }

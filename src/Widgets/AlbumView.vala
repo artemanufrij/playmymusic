@@ -109,10 +109,14 @@ namespace PlayMyMusic.Widgets {
                 return;
             }
             foreach (var item in tracks.get_children ()) {
-                if ((item as Widgets.Track).track.path == track.path) {
+                if ((item as Widgets.Track).track.ID == track.ID) {
                     (item as Widgets.Track).activate ();
                 }
             }
+        }
+
+        public void play_album () {
+            library_manager.play (current_album.get_first_track ());
         }
 
         private void play_track () {
@@ -154,7 +158,10 @@ namespace PlayMyMusic.Widgets {
             var item1 = (Widgets.Track)child1;
             var item2 = (Widgets.Track)child2;
             if (item1 != null && item2 != null) {
-                if (item1.track_number > 0 && item2.track_number > 0){
+                if (item1.disc_number != item2.disc_number){
+                    return item1.disc_number - item2.disc_number;
+                }
+                if (item1.track_number != item2.track_number){
                     return item1.track_number - item2.track_number;
                 }
                 return item1.title.collate (item2.title);

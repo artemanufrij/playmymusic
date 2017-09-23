@@ -29,6 +29,7 @@ namespace PlayMyMusic.Widgets {
     public class Album : Gtk.FlowBoxChild {
         public PlayMyMusic.Objects.Album album { get; private set; }
         public string title { get { return album.title; } }
+        public int year { get { return album.year; } }
 
         Gtk.Image cover;
 
@@ -49,6 +50,8 @@ namespace PlayMyMusic.Widgets {
             content.halign = Gtk.Align.CENTER;
             content.row_spacing = 6;
             cover = new Gtk.Image ();
+            cover.get_style_context ().add_class ("card");
+            cover.halign = Gtk.Align.CENTER;
             if (this.album.cover == null) {
                 cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
                 cover.height_request = 128;
@@ -57,10 +60,7 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
-            cover.get_style_context ().add_class ("card");
-            cover.halign = Gtk.Align.CENTER;
-
-            var title = new Gtk.Label (("<span color='#666666'><b>%s</b></span>").printf(this.album.title.replace ("&", "&amp;")));
+            var title = new Gtk.Label (("<span color='#666666'><b>%s</b></span>").printf(this.title.replace ("&", "&amp;")));
             title.use_markup = true;
             title.halign = Gtk.Align.FILL;
             title.ellipsize = Pango.EllipsizeMode.END;

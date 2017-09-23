@@ -31,7 +31,6 @@ namespace PlayMyMusic.Widgets {
         Gtk.Label end_time;
         Gtk.Label current_time;
         Gtk.Scale timeline;
-        Gtk.Grid empty;
         Gtk.Grid content;
 
         uint timer = 0;
@@ -75,12 +74,8 @@ namespace PlayMyMusic.Widgets {
             });
             content.attach (timeline, 1, 1);
 
-            empty = new Gtk.Grid ();
-
-            this.add_named (empty, "empty");
             this.add_named (content, "timeline");
-
-            set_visible_child (empty);
+            this.show_all ();
         }
 
         public void stop_playing () {
@@ -89,9 +84,6 @@ namespace PlayMyMusic.Widgets {
                 timer = 0;
             }
             timeline.change_value (Gtk.ScrollType.NONE, 0);
-            current_time.label = "0:00";
-            playing_track.label = "";
-            set_visible_child (empty);
         }
 
         public void pause_playing () {
@@ -102,8 +94,6 @@ namespace PlayMyMusic.Widgets {
 
         public void set_playing_track (PlayMyMusic.Objects.Track track) {
             current_track = track;
-            set_visible_child (content);
-
             playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title,
                 track.album.title.replace ("&", "&amp;"),
                 track.album.artist.name.replace ("&", "&amp;"));

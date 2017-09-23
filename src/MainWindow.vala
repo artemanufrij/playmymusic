@@ -32,6 +32,7 @@ namespace PlayMyMusic {
         PlayMyMusic.Services.LibraryManager library_manager;
 
         //CONTROLS
+        Gtk.HeaderBar headerbar;
         Gtk.SearchEntry search_entry;
         Gtk.Spinner spinner;
         Gtk.FlowBox albums;
@@ -39,6 +40,7 @@ namespace PlayMyMusic {
         Gtk.Button playButton;
         Widgets.AlbumView album_view;
         Widgets.TrackTimeLine timeline;
+        int lock_dummy;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -51,7 +53,9 @@ namespace PlayMyMusic {
             library_manager.added_new_album.connect((album) => {
                 var a = new Widgets.Album (album);
                 a.show_all ();
-                albums.add (a);
+                lock (lock_dummy) {
+                    albums.add (a);
+                }
             });
             library_manager.player_state_changed.connect ((state) => {
                 if (state == Gst.State.PLAYING) {
@@ -61,11 +65,13 @@ namespace PlayMyMusic {
                     album_view.mark_playing_track (library_manager.player.current_track);
 
                     timeline.set_playing_track (library_manager.player.current_track);
+                    headerbar.set_custom_title (timeline);
                 } else {
                     if (state == Gst.State.PAUSED) {
                         timeline.pause_playing ();
                     } else {
                         timeline.stop_playing ();
+                        headerbar.set_custom_title (null);
                     }
                     if (state == Gst.State.NULL) {
                         album_view.mark_playing_track (null);
@@ -89,7 +95,7 @@ namespace PlayMyMusic {
         }
 
         public void build_ui () {
-            var headerbar = new Gtk.HeaderBar ();
+            headerbar = new Gtk.HeaderBar ();
             headerbar.title = _("Play My Music");
             headerbar.show_close_button = true;
             this.set_titlebar (headerbar);
@@ -104,7 +110,11 @@ namespace PlayMyMusic {
             playButton = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             playButton.tooltip_text = _("Play");
             playButton.clicked.connect (() => {
-                library_manager.player.toggle_playing ();
+                if (library_manager.player.current_track != null) {
+                    library_manager.player.toggle_playing ();
+                } else if (album_view.visible) {
+                    album_view.play_album ();
+                }
             });
 
             var nextButton = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
@@ -119,7 +129,6 @@ namespace PlayMyMusic {
 
             // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
-            headerbar.set_custom_title (timeline);
 
             // SETTINGS MENU
             var app_menu = new Gtk.MenuButton ();
@@ -216,7 +225,7 @@ namespace PlayMyMusic {
                 if (!album.title.down ().contains (filter_element) && !album.artist.name.down ().contains (filter_element)) {
                     bool track_title = false;
                     foreach (var track in album.tracks) {
-                        if (track.title.down ().contains (filter_element)) {
+                        if (track.title.down ().contains (filter_element) || track.genre.down ().contains (filter_element)) {
                             track_title = true;
                         }
                     }
@@ -234,8 +243,8 @@ namespace PlayMyMusic {
             var item2 = (Widgets.Album)child2;
             if (item1 != null && item2 != null) {
                 if (item1.album.artist.name == item2.album.artist.name) {
-                    if (item1.album.year > 0 && item2.album.year > 0) {
-                        return item1.album.year - item2.album.year;
+                    if (item1.year > 0 && item2.year > 0) {
+                        return item1.year - item2.year;
                     }
                     return item1.title.collate (item2.title);
                 }

@@ -96,6 +96,7 @@ namespace PlayMyMusic.Services {
                     title       TEXT        NOT NULL,
                     genre       TEXT        NULL,
                     track       INT         NOT NULL,
+                    disc        INT         NOT NULL,
                     duration    INT         NOT NULL,
                     CONSTRAINT unique_track UNIQUE (path)
                     );""";
@@ -179,8 +180,8 @@ namespace PlayMyMusic.Services {
                         break;
                     }
                 }
+                 return return_value;
             }
-            return return_value;
         }
 
 // ALBUM REGION
@@ -246,7 +247,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT id, title, genre, track, duration, path FROM tracks WHERE album_id=$ALBUM_ID ORDER BY track;
+                SELECT id, title, genre, track, disc, duration, path FROM tracks WHERE album_id=$ALBUM_ID ORDER BY disc, track;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
@@ -258,8 +259,9 @@ namespace PlayMyMusic.Services {
                 item.title = stmt.column_text (1);
                 item.genre = stmt.column_text (2);
                 item.track = stmt.column_int (3);
-                item.duration = (uint64)stmt.column_int64 (4);
-                item.path = stmt.column_text (5);
+                item.disc = stmt.column_int (4);
+                item.duration = (uint64)stmt.column_int64 (5);
+                item.path = stmt.column_text (6);
                 return_value.append (item);
             }
             stmt.reset ();
@@ -270,13 +272,14 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DURATION, $PATH);
+                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, disc, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DISC, $DURATION, $PATH);
             """;
             db.prepare_v2 (sql, sql.length, out stmt);
             set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
             set_parameter_str (stmt, sql, "$TITLE", track.title);
             set_parameter_str (stmt, sql, "$GENRE", track.genre);
             set_parameter_int (stmt, sql, "$TRACK", track.track);
+            set_parameter_int (stmt, sql, "$DISC", track.disc);
             set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
             set_parameter_str (stmt, sql, "$PATH", track.path);
 

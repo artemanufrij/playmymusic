@@ -64,8 +64,8 @@ namespace PlayMyMusic.Objects {
                         break;
                     }
                 }
+                return return_value;
             }
-            return return_value;
         }
     }
 }

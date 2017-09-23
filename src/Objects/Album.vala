@@ -68,7 +68,9 @@ namespace PlayMyMusic.Objects {
                 if (_tracks == null) {
                     _tracks = PlayMyMusic.Services.LibraryManager.instance.db_manager.get_track_collection (this);
                 }
-                return _tracks;
+                lock (_tracks) {
+                    return _tracks;
+                }
             }
         }
 
@@ -89,8 +91,17 @@ namespace PlayMyMusic.Objects {
             track.set_album (this);
             lock (this._tracks) {
                 this._tracks.append (track);
-                track_added (track);
+                _tracks.sort_with_data ((a, b) => {
+                    if (a.disc != b.disc) {
+                        return a.disc - b.disc;
+                    }
+                    if (a.track != b.track) {
+                        return a.track - b.track;
+                    }
+                    return a.title.collate (b.title);
+                });
             }
+            track_added (track);
             load_cover_async.begin ();
         }
 
@@ -104,13 +115,6 @@ namespace PlayMyMusic.Objects {
         }
 
         public Track? get_next_track (Track current) {
-            _tracks.sort_with_data ((a, b) => {
-                if (a.track > 0 && b.track > 0){
-                    return a.track - b.track;
-                }
-                return a.title.collate (b.title);
-            });
-
             int i = tracks.index (current) + 1;
             if (i < tracks.length ()) {
                 return tracks.nth_data (i);
@@ -119,13 +123,6 @@ namespace PlayMyMusic.Objects {
         }
 
          public Track? get_prev_track (Track current) {
-            _tracks.sort_with_data ((a, b) => {
-                if (a.track > 0 && b.track > 0){
-                    return a.track - b.track;
-                }
-                return a.title.collate (b.title);
-            });
-
             int i = tracks.index (current) - 1;
             if (i > - 1) {
                 return tracks.nth_data (i);
@@ -142,8 +139,8 @@ namespace PlayMyMusic.Objects {
                         break;
                     }
                 }
+                return return_value;
             }
-            return return_value;
         }
 
 // COVER REGION
@@ -152,6 +149,7 @@ namespace PlayMyMusic.Objects {
             if (is_cover_loading || cover != null || this.ID == 0) {
                 return;
             }
+            is_cover_loading = true;
             load_or_create_cover.begin ((obj, res) => {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
@@ -161,7 +159,6 @@ namespace PlayMyMusic.Objects {
         }
 
         private async Gdk.Pixbuf? load_or_create_cover () {
-            is_cover_loading = true;
             SourceFunc callback = load_or_create_cover.callback;
 
             Gdk.Pixbuf? return_value = null;
@@ -181,18 +178,20 @@ namespace PlayMyMusic.Objects {
 
     string[] cover_files = {"cover.jpg", "Cover.jpg", "album.jpg", "Album.jpg", "folder.jpg", "Folder.jpg", "front.jpg", "Front.jpg"};
 
-                foreach (var track in tracks) {
-                    var dir_name = GLib.Path.get_dirname (track.path);
-                    foreach (var cover_file in cover_files) {
-                        var cover_path = GLib.Path.build_filename (dir_name, cover_file);
-                        cover_full_path = File.new_for_path (cover_path);
-                        if (cover_full_path.query_exists ()) {
-                            try {
-                                return_value = align_and_cache_pixbuf (new Gdk.Pixbuf.from_file (cover_path), cover_cache_path);
-                                Idle.add ((owned) callback);
-                                return null;
-                            } catch (Error err) {
-                                warning (err.message);
+                lock (_tracks) {
+                    foreach (var track in tracks) {
+                        var dir_name = GLib.Path.get_dirname (track.path);
+                        foreach (var cover_file in cover_files) {
+                            var cover_path = GLib.Path.build_filename (dir_name, cover_file);
+                            cover_full_path = File.new_for_path (cover_path);
+                            if (cover_full_path.query_exists ()) {
+                                try {
+                                    return_value = align_and_cache_pixbuf (new Gdk.Pixbuf.from_file (cover_path), cover_cache_path);
+                                    Idle.add ((owned) callback);
+                                    return null;
+                                } catch (Error err) {
+                                    warning (err.message);
+                                }
                             }
                         }
                     }
@@ -205,38 +204,40 @@ namespace PlayMyMusic.Objects {
                     Idle.add ((owned) callback);
                     return null;
                 }
-                foreach (var track in tracks) {
-                    var file = File.new_for_path (track.path);
-                    Gst.PbUtils.DiscovererInfo info;
-                    try {
-                        info = discoverer.discover_uri (file.get_uri ());
-                    } catch (Error err) {
-                        warning (err.message);
-                        Idle.add ((owned) callback);
-                        return null;
-                    }
-                    if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
-                        continue;
-                    }
-                    
-                    Gdk.Pixbuf pixbuf = null;
-                    var tag_list = info.get_tags ();
-                    var sample = get_cover_sample (tag_list);
+                lock (_tracks) {
+                    foreach (var track in tracks) {
+                        var file = File.new_for_path (track.path);
+                        Gst.PbUtils.DiscovererInfo info;
+                        try {
+                            info = discoverer.discover_uri (file.get_uri ());
+                        } catch (Error err) {
+                            warning (err.message);
+                            Idle.add ((owned) callback);
+                            return null;
+                        }
+                        if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
+                            continue;
+                        }
 
-                    if (sample == null) {
-                        tag_list.get_sample_index (Gst.Tags.PREVIEW_IMAGE, 0, out sample);
-                    }
+                        Gdk.Pixbuf pixbuf = null;
+                        var tag_list = info.get_tags ();
+                        var sample = get_cover_sample (tag_list);
 
-                    if (sample != null) {
-                        var buffer = sample.get_buffer ();
+                        if (sample == null) {
+                            tag_list.get_sample_index (Gst.Tags.PREVIEW_IMAGE, 0, out sample);
+                        }
 
-                        if (buffer != null) {
-                            pixbuf = get_pixbuf_from_buffer (buffer);
-                            if (pixbuf != null) {
-                                discoverer.stop ();
-                                return_value = align_and_cache_pixbuf (pixbuf, cover_cache_path);
-                                Idle.add ((owned) callback);
-                                return null;
+                        if (sample != null) {
+                            var buffer = sample.get_buffer ();
+
+                            if (buffer != null) {
+                                pixbuf = get_pixbuf_from_buffer (buffer);
+                                if (pixbuf != null) {
+                                    discoverer.stop ();
+                                    return_value = align_and_cache_pixbuf (pixbuf, cover_cache_path);
+                                    Idle.add ((owned) callback);
+                                    return null;
+                                }
                             }
                         }
                     }

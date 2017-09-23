@@ -30,6 +30,7 @@ namespace PlayMyMusic.Widgets {
         public PlayMyMusic.Objects.Track track { get; private set; }
         public string title { get { return track.title; } }
         public int track_number { get { return track.track; } }
+        public int disc_number { get { return track.disc; } }
 
         public Track (PlayMyMusic.Objects.Track track ) {
             this.track = track;
