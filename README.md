@@ -17,6 +17,12 @@ As first you need elementary SDK
 sudo apt install elementary-sdk
 ```
 
+Install dependencies
+```
+sudo apt install libsqlite3-dev
+sudo apt install libgstreamer-plugins-base1.0-dev
+```
+
 Clone repository and change directory
 ```
 git clone https://github.com/artemanufrij/playmymusic.git
