@@ -177,8 +177,7 @@ namespace PlayMyMusic.Objects {
                     }
                 }
 
-    string[] cover_files = {"cover.jpg", "Cover.jpg", "album.jpg", "Album.jpg", "folder.jpg", "Folder.jpg", "front.jpg", "Front.jpg"};
-
+                string[] cover_files = PlayMyMusic.Settings.get_default ().covers;
                 lock (_tracks) {
                     foreach (var track in tracks) {
                         var dir_name = GLib.Path.get_dirname (track.path);

@@ -26,23 +26,22 @@
  */
 
 namespace PlayMyMusic {
-
     public class MainWindow : Gtk.Window {
-
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
 
         //CONTROLS
         Gtk.HeaderBar headerbar;
         Gtk.SearchEntry search_entry;
         Gtk.Spinner spinner;
-        Gtk.FlowBox albums;
-
         Gtk.Button playButton;
-        Widgets.AlbumView album_view;
+
+        Widgets.Views.AlbumsView albums_view;
         Widgets.TrackTimeLine timeline;
-        int lock_dummy;
 
         construct {
+            settings = PlayMyMusic.Settings.get_default ();
+
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.tag_discover_started.connect (() => {
                 spinner.active = true;
@@ -50,20 +49,11 @@ namespace PlayMyMusic {
             library_manager.tag_discover_finished.connect (() => {
                 spinner.active = false;
             });
-            library_manager.added_new_album.connect((album) => {
-                var a = new Widgets.Album (album);
-                a.show_all ();
-                lock (lock_dummy) {
-                    albums.add (a);
-                }
-            });
+
             library_manager.player_state_changed.connect ((state) => {
                 if (state == Gst.State.PLAYING) {
                     playButton.image = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
                     playButton.tooltip_text = _("Pause");
-
-                    album_view.mark_playing_track (library_manager.player.current_track);
-
                     timeline.set_playing_track (library_manager.player.current_track);
                     headerbar.set_custom_title (timeline);
                 } else {
@@ -73,10 +63,6 @@ namespace PlayMyMusic {
                         timeline.stop_playing ();
                         headerbar.set_custom_title (null);
                     }
-                    if (state == Gst.State.NULL) {
-                        album_view.mark_playing_track (null);
-                    }
-
                     playButton.image = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
                     playButton.tooltip_text = _("Play");
                 }
@@ -84,13 +70,16 @@ namespace PlayMyMusic {
         }
 
         public MainWindow () {
-            this.width_request = 960;
-            this.height_request = 720;
+            this.width_request = settings.window_width;
+            this.height_request = settings.window_height;
 
             build_ui ();
 
-            show_albums_from_database.begin ((obj, res) => {
-                library_manager.scan_local_library (GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC));
+            albums_view.load_albums_from_database();
+            this.configure_event.connect ((event) => {
+                settings.window_width = event.width;
+                settings.window_height = event.height;
+                return false;
             });
         }
 
@@ -112,8 +101,8 @@ namespace PlayMyMusic {
             playButton.clicked.connect (() => {
                 if (library_manager.player.current_track != null) {
                     library_manager.player.toggle_playing ();
-                } else if (album_view.visible) {
-                    album_view.play_album ();
+                } else {
+                    albums_view.play_selected_album ();
                 }
             });
 
@@ -136,12 +125,27 @@ namespace PlayMyMusic {
 
             var settings_menu = new Gtk.Menu ();
             var menu_item_import = new Gtk.MenuItem.with_label (_("Import to Library…"));
+            menu_item_import.activate.connect (() => {
+                Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
+                    _("Select a folder."), this, Gtk.FileChooserAction.SELECT_FOLDER,
+                    _("_Cancel"), Gtk.ResponseType.CANCEL,
+                    _("_Open"), Gtk.ResponseType.ACCEPT);
+
+                var filter = new Gtk.FileFilter ();
+                filter.set_filter_name (_("Folder"));
+                filter.add_mime_type ("inode/directory");
+
+                chooser.add_filter (filter);
+
+                if (chooser.run () == Gtk.ResponseType.ACCEPT) {
+                    library_manager.scan_local_library (chooser.get_file ().get_path ());
+                }
+
+                chooser.destroy ();
+            });
             var menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library…"));
             menu_item_rescan.activate.connect (() => {
-                album_view.hide ();
-                foreach (var item in albums.get_children ()) {
-                    albums.remove (item);
-                }
+                albums_view.reset ();
                 library_manager.rescan_library ();
             });
 
@@ -158,7 +162,7 @@ namespace PlayMyMusic {
             search_entry.placeholder_text = _("Search Music");
             search_entry.margin_right = 5;
             search_entry.search_changed.connect (() => {
-                albums.invalidate_filter ();
+                albums_view.filter (search_entry.text);
             });
             headerbar.pack_end (search_entry);
 
@@ -166,91 +170,12 @@ namespace PlayMyMusic {
             spinner = new Gtk.Spinner ();
             headerbar.pack_end (spinner);
 
-            albums = new Gtk.FlowBox ();
-            albums.margin = 24;
-            albums.homogeneous = true;
-            albums.row_spacing = 12;
-            albums.column_spacing = 24;
-            albums.selection_mode = Gtk.SelectionMode.NONE;
-            albums.max_children_per_line = 24;
-            albums.valign = Gtk.Align.START;
-            albums.set_sort_func (albums_sort_func);
-            albums.set_filter_func (albums_filter_func);
-            albums.child_activated.connect (show_album_viewer);
-            var albums_scroll = new Gtk.ScrolledWindow (null, null);
+            albums_view = new Widgets.Views.AlbumsView ();
 
-            albums_scroll.add (albums);
-
-            album_view = new Widgets.AlbumView ();
-
-            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            box.pack_start (albums_scroll, true, true, 0);
-            box.pack_start (album_view, false, false, 0);
-
-            this.add (box);
-
+            this.add (albums_view);
             this.show_all ();
-            album_view.hide ();
+            albums_view.hide_album_details ();
             search_entry.grab_focus ();
-        }
-
-        private void show_album_viewer (Gtk.FlowBoxChild item) {
-            var album = (item as Widgets.Album);
-            album_view.show_album_viewer (album.album);
-            if (library_manager.player.current_track != null) {
-                album_view.mark_playing_track (library_manager.player.current_track);
-            }
-        }
-
-        private async void show_albums_from_database () {
-            foreach (var artist in library_manager.artists) {
-                foreach (var album in artist.albums) {
-                    var a = new Widgets.Album (album);
-                    a.show_all ();
-                    albums.add (a);
-                }
-            }
-        }
-
-        private bool albums_filter_func (Gtk.FlowBoxChild child) {
-            var query = search_entry.text.strip ().down ();
-            if (query.length == 0) {
-                return true;
-            }
-
-            string[] filter_elements = query.split (" ");
-            var album = (child as Widgets.Album).album;
-
-            foreach (string filter_element in filter_elements) {
-                if (!album.title.down ().contains (filter_element) && !album.artist.name.down ().contains (filter_element)) {
-                    bool track_title = false;
-                    foreach (var track in album.tracks) {
-                        if (track.title.down ().contains (filter_element) || track.genre.down ().contains (filter_element)) {
-                            track_title = true;
-                        }
-                    }
-                    if (track_title) {
-                        continue;
-                    }
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private int albums_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
-            var item1 = (Widgets.Album)child1;
-            var item2 = (Widgets.Album)child2;
-            if (item1 != null && item2 != null) {
-                if (item1.album.artist.name == item2.album.artist.name) {
-                    if (item1.year > 0 && item2.year > 0) {
-                        return item1.year - item2.year;
-                    }
-                    return item1.title.collate (item2.title);
-                }
-                return item1.album.artist.name.collate (item2.album.artist.name);
-            }
-            return 0;
         }
     }
 }

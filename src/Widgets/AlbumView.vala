@@ -29,6 +29,7 @@ namespace PlayMyMusic.Widgets {
     public class AlbumView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Services.Player player;
+        PlayMyMusic.Settings settings;
 
         Gtk.Image cover;
         Gtk.ListBox tracks;
@@ -41,8 +42,11 @@ namespace PlayMyMusic.Widgets {
         PlayMyMusic.Objects.Album current_album;
 
         public AlbumView () {
+            settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             player = PlayMyMusic.Services.Player.instance;
+            player.play_mode_shuffle = settings.shuffle_mode;
+            player.play_mode_repeat = settings.repeat_mode;
             build_ui ();
         }
 
@@ -64,11 +68,16 @@ namespace PlayMyMusic.Widgets {
             icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
 
             var shuffle_button = new Gtk.Button ();
-            shuffle_button.set_image (icon_shuffle_off);
-            shuffle_button.tooltip_text = _("Random");
+            if (settings.shuffle_mode) {
+                shuffle_button.set_image (icon_shuffle_on);
+            } else {
+                shuffle_button.set_image (icon_shuffle_off);
+            }
+            shuffle_button.tooltip_text = _("Shuffle");
             shuffle_button.can_focus = false;
             shuffle_button.clicked.connect (() => {
                 player.play_mode_shuffle = !player.play_mode_shuffle;
+                settings.shuffle_mode = player.play_mode_shuffle;
                 if (player.play_mode_shuffle) {
                     shuffle_button.set_image (icon_shuffle_on);
                 } else {
@@ -81,11 +90,16 @@ namespace PlayMyMusic.Widgets {
             icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
 
             var repeat_button = new Gtk.Button ();
-            repeat_button.set_image (icon_repeat_off);
-            repeat_button.tooltip_text = _("Random");
+            if (settings.repeat_mode) {
+                repeat_button.set_image (icon_repeat_on);
+            } else {
+                repeat_button.set_image (icon_repeat_off);
+            }
+            repeat_button.tooltip_text = _("Repeat");
             repeat_button.can_focus = false;
             repeat_button.clicked.connect (() => {
                 player.play_mode_repeat = !player.play_mode_repeat;
+                settings.repeat_mode = player.play_mode_repeat;
                 if (player.play_mode_repeat) {
                     repeat_button.set_image (icon_repeat_on);
                 } else {

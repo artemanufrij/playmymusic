@@ -1,0 +1,29 @@
+<schemalist>
+	<schema path="/com/github/artemanufrij/playmymusic/" id="com.github.artemanufrij.playmymusic" gettext-domain="com.github.artemanufrij.playmymusic">
+		<key name="window-width" type="i">
+			<default>1024</default>
+			<summary>The saved width of the window.</summary>
+			<description>The saved width of the window.</description>
+		</key>
+		<key name="window-height" type="i">
+			<default>720</default>
+			<summary>The saved height of the window.</summary>
+			<description>The saved height of the window.</description>
+		</key>
+		<key name="shuffle-mode" type="b">
+		    <default>false</default>
+			<summary>Shuffle mode.</summary>
+			<description>Shuffle mode.</description>
+		</key>
+		<key name="repeat-mode" type="b">
+		    <default>false</default>
+			<summary>Repeat mode.</summary>
+			<description>Repeat mode.</description>
+		</key>
+		<key name="covers" type="as">
+            <default>['cover.jpg','Cover.jpg','album.jpg','Album.jpg', 'folder.jpg', 'Folder.jpg', 'front.jpg', 'Front.jpg']</default>
+            <summary>Cover file names.</summary>
+            <description>Cover file names.</description>
+        </key>
+    </schema>
+</schemalist>

@@ -48,6 +48,7 @@ namespace PlayMyMusic.Services {
                 discoverer = new Gst.PbUtils.Discoverer ((Gst.ClockTime) (5 * Gst.SECOND));
                 discoverer.discovered.connect (discovered);
                 discoverer.start ();
+                discoverer.finished.connect (() => { discover_finished (); });
             } catch (Error err) {
                 warning (err.message);
             }
@@ -55,6 +56,7 @@ namespace PlayMyMusic.Services {
 
         private void discovered (Gst.PbUtils.DiscovererInfo info, Error err) {
             new Thread<void*> (null, () => {
+                discover_started ();
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                     warning ("DISCOVER ERROR: %s %s (%s)", err.message, info.get_result ().to_string (), info.get_uri ());
                     return null;

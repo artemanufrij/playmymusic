@@ -44,6 +44,8 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void build_ui () {
+            tooltip_markup = ("<b>%s</b>\n%s").printf (album.title.replace ("&", "&amp;"), album.artist.name.replace ("&", "&amp;"));
+
             var content = new Gtk.Grid ();
 
             content.margin = 12;

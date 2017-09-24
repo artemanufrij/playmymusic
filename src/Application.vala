@@ -36,8 +36,9 @@ namespace PlayMyMusic {
 
         public static PlayMyMusicApp instance {
             get {
-                if (_instance == null)
+                if (_instance == null) {
                     _instance = new PlayMyMusicApp ();
+                }
                 return _instance;
             }
         }
