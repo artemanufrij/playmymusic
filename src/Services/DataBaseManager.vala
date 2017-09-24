@@ -40,12 +40,12 @@ namespace PlayMyMusic.Services {
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
 
         GLib.List<PlayMyMusic.Objects.Artist> _artists = null;
-        public GLib.List<PlayMyMusic.Objects.Artist> artists { 
+        public GLib.List<PlayMyMusic.Objects.Artist> artists {
             get {
                 if (_artists == null) {
                     _artists = get_artist_collection ();
                 }
-                return _artists; 
+                return _artists;
             }
         }
 
@@ -306,20 +306,22 @@ namespace PlayMyMusic.Services {
 
 // UTILITIES REGION
         public bool music_file_exists (string path) {
-            Sqlite.Statement stmt;
+            bool file_exists = false;
+            lock (db) {
+                Sqlite.Statement stmt;
 
-            string sql = """
-                SELECT COUNT (*) FROM tracks WHERE path=$PATH;
-            """;
+                string sql = """
+                    SELECT COUNT (*) FROM tracks WHERE path=$PATH;
+                """;
 
-            db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_str (stmt, sql, "$PATH", path);
+                db.prepare_v2 (sql, sql.length, out stmt);
+                set_parameter_str (stmt, sql, "$PATH", path);
 
-            bool file_exists = true;
-            if (stmt.step () == Sqlite.ROW) {
-                file_exists = stmt.column_int (0) > 0;
+                if (stmt.step () == Sqlite.ROW) {
+                    file_exists = stmt.column_int (0) > 0;
+                }
+                stmt.reset ();
             }
-            stmt.reset ();
             return file_exists;
         }
 

@@ -41,37 +41,15 @@ namespace PlayMyMusic.Services {
         public signal void discover_started ();
         public signal void discover_finished ();
 
-        public bool is_running { get; private set; }
-
         Gst.PbUtils.Discoverer discoverer;
-        GLib.List<string> queue;
 
         construct {
             try {
                 discoverer = new Gst.PbUtils.Discoverer ((Gst.ClockTime) (5 * Gst.SECOND));
-                discoverer.finished.connect (finished);
                 discoverer.discovered.connect (discovered);
+                discoverer.start ();
             } catch (Error err) {
                 warning (err.message);
-            }
-            queue = new GLib.List<string> ();
-
-            discover_started.connect (() => {
-                is_running = true;
-                discoverer.start ();
-                discover_next_item ();
-            });
-            discover_finished.connect (() => {
-                discoverer.stop ();
-                is_running = false;
-            });
-        }
-
-        private void finished () {
-            if (queue.length () == 0) {
-                discover_finished ();
-            } else {
-                discover_next_item ();
             }
         }
 
@@ -150,25 +128,8 @@ namespace PlayMyMusic.Services {
         }
 
         public void add_discover_path (string path) {
-            lock (queue) {
-                File f = File.new_for_path (path);
-                queue.append (f.get_uri ());
-            }
-            if (!is_running) {
-                 discover_started ();
-            }
-        }
-
-        private void discover_next_item () {
-            new Thread<void*> (null, () => {
-                lock (queue) {
-                    if (queue.length () > 0) {
-                        discoverer.discover_uri_async (queue.first ().data);
-                        queue.remove (queue.first ().data);
-                    }
-                }
-                return null;
-            });
+            File f = File.new_for_path (path);
+            discoverer.discover_uri_async (f.get_uri ());
         }
     }
 }

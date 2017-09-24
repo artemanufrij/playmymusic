@@ -144,7 +144,6 @@ namespace PlayMyMusic.Objects {
         }
 
 // COVER REGION
-
         private async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {
                 return;
@@ -154,6 +153,7 @@ namespace PlayMyMusic.Objects {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
                     this.cover = return_value;
+                    is_cover_loading = false;
                 }
             });
         }
@@ -163,6 +163,7 @@ namespace PlayMyMusic.Objects {
 
             Gdk.Pixbuf? return_value = null;
             new Thread<void*> (null, () => {
+
                 var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("album_%d.jpg").printf(this.ID));
 
                 var cover_full_path = File.new_for_path (cover_cache_path);
@@ -196,6 +197,7 @@ namespace PlayMyMusic.Objects {
                         }
                     }
                 }
+
                 Gst.PbUtils.Discoverer discoverer;
                 try {
                     discoverer = new Gst.PbUtils.Discoverer ((Gst.ClockTime) (5 * Gst.SECOND));
@@ -247,7 +249,6 @@ namespace PlayMyMusic.Objects {
                 return null;
             });
             yield;
-            is_cover_loading = false;
             return return_value;
         }
 

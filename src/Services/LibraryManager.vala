@@ -38,7 +38,6 @@ namespace PlayMyMusic.Services {
         }
 
         public signal void local_scan_started ();
-        public signal void local_scan_finished ();
         public signal void tag_discover_started ();
         public signal void tag_discover_finished ();
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
@@ -67,7 +66,6 @@ namespace PlayMyMusic.Services {
             lf_manager = PlayMyMusic.Services.LocalFilesManager.instance;
             lf_manager.found_music_file.connect (found_local_music_file);
             lf_manager.scan_started.connect ( () => { local_scan_started (); });
-            lf_manager.scan_finished.connect ( () => { local_scan_finished (); });
 
             player = PlayMyMusic.Services.Player.instance;
             player.state_changed.connect ((state) => { player_state_changed (state); });
@@ -75,15 +73,21 @@ namespace PlayMyMusic.Services {
 
         private LibraryManager () { }
 
+        int counter = 0;
+
         // LOCAL FILES REGION
         public void scan_local_library (string path) {
+            counter = 0;
             lf_manager.scan (path);
         }
 
         private void found_local_music_file (string path) {
-            if (!db_manager.music_file_exists (path)) {
-                tg_manager.add_discover_path (path);
-            }
+            new Thread<void*> (null, () => {
+                if (!db_manager.music_file_exists (path)) {
+                    tg_manager.add_discover_path (path);
+                }
+                return null;
+            });
         }
 
         // DATABASE REGION

@@ -38,53 +38,38 @@ namespace PlayMyMusic.Services {
         }
 
         public signal void scan_started ();
-        public signal void scan_finished ();
         public signal void found_music_file (string path);
-
-        int thread_counter = 0;
-
-        construct {
-        }
 
         private LocalFilesManager () { }
 
         public void scan (string path) {
             scan_started ();
-            scan_local_files.begin (path);
+            scan_local_files (path);
         }
 
-        private async void scan_local_files (string path) {
-            thread_counter ++;
-            try {
-                new Thread<void*>.try (null, () => {
-                    File directory = File.new_for_path (path);
-                    try {
-                        var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN, 0);
-                        FileInfo file_info;
-                        while ((file_info = children.next_file ()) != null) {
-                            if (file_info.get_file_type () == FileType.DIRECTORY) {
-                                scan_local_files.begin (GLib.Path.build_filename (path, file_info.get_name ()));
-                            } else if (is_file_valid (file_info)) {
-                                found_music_file (GLib.Path.build_filename (path, file_info.get_name ()));
+        private void scan_local_files (string path) {
+            new Thread<void*> (null, () => {
+                File directory = File.new_for_path (path);
+                try {
+                    var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN, 0);
+                    FileInfo file_info;
+                    while ((file_info = children.next_file ()) != null) {
+                        if (file_info.get_file_type () == FileType.DIRECTORY) {
+                            scan_local_files (GLib.Path.build_filename (path, file_info.get_name ()));
+                        } else {
+                            string mime_type = file_info.get_content_type ();
+                            bool valid_file = !file_info.get_is_hidden () && mime_type.contains ("audio") && !mime_type.contains ("x-mpegurl");
+                            if (valid_file) {
+                                string found_path = GLib.Path.build_filename (path, file_info.get_name ());
+                                found_music_file (found_path);
                             }
                         }
-                    } catch (Error err) {
-                        warning (err.message);
                     }
-                    thread_counter --;
-                    if (thread_counter == 0) {
-                        scan_finished ();
-                    }
-                    return null;
-                });
-            } catch (Error e) {
-                warning (e.message);
-            }
-        }
-
-        private bool is_file_valid (FileInfo file_info) {
-            string mime_type = file_info.get_content_type ();
-            return !file_info.get_is_hidden () && mime_type.contains ("audio") && !mime_type.contains ("x-mpegurl");
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                return null;
+            });
         }
     }
 }
