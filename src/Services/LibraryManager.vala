@@ -77,11 +77,8 @@ namespace PlayMyMusic.Services {
 
         private LibraryManager () { }
 
-        int counter = 0;
-
         // LOCAL FILES REGION
         public void scan_local_library (string path) {
-            counter = 0;
             lf_manager.scan (path);
         }
 
@@ -123,8 +120,8 @@ namespace PlayMyMusic.Services {
         }
 
         public void rescan_library () {
-            player.set_track (null);
-
+            db_manager.reset_database.begin ();
+            player.reset_playing ();
             File directory = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER);
             try {
                 var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN, 0);
@@ -136,9 +133,6 @@ namespace PlayMyMusic.Services {
             } catch (Error err) {
                 warning (err.message);
             }
-
-            db_manager.reset_database ();
-
             scan_local_library (settings.library_location);
         }
 

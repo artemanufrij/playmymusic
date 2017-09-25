@@ -72,7 +72,7 @@ namespace PlayMyMusic.Services {
                 track.path_not_found ();
                 next ();
                 return;
-            }            
+            }
             stop ();
             playbin.uri = current_track.uri;
             play ();
@@ -117,6 +117,14 @@ namespace PlayMyMusic.Services {
             } else {
                 current_track = null;
             }
+        }
+
+        public void reset_playing () {
+            if (current_track != null) {
+                state_changed (Gst.State.READY);
+                state_changed (Gst.State.NULL);
+            }
+            current_track = null;
         }
 
         public void toggle_playing () {

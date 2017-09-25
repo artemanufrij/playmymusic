@@ -107,12 +107,15 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public void reset_database () {
+        public async void reset_database () {
+            SourceFunc callback = reset_database.callback;
             _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
             File cache = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
             cache.delete_async.begin (Priority.DEFAULT, null, (obj, res) => {
                 open_database ();
+                Idle.add((owned) callback);
             });
+            yield;
         }
 
 // ARTIST REGION
@@ -307,21 +310,19 @@ namespace PlayMyMusic.Services {
 // UTILITIES REGION
         public bool music_file_exists (string path) {
             bool file_exists = false;
-            lock (db) {
-                Sqlite.Statement stmt;
+            Sqlite.Statement stmt;
 
-                string sql = """
-                    SELECT COUNT (*) FROM tracks WHERE path=$PATH;
-                """;
+            string sql = """
+                SELECT COUNT (*) FROM tracks WHERE path=$PATH;
+            """;
 
-                db.prepare_v2 (sql, sql.length, out stmt);
-                set_parameter_str (stmt, sql, "$PATH", path);
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$PATH", path);
 
-                if (stmt.step () == Sqlite.ROW) {
-                    file_exists = stmt.column_int (0) > 0;
-                }
-                stmt.reset ();
+            if (stmt.step () == Sqlite.ROW) {
+                file_exists = stmt.column_int (0) > 0;
             }
+            stmt.reset ();
             return file_exists;
         }
 
