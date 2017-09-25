@@ -32,6 +32,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Label current_time;
         Gtk.Scale timeline;
         Gtk.Grid content;
+        Gtk.Image cover;
 
         uint timer = 0;
 
@@ -44,25 +45,26 @@ namespace PlayMyMusic.Widgets {
         private void build_ui () {
             this.margin_left = 32;
             this.margin_right = 32;
-            this.width_request = 380;
 
             content = new Gtk.Grid ();
             content.column_spacing = 6;
             content.row_spacing = 0;
 
+            cover = new Gtk.Image ();
+            content.attach (cover, 0, 0, 1, 2);
+
             current_time = new Gtk.Label ("0:00");
-            content.attach (current_time, 0, 1);
+            content.attach (current_time, 1, 1);
 
             end_time = new Gtk.Label ("0:00");
-            content.attach (end_time, 2, 1);
+            content.attach (end_time, 3, 1);
 
             playing_track = new Gtk.Label ("");
             playing_track.use_markup = true;
             playing_track.ellipsize = Pango.EllipsizeMode.END;
-            content.attach (playing_track, 1, 0);
+            content.attach (playing_track, 2, 0);
 
             timeline = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 1000, 1);
-            timeline.hexpand = true;
             timeline.draw_value = false;
             timeline.can_focus = false;
             timeline.change_value.connect ((scroll, new_value) => {
@@ -72,7 +74,7 @@ namespace PlayMyMusic.Widgets {
                 }
                 return false;
             });
-            content.attach (timeline, 1, 1);
+            content.attach (timeline, 2, 1);
 
             this.add_named (content, "timeline");
             this.show_all ();
@@ -94,6 +96,9 @@ namespace PlayMyMusic.Widgets {
 
         public void set_playing_track (PlayMyMusic.Objects.Track track) {
             current_track = track;
+
+            cover.pixbuf = track.album.cover.scale_simple (46, 46, Gdk.InterpType.BILINEAR);
+
             playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title,
                 track.album.title.replace ("&", "&amp;"),
                 track.album.artist.name.replace ("&", "&amp;"));

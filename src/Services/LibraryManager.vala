@@ -48,6 +48,8 @@ namespace PlayMyMusic.Services {
         public PlayMyMusic.Services.LocalFilesManager lf_manager { get; construct set; }
         public PlayMyMusic.Services.Player player { get; construct set; }
 
+        PlayMyMusic.Settings settings;
+
         public GLib.List<PlayMyMusic.Objects.Artist> artists {
             get {
                 return db_manager.artists;
@@ -55,6 +57,8 @@ namespace PlayMyMusic.Services {
          }
 
         construct {
+            settings = PlayMyMusic.Settings.get_default ();
+
             tg_manager = PlayMyMusic.Services.TagManager.instance;
             tg_manager.discovered_new_item.connect (discovered_new_local_item);
             tg_manager.discover_started.connect ( () => { tag_discover_started (); });
@@ -135,7 +139,7 @@ namespace PlayMyMusic.Services {
 
             db_manager.reset_database ();
 
-            scan_local_library (GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC));
+            scan_local_library (settings.library_location);
         }
 
         //PLAYER REGION

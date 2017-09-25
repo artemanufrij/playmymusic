@@ -34,7 +34,7 @@ namespace PlayMyMusic {
         Gtk.HeaderBar headerbar;
         Gtk.SearchEntry search_entry;
         Gtk.Spinner spinner;
-        Gtk.Button playButton;
+        Gtk.Button play_button;
 
         Widgets.Views.AlbumsView albums_view;
         Widgets.TrackTimeLine timeline;
@@ -52,8 +52,8 @@ namespace PlayMyMusic {
 
             library_manager.player_state_changed.connect ((state) => {
                 if (state == Gst.State.PLAYING) {
-                    playButton.image = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-                    playButton.tooltip_text = _("Pause");
+                    play_button.image = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+                    play_button.tooltip_text = _("Pause");
                     timeline.set_playing_track (library_manager.player.current_track);
                     headerbar.set_custom_title (timeline);
                 } else {
@@ -63,23 +63,31 @@ namespace PlayMyMusic {
                         timeline.stop_playing ();
                         headerbar.set_custom_title (null);
                     }
-                    playButton.image = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-                    playButton.tooltip_text = _("Play");
+                    play_button.image = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+                    play_button.tooltip_text = _("Play");
                 }
             });
         }
 
         public MainWindow () {
-            this.width_request = settings.window_width;
-            this.height_request = settings.window_height;
-
+            if (settings.window_maximized) {
+                this.maximize ();
+                this.set_default_size (1024, 720);
+            } else {
+                this.set_default_size (settings.window_width, settings.window_height);
+            }
             build_ui ();
 
             albums_view.load_albums_from_database();
+
             this.configure_event.connect ((event) => {
                 settings.window_width = event.width;
                 settings.window_height = event.height;
                 return false;
+            });
+
+            this.destroy.connect (() => {
+                settings.window_maximized = this.is_maximized;
             });
         }
 
@@ -90,15 +98,17 @@ namespace PlayMyMusic {
             this.set_titlebar (headerbar);
 
             // PLAY BUTTONS
-            var previousButton = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            previousButton.tooltip_text = _("Previous");
-            previousButton.clicked.connect (() => {
+            var previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            previous_button.tooltip_text = _("Previous");
+            previous_button.sensitive = false;
+            previous_button.clicked.connect (() => {
                 library_manager.player.prev ();
             });
 
-            playButton = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            playButton.tooltip_text = _("Play");
-            playButton.clicked.connect (() => {
+            play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            play_button.tooltip_text = _("Play");
+            play_button.sensitive = false;
+            play_button.clicked.connect (() => {
                 if (library_manager.player.current_track != null) {
                     library_manager.player.toggle_playing ();
                 } else {
@@ -106,15 +116,16 @@ namespace PlayMyMusic {
                 }
             });
 
-            var nextButton = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            nextButton.tooltip_text = _("Next");
-            nextButton.clicked.connect (() => {
+            var next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            next_button.tooltip_text = _("Next");
+            next_button.sensitive = false;
+            next_button.clicked.connect (() => {
                 library_manager.player.next ();
             });
 
-            headerbar.pack_start (previousButton);
-            headerbar.pack_start (playButton);
-            headerbar.pack_start (nextButton);
+            headerbar.pack_start (previous_button);
+            headerbar.pack_start (play_button);
+            headerbar.pack_start (next_button);
 
             // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
@@ -143,6 +154,7 @@ namespace PlayMyMusic {
 
                 chooser.destroy ();
             });
+
             var menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library…"));
             menu_item_rescan.activate.connect (() => {
                 albums_view.reset ();
@@ -171,6 +183,11 @@ namespace PlayMyMusic {
             headerbar.pack_end (spinner);
 
             albums_view = new Widgets.Views.AlbumsView ();
+            albums_view.album_selected.connect (() => {
+                previous_button.sensitive = true;
+                play_button.sensitive = true;
+                next_button.sensitive = true;
+            });
 
             this.add (albums_view);
             this.show_all ();

@@ -36,9 +36,11 @@ namespace PlayMyMusic {
         }
         public int window_width { get; set; }
         public int window_height { get; set; }
+        public bool window_maximized { get; set; }
         public bool shuffle_mode { get; set; }
         public bool repeat_mode { get; set; }
         public string [] covers { get; set; }
+        public string library_location { get; set; }
 
         private Settings () {
             base ("com.github.artemanufrij.playmymusic");

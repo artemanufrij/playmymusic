@@ -32,14 +32,23 @@ namespace PlayMyMusic.Widgets {
         public int track_number { get { return track.track; } }
         public int disc_number { get { return track.disc; } }
 
+        Gtk.Box content;
+
         public Track (PlayMyMusic.Objects.Track track ) {
             this.track = track;
+            this.track.path_not_found.connect (() => {
+                var warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
+                warning.tooltip_text = _("File couldn't be found\n%s").printf (track.path);
+                warning.halign = Gtk.Align.END;
+                content.pack_end (warning);
+                warning.show_all ();
+            });
 
             build_ui ();
         }
 
         public void build_ui () {
-            var content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.spacing = 6;
             content.margin = 6;
             content.halign = Gtk.Align.FILL;

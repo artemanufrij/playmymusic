@@ -61,10 +61,18 @@ namespace PlayMyMusic.Services {
         }
 
         public void set_track (PlayMyMusic.Objects.Track? track) {
-            if (track == current_track) {
+            if (track == current_track || track == null) {
                 return;
             }
+
             current_track = track;
+
+            var file = File.new_for_path (track.path);
+            if (!file.query_exists ()) {
+                track.path_not_found ();
+                next ();
+                return;
+            }            
             stop ();
             playbin.uri = current_track.uri;
             play ();

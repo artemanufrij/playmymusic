@@ -264,7 +264,7 @@ namespace PlayMyMusic.Objects {
             }
             pixbuf = pixbuf.scale_simple (256, 256, Gdk.InterpType.BILINEAR);
             try {
-                pixbuf.save (cover_cache_path, "jpeg");
+                pixbuf.save (cover_cache_path, "jpeg", "quality", "100");
             } catch (Error err) {
                 warning (err.message);
             }

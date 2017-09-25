@@ -33,6 +33,7 @@ namespace PlayMyMusic {
         public string COVER_FOLDER { get; private set; }
 
         static PlayMyMusicApp _instance = null;
+        PlayMyMusic.Settings settings;
 
         public static PlayMyMusicApp instance {
             get {
@@ -44,6 +45,11 @@ namespace PlayMyMusic {
         }
 
         construct {
+            settings = PlayMyMusic.Settings.get_default ();
+            var library_path = File.new_for_path (settings.library_location);
+            if (settings.library_location == "" || !library_path.query_exists ()) {
+                settings.library_location = GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC);
+            }
             var cache_folder = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), "com.github.artemanufrij.playmymusic");
             try {
                 File file = File.new_for_path (cache_folder);

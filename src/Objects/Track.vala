@@ -59,6 +59,8 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public signal void path_not_found ();
+
         public Track (Album album) {
             this.set_album (album);
         }

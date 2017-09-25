@@ -10,6 +10,11 @@
 			<summary>The saved height of the window.</summary>
 			<description>The saved height of the window.</description>
 		</key>
+		<key name="window-maximized" type="b">
+		    <default>false</default>
+			<summary>Maximized window.</summary>
+			<description>Maximized window.</description>
+		</key>
 		<key name="shuffle-mode" type="b">
 		    <default>false</default>
 			<summary>Shuffle mode.</summary>
@@ -25,5 +30,10 @@
             <summary>Cover file names.</summary>
             <description>Cover file names.</description>
         </key>
+    	<key name="library-location" type="s">
+		    <default>""</default>
+			<summary>Default library location.</summary>
+			<description>Default library location.</description>
+		</key>
     </schema>
 </schemalist>

@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Widgets.Views {
     public class AlbumsView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
 
         Gtk.FlowBox albums;
         Widgets.AlbumView album_view;
@@ -35,7 +36,10 @@ namespace PlayMyMusic.Widgets.Views {
         string query = "";
         int lock_dummy;
 
+        public signal void album_selected ();
+
         construct {
+            settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.added_new_album.connect((album) => {
                 var a = new Widgets.Album (album);
@@ -101,6 +105,7 @@ namespace PlayMyMusic.Widgets.Views {
             if (library_manager.player.current_track != null) {
                 album_view.mark_playing_track (library_manager.player.current_track);
             }
+            album_selected ();
         }
 
         public void play_selected_album () {
@@ -111,7 +116,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void load_albums_from_database () {
             show_albums_from_database.begin ((obj, res) => {
-                library_manager.scan_local_library (GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC));
+                library_manager.scan_local_library (settings.library_location);
             });
         }
 
