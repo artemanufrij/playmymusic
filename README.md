@@ -35,10 +35,10 @@ mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 make
-./src/com.github.artemanufrij.playmymusic
 ```
 
-(optional) Install Play My Music on your system
+Install and start Play My Music on your system
 ```
 sudo make install
+com.github.artemanufrij.playmymusic
 ```
