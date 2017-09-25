@@ -1,4 +1,4 @@
-# [under construction] Play My Music
+# [under development] Play My Music
 
 ### Play My Music is a simple player for local files designed for [elementary OS](https://elementary.io)
 
