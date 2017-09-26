@@ -41,6 +41,7 @@ namespace PlayMyMusic.Services {
         Gst.Bus bus;
 
         public PlayMyMusic.Objects.Track current_track { get; private set; }
+        public PlayMyMusic.Objects.Radio current_radio { get; private set; }
         public bool play_mode_repeat { get; set; default = false; }
         public bool play_mode_shuffle { get; set; default = false; }
 
@@ -60,11 +61,23 @@ namespace PlayMyMusic.Services {
             });
         }
 
+        public void set_radio (PlayMyMusic.Objects.Radio? radio) {
+            if (radio == current_radio || radio == null) {
+                return;
+            }
+            current_track = null;
+            current_radio = radio;
+            stop ();
+            playbin.uri = radio.url;
+            play ();
+        }
+
         public void set_track (PlayMyMusic.Objects.Track? track) {
             if (track == current_track || track == null) {
                 return;
             }
 
+            current_radio = null;
             current_track = track;
 
             var file = File.new_for_path (track.path);
@@ -79,7 +92,7 @@ namespace PlayMyMusic.Services {
         }
 
         public void play () {
-            if (current_track != null) {
+            if (current_track != null || current_radio != null) {
                 state_changed (Gst.State.PLAYING);
             }
         }
@@ -132,7 +145,11 @@ namespace PlayMyMusic.Services {
             Gst.State pending;
             playbin.get_state (out state, out pending, (Gst.ClockTime) (Gst.SECOND));
             if (state == Gst.State.PLAYING) {
-                pause ();
+               // if (current_track != null) {
+                    pause ();
+               // } else if (current_radio != null) {
+               //     stop ();
+               // }
             } else if (state == Gst.State.PAUSED || state == Gst.State.READY) {
                 play ();
             }

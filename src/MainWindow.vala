@@ -55,8 +55,14 @@ namespace PlayMyMusic {
                 if (state == Gst.State.PLAYING) {
                     play_button.image = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
                     play_button.tooltip_text = _("Pause");
-                    timeline.set_playing_track (library_manager.player.current_track);
-                    headerbar.set_custom_title (timeline);
+                    if (library_manager.player.current_track != null) {
+                        timeline.set_playing_track (library_manager.player.current_track);
+                        headerbar.set_custom_title (timeline);
+                    } else if (library_manager.player.current_radio != null) {
+                        play_button.sensitive = true;
+                        headerbar.title = library_manager.player.current_radio.title;
+                    }
+
                 } else {
                     if (state == Gst.State.PAUSED) {
                         timeline.pause_playing ();
@@ -114,7 +120,7 @@ namespace PlayMyMusic {
             play_button.tooltip_text = _("Play");
             play_button.sensitive = false;
             play_button.clicked.connect (() => {
-                if (library_manager.player.current_track != null) {
+                if (library_manager.player.current_track != null || library_manager.player.current_radio != null) {
                     library_manager.player.toggle_playing ();
                 } else {
                     albums_view.play_selected_album ();
@@ -137,18 +143,21 @@ namespace PlayMyMusic {
             view_mode.valign = Gtk.Align.CENTER;
             view_mode.margin_left = 12;
             view_mode.append_icon ("view-grid-symbolic", Gtk.IconSize.BUTTON);
-            view_mode.append_icon ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            //view_mode.append_icon ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
             view_mode.append_icon ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
                     case 1:
-                        content.set_visible_child_name ("playlists");
-                        break;
-                    case 2:
                         content.set_visible_child_name ("radios");
+                        previous_button.sensitive = false;
+                        next_button.sensitive = false;
                         break;
                     default:
                         content.set_visible_child_name ("albums");
+                        if (albums_view.is_album_view_visible) {
+                            previous_button.sensitive = true;
+                            next_button.sensitive = true;
+                        }
                         break;
                 }
             });
@@ -225,8 +234,10 @@ namespace PlayMyMusic {
 
             this.show_all ();
 
-            view_mode.set_active (settings.view_index);
             albums_view.hide_album_details ();
+
+            view_mode.set_active (settings.view_index);
+            radios_view.unselect_all ();
             search_entry.grab_focus ();
         }
     }

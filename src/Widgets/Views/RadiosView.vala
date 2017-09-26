@@ -27,6 +27,72 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class RadiosView : Gtk.Grid {
+        PlayMyMusic.Services.LibraryManager library_manager;
 
+        Gtk.ListBox radios;
+
+        construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager.player_state_changed.connect ((state) => {
+                if (state == Gst.State.PLAYING && library_manager.player.current_radio == null) {
+                    radios.unselect_all ();
+                }
+            });
+        }
+
+        public RadiosView () {
+            this.map.connect (() => {
+                grab_playing_radio ();
+            });
+
+            build_ui ();
+        }
+
+        private void build_ui () {
+            radios = new Gtk.ListBox ();
+            radios.selection_mode = Gtk.SelectionMode.SINGLE;
+            //radios.valign = Gtk.Align.START;
+            radios.row_activated.connect (play_station);
+            var radios_scroll = new Gtk.ScrolledWindow (null, null);
+
+            radios_scroll.add (radios);
+
+            var radio_toolbar = new Gtk.ActionBar ();
+            var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
+            add_button.tooltip_text = _("Add a radio station");
+            radio_toolbar.pack_start (add_button);
+
+            var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            content.expand = true;
+            content.pack_start (radios_scroll, true, true, 0);
+            content.pack_end (radio_toolbar, false, false, 0);
+
+            this.add (content);
+
+            show_albums_from_database.begin ();
+        }
+
+        public void unselect_all () {
+            radios.unselect_all ();
+        }
+
+        private void grab_playing_radio () {
+            if (radios.get_selected_row () != null) {
+                radios.get_selected_row ().activate ();
+            }
+        }
+
+        public void play_station (Gtk.ListBoxRow item) {
+            var radio = (item as PlayMyMusic.Widgets.Radio);
+            library_manager.play_radio (radio.radio);
+        }
+
+        private async void show_albums_from_database () {
+            foreach (var radio in library_manager.radios) {
+                var r = new Widgets.Radio (radio);
+                r.show_all ();
+                radios.add (r);
+            }
+        }
     }
 }

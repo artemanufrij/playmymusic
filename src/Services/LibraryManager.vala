@@ -54,7 +54,13 @@ namespace PlayMyMusic.Services {
             get {
                 return db_manager.artists;
             }
-         }
+        }
+
+        public GLib.List<PlayMyMusic.Objects.Radio> radios {
+            get {
+                return db_manager.radios;
+            }
+        }
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
@@ -137,8 +143,12 @@ namespace PlayMyMusic.Services {
         }
 
         //PLAYER REGION
-        public void play (PlayMyMusic.Objects.Track track) {
+        public void play_track (PlayMyMusic.Objects.Track track) {
             player.set_track (track);
+        }
+
+        public void play_radio (PlayMyMusic.Objects.Radio radio) {
+            player.set_radio (radio);
         }
     }
 }

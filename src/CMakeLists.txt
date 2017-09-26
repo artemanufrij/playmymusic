@@ -16,6 +16,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Widgets/AlbumView.vala
     Widgets/Track.vala
     Widgets/TrackTimeLine.vala
+    Widgets/Radio.vala
     Widgets/Views/AlbumsView.vala
     Widgets/Views/RadiosView.vala
     Settings.vala

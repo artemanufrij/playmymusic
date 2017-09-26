@@ -25,22 +25,40 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
-namespace PlayMyMusic.Objects {
-    public class Radio: GLib.Object {
-        public signal void cover_changed ();
+namespace PlayMyMusic.Widgets {
+    public class Radio : Gtk.ListBoxRow {
+        public PlayMyMusic.Objects.Radio radio { get; private set; }
 
-        public int ID { get; set; }
-        public string title { get; set; }
-        public string url { get; set; }
-
-        Gdk.Pixbuf? _cover = null;
-        public Gdk.Pixbuf? cover {
-            get {
-                return _cover;
-            } private set {
-                _cover = value;
-                cover_changed ();
+        public Radio (PlayMyMusic.Objects.Radio radio) {
+            this.radio = radio;
+            
+            build_ui ();
+        }
+        
+        private void build_ui () {
+            var content = new Gtk.Grid ();
+            content.margin = 12;
+            content.column_spacing = 12;
+            
+            var cover = new Gtk.Image ();
+            if (this.radio.cover == null) {
+                cover.set_from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
+                cover.height_request = 48;
+                cover.width_request = 48;
             }
+            content.attach (cover, 0, 0, 1, 2);
+            
+            var title = new Gtk.Label (("<b>%s</b>").printf(radio.title));
+            title.use_markup = true;
+            title.halign = Gtk.Align.START;
+            content.attach (title, 1, 0);
+            
+            var url = new Gtk.Label (("<small>%s</small>").printf(radio.url));
+            url.use_markup = true;
+            url.halign = Gtk.Align.START;
+            content.attach (url, 1, 1);
+            
+            this.add (content);
         }
     }
 }

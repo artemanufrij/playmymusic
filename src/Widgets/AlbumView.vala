@@ -51,8 +51,8 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void build_ui () {
-            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            box.vexpand = true;
+            var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            content.vexpand = true;
             cover = new Gtk.Image ();
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
 
@@ -108,13 +108,13 @@ namespace PlayMyMusic.Widgets {
             });
             album_toolbar.pack_start (repeat_button);
 
-            box.pack_start (cover, false, false, 0);
-            box.pack_start (tracks_scroll, true, true, 0);
-            box.pack_end (album_toolbar, false, false, 0);
+            content.pack_start (cover, false, false, 0);
+            content.pack_start (tracks_scroll, true, true, 0);
+            content.pack_end (album_toolbar, false, false, 0);
 
             var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
             this.attach (separator, 0, 0);
-            this.attach (box, 1, 0);
+            this.attach (content, 1, 0);
         }
 
         public void mark_playing_track (Objects.Track? track) {
@@ -130,13 +130,13 @@ namespace PlayMyMusic.Widgets {
         }
 
         public void play_album () {
-            library_manager.play (current_album.get_first_track ());
+            library_manager.play_track (current_album.get_first_track ());
         }
 
         private void play_track () {
             var selected_row = tracks.get_selected_row ();
             if (selected_row != null) {
-                library_manager.play ((selected_row as Widgets.Track).track);
+                library_manager.play_track ((selected_row as Widgets.Track).track);
             }
         }
 

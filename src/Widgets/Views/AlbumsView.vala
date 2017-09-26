@@ -36,6 +36,12 @@ namespace PlayMyMusic.Widgets.Views {
         string query = "";
         int lock_dummy;
 
+        public bool is_album_view_visible {
+            get {
+                return album_view.visible;
+            }
+        }
+
         public signal void album_selected ();
 
         construct {
@@ -49,9 +55,10 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             });
             library_manager.player_state_changed.connect ((state) => {
-                if (state == Gst.State.PLAYING) {
-                    album_view.mark_playing_track (library_manager.player.current_track);
-                } else if (state == Gst.State.NULL) {
+                var curret_track = library_manager.player.current_track;
+                if (state == Gst.State.PLAYING && curret_track != null) {
+                    album_view.mark_playing_track (curret_track);
+                } else if (state == Gst.State.NULL || curret_track == null) {
                     album_view.mark_playing_track (null);
                 }
             });
@@ -67,7 +74,6 @@ namespace PlayMyMusic.Widgets.Views {
             albums.homogeneous = true;
             albums.row_spacing = 12;
             albums.column_spacing = 24;
-            albums.selection_mode = Gtk.SelectionMode.NONE;
             albums.max_children_per_line = 24;
             albums.valign = Gtk.Align.START;
             albums.set_sort_func (albums_sort_func);
@@ -79,13 +85,12 @@ namespace PlayMyMusic.Widgets.Views {
 
             album_view = new PlayMyMusic.Widgets.AlbumView ();
 
-            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            box.expand = true;
-            box.pack_start (albums_scroll, true, true, 0);
-            box.pack_start (album_view, false, false, 0);
+            var content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            content.expand = true;
+            content.pack_start (albums_scroll, true, true, 0);
+            content.pack_start (album_view, false, false, 0);
 
-            this.add (box);
-            this.show_all ();
+            this.add (content);
         }
 
         public void hide_album_details () {
