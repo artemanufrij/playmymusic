@@ -36,6 +36,7 @@ namespace PlayMyMusic {
         Gtk.Spinner spinner;
         Gtk.Button play_button;
 
+        Granite.Widgets.ModeButton view_mode;
         Widgets.Views.AlbumsView albums_view;
         Widgets.TrackTimeLine timeline;
 
@@ -88,10 +89,14 @@ namespace PlayMyMusic {
 
             this.destroy.connect (() => {
                 settings.window_maximized = this.is_maximized;
+                settings.view_index = view_mode.selected;
             });
         }
 
         public void build_ui () {
+            // CONTENT
+            var content = new Gtk.Stack ();
+
             headerbar = new Gtk.HeaderBar ();
             headerbar.title = _("Play My Music");
             headerbar.show_close_button = true;
@@ -126,6 +131,29 @@ namespace PlayMyMusic {
             headerbar.pack_start (previous_button);
             headerbar.pack_start (play_button);
             headerbar.pack_start (next_button);
+
+            // VIEW BUTTONS
+            view_mode = new Granite.Widgets.ModeButton ();
+            view_mode.valign = Gtk.Align.CENTER;
+            view_mode.margin_left = 12;
+            view_mode.append_icon ("view-grid-symbolic", Gtk.IconSize.BUTTON);
+            view_mode.append_icon ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            view_mode.append_icon ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
+            view_mode.mode_changed.connect (() => {
+                switch (view_mode.selected) {
+                    case 1:
+                        content.set_visible_child_name ("playlists");
+                        break;
+                    case 2:
+                        content.set_visible_child_name ("radios");
+                        break;
+                    default:
+                        content.set_visible_child_name ("albums");
+                        break;
+                }
+            });
+
+            headerbar.pack_start (view_mode);
 
             // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
@@ -189,8 +217,15 @@ namespace PlayMyMusic {
                 next_button.sensitive = true;
             });
 
-            this.add (albums_view);
+            var radios_view = new Widgets.Views.RadiosView ();
+
+            content.add_named (albums_view, "albums");
+            content.add_named (radios_view, "radios");
+            this.add (content);
+
             this.show_all ();
+
+            view_mode.set_active (settings.view_index);
             albums_view.hide_album_details ();
             search_entry.grab_focus ();
         }

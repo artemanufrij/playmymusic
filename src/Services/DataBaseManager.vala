@@ -38,6 +38,7 @@ namespace PlayMyMusic.Services {
         }
 
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
+        public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
 
         GLib.List<PlayMyMusic.Objects.Artist> _artists = null;
         public GLib.List<PlayMyMusic.Objects.Artist> artists {
@@ -46,6 +47,16 @@ namespace PlayMyMusic.Services {
                     _artists = get_artist_collection ();
                 }
                 return _artists;
+            }
+        }
+
+        GLib.List<PlayMyMusic.Objects.Radio> _radios = null;
+        public  GLib.List<PlayMyMusic.Objects.Radio> radios {
+            get {
+                    if (_radios == null) {
+                    _radios = get_radio_collection ();
+                }
+                return _radios;
             }
         }
 
@@ -101,6 +112,16 @@ namespace PlayMyMusic.Services {
                     CONSTRAINT unique_track UNIQUE (path)
                     );""";
 
+                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                    warning (errormsg);
+                }
+
+                q = """CREATE TABLE radios (
+                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                    title       TEXT        NOT NULL,
+                    url         TEXT        NOT NULL,
+                    CONSTRAINT unique_track UNIQUE (url)
+                    );""";
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                     warning (errormsg);
                 }
@@ -301,6 +322,63 @@ namespace PlayMyMusic.Services {
             if (stmt.step () == Sqlite.ROW) {
                 track.ID = stmt.column_int (0);
                 stdout.printf ("Track ID: %d\n", track.ID);
+            } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
+// RADIO REGION
+        public GLib.List<PlayMyMusic.Objects.Radio> get_radio_collection () {
+            GLib.List<PlayMyMusic.Objects.Radio> return_value = new GLib.List<PlayMyMusic.Objects.Radio> ();
+
+            Sqlite.Statement stmt;
+            string sql = """
+                SELECT id, title, url FROM radios ORDER BY title;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+
+            while (stmt.step () == Sqlite.ROW) {
+                var item = new PlayMyMusic.Objects.Radio ();
+                item.ID = stmt.column_int (0);
+                item.title = stmt.column_text (1);
+                item.url = stmt.column_text (2);
+                return_value.append (item);
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
+        public void insert_radio (PlayMyMusic.Objects.Radio radio) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                INSERT OR IGNORE INTO radios (title, url) VALUES ($TITLE, $URL);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$TITLE", radio.title);
+            set_parameter_str (stmt, sql, "$URL", radio.url);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+
+            sql = """
+                SELECT id FROM radios WHERE url=$URL;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$URL", radio.url);
+
+            if (stmt.step () == Sqlite.ROW) {
+                radio.ID = stmt.column_int (0);
+                lock (_radios) {
+                    _radios.append (radio);
+                }
+                this.added_new_radio (radio);
+                stdout.printf ("Radio ID: %d\n", radio.ID);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }

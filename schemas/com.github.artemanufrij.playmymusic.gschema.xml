@@ -35,5 +35,10 @@
 			<summary>Default library location.</summary>
 			<description>Default library location.</description>
 		</key>
+		<key name="view-index" type="i">
+			<default>0</default>
+			<summary>Last choosed view.</summary>
+			<description>Last choosed view.</description>
+		</key>
     </schema>
 </schemalist>

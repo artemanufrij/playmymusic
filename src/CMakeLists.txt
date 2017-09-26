@@ -6,6 +6,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Objects/Album.vala
     Objects/Artist.vala
     Objects/Track.vala
+    Objects/Radio.vala
     Services/DataBaseManager.vala
     Services/LocalFilesManager.vala
     Services/TagManager.vala
@@ -16,6 +17,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Widgets/Track.vala
     Widgets/TrackTimeLine.vala
     Widgets/Views/AlbumsView.vala
+    Widgets/Views/RadiosView.vala
     Settings.vala
     MainWindow.vala
     Application.vala

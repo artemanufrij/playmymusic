@@ -25,26 +25,8 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
-namespace PlayMyMusic {
-    public class Settings : Granite.Services.Settings {
-        private static Settings settings;
-        public static Settings get_default () {
-            if (settings == null) {
-                settings = new Settings ();
-            }
-            return settings;
-        }
-        public int window_width { get; set; }
-        public int window_height { get; set; }
-        public bool window_maximized { get; set; }
-        public bool shuffle_mode { get; set; }
-        public bool repeat_mode { get; set; }
-        public string [] covers { get; set; }
-        public string library_location { get; set; }
-        public int view_index { get; set; }
+namespace PlayMyMusic.Widgets.Views {
+    public class RadiosView : Gtk.Grid {
 
-        private Settings () {
-            base ("com.github.artemanufrij.playmymusic");
-        }
     }
 }
