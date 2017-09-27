@@ -27,6 +27,7 @@
 
 namespace PlayMyMusic.Objects {
     public class Album : GLib.Object {
+        PlayMyMusic.Services.LibraryManager library_manager;
         public signal void cover_changed ();
         public signal void track_added (Track track);
         public signal void track_removed (Track track);
@@ -66,7 +67,7 @@ namespace PlayMyMusic.Objects {
         public GLib.List<Track> tracks {
             get {
                 if (_tracks == null) {
-                    _tracks = PlayMyMusic.Services.LibraryManager.instance.db_manager.get_track_collection (this);
+                    _tracks = library_manager.db_manager.get_track_collection (this);
                 }
                 lock (_tracks) {
                     return _tracks;
@@ -75,6 +76,7 @@ namespace PlayMyMusic.Objects {
         }
 
         construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
             _tracks = new GLib.List<Track> ();
             year = -1;
         }
@@ -252,17 +254,7 @@ namespace PlayMyMusic.Objects {
         }
 
         private Gdk.Pixbuf? align_and_cache_pixbuf (Gdk.Pixbuf? p, string cover_cache_path) {
-            Gdk.Pixbuf? pixbuf = p;
-            if (pixbuf.width != pixbuf.height) {
-                if (pixbuf.width > pixbuf.height) {
-                    int dif = pixbuf.width - pixbuf.height;
-                    pixbuf = new Gdk.Pixbuf.subpixbuf (pixbuf, dif, 0, pixbuf.height, pixbuf.height);
-                } else {
-                    int dif = pixbuf.height - pixbuf.width;
-                    pixbuf = new Gdk.Pixbuf.subpixbuf (pixbuf, 0, dif, pixbuf.width, pixbuf.width);
-                }
-            }
-            pixbuf = pixbuf.scale_simple (256, 256, Gdk.InterpType.BILINEAR);
+            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 256);
             try {
                 pixbuf.save (cover_cache_path, "jpeg", "quality", "100");
             } catch (Error err) {

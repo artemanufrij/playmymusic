@@ -73,7 +73,7 @@ namespace PlayMyMusic {
             COVER_FOLDER = cover_folder;
         }
 
-        MainWindow mainwindow;
+        public MainWindow mainwindow { get; set; }
 
         protected override void activate () {
             if (mainwindow != null) {

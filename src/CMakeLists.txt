@@ -26,6 +26,7 @@ PACKAGES
     granite
     gtk+-3.0
     sqlite3
+    libsoup-2.4
     gstreamer-pbutils-1.0
     gstreamer-tag-1.0
 OPTIONS

@@ -69,6 +69,7 @@ namespace PlayMyMusic {
                     } else {
                         timeline.stop_playing ();
                         headerbar.set_custom_title (null);
+                        headerbar.title = _("Play My Music");
                     }
                     play_button.image = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
                     play_button.tooltip_text = _("Play");

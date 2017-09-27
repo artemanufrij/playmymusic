@@ -41,6 +41,7 @@ namespace PlayMyMusic.Services {
         public signal void tag_discover_started ();
         public signal void tag_discover_finished ();
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
+        public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void player_state_changed (Gst.State state);
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
@@ -72,6 +73,12 @@ namespace PlayMyMusic.Services {
 
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
             db_manager.added_new_album.connect ( (album) => { added_new_album (album); });
+            db_manager.added_new_radio.connect ( (radio) => { added_new_radio (radio); });
+            db_manager.removed_radio.connect ( (radio) => {
+                if (player.current_radio == radio) {
+                    player.reset_playing ();
+                }
+            });
 
             lf_manager = PlayMyMusic.Services.LocalFilesManager.instance;
             lf_manager.found_music_file.connect (found_local_music_file);
@@ -142,6 +149,18 @@ namespace PlayMyMusic.Services {
             scan_local_library (settings.library_location);
         }
 
+        public bool radio_station_exists (string url) {
+            return db_manager.radio_station_exists (url);
+        }
+
+        public void insert_new_radio_station (PlayMyMusic.Objects.Radio radio) {
+            db_manager.insert_radio (radio);
+        }
+
+        public void remove_radio_station (PlayMyMusic.Objects.Radio radio) {
+            db_manager.delete_radio (radio);
+        }
+
         //PLAYER REGION
         public void play_track (PlayMyMusic.Objects.Track track) {
             player.set_track (track);
@@ -149,6 +168,22 @@ namespace PlayMyMusic.Services {
 
         public void play_radio (PlayMyMusic.Objects.Radio radio) {
             player.set_radio (radio);
+        }
+
+        //PIXBUF
+        public Gdk.Pixbuf? align_and_scale_pixbuf (Gdk.Pixbuf p, int size) {
+            Gdk.Pixbuf? pixbuf = p;
+            if (pixbuf.width != pixbuf.height) {
+                if (pixbuf.width > pixbuf.height) {
+                    int dif = (pixbuf.width - pixbuf.height) / 2;
+                    pixbuf = new Gdk.Pixbuf.subpixbuf (pixbuf, dif, 0, pixbuf.height, pixbuf.height);
+                } else {
+                    int dif = (pixbuf.height - pixbuf.width) / 2;
+                    pixbuf = new Gdk.Pixbuf.subpixbuf (pixbuf, 0, dif, pixbuf.width, pixbuf.width);
+                }
+            }
+            pixbuf = pixbuf.scale_simple (size, size, Gdk.InterpType.BILINEAR);
+            return pixbuf;
         }
     }
 }

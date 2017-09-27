@@ -39,6 +39,7 @@ namespace PlayMyMusic.Services {
 
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
+        public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
 
         GLib.List<PlayMyMusic.Objects.Artist> _artists = null;
         public GLib.List<PlayMyMusic.Objects.Artist> artists {
@@ -385,6 +386,24 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
+        public void delete_radio (PlayMyMusic.Objects.Radio radio) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                DELETE FROM radios WHERE id=$ID;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", radio.ID);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                removed_radio (radio);
+                radio.removed ();
+            }
+            stmt.reset ();
+        }
+
 // UTILITIES REGION
         public bool music_file_exists (string path) {
             bool file_exists = false;
@@ -396,6 +415,24 @@ namespace PlayMyMusic.Services {
 
             db.prepare_v2 (sql, sql.length, out stmt);
             set_parameter_str (stmt, sql, "$PATH", path);
+
+            if (stmt.step () == Sqlite.ROW) {
+                file_exists = stmt.column_int (0) > 0;
+            }
+            stmt.reset ();
+            return file_exists;
+        }
+
+        public bool radio_station_exists (string url) {
+            bool file_exists = false;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT COUNT (*) FROM radios WHERE url=$url;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$url", url);
 
             if (stmt.step () == Sqlite.ROW) {
                 file_exists = stmt.column_int (0) > 0;

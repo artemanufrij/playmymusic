@@ -28,10 +28,34 @@
 namespace PlayMyMusic.Objects {
     public class Radio: GLib.Object {
         public signal void cover_changed ();
+        public signal void removed ();
 
-        public int ID { get; set; }
+        int _ID = 0;
+        public int ID {
+            get {
+                return _ID;
+            } set {
+                _ID = value;
+                if (cover != null) {
+                    save_cover ();
+                } else {
+                    load_cover ();
+                }
+            }
+        }
         public string title { get; set; }
         public string url { get; set; }
+
+        string? _file = null;
+        public string? file {
+            get {
+                if (_file == null) {
+                    _file = get_stream_file ();
+                }
+
+                return _file;
+            }
+        }
 
         Gdk.Pixbuf? _cover = null;
         public Gdk.Pixbuf? cover {
@@ -42,5 +66,90 @@ namespace PlayMyMusic.Objects {
                 cover_changed ();
             }
         }
+
+        construct {
+            removed.connect (() => {
+                var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
+                var file = File.new_for_path (cover_cache_path);
+                if (file.query_exists ()) {
+                    file.delete_async ();
+                }
+            });
+        }
+
+        public Radio () {}
+
+        public Radio.with_parameters (string title, string url, Gdk.Pixbuf? cover = null) {
+            this.title = title;
+            this.url = url;
+            this.cover = cover;
+        }
+
+        private string? get_stream_file () {
+            var content = get_stream_content ();
+            if (content == null) {
+                return null;
+            }
+
+            string group = "playlist";
+
+            var file = new KeyFile ();
+            try {
+                file.load_from_data (content, -1, KeyFileFlags.NONE);
+            } catch (Error err) {
+                warning (err.message);
+            }
+
+            if (!file.has_group (group)) {
+                return null;
+            }
+
+            try {
+                foreach (unowned string key in file.get_keys (group)) {
+                    string val = file.get_value (group, key);
+                        if (key.down ().has_prefix ("file")) {
+                        return val;
+                    }
+                }
+            } catch (Error err) {
+                warning (err.message);
+            }
+
+            return null;
+        }
+
+        private string? get_stream_content () {
+            var session = new Soup.Session();
+            var msg = new Soup.Message ("GET", this.url);
+            session.send_message (msg);
+
+            var data = (string) msg.response_body.data;
+
+            if (msg.status_code == 200) {
+                return data;
+            }
+            return null;
+	    }
+
+	    private void save_cover () {
+            var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
+            try {
+                this.cover.save (cover_cache_path, "jpeg", "quality", "100");
+            } catch (Error err) {
+                warning (err.message);
+            }
+	    }
+
+	    private void load_cover () {
+            var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
+            var file = File.new_for_path (cover_cache_path);
+            if (file.query_exists ()) {
+                try {
+                    this.cover = new Gdk.Pixbuf.from_file (cover_cache_path);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+            }
+	    }
     }
 }

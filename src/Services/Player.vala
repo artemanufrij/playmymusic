@@ -62,13 +62,13 @@ namespace PlayMyMusic.Services {
         }
 
         public void set_radio (PlayMyMusic.Objects.Radio? radio) {
-            if (radio == current_radio || radio == null) {
+            if (radio == current_radio || radio == null || radio.file == null) {
                 return;
             }
             current_track = null;
             current_radio = radio;
             stop ();
-            playbin.uri = radio.url;
+            playbin.uri = radio.file;
             play ();
         }
 
@@ -133,11 +133,12 @@ namespace PlayMyMusic.Services {
         }
 
         public void reset_playing () {
-            if (current_track != null) {
+            if (current_track != null || current_radio != null) {
                 state_changed (Gst.State.READY);
                 state_changed (Gst.State.NULL);
             }
             current_track = null;
+            current_radio = null;
         }
 
         public void toggle_playing () {

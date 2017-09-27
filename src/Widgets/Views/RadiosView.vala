@@ -28,8 +28,15 @@
 namespace PlayMyMusic.Widgets.Views {
     public class RadiosView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
+        Gtk.Entry new_station_title;
+        Gtk.Entry new_station_url;
+        Gtk.Image new_station_cover;
+        Gtk.Button new_station_save;
+        Gtk.Popover add_new_station_popover;
 
         Gtk.ListBox radios;
+
+        GLib.Regex protocol_regex;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -38,6 +45,17 @@ namespace PlayMyMusic.Widgets.Views {
                     radios.unselect_all ();
                 }
             });
+            library_manager.added_new_radio.connect ((radio) => {
+                var r = new Widgets.Radio (radio);
+                r.show_all ();
+                radios.add (r);
+            });
+
+            try {
+                this.protocol_regex = new Regex ("""https?\:\/\/[\w+\d+]((\:\d+)?\/\S*)?""");
+            } catch (RegexError err) {
+                warning (err.message);
+            }
         }
 
         public RadiosView () {
@@ -50,6 +68,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_ui () {
             radios = new Gtk.ListBox ();
+            radios.set_sort_func (radio_sort_func);
             radios.selection_mode = Gtk.SelectionMode.SINGLE;
             //radios.valign = Gtk.Align.START;
             radios.row_activated.connect (play_station);
@@ -58,9 +77,66 @@ namespace PlayMyMusic.Widgets.Views {
             radios_scroll.add (radios);
 
             var radio_toolbar = new Gtk.ActionBar ();
+
             var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
             add_button.tooltip_text = _("Add a radio station");
             radio_toolbar.pack_start (add_button);
+
+// NEW STATION POPOVER BEGIN
+            var new_station = new Gtk.Grid ();
+            new_station.row_spacing = 6;
+            new_station.column_spacing = 12;
+            new_station.margin = 12;
+
+            new_station_title = new Gtk.Entry ();
+            new_station_title.placeholder_text = "Station Name";
+            new_station_title.changed.connect (() => {
+                new_station_save.sensitive = valid_new_station ();
+            });
+            new_station.attach (new_station_title, 1, 0);
+
+            new_station_url = new Gtk.Entry ();
+            new_station_url.placeholder_text = "URL";
+            new_station_url.changed.connect (() => {
+                new_station_save.sensitive = valid_new_station ();
+            });
+            new_station.attach (new_station_url, 1, 1);
+
+            new_station_cover = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
+            new_station_cover.get_style_context ().add_class ("card");
+            new_station.attach (new_station_cover, 0, 0, 1, 2);
+
+            var new_station_controls = new Gtk.Grid ();
+            new_station_controls.column_spacing = 6;
+            new_station_controls.margin_top = 6;
+            new_station_controls.column_homogeneous = true;
+            new_station_controls.hexpand = true;
+
+            var new_station_choose_cover = new Gtk.Button.with_label (_("Choose a Cover"));
+            new_station_choose_cover.hexpand = true;
+            new_station_choose_cover.clicked.connect (() => {
+                open_file_dialog ();
+            });
+            new_station_controls.attach (new_station_choose_cover, 0, 0);
+
+            new_station_save = new Gtk.Button.with_label (_("Add"));
+            new_station_save.sensitive = false;
+            new_station_save.hexpand = true;
+            new_station_save.get_style_context ().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            new_station_save.clicked.connect (() => {
+                save_new_station ();
+            });
+            new_station_controls.attach (new_station_save, 1, 0);
+
+            new_station.attach (new_station_controls, 0, 2, 2, 1);
+
+            add_new_station_popover = new Gtk.Popover (add_button);
+            add_new_station_popover.position = Gtk.PositionType.TOP;
+            add_new_station_popover.add (new_station);
+            add_button.clicked.connect (() => {
+                add_new_station_popover.show_all ();
+            });
+// NEW STATION POPOVER END
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
@@ -70,6 +146,47 @@ namespace PlayMyMusic.Widgets.Views {
             this.add (content);
 
             show_albums_from_database.begin ();
+        }
+
+        private bool valid_new_station () {
+            var new_title = new_station_title.text.strip ();
+            var new_url = new_station_url.text.down ().strip ();
+            return new_title != "" && new_url != "" && this.protocol_regex.match (new_url) && !library_manager.radio_station_exists (new_url);
+        }
+
+        private void save_new_station () {
+            var new_title = new_station_title.text.strip ();
+            var new_url = new_station_url.text.down ().strip ();
+            var new_radio = new PlayMyMusic.Objects.Radio.with_parameters (new_title, new_url, new_station_cover.pixbuf);
+            library_manager.insert_new_radio_station (new_radio);
+            add_new_station_popover.hide ();
+            new_station_title.text = "";
+            new_station_url.text = "";
+            new_station_cover.set_from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
+        }
+
+        private void open_file_dialog () {
+            var cover = new Gtk.FileChooserDialog (
+                _("Choose an image…"), PlayMyMusicApp.instance.mainwindow,
+                Gtk.FileChooserAction.OPEN,
+                _("_Cancel"), Gtk.ResponseType.CANCEL,
+                _("_Open"), Gtk.ResponseType.ACCEPT);
+
+            var filter = new Gtk.FileFilter ();
+            filter.set_filter_name (_("Images"));
+            filter.add_mime_type ("image/*");
+
+            cover.add_filter (filter);
+
+            if (cover.run () == Gtk.ResponseType.ACCEPT) {
+                try {
+                    new_station_cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (cover.get_filename ()), 48);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+            }
+
+            cover.destroy();
         }
 
         public void unselect_all () {
@@ -93,6 +210,12 @@ namespace PlayMyMusic.Widgets.Views {
                 r.show_all ();
                 radios.add (r);
             }
+        }
+
+        private int radio_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
+            var item1 = (Widgets.Radio)child1;
+            var item2 = (Widgets.Radio)child2;
+            return item1.title.collate (item2.title);
         }
     }
 }
