@@ -149,9 +149,13 @@ namespace PlayMyMusic {
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
                     case 1:
+                        if (library_manager.player.current_radio == null) {
+                            search_entry.grab_focus ();
+                        }
                         content.set_visible_child_name ("radios");
                         previous_button.sensitive = false;
                         next_button.sensitive = false;
+
                         break;
                     default:
                         content.set_visible_child_name ("albums");

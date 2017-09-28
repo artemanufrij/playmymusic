@@ -36,6 +36,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Grid message_container;
         Gtk.Stack stack;
         Gtk.ScrolledWindow radios_scroll;
+        Gtk.ActionBar radio_toolbar;
 
         Gtk.ListBox radios;
 
@@ -44,8 +45,12 @@ namespace PlayMyMusic.Widgets.Views {
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.player_state_changed.connect ((state) => {
-                if (state == Gst.State.PLAYING && library_manager.player.current_radio == null) {
-                    radios.unselect_all ();
+                if (state == Gst.State.PLAYING ) {
+                    if (library_manager.player.current_radio != null) {
+                        grab_playing_radio ();
+                    } else {
+                        radios.unselect_all ();
+                    }
                 }
             });
             library_manager.added_new_radio.connect ((radio) => {
@@ -84,7 +89,7 @@ namespace PlayMyMusic.Widgets.Views {
             radios_scroll = new Gtk.ScrolledWindow (null, null);
             radios_scroll.add (radios);
 
-            var radio_toolbar = new Gtk.ActionBar ();
+            radio_toolbar = new Gtk.ActionBar ();
 
             var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
             add_button.tooltip_text = _("Add a radio station");
@@ -198,9 +203,13 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void grab_playing_radio () {
-            if (radios.get_selected_row () != null) {
-                radios.get_selected_row ().activate ();
+            foreach (var item in radios.get_children ()) {
+                if ((item as PlayMyMusic.Widgets.Radio).radio == library_manager.player.current_radio){
+                    item.activate ();
+                    return;
+                }
             }
+            radios.unselect_all ();
         }
 
         public void play_station (Gtk.ListBoxRow item) {

@@ -55,7 +55,7 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
 
             var content = new Gtk.Grid ();
-            content.margin = 12;
+            content.margin = 24;
             content.column_spacing = 12;
             event_box.add (content);
 
