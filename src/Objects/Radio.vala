@@ -88,11 +88,54 @@ namespace PlayMyMusic.Objects {
         }
 
         private string? get_stream_file () {
-            var content = get_stream_content ();
-            if (content == null) {
-                return null;
+            string? return_value = null;
+
+            string? content = get_stream_content ();
+            if (content != null) {
+                return_value = get_file_from_m3u (content);
+                if (return_value == null) {
+                    return_value = get_file_from_pls (content);
+                }
+            } else {
+                return_value = this.url;
             }
 
+            return return_value;
+        }
+
+        private  string? get_stream_content () {
+            string? return_value = null;
+            var session = new Soup.Session();
+            var msg = new Soup.Message ("GET", this.url);
+            var loop = new MainLoop();
+
+            session.send_async.begin (msg, null, (obj, res) => {
+                var content_type = msg.response_headers.get_one ("Content-Type");
+                if (content_type != "audio/mpeg") {
+                    session.send_message (msg);
+                    var data = (string) msg.response_body.data;
+                    if (msg.status_code == 200) {
+                        return_value = data;
+                    }
+                }
+                loop.quit ();
+            });
+
+            loop.run ();
+            return return_value;
+        }
+
+        private string? get_file_from_m3u (string content) {
+            string[] lines = content.split ("\n");
+            foreach (unowned string line in lines) {
+                if (line.has_prefix ("http") && line.index_of ("#") == -1) {
+                    return line;
+                }
+            }
+            return null;
+        }
+
+        private string? get_file_from_pls (string content) {
             string group = "playlist";
 
             var file = new KeyFile ();
@@ -119,19 +162,6 @@ namespace PlayMyMusic.Objects {
 
             return null;
         }
-
-        private string? get_stream_content () {
-            var session = new Soup.Session();
-            var msg = new Soup.Message ("GET", this.url);
-            session.send_message (msg);
-
-            var data = (string) msg.response_body.data;
-
-            if (msg.status_code == 200) {
-                return data;
-            }
-            return null;
-	    }
 
 	    public void set_new_cover (Gdk.Pixbuf cover) {
             save_cover (cover);
