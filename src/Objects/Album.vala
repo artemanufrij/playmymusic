@@ -146,6 +146,10 @@ namespace PlayMyMusic.Objects {
         }
 
 // COVER REGION
+	    public void set_new_cover (Gdk.Pixbuf cover) {
+	        this.cover = save_cover (cover);
+	    }
+
         private async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {
                 return;
@@ -188,7 +192,7 @@ namespace PlayMyMusic.Objects {
                             cover_full_path = File.new_for_path (cover_path);
                             if (cover_full_path.query_exists ()) {
                                 try {
-                                    return_value = align_and_cache_pixbuf (new Gdk.Pixbuf.from_file (cover_path), cover_cache_path);
+                                    return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path));
                                     Idle.add ((owned) callback);
                                     return null;
                                 } catch (Error err) {
@@ -237,7 +241,7 @@ namespace PlayMyMusic.Objects {
                                 pixbuf = get_pixbuf_from_buffer (buffer);
                                 if (pixbuf != null) {
                                     discoverer.stop ();
-                                    return_value = align_and_cache_pixbuf (pixbuf, cover_cache_path);
+                                    return_value = save_cover (pixbuf);
                                     Idle.add ((owned) callback);
                                     return null;
                                 }
@@ -253,7 +257,8 @@ namespace PlayMyMusic.Objects {
             return return_value;
         }
 
-        private Gdk.Pixbuf? align_and_cache_pixbuf (Gdk.Pixbuf? p, string cover_cache_path) {
+        private Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {
+            var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("album_%d.jpg").printf(this.ID));
             Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 256);
             try {
                 pixbuf.save (cover_cache_path, "jpeg", "quality", "100");

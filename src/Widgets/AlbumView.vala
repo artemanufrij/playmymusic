@@ -31,6 +31,7 @@ namespace PlayMyMusic.Widgets {
         PlayMyMusic.Services.Player player;
         PlayMyMusic.Settings settings;
 
+        Gtk.Menu menu;
         Gtk.Image cover;
         Gtk.ListBox tracks;
 
@@ -53,7 +54,28 @@ namespace PlayMyMusic.Widgets {
         private void build_ui () {
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.vexpand = true;
+            var event_box = new Gtk.EventBox ();
+            event_box.button_press_event.connect (show_context_menu);
+
             cover = new Gtk.Image ();
+            event_box.add (cover);
+
+            menu = new Gtk.Menu ();
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            menu_new_cover.activate.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
+                        current_album.set_new_cover (pixbuf);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+            });
+            menu.append (menu_new_cover);
+            menu.show_all ();
+
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
 
             tracks = new Gtk.ListBox ();
@@ -108,7 +130,7 @@ namespace PlayMyMusic.Widgets {
             });
             album_toolbar.pack_start (repeat_button);
 
-            content.pack_start (cover, false, false, 0);
+            content.pack_start (event_box, false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
             content.pack_end (album_toolbar, false, false, 0);
 
@@ -143,6 +165,7 @@ namespace PlayMyMusic.Widgets {
         public void show_album_viewer (PlayMyMusic.Objects.Album album) {
             if (current_album != null) {
                 current_album.track_added.disconnect (add_track);
+                current_album.cover_changed.disconnect (change_cover);
             }
             current_album = album;
             this.tracks.@foreach ((child) => {
@@ -160,12 +183,25 @@ namespace PlayMyMusic.Widgets {
                 add_track (track);
             }
             current_album.track_added.connect (add_track);
+            current_album.cover_changed.connect (change_cover);
+        }
+
+        private void change_cover () {
+            cover.pixbuf = current_album.cover;
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
             var item = new PlayMyMusic.Widgets.Track (track);
             this.tracks.add (item);
             item.show_all ();
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            }
+            return false;
         }
 
         private int tracks_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {

@@ -79,12 +79,28 @@ namespace PlayMyMusic.Widgets {
             content.attach (url, 1, 1);
 
             menu = new Gtk.Menu ();
-            var menu_copy = new Gtk.MenuItem.with_label (_("Remove Radio Station"));
-            menu_copy.activate.connect (() => {
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            menu_new_cover.activate.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        var pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 48);
+                        radio.set_new_cover (pixbuf);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+            });
+            menu.append (menu_new_cover);
+
+            menu.append (new Gtk.SeparatorMenuItem ());
+
+            var menu_remove = new Gtk.MenuItem.with_label (_("Remove Radio Station"));
+            menu_remove.activate.connect (() => {
                 library_manager.remove_radio_station (this.radio);
             });
+            menu.append (menu_remove);
 
-            menu.append (menu_copy);
             menu.show_all ();
 
             this.add (event_box);

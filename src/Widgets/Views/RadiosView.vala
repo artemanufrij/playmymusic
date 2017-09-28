@@ -115,7 +115,14 @@ namespace PlayMyMusic.Widgets.Views {
             var new_station_choose_cover = new Gtk.Button.with_label (_("Choose a Cover"));
             new_station_choose_cover.hexpand = true;
             new_station_choose_cover.clicked.connect (() => {
-                open_file_dialog ();
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        new_station_cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 48);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
             });
             new_station_controls.attach (new_station_choose_cover, 0, 0);
 
@@ -163,30 +170,6 @@ namespace PlayMyMusic.Widgets.Views {
             new_station_title.text = "";
             new_station_url.text = "";
             new_station_cover.set_from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
-        }
-
-        private void open_file_dialog () {
-            var cover = new Gtk.FileChooserDialog (
-                _("Choose an image…"), PlayMyMusicApp.instance.mainwindow,
-                Gtk.FileChooserAction.OPEN,
-                _("_Cancel"), Gtk.ResponseType.CANCEL,
-                _("_Open"), Gtk.ResponseType.ACCEPT);
-
-            var filter = new Gtk.FileFilter ();
-            filter.set_filter_name (_("Images"));
-            filter.add_mime_type ("image/*");
-
-            cover.add_filter (filter);
-
-            if (cover.run () == Gtk.ResponseType.ACCEPT) {
-                try {
-                    new_station_cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (cover.get_filename ()), 48);
-                } catch (Error err) {
-                    warning (err.message);
-                }
-            }
-
-            cover.destroy();
         }
 
         public void unselect_all () {

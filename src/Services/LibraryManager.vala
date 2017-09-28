@@ -171,6 +171,29 @@ namespace PlayMyMusic.Services {
         }
 
         //PIXBUF
+
+        public string? choose_new_cover () {
+            string? return_value = null;
+            var cover = new Gtk.FileChooserDialog (
+                _("Choose an image…"), PlayMyMusicApp.instance.mainwindow,
+                Gtk.FileChooserAction.OPEN,
+                _("_Cancel"), Gtk.ResponseType.CANCEL,
+                _("_Open"), Gtk.ResponseType.ACCEPT);
+
+            var filter = new Gtk.FileFilter ();
+            filter.set_filter_name (_("Images"));
+            filter.add_mime_type ("image/*");
+
+            cover.add_filter (filter);
+
+            if (cover.run () == Gtk.ResponseType.ACCEPT) {
+                return_value = cover.get_filename ();
+            }
+
+            cover.destroy();
+            return return_value;
+        }
+
         public Gdk.Pixbuf? align_and_scale_pixbuf (Gdk.Pixbuf p, int size) {
             Gdk.Pixbuf? pixbuf = p;
             if (pixbuf.width != pixbuf.height) {
