@@ -48,8 +48,8 @@ namespace PlayMyMusic.Services {
         construct {
             try {
                 discoverer = new Gst.PbUtils.Discoverer ((Gst.ClockTime) (5 * Gst.SECOND));
-                discoverer.discovered.connect (discovered);
                 discoverer.start ();
+                discoverer.discovered.connect (discovered);
             } catch (Error err) {
                 warning (err.message);
             }

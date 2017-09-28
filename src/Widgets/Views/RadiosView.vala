@@ -33,6 +33,9 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Image new_station_cover;
         Gtk.Button new_station_save;
         Gtk.Popover add_new_station_popover;
+        Gtk.Grid message_container;
+        Gtk.Stack stack;
+        Gtk.ScrolledWindow radios_scroll;
 
         Gtk.ListBox radios;
 
@@ -49,6 +52,12 @@ namespace PlayMyMusic.Widgets.Views {
                 var r = new Widgets.Radio (radio);
                 r.show_all ();
                 radios.add (r);
+                stack.set_visible_child (radios_scroll);
+            });
+            library_manager.removed_radio.connect (() => {
+                if (radios.get_children ().length () < 2) {
+                    stack.set_visible_child (message_container);
+                }
             });
 
             try {
@@ -70,10 +79,9 @@ namespace PlayMyMusic.Widgets.Views {
             radios = new Gtk.ListBox ();
             radios.set_sort_func (radio_sort_func);
             radios.selection_mode = Gtk.SelectionMode.SINGLE;
-            //radios.valign = Gtk.Align.START;
             radios.row_activated.connect (play_station);
-            var radios_scroll = new Gtk.ScrolledWindow (null, null);
 
+            radios_scroll = new Gtk.ScrolledWindow (null, null);
             radios_scroll.add (radios);
 
             var radio_toolbar = new Gtk.ActionBar ();
@@ -145,13 +153,26 @@ namespace PlayMyMusic.Widgets.Views {
             });
 // NEW STATION POPOVER END
 
+            message_container = new Gtk.Grid ();
+            message_container.valign = Gtk.Align.CENTER;
+            message_container.halign = Gtk.Align.CENTER;
+            var message_title = new Gtk.Label (_("No Radio Stations"));
+            message_title.get_style_context ().add_class ("h2");
+            message_container.attach (message_title, 0, 0);
+            var message_body = new Gtk.Label (_("Click the '+' button for adding a new Radion Station."));
+            message_container.attach (message_body, 0, 1);
+
+            stack = new Gtk.Stack ();
+            stack.add (message_container);
+            stack.add (radios_scroll);
+
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
-            content.pack_start (radios_scroll, true, true, 0);
+            content.pack_start (stack, true, true, 0);
             content.pack_end (radio_toolbar, false, false, 0);
 
             this.add (content);
-
+            this.show_all ();
             show_albums_from_database.begin ();
         }
 
@@ -192,6 +213,10 @@ namespace PlayMyMusic.Widgets.Views {
                 var r = new Widgets.Radio (radio);
                 r.show_all ();
                 radios.add (r);
+            }
+
+            if (radios.get_children ().length () > 0) {
+                stack.set_visible_child (radios_scroll);
             }
         }
 

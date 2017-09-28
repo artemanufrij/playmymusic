@@ -193,7 +193,7 @@ namespace PlayMyMusic {
                 chooser.destroy ();
             });
 
-            var menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library…"));
+            var menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));
             menu_item_rescan.activate.connect (() => {
                 albums_view.reset ();
                 library_manager.rescan_library ();

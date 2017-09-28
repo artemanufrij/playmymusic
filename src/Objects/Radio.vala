@@ -164,7 +164,7 @@ namespace PlayMyMusic.Objects {
         }
 
         public void set_new_cover (Gdk.Pixbuf cover) {
-            save_cover (cover);
+            this.cover = save_cover (cover);
         }
 
         private Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {

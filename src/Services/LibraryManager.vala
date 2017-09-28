@@ -37,11 +37,11 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public signal void local_scan_started ();
         public signal void tag_discover_started ();
         public signal void tag_discover_finished ();
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
+        public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
         public signal void player_state_changed (Gst.State state);
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
@@ -78,11 +78,11 @@ namespace PlayMyMusic.Services {
                 if (player.current_radio == radio) {
                     player.reset_playing ();
                 }
+                removed_radio (radio);
             });
 
             lf_manager = PlayMyMusic.Services.LocalFilesManager.instance;
             lf_manager.found_music_file.connect (found_local_music_file);
-            lf_manager.scan_started.connect ( () => { local_scan_started (); });
 
             player = PlayMyMusic.Services.Player.instance;
             player.state_changed.connect ((state) => { player_state_changed (state); });
