@@ -103,7 +103,7 @@ namespace PlayMyMusic.Objects {
             return return_value;
         }
 
-        private  string? get_stream_content () {
+        private string? get_stream_content () {
             string? return_value = null;
             var session = new Soup.Session();
             var msg = new Soup.Message ("GET", this.url);
@@ -163,11 +163,11 @@ namespace PlayMyMusic.Objects {
             return null;
         }
 
-	    public void set_new_cover (Gdk.Pixbuf cover) {
+        public void set_new_cover (Gdk.Pixbuf cover) {
             save_cover (cover);
-	    }
+        }
 
-	    private Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {
+        private Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {
             var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
             Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 48);
             try {
@@ -176,9 +176,9 @@ namespace PlayMyMusic.Objects {
                 warning (err.message);
             }
             return pixbuf;
-	    }
+        }
 
-	    private void load_cover () {
+        private void load_cover () {
             var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
             var file = File.new_for_path (cover_cache_path);
             if (file.query_exists ()) {
@@ -188,6 +188,6 @@ namespace PlayMyMusic.Objects {
                     warning (err.message);
                 }
             }
-	    }
+        }
     }
 }
