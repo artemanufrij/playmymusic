@@ -137,6 +137,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void filter (string query) {
             this.query = query.strip ().down ();
+            albums.invalidate_filter ();
         }
 
         private bool albums_filter_func (Gtk.FlowBoxChild child) {
