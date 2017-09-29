@@ -35,6 +35,7 @@ namespace PlayMyMusic {
         Gtk.SearchEntry search_entry;
         Gtk.Spinner spinner;
         Gtk.Button play_button;
+        Gtk.MenuItem menu_item_rescan;
 
         Granite.Widgets.ModeButton view_mode;
         Widgets.Views.AlbumsView albums_view;
@@ -46,9 +47,11 @@ namespace PlayMyMusic {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.tag_discover_started.connect (() => {
                 spinner.active = true;
+                menu_item_rescan.sensitive = false;
             });
             library_manager.tag_discover_finished.connect (() => {
                 spinner.active = false;
+                menu_item_rescan.sensitive = true;
             });
 
             library_manager.player_state_changed.connect ((state) => {
@@ -197,7 +200,7 @@ namespace PlayMyMusic {
                 chooser.destroy ();
             });
 
-            var menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));
+            menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));
             menu_item_rescan.activate.connect (() => {
                 albums_view.reset ();
                 library_manager.rescan_library ();

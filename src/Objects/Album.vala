@@ -146,9 +146,9 @@ namespace PlayMyMusic.Objects {
         }
 
 // COVER REGION
-	    public void set_new_cover (Gdk.Pixbuf cover) {
-	        this.cover = save_cover (cover);
-	    }
+        public void set_new_cover (Gdk.Pixbuf cover) {
+            this.cover = save_cover (cover);
+        }
 
         private async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {

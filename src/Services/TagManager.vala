@@ -57,8 +57,8 @@ namespace PlayMyMusic.Services {
 
         private void discovered (Gst.PbUtils.DiscovererInfo info, Error err) {
             new Thread<void*> (null, () => {
-                discover_started ();
-                discover_counter++;
+                
+                
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                     warning ("DISCOVER ERROR: %s %s (%s)", err.message, info.get_result ().to_string (), info.get_uri ());
                     return null;
@@ -136,6 +136,10 @@ namespace PlayMyMusic.Services {
         }
 
         public void add_discover_path (string path) {
+            if (discover_counter == 0) {
+                discover_started ();
+            }
+            discover_counter++;
             File f = File.new_for_path (path);
             discoverer.discover_uri_async (f.get_uri ());
         }
