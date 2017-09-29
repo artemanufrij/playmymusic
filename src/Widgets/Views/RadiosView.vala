@@ -38,7 +38,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.ScrolledWindow radios_scroll;
         Gtk.ActionBar radio_toolbar;
 
-        Gtk.ListBox radios;
+        Gtk.FlowBox radios;
 
         GLib.Regex protocol_regex;
 
@@ -73,18 +73,20 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public RadiosView () {
-            this.map.connect (() => {
-                grab_playing_radio ();
-            });
-
             build_ui ();
         }
 
         private void build_ui () {
-            radios = new Gtk.ListBox ();
+            radios = new Gtk.FlowBox ();
             radios.set_sort_func (radio_sort_func);
             radios.selection_mode = Gtk.SelectionMode.SINGLE;
-            radios.row_activated.connect (play_station);
+            radios.margin = 24;
+            radios.homogeneous = true;
+            radios.row_spacing = 12;
+            radios.column_spacing = 24;
+            radios.max_children_per_line = 24;
+            radios.child_activated.connect (play_station);
+            radios.valign = Gtk.Align.START;
 
             radios_scroll = new Gtk.ScrolledWindow (null, null);
             radios_scroll.add (radios);
@@ -117,6 +119,8 @@ namespace PlayMyMusic.Widgets.Views {
 
             new_station_cover = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
             new_station_cover.get_style_context ().add_class ("card");
+            new_station_cover.width_request = 64;
+            new_station_cover.height_request = 64;
             new_station.attach (new_station_cover, 0, 0, 1, 2);
 
             var new_station_controls = new Gtk.Grid ();
@@ -131,7 +135,7 @@ namespace PlayMyMusic.Widgets.Views {
                 var new_cover = library_manager.choose_new_cover ();
                 if (new_cover != null) {
                     try {
-                        new_station_cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 48);
+                        new_station_cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 64);
                     } catch (Error err) {
                         warning (err.message);
                     }
@@ -165,6 +169,7 @@ namespace PlayMyMusic.Widgets.Views {
             message_title.get_style_context ().add_class ("h2");
             message_container.attach (message_title, 0, 0);
             var message_body = new Gtk.Label (_("Click the '+' button for adding a new Radion Station."));
+            message_body.get_style_context ().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
             message_container.attach (message_body, 0, 1);
 
             stack = new Gtk.Stack ();
@@ -212,7 +217,7 @@ namespace PlayMyMusic.Widgets.Views {
             radios.unselect_all ();
         }
 
-        public void play_station (Gtk.ListBoxRow item) {
+        public void play_station (Gtk.FlowBoxChild item) {
             var radio = (item as PlayMyMusic.Widgets.Radio);
             library_manager.play_radio (radio.radio);
         }
@@ -229,7 +234,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        private int radio_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
+        private int radio_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
             var item1 = (Widgets.Radio)child1;
             var item2 = (Widgets.Radio)child2;
             return item1.title.collate (item2.title);

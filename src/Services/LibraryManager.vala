@@ -194,6 +194,27 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
+        public string? choose_folder () {
+            string? return_value = null;
+            Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
+                _("Select a folder."), PlayMyMusicApp.instance.mainwindow, Gtk.FileChooserAction.SELECT_FOLDER,
+                _("_Cancel"), Gtk.ResponseType.CANCEL,
+                _("_Open"), Gtk.ResponseType.ACCEPT);
+
+            var filter = new Gtk.FileFilter ();
+            filter.set_filter_name (_("Folder"));
+            filter.add_mime_type ("inode/directory");
+
+            chooser.add_filter (filter);
+
+            if (chooser.run () == Gtk.ResponseType.ACCEPT) {
+                return_value = chooser.get_file ().get_path ();
+            }
+
+            chooser.destroy ();
+            return return_value;
+        }
+
         public Gdk.Pixbuf? align_and_scale_pixbuf (Gdk.Pixbuf p, int size) {
             Gdk.Pixbuf? pixbuf = p;
             if (pixbuf.width != pixbuf.height) {

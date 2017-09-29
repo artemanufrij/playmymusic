@@ -169,7 +169,7 @@ namespace PlayMyMusic.Objects {
 
         private Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {
             var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
-            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 48);
+            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 64);
             try {
                 pixbuf.save (cover_cache_path, "jpeg", "quality", "100");
             } catch (Error err) {

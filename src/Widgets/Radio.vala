@@ -26,7 +26,7 @@
  */
 
 namespace PlayMyMusic.Widgets {
-    public class Radio : Gtk.ListBoxRow {
+    public class Radio : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
 
         public PlayMyMusic.Objects.Radio radio { get; private set; }
@@ -55,28 +55,25 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
 
             var content = new Gtk.Grid ();
-            content.margin = 24;
-            content.column_spacing = 12;
+            content.halign = Gtk.Align.CENTER;
+            content.row_spacing = 6;
+            content.margin = 12;
             event_box.add (content);
 
             cover = new Gtk.Image ();
             cover.get_style_context ().add_class ("card");
+            cover.halign = Gtk.Align.CENTER;
             if (this.radio.cover == null) {
                 cover.set_from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
             } else {
                 cover.pixbuf = this.radio.cover;
             }
-            content.attach (cover, 0, 0, 1, 2);
+            content.attach (cover, 0, 0);
 
             var title = new Gtk.Label (("<b>%s</b>").printf(radio.title));
             title.use_markup = true;
             title.halign = Gtk.Align.START;
-            content.attach (title, 1, 0);
-
-            var url = new Gtk.Label (("<small>%s</small>").printf(radio.url));
-            url.use_markup = true;
-            url.halign = Gtk.Align.START;
-            content.attach (url, 1, 1);
+            content.attach (title, 0, 1);
 
             menu = new Gtk.Menu ();
             var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
@@ -84,7 +81,7 @@ namespace PlayMyMusic.Widgets {
                 var new_cover = library_manager.choose_new_cover ();
                 if (new_cover != null) {
                     try {
-                        var pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 48);
+                        var pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 64);
                         radio.set_new_cover (pixbuf);
                     } catch (Error err) {
                         warning (err.message);
@@ -103,6 +100,7 @@ namespace PlayMyMusic.Widgets {
 
             menu.show_all ();
 
+            this.tooltip_text = radio.url;
             this.add (event_box);
         }
 

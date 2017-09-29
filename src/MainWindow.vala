@@ -182,22 +182,10 @@ namespace PlayMyMusic {
             var settings_menu = new Gtk.Menu ();
             var menu_item_import = new Gtk.MenuItem.with_label (_("Import to Library…"));
             menu_item_import.activate.connect (() => {
-                Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
-                    _("Select a folder."), this, Gtk.FileChooserAction.SELECT_FOLDER,
-                    _("_Cancel"), Gtk.ResponseType.CANCEL,
-                    _("_Open"), Gtk.ResponseType.ACCEPT);
-
-                var filter = new Gtk.FileFilter ();
-                filter.set_filter_name (_("Folder"));
-                filter.add_mime_type ("inode/directory");
-
-                chooser.add_filter (filter);
-
-                if (chooser.run () == Gtk.ResponseType.ACCEPT) {
-                    library_manager.scan_local_library (chooser.get_file ().get_path ());
+                var folder = library_manager.choose_folder ();
+                if(folder != null) {
+                    library_manager.scan_local_library (folder);
                 }
-
-                chooser.destroy ();
             });
 
             menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));

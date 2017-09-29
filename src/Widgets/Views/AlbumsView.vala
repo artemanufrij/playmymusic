@@ -31,7 +31,10 @@ namespace PlayMyMusic.Widgets.Views {
         PlayMyMusic.Settings settings;
 
         Gtk.FlowBox albums;
+        Gtk.Stack stack;
+        Gtk.Box content;
         Widgets.AlbumView album_view;
+        Granite.Widgets.Welcome welcome;
 
         string query = "";
         int lock_dummy;
@@ -79,18 +82,49 @@ namespace PlayMyMusic.Widgets.Views {
             albums.set_sort_func (albums_sort_func);
             albums.set_filter_func (albums_filter_func);
             albums.child_activated.connect (show_album_viewer);
+            albums.add.connect (() => {
+                if (stack.get_visible_child () != content) {
+                    stack.set_visible_child (content);
+                }
+            });
             var albums_scroll = new Gtk.ScrolledWindow (null, null);
 
             albums_scroll.add (albums);
 
             album_view = new PlayMyMusic.Widgets.AlbumView ();
 
-            var content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.expand = true;
             content.pack_start (albums_scroll, true, true, 0);
             content.pack_start (album_view, false, false, 0);
 
-            this.add (content);
+            welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add music to your library.");
+            welcome.append ("folder-music", _("Change Music Folder"), _("Load music from a folder, a network or an external disk."));
+            welcome.append ("document-import", _("Import Music"), _("Import music from a source into your library."));
+            welcome.activated.connect ((index) => {
+                switch (index) {
+                    case 0:
+                        var folder = library_manager.choose_folder ();
+                        if(folder != null) {
+                            settings.library_location = folder;
+                            library_manager.scan_local_library (folder);
+                        }
+                        break;
+                    case 1:
+                        var folder = library_manager.choose_folder ();
+                        if(folder != null) {
+                            library_manager.scan_local_library (folder);
+                        }
+                        break;
+                }
+            });
+
+            stack = new Gtk.Stack ();
+            stack.add (welcome);
+            stack.add (content);
+
+            this.add (stack);
+            this.show_all ();
         }
 
         public void hide_album_details () {
@@ -101,6 +135,9 @@ namespace PlayMyMusic.Widgets.Views {
             album_view.hide ();
             foreach (var item in albums.get_children ()) {
                 albums.remove (item);
+            }
+            if (albums.get_children ().length () == 0) {
+                stack.set_visible_child (welcome);
             }
         }
 
