@@ -6,8 +6,6 @@
 
 TODO:
 * Playlists
-* DBUS
-* Media keys
 
 ## Install from Github.
 
@@ -31,7 +29,7 @@ cd playmymusic
 
 Create **build** folder, compile and start application
 ```
-mkdir build
+mkdir
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 make
