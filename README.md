@@ -1,6 +1,6 @@
 # [under development] Play My Music
 
-### Play My Music is a simple player for local files designed for [elementary OS](https://elementary.io)
+### Play My Music is a simple player for local files and online radio stations designed for [elementary OS](https://elementary.io)
 
 ![screenshot](Screenshot.png)
 
