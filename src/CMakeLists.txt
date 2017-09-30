@@ -12,6 +12,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Services/TagManager.vala
     Services/LibraryManager.vala
     Services/Player.vala
+    Services/MediaKeys.vala
     Widgets/Album.vala
     Widgets/AlbumView.vala
     Widgets/Track.vala

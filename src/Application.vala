@@ -28,13 +28,13 @@
 namespace PlayMyMusic {
 
     public class PlayMyMusicApp : Gtk.Application {
-
         public string DB_PATH { get; private set; }
         public string COVER_FOLDER { get; private set; }
+        public string APP_NAME { get { return "com.github.artemanufrij.playmymusic"; } }
 
-        static PlayMyMusicApp _instance = null;
         PlayMyMusic.Settings settings;
 
+        static PlayMyMusicApp _instance = null;
         public static PlayMyMusicApp instance {
             get {
                 if (_instance == null) {
@@ -50,7 +50,7 @@ namespace PlayMyMusic {
             if (settings.library_location == "" || !library_path.query_exists ()) {
                 settings.library_location = GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC);
             }
-            var cache_folder = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), "com.github.artemanufrij.playmymusic");
+            var cache_folder = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), APP_NAME);
             try {
                 File file = File.new_for_path (cache_folder);
                 if (!file.query_exists ()) {
@@ -80,6 +80,8 @@ namespace PlayMyMusic {
                 mainwindow.present ();
                 return;
             }
+
+            Services.MediaKeyListener.listen ();
 
             mainwindow = new MainWindow ();
             mainwindow.set_application(this);

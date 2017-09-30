@@ -124,11 +124,7 @@ namespace PlayMyMusic {
             play_button.tooltip_text = _("Play");
             play_button.sensitive = false;
             play_button.clicked.connect (() => {
-                if (library_manager.player.current_track != null || library_manager.player.current_radio != null) {
-                    library_manager.player.toggle_playing ();
-                } else {
-                    albums_view.play_selected_album ();
-                }
+                play ();
             });
 
             var next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
@@ -235,6 +231,14 @@ namespace PlayMyMusic {
             view_mode.set_active (settings.view_index);
             radios_view.unselect_all ();
             search_entry.grab_focus ();
+        }
+
+        public void play () {
+            if (library_manager.player.current_track != null || library_manager.player.current_radio != null) {
+                library_manager.player.toggle_playing ();
+            } else {
+                albums_view.play_selected_album ();
+            }
         }
     }
 }
