@@ -26,7 +26,6 @@
  */
 
 namespace PlayMyMusic {
-
     public class PlayMyMusicApp : Gtk.Application {
         public string DB_PATH { get; private set; }
         public string COVER_FOLDER { get; private set; }
@@ -39,6 +38,7 @@ namespace PlayMyMusic {
             get {
                 if (_instance == null) {
                     _instance = new PlayMyMusicApp ();
+                    stdout.printf ("NEW INSTANCE\n");
                 }
                 return _instance;
             }
@@ -73,25 +73,25 @@ namespace PlayMyMusic {
             COVER_FOLDER = cover_folder;
         }
 
-        public MainWindow mainwindow { get; set; }
+        private PlayMyMusicApp () {}
+
+        public MainWindow mainwindow { get; private set; default = null; }
 
         protected override void activate () {
-            if (mainwindow != null) {
-                mainwindow.present ();
-                return;
+            if (mainwindow == null) {
+                mainwindow = new MainWindow ();
+                mainwindow.application = this;
+                Services.MediaKeyListener.listen ();
+                stdout.printf ("NEW WINDOW\n");
             }
-
-            Services.MediaKeyListener.listen ();
-
-            mainwindow = new MainWindow ();
-            mainwindow.set_application(this);
+            mainwindow.present ();
         }
     }
 }
 
-public static int main (string [] args) {
+public static void main (string [] args) {
     Gtk.init (ref args);
     Gst.init (ref args);
     var app = PlayMyMusic.PlayMyMusicApp.instance;
-    return app.run (args);
+    app.run (args);
 }
