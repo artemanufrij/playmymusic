@@ -93,7 +93,7 @@ namespace PlayMyMusic.Widgets {
         public void set_playing_track (PlayMyMusic.Objects.Track track) {
             current_track = track;
 
-            playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title,
+            playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title.replace ("&", "&amp;"),
                 track.album.title.replace ("&", "&amp;"),
                 track.album.artist.name.replace ("&", "&amp;"));
 

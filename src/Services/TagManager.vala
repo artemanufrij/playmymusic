@@ -57,76 +57,72 @@ namespace PlayMyMusic.Services {
 
         private void discovered (Gst.PbUtils.DiscovererInfo info, Error err) {
             new Thread<void*> (null, () => {
-                
-                
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                     warning ("DISCOVER ERROR: %s %s (%s)", err.message, info.get_result ().to_string (), info.get_uri ());
-                    return null;
-                }
-                var tags = info.get_tags ();
-                if (tags == null) {
-                    return null;
-                }
+                } else {
+                    var tags = info.get_tags ();
+                    if (tags != null) {
+                        string uri = info.get_uri ();
+                        uint64 duration = info.get_duration ();
+                        File f = File.new_for_uri (uri);
+                        string path = f.get_path ();
 
-                string uri = info.get_uri ();
-                uint64 duration = info.get_duration ();
-                File f = File.new_for_uri (uri);
-                string path = f.get_path ();
+                        string o;
+                        GLib.Date? d;
+                        Gst.DateTime? dt;
+                        uint u;
+                        uint64 u64 = 0;
 
-                string o;
-                GLib.Date? d;
-                Gst.DateTime? dt;
-                uint u;
-                uint64 u64 = 0;
-
-                // ARTIST REGION
-                var artist = new PlayMyMusic.Objects.Artist ();
-                if (tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
-                    artist.name = o;
-                } else if (tags.get_string (Gst.Tags.ARTIST, out o)) {
-                    artist.name = o;
-                }
-
-                // ALBUM REGION
-                var album = new PlayMyMusic.Objects.Album (artist);
-                if (tags.get_string (Gst.Tags.ALBUM, out o)) {
-                    album.title = o;
-                }
-
-                if (tags.get_date_time (Gst.Tags.DATE_TIME, out dt)) {
-                    if (dt != null) {
-                        album.year = dt.get_year ();
-                    } else if (tags.get_date (Gst.Tags.DATE, out d)) {
-                        if (d != null) {
-                            album.year = dt.get_year ();
+                        // ARTIST REGION
+                        var artist = new PlayMyMusic.Objects.Artist ();
+                        if (tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
+                            artist.name = o;
+                        } else if (tags.get_string (Gst.Tags.ARTIST, out o)) {
+                            artist.name = o;
                         }
+
+                        // ALBUM REGION
+                        var album = new PlayMyMusic.Objects.Album (artist);
+                        if (tags.get_string (Gst.Tags.ALBUM, out o)) {
+                            album.title = o;
+                        }
+
+                        if (tags.get_date_time (Gst.Tags.DATE_TIME, out dt)) {
+                            if (dt != null) {
+                                album.year = dt.get_year ();
+                            } else if (tags.get_date (Gst.Tags.DATE, out d)) {
+                                if (d != null) {
+                                    album.year = dt.get_year ();
+                                }
+                            }
+                        }
+
+                        artist.add_album (album);
+
+                        // TRACK REGION
+                        var track = new PlayMyMusic.Objects.Track (album);
+                        track.duration = duration;
+                        track.path = path;
+                        if (tags.get_string (Gst.Tags.TITLE, out o)) {
+                            track.title = o;
+                        }
+                        if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
+                            track.track = (int)u;
+                        }
+                        if (tags.get_uint (Gst.Tags.ALBUM_VOLUME_NUMBER, out u)) {
+                            track.disc = (int)u;
+                        }
+                        if (tags.get_string (Gst.Tags.GENRE, out o)) {
+                            track.genre = o;
+                        }
+                        if (track.duration == 0 && tags.get_uint64 (Gst.Tags.DURATION, out u64)) {
+                            track.duration = u64;
+                        }
+                        album.add_track (track);
+                        discovered_new_item (artist);
                     }
                 }
 
-                artist.add_album (album);
-
-                // TRACK REGION
-                var track = new PlayMyMusic.Objects.Track (album);
-                track.duration = duration;
-                track.path = path;
-                if (tags.get_string (Gst.Tags.TITLE, out o)) {
-                    track.title = o;
-                }
-                if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
-                    track.track = (int)u;
-                }
-                if (tags.get_uint (Gst.Tags.ALBUM_VOLUME_NUMBER, out u)) {
-                    track.disc = (int)u;
-                }
-                if (tags.get_string (Gst.Tags.GENRE, out o)) {
-                    track.genre = o;
-                }
-                if (track.duration == 0 && tags.get_uint64 (Gst.Tags.DURATION, out u64)) {
-                    track.duration = u64;
-                }
-                album.add_track (track);
-
-                discovered_new_item (artist);
                 discover_counter--;
                 if (discover_counter == 0) {
                     discover_finished ();
