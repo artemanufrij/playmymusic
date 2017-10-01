@@ -1,0 +1,19 @@
+Source: com.github.artemanufrij.playmymusic
+Section: x11
+Priority: optional
+Maintainer: Artem Anufrij <artem.anufrij@live.de>
+Build-Depends: cmake (>= 2.8),
+               cmake-elementary,
+               debhelper (>= 9),
+               libgranite-dev,
+               libsoup2.4-dev,
+               libsqlite3-dev,
+               libgstreamer-plugins-base1.0-dev,
+               valac (>= 0.26)
+Standards-Version: 3.9.3
+
+Package: com.github.artemanufrij.playmymusic
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Simple music player
+ A music player for listening local music files and online radios, written especially for elementary OS

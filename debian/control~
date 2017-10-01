@@ -1,0 +1,16 @@
+Source: com.github.artemanufrij.regextester
+Section: x11
+Priority: optional
+Maintainer: Artem Anufrij <artem.anufrij@live.de>
+Build-Depends: cmake (>= 2.8),
+               cmake-elementary,
+               debhelper (>= 9),
+               libgranite-dev,
+               valac (>= 0.26)
+Standards-Version: 3.9.3
+
+Package: com.github.artemanufrij.regextester
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Simple regex tester
+ A simple app for testing regular expressions, written especially for elementary OS

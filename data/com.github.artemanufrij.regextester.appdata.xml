@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Artem Anufrij <artem.anufrij@live.de> -->
+<component type="desktop">
+    <id>com.github.artemanufrij.playmymusic.desktop</id>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0+</project_license>
+    <name>Music Player</name>
+    <summary>A music player for listening local music files and online radios</summary>
+    <description>
+        <p>A very fast music player. Designed extra for large local libraries.</p>
+    </description>
+    <categories>
+        <category>Music</category>
+    </categories>
+    <custom>
+        <value key="x-appcenter-color-primary">#00485B</value>
+        <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
+        <value key="x-appcenter-suggested-price">1</value>
+    </custom>
+    <developer_name>Artem Anufrij</developer_name>
+    <url type="homepage">https://github.com/artemanufrij/playmymusic</url>
+    <url type="bugtracker">https://github.com/artemanufrij/playmymusic/issues</url>
+    <url type="help">https://github.com/artemanufrij/playmymusic/issues</url>
+    <update_contact>artem.anufrij@live.de</update_contact>
+    <screenshots>
+        <screenshot type="default">
+            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/Screenshot.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/Screenshot_Radio_Stations.png</image>
+        </screenshot>
+    </screenshots>
+</component>
