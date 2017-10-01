@@ -39,7 +39,7 @@
          offset="0"
          id="stop4204" />
       <stop
-         style="stop-color:#ffffff;stop-opacity:0.50196081"
+         style="stop-color:#ffffff;stop-opacity:0.43921569"
          offset="1"
          id="stop4206" />
     </linearGradient>
@@ -161,7 +161,7 @@
        inkscape:collect="always"
        id="linearGradient4173">
       <stop
-         style="stop-color:#ffffff;stop-opacity:0.4"
+         style="stop-color:#ffffff;stop-opacity:0.26666668"
          offset="0"
          id="stop4175" />
       <stop
@@ -177,9 +177,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="-312.42873"
-     inkscape:cy="307.63024"
+     inkscape:zoom="22.627417"
+     inkscape:cx="15.994964"
+     inkscape:cy="16.012224"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"

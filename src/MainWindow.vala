@@ -36,6 +36,8 @@ namespace PlayMyMusic {
         Gtk.Spinner spinner;
         Gtk.Button play_button;
         Gtk.MenuItem menu_item_rescan;
+        Gtk.Image icon_play;
+        Gtk.Image icon_pause;
 
         Granite.Widgets.ModeButton view_mode;
         Widgets.Views.AlbumsView albums_view;
@@ -56,7 +58,7 @@ namespace PlayMyMusic {
 
             library_manager.player_state_changed.connect ((state) => {
                 if (state == Gst.State.PLAYING) {
-                    play_button.image = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+                    play_button.image = icon_pause;
                     play_button.tooltip_text = _("Pause");
                     if (library_manager.player.current_track != null) {
                         timeline.set_playing_track (library_manager.player.current_track);
@@ -74,7 +76,7 @@ namespace PlayMyMusic {
                         headerbar.set_custom_title (null);
                         headerbar.title = _("Play My Music");
                     }
-                    play_button.image = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+                    play_button.image = icon_play;
                     play_button.tooltip_text = _("Play");
                 }
             });
@@ -113,6 +115,9 @@ namespace PlayMyMusic {
             this.set_titlebar (headerbar);
 
             // PLAY BUTTONS
+            icon_play = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            icon_pause = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            
             var previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             previous_button.tooltip_text = _("Previous");
             previous_button.sensitive = false;
@@ -120,7 +125,8 @@ namespace PlayMyMusic {
                 library_manager.player.prev ();
             });
 
-            play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            play_button = new Gtk.Button ();
+            play_button.image = icon_play;
             play_button.tooltip_text = _("Play");
             play_button.sensitive = false;
             play_button.clicked.connect (() => {

@@ -65,7 +65,7 @@
       <stop
          id="stop4203"
          offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.50196081" />
+         style="stop-color:#ffffff;stop-opacity:0.43921569" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
@@ -202,7 +202,7 @@
        inkscape:collect="always"
        id="linearGradient4203">
       <stop
-         style="stop-color:#ffffff;stop-opacity:0.4"
+         style="stop-color:#ffffff;stop-opacity:0.25"
          offset="0"
          id="stop4205" />
       <stop
@@ -218,9 +218,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.99999996"
-     inkscape:cx="-287.02153"
-     inkscape:cy="217.74988"
+     inkscape:zoom="3.9999998"
+     inkscape:cx="-36.512128"
+     inkscape:cy="36.833393"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -508,8 +508,7 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Spot"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <rect
        style="opacity:1;fill:url(#radialGradient4209);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="rect3384"

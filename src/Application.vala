@@ -29,7 +29,6 @@ namespace PlayMyMusic {
     public class PlayMyMusicApp : Granite.Application {
         public string DB_PATH { get; private set; }
         public string COVER_FOLDER { get; private set; }
-        //public string APP_NAME { get { return "com.github.artemanufrij.playmymusic"; } }
 
         PlayMyMusic.Settings settings;
 
@@ -38,7 +37,6 @@ namespace PlayMyMusic {
             get {
                 if (_instance == null) {
                     _instance = new PlayMyMusicApp ();
-                    stdout.printf ("NEW INSTANCE\n");
                 }
                 return _instance;
             }
@@ -83,7 +81,6 @@ namespace PlayMyMusic {
                 mainwindow = new MainWindow ();
                 mainwindow.application = this;
                 Services.MediaKeyListener.listen ();
-                stdout.printf ("NEW WINDOW\n");
             }
             mainwindow.present ();
         }

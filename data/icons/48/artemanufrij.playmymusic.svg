@@ -65,7 +65,7 @@
       <stop
          id="stop4156"
          offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.50196081" />
+         style="stop-color:#ffffff;stop-opacity:0.43921569" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
@@ -204,7 +204,7 @@
        inkscape:collect="always"
        id="linearGradient4208">
       <stop
-         style="stop-color:#ffffff;stop-opacity:0.4"
+         style="stop-color:#ffffff;stop-opacity:0.25098041"
          offset="0"
          id="stop4210" />
       <stop
@@ -221,8 +221,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.313708"
-     inkscape:cx="11.083886"
-     inkscape:cy="19.920538"
+     inkscape:cx="23.988585"
+     inkscape:cy="23.986402"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
