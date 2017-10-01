@@ -1,4 +1,4 @@
-# [under development] Play My Music
+# Play My Music
 
 ### Play My Music is a simple player for listening local music files and online radio stations designed for [elementary OS](https://elementary.io)
 
