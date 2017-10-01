@@ -88,13 +88,15 @@ namespace PlayMyMusic.Objects {
             return null;
         }
 
-        public Track? get_shuffle_track (Track current) {
+        public Track? get_shuffle_track (Track? current) {
             if (shuffle_index == null) {
                 shuffle_index = new GLib.List<int> ();
             }
 
-            int i = _tracks.index (current);
-            shuffle_index.append (i);
+            if (current != null) {
+                int i = _tracks.index (current);
+                shuffle_index.append (i);
+            }
 
             if (shuffle_index.length () == _tracks.length ()) {
                 shuffle_index = null;

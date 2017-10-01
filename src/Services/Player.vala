@@ -117,7 +117,11 @@ namespace PlayMyMusic.Services {
                 set_track (next_track);
             } else {
                 if (play_mode_repeat) {
-                    next_track = current_track.album.get_first_track ();
+                    if (play_mode_shuffle) {
+                        next_track = current_track.album.get_shuffle_track (null);
+                    } else {
+                        next_track = current_track.album.get_first_track ();
+                    }
                     if (next_track != null) {
                         set_track (next_track);
                     } else {
