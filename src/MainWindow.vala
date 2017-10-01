@@ -188,7 +188,17 @@ namespace PlayMyMusic {
             app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR));
 
             var settings_menu = new Gtk.Menu ();
-            var menu_item_import = new Gtk.MenuItem.with_label (_("Import to Library…"));
+
+            var menu_item_library = new Gtk.MenuItem.with_label(_("Change Music Folder…"));
+            menu_item_library.activate.connect (() => {
+                var folder = library_manager.choose_folder ();
+                if(folder != null) {
+                    settings.library_location = folder;
+                    library_manager.scan_local_library (folder);
+                }
+            });
+
+            var menu_item_import = new Gtk.MenuItem.with_label (_("Import Music…"));
             menu_item_import.activate.connect (() => {
                 var folder = library_manager.choose_folder ();
                 if(folder != null) {
@@ -202,6 +212,7 @@ namespace PlayMyMusic {
                 library_manager.rescan_library ();
             });
 
+            settings_menu.append (menu_item_library);
             settings_menu.append (menu_item_import);
             settings_menu.append (new Gtk.SeparatorMenuItem ());
             settings_menu.append (menu_item_rescan);
