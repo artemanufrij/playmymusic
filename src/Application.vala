@@ -44,6 +44,7 @@ namespace PlayMyMusic {
 
         construct {
             application_id = "com.github.artemanufrij.playmymusic";
+            program_name = "Play My Music";
             settings = PlayMyMusic.Settings.get_default ();
             var library_path = File.new_for_path (settings.library_location);
             if (settings.library_location == "" || !library_path.query_exists ()) {

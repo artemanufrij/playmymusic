@@ -43,6 +43,8 @@ namespace PlayMyMusic {
         Widgets.Views.AlbumsView albums_view;
         Widgets.TrackTimeLine timeline;
 
+        Notification desktop_notification;
+
         construct {
             settings = PlayMyMusic.Settings.get_default ();
 
@@ -63,6 +65,7 @@ namespace PlayMyMusic {
                     if (library_manager.player.current_track != null) {
                         timeline.set_playing_track (library_manager.player.current_track);
                         headerbar.set_custom_title (timeline);
+                        send_notification (library_manager.player.current_track);
                     } else if (library_manager.player.current_radio != null) {
                         play_button.sensitive = true;
                         headerbar.title = library_manager.player.current_radio.title;
@@ -117,7 +120,7 @@ namespace PlayMyMusic {
             // PLAY BUTTONS
             icon_play = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             icon_pause = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            
+
             var previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             previous_button.tooltip_text = _("Previous");
             previous_button.sensitive = false;
@@ -237,6 +240,19 @@ namespace PlayMyMusic {
             view_mode.set_active (settings.view_index);
             radios_view.unselect_all ();
             search_entry.grab_focus ();
+        }
+
+        private void send_notification (Objects.Track track) {
+            if (!is_active) {
+                if (desktop_notification == null) {
+                    desktop_notification = new Notification ("");
+                }
+                desktop_notification.set_title (track.title);
+                desktop_notification.set_body (_("<b>%s</b> by <b>%s</b>").printf (track.album.title, track.album.artist.name));
+                var icon = GLib.Icon.new_for_string (track.album.cover_path);
+                desktop_notification.set_icon (icon);
+                this.application.send_notification (PlayMyMusicApp.instance.application_id, desktop_notification);
+            }
         }
 
         public void play () {
