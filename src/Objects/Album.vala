@@ -26,14 +26,7 @@
  */
 
 namespace PlayMyMusic.Objects {
-    public class Album : GLib.Object {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        public signal void cover_changed ();
-        public signal void track_added (Track track);
-        public signal void track_removed (Track track);
-
-        bool is_cover_loading = false;
-
+    public class Album : TracksContainer {
         Artist _artist;
         public Artist artist {
             get {
@@ -41,7 +34,6 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        int _ID = 0;
         public int ID {
             get {
                 return _ID;
@@ -51,37 +43,19 @@ namespace PlayMyMusic.Objects {
                 load_cover_async.begin ();
             }
         }
-        public string title { get; set; }
-        public int year { get; set; }
 
-        public string cover_path { get; private set; }
-
-        Gdk.Pixbuf? _cover = null;
-        public Gdk.Pixbuf? cover {
-            get {
-                return _cover;
-            } private set {
-                _cover = value;
-                is_cover_loading = false;
-                cover_changed ();
-            }
-        }
-
-        GLib.List<Track> _tracks;
-        public GLib.List<Track> tracks {
+        public new GLib.List<Track> tracks {
             get {
                 if (_tracks == null) {
                     _tracks = library_manager.db_manager.get_track_collection (this);
                 }
-                lock (_tracks) {
-                    return _tracks;
-                }
+                return _tracks;
             }
         }
 
+        public int year { get; set; }
+
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            _tracks = new GLib.List<Track> ();
             year = -1;
         }
 
@@ -93,67 +67,13 @@ namespace PlayMyMusic.Objects {
             this._artist = artist;
         }
 
-        public void add_track (Track track) {
+        public new void add_track (Track track) {
             track.set_album (this);
-            lock (this._tracks) {
-                this._tracks.append (track);
-                _tracks.sort_with_data ((a, b) => {
-                    if (a.disc != b.disc) {
-                        return a.disc - b.disc;
-                    }
-                    if (a.track != b.track) {
-                        return a.track - b.track;
-                    }
-                    return a.title.collate (b.title);
-                });
-            }
-            track_added (track);
+            base.add_track (track);
             load_cover_async.begin ();
         }
 
-        public void remove_track (Track track) {
-            this._tracks.remove (track);
-            track_added (track);
-        }
-
-        public Track? get_first_track () {
-            return tracks.nth_data (0);
-        }
-
-        public Track? get_next_track (Track current) {
-            int i = tracks.index (current) + 1;
-            if (i < tracks.length ()) {
-                return tracks.nth_data (i);
-            }
-            return null;
-        }
-
-         public Track? get_prev_track (Track current) {
-            int i = tracks.index (current) - 1;
-            if (i > - 1) {
-                return tracks.nth_data (i);
-            }
-            return null;
-        }
-
-        public Track? get_track_by_path (string path) {
-            Track? return_value = null;
-            lock (_tracks) {
-                foreach (var track in tracks) {
-                    if (track.path == path) {
-                        return_value = track;
-                        break;
-                    }
-                }
-                return return_value;
-            }
-        }
-
 // COVER REGION
-        public void set_new_cover (Gdk.Pixbuf cover) {
-            this.cover = save_cover (cover);
-        }
-
         private async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {
                 return;
@@ -185,20 +105,19 @@ namespace PlayMyMusic.Objects {
                 }
 
                 string[] cover_files = PlayMyMusic.Settings.get_default ().covers;
-                lock (_tracks) {
-                    foreach (var track in tracks) {
-                        var dir_name = GLib.Path.get_dirname (track.path);
-                        foreach (var cover_file in cover_files) {
-                            var cover_path = GLib.Path.build_filename (dir_name, cover_file);
-                            cover_full_path = File.new_for_path (cover_path);
-                            if (cover_full_path.query_exists ()) {
-                                try {
-                                    return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path));
-                                    Idle.add ((owned) callback);
-                                    return null;
-                                } catch (Error err) {
-                                    warning (err.message);
-                                }
+
+                foreach (var track in tracks) {
+                    var dir_name = GLib.Path.get_dirname (track.path);
+                    foreach (var cover_file in cover_files) {
+                        var cover_path = GLib.Path.build_filename (dir_name, cover_file);
+                        cover_full_path = File.new_for_path (cover_path);
+                        if (cover_full_path.query_exists ()) {
+                            try {
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path));
+                                Idle.add ((owned) callback);
+                                return null;
+                            } catch (Error err) {
+                                warning (err.message);
                             }
                         }
                     }
@@ -212,40 +131,39 @@ namespace PlayMyMusic.Objects {
                     Idle.add ((owned) callback);
                     return null;
                 }
-                lock (_tracks) {
-                    foreach (var track in tracks) {
-                        var file = File.new_for_path (track.path);
-                        Gst.PbUtils.DiscovererInfo info;
-                        try {
-                            info = discoverer.discover_uri (file.get_uri ());
-                        } catch (Error err) {
-                            warning (err.message);
-                            Idle.add ((owned) callback);
-                            return null;
-                        }
-                        if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
-                            continue;
-                        }
 
-                        Gdk.Pixbuf pixbuf = null;
-                        var tag_list = info.get_tags ();
-                        var sample = get_cover_sample (tag_list);
+                foreach (var track in tracks) {
+                    var file = File.new_for_path (track.path);
+                    Gst.PbUtils.DiscovererInfo info;
+                    try {
+                        info = discoverer.discover_uri (file.get_uri ());
+                    } catch (Error err) {
+                        warning (err.message);
+                        Idle.add ((owned) callback);
+                        return null;
+                    }
+                    if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
+                        continue;
+                    }
 
-                        if (sample == null) {
-                            tag_list.get_sample_index (Gst.Tags.PREVIEW_IMAGE, 0, out sample);
-                        }
+                    Gdk.Pixbuf pixbuf = null;
+                    var tag_list = info.get_tags ();
+                    var sample = get_cover_sample (tag_list);
 
-                        if (sample != null) {
-                            var buffer = sample.get_buffer ();
+                    if (sample == null) {
+                        tag_list.get_sample_index (Gst.Tags.PREVIEW_IMAGE, 0, out sample);
+                    }
 
-                            if (buffer != null) {
-                                pixbuf = get_pixbuf_from_buffer (buffer);
-                                if (pixbuf != null) {
-                                    discoverer.stop ();
-                                    return_value = save_cover (pixbuf);
-                                    Idle.add ((owned) callback);
-                                    return null;
-                                }
+                    if (sample != null) {
+                        var buffer = sample.get_buffer ();
+
+                        if (buffer != null) {
+                            pixbuf = get_pixbuf_from_buffer (buffer);
+                            if (pixbuf != null) {
+                                discoverer.stop ();
+                                return_value = save_cover (pixbuf);
+                                Idle.add ((owned) callback);
+                                return null;
                             }
                         }
                     }
@@ -256,16 +174,6 @@ namespace PlayMyMusic.Objects {
             });
             yield;
             return return_value;
-        }
-
-        private Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {
-            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 256);
-            try {
-                pixbuf.save (cover_path, "jpeg", "quality", "100");
-            } catch (Error err) {
-                warning (err.message);
-            }
-            return pixbuf;
         }
 
         private static Gst.Sample? get_cover_sample (Gst.TagList tag_list) {
