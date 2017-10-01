@@ -35,6 +35,8 @@ namespace PlayMyMusic {
         Gtk.SearchEntry search_entry;
         Gtk.Spinner spinner;
         Gtk.Button play_button;
+        Gtk.Button next_button;
+        Gtk.Button previous_button;
         Gtk.MenuItem menu_item_rescan;
         Gtk.Image icon_play;
         Gtk.Image icon_pause;
@@ -59,6 +61,7 @@ namespace PlayMyMusic {
             });
 
             library_manager.player_state_changed.connect ((state) => {
+                play_button.sensitive = true;
                 if (state == Gst.State.PLAYING) {
                     play_button.image = icon_pause;
                     play_button.tooltip_text = _("Pause");
@@ -66,9 +69,12 @@ namespace PlayMyMusic {
                         timeline.set_playing_track (library_manager.player.current_track);
                         headerbar.set_custom_title (timeline);
                         send_notification (library_manager.player.current_track);
+                        previous_button.sensitive = true;
+                        next_button.sensitive = true;
                     } else if (library_manager.player.current_radio != null) {
-                        play_button.sensitive = true;
                         headerbar.title = library_manager.player.current_radio.title;
+                        previous_button.sensitive = false;
+                        next_button.sensitive = false;
                     }
 
                 } else {
@@ -121,7 +127,7 @@ namespace PlayMyMusic {
             icon_play = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             icon_pause = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
 
-            var previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             previous_button.tooltip_text = _("Previous");
             previous_button.sensitive = false;
             previous_button.clicked.connect (() => {
@@ -136,7 +142,7 @@ namespace PlayMyMusic {
                 play ();
             });
 
-            var next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             next_button.tooltip_text = _("Next");
             next_button.sensitive = false;
             next_button.clicked.connect (() => {
@@ -161,16 +167,9 @@ namespace PlayMyMusic {
                             search_entry.grab_focus ();
                         }
                         content.set_visible_child_name ("radios");
-                        previous_button.sensitive = false;
-                        next_button.sensitive = false;
-
                         break;
                     default:
                         content.set_visible_child_name ("albums");
-                        if (albums_view.is_album_view_visible) {
-                            previous_button.sensitive = true;
-                            next_button.sensitive = true;
-                        }
                         break;
                 }
             });

@@ -156,11 +156,7 @@ namespace PlayMyMusic.Services {
             Gst.State pending;
             playbin.get_state (out state, out pending, (Gst.ClockTime) (Gst.SECOND));
             if (state == Gst.State.PLAYING) {
-               // if (current_track != null) {
-                    pause ();
-               // } else if (current_radio != null) {
-               //     stop ();
-               // }
+                pause ();
             } else if (state == Gst.State.PAUSED || state == Gst.State.READY) {
                 play ();
             }
