@@ -106,7 +106,13 @@ namespace PlayMyMusic.Services {
         }
 
         public void next () {
-            var next_track = current_track.album.get_next_track (current_track);
+            PlayMyMusic.Objects.Track? next_track = null;
+            if (play_mode_shuffle) {
+                next_track = current_track.album.get_shuffle_track (current_track);
+            } else {
+                next_track = current_track.album.get_next_track (current_track);
+            }
+
             if (next_track != null) {
                 set_track (next_track);
             } else {

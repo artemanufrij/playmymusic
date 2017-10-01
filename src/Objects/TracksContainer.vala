@@ -39,6 +39,7 @@ namespace PlayMyMusic.Objects {
         protected bool is_cover_loading = false;
 
         public string cover_path { get; protected set; }
+        GLib.List<int> shuffle_index = null;
 
         Gdk.Pixbuf? _cover = null;
         public Gdk.Pixbuf? cover {
@@ -70,6 +71,7 @@ namespace PlayMyMusic.Objects {
         }
 
         public Track? get_next_track (Track current) {
+            shuffle_index = null;
             int i = _tracks.index (current) + 1;
             if (i < _tracks.length ()) {
                 return _tracks.nth_data (i);
@@ -78,11 +80,33 @@ namespace PlayMyMusic.Objects {
         }
 
         public Track? get_prev_track (Track current) {
+            shuffle_index = null;
             int i = _tracks.index (current) - 1;
             if (i > - 1) {
                 return _tracks.nth_data (i);
             }
             return null;
+        }
+
+        public Track? get_shuffle_track (Track current) {
+            if (shuffle_index == null) {
+                shuffle_index = new GLib.List<int> ();
+            }
+
+            int i = _tracks.index (current);
+            shuffle_index.append (i);
+
+            if (shuffle_index.length () == _tracks.length ()) {
+                shuffle_index = null;
+                return null;
+            }
+
+            int r = GLib.Random.int_range (0, (int32)_tracks.length ());
+            while (shuffle_index.index (r) != -1) {
+                r = GLib.Random.int_range (0, (int32)_tracks.length ());
+            }
+
+            return _tracks.nth_data (r);
         }
 
         public Track? get_first_track () {

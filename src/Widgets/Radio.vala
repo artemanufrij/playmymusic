@@ -72,7 +72,7 @@ namespace PlayMyMusic.Widgets {
 
             var title = new Gtk.Label (("<b>%s</b>").printf(radio.title));
             title.use_markup = true;
-            title.halign = Gtk.Align.START;
+            title.halign = Gtk.Align.CENTER;
             content.attach (title, 0, 1);
 
             menu = new Gtk.Menu ();

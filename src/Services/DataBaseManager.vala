@@ -94,7 +94,9 @@ namespace PlayMyMusic.Services {
                     artist_id   INT         NOT NULL,
                     title       TEXT        NOT NULL,
                     year        INT         NULL,
-                    CONSTRAINT unique_album UNIQUE (artist_id, title)
+                    CONSTRAINT unique_album UNIQUE (artist_id, title),
+                    FOREIGN KEY (artist_id) REFERENCES artists (ID)
+                        ON DELETE CASCADE
                     );""";
 
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
@@ -110,7 +112,9 @@ namespace PlayMyMusic.Services {
                     track       INT         NOT NULL,
                     disc        INT         NOT NULL,
                     duration    INT         NOT NULL,
-                    CONSTRAINT unique_track UNIQUE (path)
+                    CONSTRAINT unique_track UNIQUE (path),
+                    FOREIGN KEY (album_id) REFERENCES albums (ID)
+                        ON DELETE CASCADE
                     );""";
 
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
@@ -126,6 +130,31 @@ namespace PlayMyMusic.Services {
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                     warning (errormsg);
                 }
+
+                q = """CREATE TABLE playlists (
+                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                    title       TEXT        NOT NULL,
+                    CONSTRAINT unique_track UNIQUE (title)
+                    );""";
+                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                    warning (errormsg);
+                }
+
+                q = """CREATE TABLE playlist_tracks (
+                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                    playlist_id INT         NOT NULL,
+                    track_id    INT         NOT NULL,
+                    sort        INT         NOT NULL,
+                    CONSTRAINT unique_track UNIQUE (playlist_id, track_id),
+                    FOREIGN KEY (track_id) REFERENCES tracks (ID)
+                        ON DELETE CASCADE,
+                    FOREIGN KEY (playlist_id) REFERENCES playlists (ID)
+                        ON DELETE CASCADE
+                    );""";
+                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                    warning (errormsg);
+                }
+
             }
         }
 
