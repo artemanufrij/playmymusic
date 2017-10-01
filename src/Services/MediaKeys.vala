@@ -50,12 +50,12 @@ namespace PlayMyMusic.Services {
                 warning ("Mediakeys error: %s", e.message);
             }
 
-            if(media_keys != null) {
+            if (media_keys != null) {
                 media_keys.MediaPlayerKeyPressed.connect (pressed_key);
                 try {
-                    media_keys.GrabMediaPlayerKeys (PlayMyMusic.PlayMyMusicApp.instance.APP_NAME, (uint32)0);
+                    media_keys.GrabMediaPlayerKeys (PlayMyMusic.PlayMyMusicApp.instance.application_id, (uint32)0);
                 }
-                catch(IOError err) {
+                catch (IOError err) {
                     warning ("Could not grab media player keys: %s", err.message);
                 }
             }
@@ -69,25 +69,25 @@ namespace PlayMyMusic.Services {
 
         public void release_keys() {
             try {
-                media_keys.ReleaseMediaPlayerKeys (PlayMyMusic.PlayMyMusicApp.instance.APP_NAME);
+                media_keys.ReleaseMediaPlayerKeys (PlayMyMusic.PlayMyMusicApp.instance.application_id);
             }
-            catch(IOError err) {
+            catch (IOError err) {
                 warning ("Could not release media player keys: %s", err.message);
             }
         }
 
         private void pressed_key (dynamic Object bus, string application, string key) {
-            if (application == (PlayMyMusic.PlayMyMusicApp.instance.APP_NAME)) {
-                if(key == "Previous") {
+            if (application == (PlayMyMusic.PlayMyMusicApp.instance.application_id)) {
+                if (key == "Previous") {
                     library_manager.player.prev ();
                 }
-                else if(key == "Play") {
+                else if (key == "Play") {
                     PlayMyMusic.PlayMyMusicApp.instance.mainwindow.play ();
                 }
-                else if(key == "Next") {
+                else if (key == "Next") {
                     library_manager.player.next ();
                 }
-                else if(key == "Pause") {
+                else if (key == "Pause") {
                     library_manager.player.pause ();
                 }
             }

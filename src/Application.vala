@@ -26,10 +26,10 @@
  */
 
 namespace PlayMyMusic {
-    public class PlayMyMusicApp : Gtk.Application {
+    public class PlayMyMusicApp : Granite.Application {
         public string DB_PATH { get; private set; }
         public string COVER_FOLDER { get; private set; }
-        public string APP_NAME { get { return "com.github.artemanufrij.playmymusic"; } }
+        //public string APP_NAME { get { return "com.github.artemanufrij.playmymusic"; } }
 
         PlayMyMusic.Settings settings;
 
@@ -45,12 +45,13 @@ namespace PlayMyMusic {
         }
 
         construct {
+            application_id = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
             var library_path = File.new_for_path (settings.library_location);
             if (settings.library_location == "" || !library_path.query_exists ()) {
                 settings.library_location = GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC);
             }
-            var cache_folder = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), APP_NAME);
+            var cache_folder = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), application_id);
             try {
                 File file = File.new_for_path (cache_folder);
                 if (!file.query_exists ()) {
@@ -90,7 +91,6 @@ namespace PlayMyMusic {
 }
 
 public static void main (string [] args) {
-    Gtk.init (ref args);
     Gst.init (ref args);
     var app = PlayMyMusic.PlayMyMusicApp.instance;
     app.run (args);
