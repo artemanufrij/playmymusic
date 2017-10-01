@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-01 18:37+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/Widgets/TrackTimeLine.vala:96
+msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
+msgstr ""
+
+#: ../src/Widgets/AlbumView.vala:64 ../src/Widgets/Radio.vala:79
+msgid "Set new Cover…"
+msgstr ""
+
+#: ../src/Widgets/AlbumView.vala:98
+msgid "Shuffle"
+msgstr ""
+
+#: ../src/Widgets/AlbumView.vala:120
+msgid "Repeat"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:102
+msgid "Change Music Folder"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:102
+msgid "Load music from a folder, a network or an external disk."
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:103
+msgid "Import Music"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:103
+msgid "Import music from a source into your library."
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:97
+msgid "Add a radio station"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:132
+msgid "Choose a Cover"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:146
+msgid "Add"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:168
+msgid "No Radio Stations"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:171
+msgid "Click the '+' button for adding a new Radion Station."
+msgstr ""
+
+#: ../src/Widgets/Track.vala:41
+msgid ""
+"File couldn't be found\n"
+"%s"
+msgstr ""
+
+#: ../src/Widgets/Radio.vala:95
+msgid "Remove Radio Station"
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:178
+msgid "Choose an image…"
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:180
+#: ../src/Services/LibraryManager.vala:201
+msgid "_Cancel"
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:181
+#: ../src/Services/LibraryManager.vala:202
+msgid "_Open"
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:184
+msgid "Images"
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:200
+msgid "Select a folder."
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:205
+msgid "Folder"
+msgstr ""
+
+#: ../src/MainWindow.vala:64
+msgid "Pause"
+msgstr ""
+
+#: ../src/MainWindow.vala:80 ../src/MainWindow.vala:116
+msgid "Play My Music"
+msgstr ""
+
+#: ../src/MainWindow.vala:83 ../src/MainWindow.vala:133
+msgid "Play"
+msgstr ""
+
+#: ../src/MainWindow.vala:125
+msgid "Previous"
+msgstr ""
+
+#: ../src/MainWindow.vala:140
+msgid "Next"
+msgstr ""
+
+#: ../src/MainWindow.vala:188
+msgid "Import to Library…"
+msgstr ""
+
+#: ../src/MainWindow.vala:196
+msgid "Rescan Library"
+msgstr ""
+
+#: ../src/MainWindow.vala:212
+msgid "Search Music"
+msgstr ""
+
+#: ../src/MainWindow.vala:251
+msgid "<b>%s</b> by <b>%s</b>"
+msgstr ""
