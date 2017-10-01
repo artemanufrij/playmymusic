@@ -172,6 +172,21 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        public bool open_file (string path) {
+            foreach (var child in albums.get_children ()) {
+                var album = child as PlayMyMusic.Widgets.Album;
+                foreach (var track in album.album.tracks) {
+                    if (track.path == path) {
+                        album.activate ();
+                        library_manager.play_track (track);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public void filter (string query) {
             this.query = query.strip ().down ();
             albums.invalidate_filter ();

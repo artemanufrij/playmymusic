@@ -42,8 +42,16 @@ namespace PlayMyMusic.Services {
 
         public PlayMyMusic.Objects.Track current_track { get; private set; }
         public PlayMyMusic.Objects.Radio current_radio { get; private set; }
+        public File current_file { get; private set; }
         public bool play_mode_repeat { get; set; default = false; }
         public bool play_mode_shuffle { get; set; default = false; }
+
+        int64 _duration = 0;
+        public int64 duration {
+            get {
+                return _duration;
+            }
+        }
 
         public signal void state_changed (Gst.State state);
 
@@ -66,6 +74,7 @@ namespace PlayMyMusic.Services {
                 return;
             }
             current_track = null;
+            current_file = null;
             current_radio = radio;
             stop ();
             playbin.uri = radio.file;
@@ -78,6 +87,7 @@ namespace PlayMyMusic.Services {
             }
 
             current_radio = null;
+            current_file = null;
             current_track = track;
 
             var file = File.new_for_path (track.path);
@@ -91,8 +101,20 @@ namespace PlayMyMusic.Services {
             play ();
         }
 
+        public void set_file (File file) {
+            current_radio = null;
+            current_track = null;
+            current_file = file;
+
+            stdout.printf (file.get_path ());
+
+            stop ();
+            playbin.uri = file.get_uri ();
+            play ();
+        }
+
         public void play () {
-            if (current_track != null || current_radio != null) {
+            if (current_track != null || current_radio != null || current_file != null) {
                 state_changed (Gst.State.PLAYING);
             }
         }
@@ -188,9 +210,9 @@ namespace PlayMyMusic.Services {
         public unowned double get_position_progress () {
             Gst.Format fmt = Gst.Format.TIME;
             int64 current = 0;
-            double duration = (double)1000 / current_track.duration;
-            if (this.playbin.query_position (fmt, out current)) {
-                int p = (int)(duration * current);
+
+            if (this.playbin.query_position (fmt, out current) && this.playbin.query_duration (fmt, out _duration)) {
+                int p = (int)((double)1000 / duration * current);
                 return (double)p;
             }
             return -1;

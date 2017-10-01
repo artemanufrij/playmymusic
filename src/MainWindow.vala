@@ -71,12 +71,16 @@ namespace PlayMyMusic {
                         send_notification (library_manager.player.current_track);
                         previous_button.sensitive = true;
                         next_button.sensitive = true;
+                    } else if (library_manager.player.current_file != null) {
+                        timeline.set_playing_file (library_manager.player.current_file);
+                        headerbar.set_custom_title (timeline);
+                        previous_button.sensitive = false;
+                        next_button.sensitive = false;
                     } else if (library_manager.player.current_radio != null) {
                         headerbar.title = library_manager.player.current_radio.title;
                         previous_button.sensitive = false;
                         next_button.sensitive = false;
                     }
-
                 } else {
                     if (state == Gst.State.PAUSED) {
                         timeline.pause_playing ();
@@ -263,6 +267,12 @@ namespace PlayMyMusic {
                 library_manager.player.toggle_playing ();
             } else {
                 albums_view.play_selected_album ();
+            }
+        }
+
+        public void open_file (File file) {
+            if (!albums_view.open_file (file.get_path ())) {
+                library_manager.player.set_file (file);
             }
         }
     }

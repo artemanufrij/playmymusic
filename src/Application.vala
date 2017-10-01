@@ -43,9 +43,11 @@ namespace PlayMyMusic {
         }
 
         construct {
-            application_id = "com.github.artemanufrij.playmymusic";
-            program_name = "Play My Music";
+            this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
+            this.application_id = "com.github.artemanufrij.playmymusic";
+            this.program_name = "Play My Music";
             settings = PlayMyMusic.Settings.get_default ();
+
             var library_path = File.new_for_path (settings.library_location);
             if (settings.library_location == "" || !library_path.query_exists ()) {
                 settings.library_location = GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC);
@@ -85,11 +87,18 @@ namespace PlayMyMusic {
             }
             mainwindow.present ();
         }
+
+        public override void open (File[] files, string hint) {
+            activate ();
+            if (files [0].query_exists ()) {
+                mainwindow.open_file (files [0]);
+            }
+        }
     }
 }
 
-public static void main (string [] args) {
+public static int main (string [] args) {
     Gst.init (ref args);
     var app = PlayMyMusic.PlayMyMusicApp.instance;
-    app.run (args);
+    return app.run (args);
 }

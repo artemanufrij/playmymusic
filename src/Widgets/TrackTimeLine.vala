@@ -34,6 +34,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Grid content;
 
         uint timer = 0;
+        int64 duration = 0;
 
         PlayMyMusic.Objects.Track current_track;
 
@@ -65,7 +66,7 @@ namespace PlayMyMusic.Widgets {
             timeline.can_focus = false;
             timeline.change_value.connect ((scroll, new_value) => {
                 if (scroll == Gtk.ScrollType.JUMP) {
-                    var seek_position = (int64)(current_track.duration / 1000 * new_value);
+                    var seek_position = (int64)(duration / 1000 * new_value);
                     PlayMyMusic.Services.Player.instance.seek_to_position (seek_position);
                 }
                 return false;
@@ -87,7 +88,28 @@ namespace PlayMyMusic.Widgets {
         public void pause_playing () {
             if (timer != 0) {
                 Source.remove (timer);
+                timer = 0;
             }
+        }
+
+        public void set_playing_file (File file) {
+            current_track = null;
+            playing_track.label = file.get_basename ();
+
+            end_time.label = PlayMyMusic.Utils.get_formated_duration (duration);
+            timer = GLib.Timeout.add (250, () => {
+                var pos_rel = PlayMyMusic.Services.Player.instance.get_position_progress ();
+                if (pos_rel < 0) {
+                    return true;
+                }
+                timeline.change_value (Gtk.ScrollType.NONE, pos_rel);
+                duration = PlayMyMusic.Services.Player.instance.duration;
+                end_time.label = PlayMyMusic.Utils.get_formated_duration (duration);
+
+                var pos_abs = (uint64)(duration * (pos_rel / 1000));
+                current_time.label = PlayMyMusic.Utils.get_formated_duration (pos_abs);
+                return true;
+            });
         }
 
         public void set_playing_track (PlayMyMusic.Objects.Track track) {
@@ -97,6 +119,7 @@ namespace PlayMyMusic.Widgets {
                 track.album.title.replace ("&", "&amp;"),
                 track.album.artist.name.replace ("&", "&amp;"));
 
+            duration = (int64)track.duration;
             end_time.label = PlayMyMusic.Utils.get_formated_duration (track.duration);
 
             timer = GLib.Timeout.add (250, () => {
