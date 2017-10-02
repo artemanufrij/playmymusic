@@ -82,7 +82,7 @@ namespace PlayMyMusic.Widgets {
                 if (new_cover != null) {
                     try {
                         var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                        this.artist.set_new_cover (pixbuf, 256);
+                        this.artist.set_new_cover (pixbuf, 128);
                     } catch (Error err) {
                         warning (err.message);
                     }
