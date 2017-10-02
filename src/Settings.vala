@@ -39,6 +39,7 @@ namespace PlayMyMusic {
         public bool window_maximized { get; set; }
         public bool shuffle_mode { get; set; }
         public bool repeat_mode { get; set; }
+        //public string [] artists { get; set; }
         public string [] covers { get; set; }
         public string library_location { get; set; }
         public int view_index { get; set; }

@@ -26,6 +26,9 @@
  */
 
 namespace PlayMyMusic.Services {
+
+    public enum PlayMode { ALBUM, ARTIST, PLAYLIST }
+
     public class Player : GLib.Object {
         static Player _instance = null;
         public static Player instance {
@@ -37,14 +40,15 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        PlayMyMusic.Settings settings;
+
         dynamic Gst.Element playbin;
         Gst.Bus bus;
 
         public PlayMyMusic.Objects.Track current_track { get; private set; }
         public PlayMyMusic.Objects.Radio current_radio { get; private set; }
         public File current_file { get; private set; }
-        public bool play_mode_repeat { get; set; default = false; }
-        public bool play_mode_shuffle { get; set; default = false; }
+        private PlayMode play_mode;
 
         int64 _duration = 0;
         public int64 duration {
@@ -56,6 +60,7 @@ namespace PlayMyMusic.Services {
         public signal void state_changed (Gst.State state);
 
         private Player () {
+            settings = PlayMyMusic.Settings.get_default ();
             playbin = Gst.ElementFactory.make ("playbin", "play");
 
             bus = playbin.get_bus ();
@@ -81,10 +86,12 @@ namespace PlayMyMusic.Services {
             play ();
         }
 
-        public void set_track (PlayMyMusic.Objects.Track? track) {
+        public void set_track (PlayMyMusic.Objects.Track? track, PlayMode play_mode) {
             if (track == current_track || track == null) {
                 return;
             }
+
+            this.play_mode = play_mode;
 
             current_radio = null;
             current_file = null;
@@ -128,49 +135,71 @@ namespace PlayMyMusic.Services {
         }
 
         public void next () {
-            PlayMyMusic.Objects.Track? next_track = null;
-            if (play_mode_shuffle) {
-                next_track = current_track.album.get_shuffle_track (current_track);
-            } else {
-                next_track = current_track.album.get_next_track (current_track);
+            if (current_track == null) {
+                return;
             }
 
-            if (next_track != null) {
-                set_track (next_track);
-            } else {
-                if (play_mode_repeat) {
-                    if (play_mode_shuffle) {
+            PlayMyMusic.Objects.Track? next_track = null;
+
+            if (play_mode == PlayMode.ALBUM) {
+                if (settings.shuffle_mode) {
+                    next_track = current_track.album.get_shuffle_track (current_track);
+                } else {
+                    next_track = current_track.album.get_next_track (current_track);
+                }
+
+                if (next_track == null && settings.repeat_mode) {
+                    if (settings.shuffle_mode) {
                         next_track = current_track.album.get_shuffle_track (null);
                     } else {
                         next_track = current_track.album.get_first_track ();
                     }
-                    if (next_track != null) {
-                        set_track (next_track);
-                    } else {
-                        current_track = null;
-                    }
-                } else {
-                    current_track = null;
                 }
+            } else if (play_mode == PlayMode.ARTIST) {
+                if (settings.shuffle_mode) {
+                    next_track = current_track.album.artist.get_shuffle_track (current_track);
+                } else {
+                    next_track = current_track.album.artist.get_next_track (current_track);
+                }
+
+                if (next_track == null && settings.repeat_mode) {
+                    if (settings.shuffle_mode) {
+                        next_track = current_track.album.artist.get_shuffle_track (null);
+                    } else {
+                        next_track = current_track.album.artist.get_first_track ();
+                    }
+                }
+            }
+
+            if (next_track != null) {
+                set_track (next_track, play_mode);
             }
         }
 
         public void prev () {
-            var prev_track = current_track.album.get_prev_track (current_track);
+            if (current_track == null) {
+                return;
+            }
+
+            PlayMyMusic.Objects.Track? prev_track = null;
+            if (play_mode == PlayMode.ALBUM) {
+                prev_track = current_track.album.get_prev_track (current_track);
+            } else if (play_mode == PlayMode.ARTIST) {
+                prev_track = current_track.album.artist.get_prev_track (current_track);
+            }
             if (prev_track != null) {
-                set_track (prev_track);
-            } else {
-                current_track = null;
+                set_track (prev_track, play_mode);
             }
         }
 
         public void reset_playing () {
-            if (current_track != null || current_radio != null) {
+            if (current_track != null || current_radio != null || current_file != null) {
                 state_changed (Gst.State.READY);
                 state_changed (Gst.State.NULL);
             }
             current_track = null;
             current_radio = null;
+            current_file = null;
         }
 
         public void toggle_playing () {

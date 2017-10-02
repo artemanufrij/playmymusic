@@ -39,6 +39,7 @@ namespace PlayMyMusic.Services {
 
         public signal void tag_discover_started ();
         public signal void tag_discover_finished ();
+        public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
@@ -72,6 +73,7 @@ namespace PlayMyMusic.Services {
             tg_manager.discover_finished.connect ( () => { tag_discover_finished (); });
 
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
+            db_manager.added_new_artist.connect ( (artist) => { added_new_artist (artist); });
             db_manager.added_new_album.connect ( (album) => { added_new_album (album); });
             db_manager.added_new_radio.connect ( (radio) => { added_new_radio (radio); });
             db_manager.removed_radio.connect ( (radio) => {
@@ -162,8 +164,8 @@ namespace PlayMyMusic.Services {
         }
 
         //PLAYER REGION
-        public void play_track (PlayMyMusic.Objects.Track track) {
-            player.set_track (track);
+        public void play_track (PlayMyMusic.Objects.Track track, PlayMode play_mode) {
+            player.set_track (track, play_mode);
         }
 
         public void play_radio (PlayMyMusic.Objects.Radio radio) {

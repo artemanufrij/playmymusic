@@ -26,13 +26,11 @@
  */
 
 namespace PlayMyMusic.Widgets {
-    public class AlbumView : Gtk.Grid {
+    public class ArtistView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Services.Player player;
         PlayMyMusic.Settings settings;
 
-        Gtk.Menu menu;
-        Gtk.Image cover;
         Gtk.ListBox tracks;
 
         Gtk.Image icon_repeat_on;
@@ -42,7 +40,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Button repeat_button;
         Gtk.Button shuffle_button;
 
-        public PlayMyMusic.Objects.Album current_album { get; private set; }
+        public PlayMyMusic.Objects.Artist current_artist { get; private set; }
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
@@ -77,41 +75,21 @@ namespace PlayMyMusic.Widgets {
             });
         }
 
-        public AlbumView () {
+        public ArtistView () {
+
             build_ui ();
         }
 
         private void build_ui () {
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            content.vexpand = true;
-            var event_box = new Gtk.EventBox ();
-            event_box.button_press_event.connect (show_context_menu);
-
-            cover = new Gtk.Image ();
-            event_box.add (cover);
-
-            menu = new Gtk.Menu ();
-            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
-            menu_new_cover.activate.connect (() => {
-                var new_cover = library_manager.choose_new_cover ();
-                if (new_cover != null) {
-                    try {
-                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                        current_album.set_new_cover (pixbuf, 256);
-                    } catch (Error err) {
-                        warning (err.message);
-                    }
-                }
-            });
-            menu.append (menu_new_cover);
-            menu.show_all ();
-
+            content.expand = true;
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
+            tracks_scroll.expand = true;
 
             tracks = new Gtk.ListBox ();
             tracks.set_sort_func (tracks_sort_func);
-            tracks.selected_rows_changed.connect (play_track);
             tracks_scroll.add (tracks);
+            tracks.selected_rows_changed.connect (play_track);
 
             var action_toolbar = new Gtk.ActionBar ();
             action_toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR);
@@ -149,7 +127,6 @@ namespace PlayMyMusic.Widgets {
             action_toolbar.pack_end (repeat_button);
             action_toolbar.pack_end (shuffle_button);
 
-            content.pack_start (event_box, false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
 
@@ -158,83 +135,73 @@ namespace PlayMyMusic.Widgets {
             this.attach (content, 1, 0);
         }
 
-        public void mark_playing_track (Objects.Track? track) {
-            tracks.unselect_all ();
-            if (track == null) {
-                return;
+        public void show_artist_viewer (PlayMyMusic.Objects.Artist artist) {
+            if (current_artist != null) {
+                current_artist.track_added.disconnect (add_track);
             }
-            foreach (var item in tracks.get_children ()) {
-                if ((item as Widgets.Track).track.ID == track.ID) {
-                    (item as Widgets.Track).activate ();
-                }
-            }
-        }
 
-        public void play_album () {
-            Objects.Track? track;
-
-            if (settings.shuffle_mode) {
-                track = current_album.get_shuffle_track (null);
-            } else {
-                track = current_album.get_first_track ();
-            }
-            library_manager.play_track (track, Services.PlayMode.ALBUM);
-        }
-
-        private void play_track () {
-            var selected_row = tracks.get_selected_row ();
-            if (selected_row != null) {
-                library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.ALBUM);
-            }
-        }
-
-        public void show_album_viewer (PlayMyMusic.Objects.Album album) {
-            if (current_album != null) {
-                current_album.track_added.disconnect (add_track);
-                current_album.cover_changed.disconnect (change_cover);
-            }
-            current_album = album;
+            current_artist = artist;
             this.tracks.@foreach ((child) => {
                 this.tracks.remove (child);
             });
-            if (album.cover == null) {
-                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
-                cover.height_request = 256;
-                cover.width_request = 256;
-            } else {
-                cover.pixbuf = album.cover;
-            }
             this.show_all ();
-            foreach (var track in album.tracks) {
+            foreach (var track in artist.tracks) {
                 add_track (track);
             }
-            current_album.track_added.connect (add_track);
-            current_album.cover_changed.connect (change_cover);
+            current_artist.track_added.connect (add_track);
         }
 
-        private void change_cover () {
-            cover.pixbuf = current_album.cover;
+        public void reset () {
+            foreach (var child in tracks.get_children ()) {
+                tracks.remove (child);
+            }
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
             var item = new PlayMyMusic.Widgets.Track (track);
             this.tracks.add (item);
             item.show_all ();
-            item.hide_album_cover ();
         }
 
-        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
-            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
-                menu.popup (null, null, null, evt.button, evt.time);
-                return true;
+        private void play_track () {
+            var selected_row = tracks.get_selected_row ();
+            if (selected_row != null) {
+                library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.ARTIST);
             }
-            return false;
+        }
+
+        public void play_artist () {
+            Objects.Track? track;
+            if (settings.shuffle_mode) {
+                track = current_artist.get_shuffle_track (null);
+            } else {
+                track = current_artist.get_first_track ();
+            }
+            library_manager.play_track (track, Services.PlayMode.ARTIST);
+        }
+
+        public void mark_playing_track (Objects.Track? track) {
+            tracks.unselect_all ();
+            if (track == null) {
+                return;
+            }
+            foreach (var child in tracks.get_children ()) {
+                if ((child as Widgets.Track).track.ID == track.ID) {
+                    (child as Widgets.Track).activate ();
+                }
+            }
         }
 
         private int tracks_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
             var item1 = (Widgets.Track)child1;
             var item2 = (Widgets.Track)child2;
             if (item1 != null && item2 != null) {
+                if (item1.track.album.year != item2.track.album.year) {
+                    return item1.track.album.year - item2.track.album.year;
+                }
+                if (item1.track.album.title != item2.track.album.title) {
+                    return item1.track.album.title.collate (item2.track.album.title);
+                }
                 if (item1.disc_number != item2.disc_number){
                     return item1.disc_number - item2.disc_number;
                 }

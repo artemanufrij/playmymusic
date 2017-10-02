@@ -33,6 +33,7 @@ namespace PlayMyMusic.Widgets {
         public int disc_number { get { return track.disc; } }
 
         Gtk.Box content;
+        Gtk.Image cover;
 
         public Track (PlayMyMusic.Objects.Track track ) {
             this.track = track;
@@ -53,6 +54,17 @@ namespace PlayMyMusic.Widgets {
             content.margin = 6;
             content.halign = Gtk.Align.FILL;
 
+            cover = new Gtk.Image ();
+            cover.get_style_context ().add_class ("card");
+            cover.halign = Gtk.Align.CENTER;
+            cover.tooltip_text = this.track.album.title;
+            if (this.track.album.cover == null) {
+                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DND);
+            } else {
+                cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
+            }
+            content.pack_start (cover, false, false, 0);
+
             var title = new Gtk.Label (this.track.title);
             title.xalign = 0;
             title.ellipsize = Pango.EllipsizeMode.END;
@@ -63,6 +75,10 @@ namespace PlayMyMusic.Widgets {
             content.pack_end (duration, false, false, 0);
             this.add (content);
             this.halign = Gtk.Align.FILL;
+        }
+
+        public void hide_album_cover () {
+            cover.hide ();
         }
     }
 }

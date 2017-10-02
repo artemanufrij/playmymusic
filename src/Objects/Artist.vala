@@ -26,9 +26,16 @@
  */
 
 namespace PlayMyMusic.Objects {
-    public class Artist : GLib.Object {
-        public int ID { get; set; }
-        public string name { get; set; }
+    public class Artist : TracksContainer {
+        public int ID {
+            get {
+                return _ID;
+            } set {
+                _ID = value;
+                this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d.jpg").printf(this.ID));
+                load_cover_async.begin ();
+            }
+        }
 
         GLib.List<Album> _albums;
         public GLib.List<Album> albums {
@@ -37,6 +44,24 @@ namespace PlayMyMusic.Objects {
                     _albums = PlayMyMusic.Services.LibraryManager.instance.db_manager.get_album_collection (this);
                 }
                 return _albums;
+            }
+        }
+
+        public new GLib.List<Track> tracks {
+            get {
+                if (_tracks == null) {
+                    _tracks = new GLib.List<Track> ();
+                    foreach (var album in albums) {
+                        foreach (var track in album.tracks) {
+                            add_track (track);
+                        }
+                        album.track_added.connect ((track) => {
+                            add_track (track);
+                            load_cover_async.begin ();
+                        });
+                    }
+                }
+                return _tracks;
             }
         }
 
@@ -49,6 +74,10 @@ namespace PlayMyMusic.Objects {
             lock (this._albums) {
                 this._albums.append (album);
             }
+            album.track_added.connect ((track) => {
+                add_track (track);
+            });
+            load_cover_async.begin ();
         }
 
         public void remove_album (Album album) {
@@ -66,6 +95,74 @@ namespace PlayMyMusic.Objects {
                 }
                 return return_value;
             }
+        }
+
+        private async void load_cover_async () {
+            if (is_cover_loading || cover != null || this.ID == 0) {
+                return;
+            }
+            is_cover_loading = true;
+            load_or_create_cover.begin ((obj, res) => {
+                Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
+                if (return_value != null) {
+                    this.cover = return_value;
+                }
+                is_cover_loading = false;
+            });
+        }
+
+        private async Gdk.Pixbuf? load_or_create_cover () {
+            SourceFunc callback = load_or_create_cover.callback;
+
+            Gdk.Pixbuf? return_value = null;
+            new Thread<void*> (null, () => {
+                var cover_full_path = File.new_for_path (cover_path);
+                if (cover_full_path.query_exists ()) {
+                    try {
+                        return_value = new Gdk.Pixbuf.from_file (cover_path);
+                        Idle.add ((owned) callback);
+                        return null;
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+
+                string[] cover_files = {"artist.jpg", "Artist.jpg", "artist.png", "Artist.png", "interpeter.jpg", "Interpeter.jpg", "interpeter.png", "Interpeter.png"}; //PlayMyMusic.Settings.get_default ().covers;
+
+                foreach (var track in tracks) {
+                    var dir_name = GLib.Path.get_dirname (track.path);
+                    foreach (var cover_file in cover_files) {
+                        var cover_path = GLib.Path.build_filename (dir_name, cover_file);
+                        cover_full_path = File.new_for_path (cover_path);
+                        if (cover_full_path.query_exists ()) {
+                            try {
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 128);
+                                Idle.add ((owned) callback);
+                                return null;
+                            } catch (Error err) {
+                                warning (err.message);
+                            }
+                        }
+                        var sub_dir_name = GLib.Path.get_dirname (dir_name);
+                        cover_path = GLib.Path.build_filename (sub_dir_name, cover_file);
+                        cover_full_path = File.new_for_path (cover_path);
+                        if (cover_full_path.query_exists ()) {
+                            try {
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 128);
+                                Idle.add ((owned) callback);
+                                return null;
+                            } catch (Error err) {
+                                warning (err.message);
+                            }
+                        }
+                    }
+                }
+
+                Idle.add ((owned) callback);
+                return null;
+            });
+            yield;
+            return return_value;
         }
     }
 }

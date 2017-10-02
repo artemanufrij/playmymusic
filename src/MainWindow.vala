@@ -43,6 +43,7 @@ namespace PlayMyMusic {
 
         Granite.Widgets.ModeButton view_mode;
         Widgets.Views.AlbumsView albums_view;
+        Widgets.Views.ArtistsView artists_view;
         Widgets.TrackTimeLine timeline;
 
         Notification desktop_notification;
@@ -104,7 +105,9 @@ namespace PlayMyMusic {
             }
             build_ui ();
 
-            albums_view.load_albums_from_database();
+            load_content_from_database.begin ((obj, res) => {
+                library_manager.scan_local_library (settings.library_location);
+            });
 
             this.configure_event.connect ((event) => {
                 settings.window_width = event.width;
@@ -162,11 +165,15 @@ namespace PlayMyMusic {
             view_mode.valign = Gtk.Align.CENTER;
             view_mode.margin_left = 12;
             view_mode.append_icon ("view-grid-symbolic", Gtk.IconSize.BUTTON);
+            view_mode.append_icon ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
             //view_mode.append_icon ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
             view_mode.append_icon ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
                     case 1:
+                        content.set_visible_child_name ("artists");
+                        break;
+                    case 2:
                         if (library_manager.player.current_radio == null) {
                             search_entry.grab_focus ();
                         }
@@ -209,6 +216,7 @@ namespace PlayMyMusic {
             menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));
             menu_item_rescan.activate.connect (() => {
                 albums_view.reset ();
+                artists_view.reset ();
                 library_manager.rescan_library ();
             });
 
@@ -243,7 +251,15 @@ namespace PlayMyMusic {
 
             var radios_view = new Widgets.Views.RadiosView ();
 
+            artists_view = new Widgets.Views.ArtistsView ();
+            artists_view.artist_selected.connect (() => {
+                previous_button.sensitive = true;
+                play_button.sensitive = true;
+                next_button.sensitive = true;
+            });
+
             content.add_named (albums_view, "albums");
+            content.add_named (artists_view, "artists");
             content.add_named (radios_view, "radios");
             this.add (content);
 
@@ -273,11 +289,27 @@ namespace PlayMyMusic {
             }
         }
 
+        private async void load_content_from_database () {
+            foreach (var artist in library_manager.artists) {
+                artists_view.add_artist (artist);
+                foreach (var album in artist.albums) {
+                    albums_view.add_album (album);
+                }
+            }
+        }
+
         public void play () {
-            if (library_manager.player.current_track != null || library_manager.player.current_radio != null) {
+            if (library_manager.player.current_track != null || library_manager.player.current_radio != null || library_manager.player.current_file != null) {
                 library_manager.player.toggle_playing ();
             } else {
-                albums_view.play_selected_album ();
+                switch (view_mode.selected) {
+                    case 0:
+                        albums_view.play_selected_album ();
+                        break;
+                    case 1:
+                        artists_view.play_selected_artist ();
+                        break;
+                }
             }
         }
 

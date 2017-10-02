@@ -34,8 +34,9 @@ namespace PlayMyMusic.Objects {
         public signal void cover_changed ();
 
         public string title { get; set; }
+        public string name { get; set; }
         protected int _ID = 0;
-        protected GLib.List<Track> _tracks;
+        protected GLib.List<Track> _tracks = null;
         protected bool is_cover_loading = false;
 
         public string cover_path { get; protected set; }
@@ -47,14 +48,12 @@ namespace PlayMyMusic.Objects {
                 return _cover;
             } protected set {
                 _cover = value;
-                is_cover_loading = false;
                 cover_changed ();
             }
         }
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            _tracks = new GLib.List<Track> ();
         }
 
         public Track? get_track_by_path (string path) {
@@ -89,7 +88,7 @@ namespace PlayMyMusic.Objects {
         }
 
         public Track? get_shuffle_track (Track? current) {
-            if (shuffle_index == null) {
+            if (shuffle_index == null || current == null) {
                 shuffle_index = new GLib.List<int> ();
             }
 
@@ -98,8 +97,7 @@ namespace PlayMyMusic.Objects {
                 shuffle_index.append (i);
             }
 
-            if (shuffle_index.length () == _tracks.length ()) {
-                shuffle_index = null;
+            if (shuffle_index.length () >= _tracks.length ()) {
                 return null;
             }
 
@@ -124,6 +122,12 @@ namespace PlayMyMusic.Objects {
             lock (_tracks) {
                 this._tracks.append (track);
                 _tracks.sort_with_data ((a, b) => {
+                    if (a.album.year != b.album.year) {
+                        return a.album.year - b.album.year;
+                    }
+                    if (a.album.title != b.album.title) {
+                        return a.album.title.collate (b.album.title);
+                    }
                     if (a.disc != b.disc) {
                         return a.disc - b.disc;
                     }
@@ -136,12 +140,12 @@ namespace PlayMyMusic.Objects {
             track_added (track);
         }
 
-        public void set_new_cover (Gdk.Pixbuf cover) {
-            this.cover = save_cover (cover);
+        public void set_new_cover (Gdk.Pixbuf cover, int size) {
+            this.cover = save_cover (cover, size);
         }
 
-        protected Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {
-            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 256);
+        protected Gdk.Pixbuf? save_cover (Gdk.Pixbuf p, int size) {
+            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, size);
             try {
                 pixbuf.save (cover_path, "jpeg", "quality", "100");
             } catch (Error err) {

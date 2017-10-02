@@ -36,7 +36,7 @@ namespace PlayMyMusic.Services {
                 return _instance;
             }
         }
-
+        public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
@@ -214,6 +214,7 @@ namespace PlayMyMusic.Services {
 
                 if (stmt.step () == Sqlite.ROW) {
                     artist.ID = stmt.column_int (0);
+                    added_new_artist (artist);
                     stdout.printf ("Artist ID: %d\n", artist.ID);
                     lock (_artists) {
                         _artists.append (artist);

@@ -37,7 +37,6 @@ namespace PlayMyMusic.Widgets.Views {
         Granite.Widgets.Welcome welcome;
 
         string query = "";
-        int lock_dummy;
 
         public bool is_album_view_visible {
             get {
@@ -51,19 +50,7 @@ namespace PlayMyMusic.Widgets.Views {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.added_new_album.connect((album) => {
-                var a = new Widgets.Album (album);
-                a.show_all ();
-                lock (lock_dummy) {
-                    albums.add (a);
-                }
-            });
-            library_manager.player_state_changed.connect ((state) => {
-                var curret_track = library_manager.player.current_track;
-                if (state == Gst.State.PLAYING && curret_track != null) {
-                    album_view.mark_playing_track (curret_track);
-                } else if (state == Gst.State.NULL || curret_track == null) {
-                    album_view.mark_playing_track (null);
-                }
+                add_album (album);
             });
         }
 
@@ -127,14 +114,20 @@ namespace PlayMyMusic.Widgets.Views {
             this.show_all ();
         }
 
+        public void add_album (Objects.Album album) {
+            var a = new Widgets.Album (album);
+            a.show_all ();
+            albums.add (a);
+        }
+
         public void hide_album_details () {
             album_view.hide ();
         }
 
         public void reset () {
             album_view.hide ();
-            foreach (var item in albums.get_children ()) {
-                albums.remove (item);
+            foreach (var child in albums.get_children ()) {
+                albums.remove (child);
             }
             if (albums.get_children ().length () == 0) {
                 stack.set_visible_child (welcome);
@@ -151,24 +144,8 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void play_selected_album () {
-            if (album_view.visible) {
+            if (album_view.current_album != null) {
                 album_view.play_album ();
-            }
-        }
-
-        public void load_albums_from_database () {
-            show_albums_from_database.begin ((obj, res) => {
-                library_manager.scan_local_library (settings.library_location);
-            });
-        }
-
-        private async void show_albums_from_database () {
-            foreach (var artist in library_manager.artists) {
-                foreach (var album in artist.albums) {
-                    var a = new Widgets.Album (album);
-                    a.show_all ();
-                    albums.add (a);
-                }
             }
         }
 
@@ -178,7 +155,7 @@ namespace PlayMyMusic.Widgets.Views {
                 foreach (var track in album.album.tracks) {
                     if (track.path == path) {
                         album.activate ();
-                        library_manager.play_track (track);
+                        library_manager.play_track (track , Services.PlayMode.ALBUM);
                         return true;
                     }
                 }
@@ -222,7 +199,7 @@ namespace PlayMyMusic.Widgets.Views {
             var item2 = (PlayMyMusic.Widgets.Album)child2;
             if (item1 != null && item2 != null) {
                 if (item1.album.artist.name == item2.album.artist.name) {
-                    if (item1.year > 0 && item2.year > 0) {
+                    if (item1.year != item2.year) {
                         return item1.year - item2.year;
                     }
                     return item1.title.collate (item2.title);

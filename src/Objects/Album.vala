@@ -83,8 +83,8 @@ namespace PlayMyMusic.Objects {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
                     this.cover = return_value;
-                    is_cover_loading = false;
                 }
+                is_cover_loading = false;
             });
         }
 
@@ -113,7 +113,7 @@ namespace PlayMyMusic.Objects {
                         cover_full_path = File.new_for_path (cover_path);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path));
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
                                 Idle.add ((owned) callback);
                                 return null;
                             } catch (Error err) {
@@ -161,7 +161,7 @@ namespace PlayMyMusic.Objects {
                             pixbuf = get_pixbuf_from_buffer (buffer);
                             if (pixbuf != null) {
                                 discoverer.stop ();
-                                return_value = save_cover (pixbuf);
+                                return_value = save_cover (pixbuf, 256);
                                 Idle.add ((owned) callback);
                                 return null;
                             }
