@@ -120,6 +120,9 @@ namespace PlayMyMusic.Objects {
 
         protected void add_track (Track track) {
             lock (_tracks) {
+                if (_tracks == null) {
+                    _tracks = new GLib.List<Track> ();
+                }
                 this._tracks.append (track);
                 _tracks.sort_with_data ((a, b) => {
                     if (a.album.year != b.album.year) {

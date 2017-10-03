@@ -33,9 +33,12 @@ namespace PlayMyMusic.Objects {
             } set {
                 _ID = value;
                 this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d.jpg").printf(this.ID));
+                this.background_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d_background.png").printf(this.ID));
                 load_cover_async.begin ();
             }
         }
+
+        public string background_path { get; protected set; }
 
         GLib.List<Album> _albums;
         public GLib.List<Album> albums {
@@ -65,8 +68,13 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        bool is_loading = false;
+
         construct {
             this._albums = new GLib.List<Album> ();
+            this.cover_changed.connect (() => {
+                make_background ();
+            });
         }
 
         public void add_album (Album album) {
@@ -136,7 +144,7 @@ namespace PlayMyMusic.Objects {
                         cover_full_path = File.new_for_path (cover_path);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 128);
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
                                 Idle.add ((owned) callback);
                                 return null;
                             } catch (Error err) {
@@ -149,7 +157,7 @@ namespace PlayMyMusic.Objects {
                         cover_full_path = File.new_for_path (cover_path);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 128);
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
                                 Idle.add ((owned) callback);
                                 return null;
                             } catch (Error err) {
@@ -163,7 +171,7 @@ namespace PlayMyMusic.Objects {
                         cover_full_path = File.new_for_path (cover_path);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 128);
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
                                 Idle.add ((owned) callback);
                                 return null;
                             } catch (Error err) {
@@ -178,6 +186,61 @@ namespace PlayMyMusic.Objects {
             });
             yield;
             return return_value;
+        }
+
+        public void make_background () {
+            if (this.cover == null || is_loading) {
+                return;
+            }
+
+            is_loading = true;
+
+            Gdk.Pixbuf? return_value = null;
+            new Thread<void*> (null, () => {
+                File f = File.new_for_path (this.background_path);
+                if (f.query_exists ()) {
+                    is_loading = false;
+                    return null;
+                }
+
+                Gdk.Pixbuf image = this.cover;
+
+                var screen = Gdk.Screen.get_default ();
+                int primary_monitor = screen.get_primary_monitor ();
+                int monitor_scale = screen.get_monitor_scale_factor (primary_monitor);
+                Gdk.Rectangle geometry;
+                screen.get_monitor_geometry (primary_monitor, out geometry);
+
+                var H = geometry.height * monitor_scale;
+                var W = 1400;
+
+                int width = image.get_width();
+                int height = image.get_height();
+
+                var surface = new Granite.Drawing.BufferSurface (W, W);
+
+                double zoom;
+
+                double zoomh = H / (double) height;
+                double zoomw = W / (double) width;
+
+                if (zoomw >= zoomh) {
+                    zoom = zoomw;
+                } else {
+                    zoom = zoomh;
+                }
+
+                Gdk.cairo_set_source_pixbuf (surface.context, image, 0, 0);
+                surface.context.scale (zoom, zoom);
+                surface.context.paint ();
+
+                surface.exponential_blur (3);
+                surface.context.paint ();
+
+                surface.surface.write_to_png (this.background_path);
+                is_loading = false;
+                return null;
+            });
         }
     }
 }

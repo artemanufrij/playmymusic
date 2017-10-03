@@ -120,6 +120,7 @@ namespace PlayMyMusic {
             this.configure_event.connect ((event) => {
                 settings.window_width = event.width;
                 settings.window_height = event.height;
+                artists_view.change_cover ();
                 return false;
             });
 

@@ -45,7 +45,7 @@ namespace PlayMyMusic.Widgets {
             build_ui ();
 
             this.artist.cover_changed.connect (() => {
-                cover.pixbuf = this.artist.cover;
+                cover.pixbuf = this.artist.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             });
         }
 
@@ -68,7 +68,7 @@ namespace PlayMyMusic.Widgets {
                 cover.height_request = 128;
                 cover.width_request = 128;
             } else {
-                cover.pixbuf = this.artist.cover;
+                cover.pixbuf = this.artist.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
             var name = new Gtk.Label (("<span color='#666666'><b>%s</b></span>").printf(this.name.replace ("&", "&amp;")));

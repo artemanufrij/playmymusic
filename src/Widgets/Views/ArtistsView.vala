@@ -104,6 +104,10 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        public void change_cover () {
+            artist_view.change_cover ();
+        }
+
         private void show_artist_viewer (Gtk.FlowBoxChild item) {
             var artist = (item as PlayMyMusic.Widgets.Artist);
             artist_view.show_artist_viewer (artist.artist);

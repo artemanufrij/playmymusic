@@ -42,6 +42,12 @@ namespace PlayMyMusic.Widgets {
         Gtk.Label artist_name;
         Gtk.Label artist_sub_title;
         Gtk.Image cover;
+        Gtk.ScrolledWindow cover_container;
+        Gtk.Grid header;
+
+        Gtk.Adjustment hadju;
+
+        Thread<void*> thread = null;
 
         public PlayMyMusic.Objects.Artist current_artist { get; private set; }
 
@@ -76,10 +82,26 @@ namespace PlayMyMusic.Widgets {
                 }
                 repeat_button.show_all ();
             });
+
+            Granite.Widgets.Utils.set_theming_for_screen (
+                this.get_screen (),
+                """
+                    .artist-title {
+                        color: #fff;
+                        text-shadow: 0px 1px 2px alpha (#000, 1);
+                    }
+                    .artist-sub-title {
+                        color: #fff;
+                        text-shadow: 0px 1px 2px alpha (#000, 1);
+                        opacity: 0.75;
+                    }
+                """,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
+
         }
 
         public ArtistView () {
-
             build_ui ();
         }
 
@@ -89,22 +111,30 @@ namespace PlayMyMusic.Widgets {
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
             tracks_scroll.expand = true;
 
-            var header = new Gtk.Grid ();
+            header = new Gtk.Grid ();
             header.row_spacing = 6;
+            header.valign = Gtk.Align.CENTER;
 
             artist_name = new Gtk.Label ("");
+            artist_name.use_markup = true;
             artist_name.valign = Gtk.Align.END;
             artist_name.hexpand = true;
             artist_name.get_style_context ().add_class (Granite.StyleClass.H1_TEXT);
+            artist_name.get_style_context ().add_class ("artist-title");
             header.attach (artist_name, 0, 0);
 
             artist_sub_title = new Gtk.Label ("");
             artist_sub_title.valign = Gtk.Align.START;
             artist_sub_title.use_markup = true;
+            artist_sub_title.get_style_context ().add_class ("artist-sub-title");
             header.attach (artist_sub_title, 0, 1);
 
             cover = new Gtk.Image ();
-            header.attach (cover, 1, 0, 1, 2);
+
+            var overlay = new Gtk.Overlay ();
+            overlay.height_request = 256;
+            overlay.add_overlay (cover);
+            overlay.add_overlay (header);
 
             tracks = new Gtk.ListBox ();
             tracks.set_sort_func (tracks_sort_func);
@@ -147,7 +177,7 @@ namespace PlayMyMusic.Widgets {
             action_toolbar.pack_end (repeat_button);
             action_toolbar.pack_end (shuffle_button);
 
-            content.pack_start (header, false, false, 0);
+            content.pack_start (overlay, false, false, 0);
             content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
@@ -165,6 +195,7 @@ namespace PlayMyMusic.Widgets {
 
             current_artist = artist;
             update_header ();
+            cover.pixbuf = null;
             change_cover ();
 
             this.reset ();
@@ -175,13 +206,24 @@ namespace PlayMyMusic.Widgets {
             current_artist.cover_changed.connect (change_cover);
         }
 
-        private void change_cover () {
-            cover.pixbuf = current_artist.cover;
+        public void change_cover () {
+            if (current_artist == null || current_artist.background_path == null || (cover.pixbuf != null && cover.pixbuf.width == header.get_allocated_width ())) {
+                return;
+            }
+
+            File f = File.new_for_path (current_artist.background_path);
+            if (f.query_exists ()) {
+                var pix =  new Gdk.Pixbuf.from_file_at_scale (current_artist.background_path, header.get_allocated_width (), -1, true);
+                pix = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - cover.get_allocated_height ()) / 2, header.get_allocated_width (), cover.get_allocated_height ());
+                cover.pixbuf = pix;
+            } else {
+                cover.pixbuf = null;
+            }
         }
 
         private void update_header () {
             artist_name.label = current_artist.name;
-            artist_sub_title.label =  _("<span color='#666666'><b>%d Tracks</b> in <b>%d Album</b>(s)</span>").printf ((int)current_artist.tracks.length (), (int)current_artist.albums.length ());
+            artist_sub_title.label =  _("<b>%d Tracks</b> in <b>%d Album</b>(s)").printf ((int)current_artist.tracks.length (), (int)current_artist.albums.length ());
         }
 
         public void reset () {

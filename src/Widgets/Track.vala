@@ -52,6 +52,7 @@ namespace PlayMyMusic.Widgets {
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.spacing = 12;
             content.margin = 12;
+            content.margin_top = content.margin_bottom = 6;
             content.halign = Gtk.Align.FILL;
 
             cover = new Gtk.Image ();
