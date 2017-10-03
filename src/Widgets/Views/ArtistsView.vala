@@ -29,6 +29,18 @@ namespace PlayMyMusic.Widgets.Views {
     public class ArtistsView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
 
+        private string _filter = "";
+        public string filter {
+            get {
+                return _filter;
+            } set {
+                if (_filter != value) {
+                    _filter = value;
+                    artists.invalidate_filter ();
+                }
+            }
+        }
+
         Gtk.FlowBox artists;
         Gtk.Box content;
 
@@ -54,6 +66,7 @@ namespace PlayMyMusic.Widgets.Views {
             artists.row_spacing = 12;
             artists.max_children_per_line = 1;
             artists.set_sort_func (artists_sort_func);
+            artists.set_filter_func (artists_filter_func);
             artists.child_activated.connect (show_artist_viewer);
 
             var artists_scroll = new Gtk.ScrolledWindow (null, null);
@@ -98,6 +111,31 @@ namespace PlayMyMusic.Widgets.Views {
                 artist_view.mark_playing_track (library_manager.player.current_track);
             }
             artist_selected ();
+        }
+
+        private bool artists_filter_func (Gtk.FlowBoxChild child) {
+            if (filter.strip ().length == 0) {
+                return true;
+            }
+
+            string[] filter_elements = filter.strip ().down ().split (" ");
+            var artist = (child as PlayMyMusic.Widgets.Artist).artist;
+
+            foreach (string filter_element in filter_elements) {
+                if (!artist.name.down ().contains (filter_element)) {
+                    bool track_title = false;
+                    foreach (var track in artist.tracks) {
+                        if (track.title.down ().contains (filter_element) || track.genre.down ().contains (filter_element) || track.album.title.down ().contains (filter_element)) {
+                            track_title = true;
+                        }
+                    }
+                    if (track_title) {
+                        continue;
+                    }
+                    return false;
+                }
+            }
+            return true;
         }
 
         private int artists_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {

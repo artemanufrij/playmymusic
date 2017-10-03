@@ -143,7 +143,22 @@ namespace PlayMyMusic.Objects {
                                 warning (err.message);
                             }
                         }
+                        // SUB FOLDER IF LOCATION LIKE: Artist/Album
                         var sub_dir_name = GLib.Path.get_dirname (dir_name);
+                        cover_path = GLib.Path.build_filename (sub_dir_name, cover_file);
+                        cover_full_path = File.new_for_path (cover_path);
+                        if (cover_full_path.query_exists ()) {
+                            try {
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 128);
+                                Idle.add ((owned) callback);
+                                return null;
+                            } catch (Error err) {
+                                warning (err.message);
+                            }
+                        }
+
+                        // SUB SUB FOLDER IF LOCATION LIKE: Artist/Album/CD1
+                        sub_dir_name = GLib.Path.get_dirname (sub_dir_name);
                         cover_path = GLib.Path.build_filename (sub_dir_name, cover_file);
                         cover_full_path = File.new_for_path (cover_path);
                         if (cover_full_path.query_exists ()) {

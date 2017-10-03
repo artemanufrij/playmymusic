@@ -28,15 +28,25 @@
 namespace PlayMyMusic.Widgets.Views {
     public class RadiosView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
+
+        private string _filter = "";
+        public string filter {
+            get {
+                return _filter;
+            } set {
+                if (_filter != value) {
+                    _filter = value;
+                }
+            }
+        }
+
         Gtk.Entry new_station_title;
         Gtk.Entry new_station_url;
         Gtk.Image new_station_cover;
         Gtk.Button new_station_save;
         Gtk.Popover add_new_station_popover;
-        Gtk.Grid message_container;
+
         Gtk.Stack stack;
-        Gtk.ScrolledWindow radios_scroll;
-        Gtk.ActionBar radio_toolbar;
 
         Gtk.FlowBox radios;
 
@@ -57,11 +67,11 @@ namespace PlayMyMusic.Widgets.Views {
                 var r = new Widgets.Radio (radio);
                 r.show_all ();
                 radios.add (r);
-                stack.set_visible_child (radios_scroll);
+                stack.set_visible_child_name ("radios");
             });
             library_manager.removed_radio.connect (() => {
                 if (radios.get_children ().length () < 2) {
-                    stack.set_visible_child (message_container);
+                    stack.set_visible_child_name ("welcome");
                 }
             });
 
@@ -78,6 +88,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_ui () {
             radios = new Gtk.FlowBox ();
+            radios.set_filter_func (albums_filter_func);
             radios.set_sort_func (radio_sort_func);
             radios.selection_mode = Gtk.SelectionMode.SINGLE;
             radios.margin = 24;
@@ -88,14 +99,14 @@ namespace PlayMyMusic.Widgets.Views {
             radios.child_activated.connect (play_station);
             radios.valign = Gtk.Align.START;
 
-            radios_scroll = new Gtk.ScrolledWindow (null, null);
+            var radios_scroll = new Gtk.ScrolledWindow (null, null);
             radios_scroll.add (radios);
 
-            radio_toolbar = new Gtk.ActionBar ();
+            var action_toolbar = new Gtk.ActionBar ();
 
             var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
             add_button.tooltip_text = _("Add a radio station");
-            radio_toolbar.pack_start (add_button);
+            action_toolbar.pack_start (add_button);
 
 // NEW STATION POPOVER BEGIN
             var new_station = new Gtk.Grid ();
@@ -154,34 +165,36 @@ namespace PlayMyMusic.Widgets.Views {
 
             new_station.attach (new_station_controls, 0, 2, 2, 1);
 
-            add_new_station_popover = new Gtk.Popover (add_button);
+            add_new_station_popover = new Gtk.Popover (null);
             add_new_station_popover.position = Gtk.PositionType.TOP;
             add_new_station_popover.add (new_station);
             add_button.clicked.connect (() => {
+                add_new_station_popover.set_relative_to (add_button);
                 add_new_station_popover.show_all ();
             });
 // NEW STATION POPOVER END
 
-            message_container = new Gtk.Grid ();
-            message_container.valign = Gtk.Align.CENTER;
-            message_container.halign = Gtk.Align.CENTER;
-            var message_title = new Gtk.Label (_("No Radio Stations"));
-            message_title.get_style_context ().add_class ("h2");
-            message_container.attach (message_title, 0, 0);
-            var message_body = new Gtk.Label (_("Click the '+' button for adding a new Radion Station."));
-            message_body.get_style_context ().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
-            message_container.attach (message_body, 0, 1);
-
-            stack = new Gtk.Stack ();
-            stack.add (message_container);
-            stack.add (radios_scroll);
+            var welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add radio stations to your library.");
+            welcome.append ("insert-link", _("Add Radio Station"), _("Add a Stream URL like .pls or .m3u."));
+            welcome.activated.connect ((index) => {
+                switch (index) {
+                    case 0:
+                            add_new_station_popover.set_relative_to (welcome.get_button_from_index (index));
+                            add_new_station_popover.show_all ();
+                        break;
+                }
+            });
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
-            content.pack_start (stack, true, true, 0);
-            content.pack_end (radio_toolbar, false, false, 0);
+            content.pack_start (radios_scroll, true, true, 0);
+            content.pack_end (action_toolbar, false, false, 0);
 
-            this.add (content);
+            stack = new Gtk.Stack ();
+            stack.add_named (welcome, "welcome");
+            stack.add_named (content, "radios");
+
+            this.add (stack);
             this.show_all ();
             show_albums_from_database.begin ();
         }
@@ -203,13 +216,20 @@ namespace PlayMyMusic.Widgets.Views {
             new_station_cover.set_from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
         }
 
+        public void reset () {
+            foreach (var child in radios.get_children ()) {
+                radios.remove (child);
+            }
+            stack.set_visible_child_name ("welcome");
+        }
+
         public void unselect_all () {
             radios.unselect_all ();
         }
 
         private void grab_playing_radio () {
             foreach (var item in radios.get_children ()) {
-                if ((item as PlayMyMusic.Widgets.Radio).radio == library_manager.player.current_radio){
+                if ((item as PlayMyMusic.Widgets.Radio).radio == library_manager.player.current_radio) {
                     item.activate ();
                     return;
                 }
@@ -230,8 +250,24 @@ namespace PlayMyMusic.Widgets.Views {
             }
 
             if (radios.get_children ().length () > 0) {
-                stack.set_visible_child (radios_scroll);
+                stack.set_visible_child_name ("radios");
             }
+        }
+
+        private bool albums_filter_func (Gtk.FlowBoxChild child) {
+            if (filter.strip ().length == 0) {
+                return true;
+            }
+
+            string[] filter_elements = filter.strip ().down ().split (" ");
+            var radio = (child as PlayMyMusic.Widgets.Radio).radio;
+
+            foreach (string filter_element in filter_elements) {
+                if (!radio.title.down ().contains (filter_element) && !radio.url.down ().contains (filter_element)) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private int radio_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {

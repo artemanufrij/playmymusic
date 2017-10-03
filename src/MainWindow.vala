@@ -41,9 +41,12 @@ namespace PlayMyMusic {
         Gtk.Image icon_play;
         Gtk.Image icon_pause;
 
+        Gtk.Image artist_button;
+
         Granite.Widgets.ModeButton view_mode;
         Widgets.Views.AlbumsView albums_view;
         Widgets.Views.ArtistsView artists_view;
+        Widgets.Views.RadiosView radios_view;
         Widgets.TrackTimeLine timeline;
 
         Notification desktop_notification;
@@ -59,6 +62,11 @@ namespace PlayMyMusic {
             library_manager.tag_discover_finished.connect (() => {
                 spinner.active = false;
                 menu_item_rescan.sensitive = true;
+            });
+            library_manager.added_new_artist.connect (() => {
+                if (!artist_button.sensitive) {
+                    artist_button.sensitive = true;
+                }
             });
 
             library_manager.player_state_changed.connect ((state) => {
@@ -164,23 +172,37 @@ namespace PlayMyMusic {
             view_mode = new Granite.Widgets.ModeButton ();
             view_mode.valign = Gtk.Align.CENTER;
             view_mode.margin_left = 12;
+
             view_mode.append_icon ("view-grid-symbolic", Gtk.IconSize.BUTTON);
-            view_mode.append_icon ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
+
+            artist_button = new Gtk.Image.from_icon_name ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
+            view_mode.append (artist_button);
+            artist_button.sensitive = library_manager.artists.length () > 0;
+
             //view_mode.append_icon ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+
             view_mode.append_icon ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
+
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
                     case 1:
-                        content.set_visible_child_name ("artists");
+                        if (artist_button.sensitive) {
+                            content.set_visible_child_name ("artists");
+                            search_entry.text = artists_view.filter;
+                        } else {
+                            view_mode.set_active (0);
+                        }
                         break;
                     case 2:
                         if (library_manager.player.current_radio == null) {
                             search_entry.grab_focus ();
                         }
                         content.set_visible_child_name ("radios");
+                        search_entry.text = radios_view.filter;
                         break;
                     default:
                         content.set_visible_child_name ("albums");
+                        search_entry.text = albums_view.filter;
                         break;
                 }
             });
@@ -215,8 +237,11 @@ namespace PlayMyMusic {
 
             menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));
             menu_item_rescan.activate.connect (() => {
+                view_mode.set_active (0);
+                artist_button.sensitive = false;
                 albums_view.reset ();
                 artists_view.reset ();
+                radios_view.reset ();
                 library_manager.rescan_library ();
             });
 
@@ -234,7 +259,17 @@ namespace PlayMyMusic {
             search_entry.placeholder_text = _("Search Music");
             search_entry.margin_right = 5;
             search_entry.search_changed.connect (() => {
-                albums_view.filter (search_entry.text);
+                switch (view_mode.selected) {
+                    case 1:
+                        artists_view.filter = search_entry.text;
+                        break;
+                    case 2:
+                        radios_view.filter = search_entry.text;
+                        break;
+                    default:
+                        albums_view.filter = search_entry.text;
+                        break;
+                }
             });
             headerbar.pack_end (search_entry);
 
@@ -249,7 +284,7 @@ namespace PlayMyMusic {
                 next_button.sensitive = true;
             });
 
-            var radios_view = new Widgets.Views.RadiosView ();
+            radios_view = new Widgets.Views.RadiosView ();
 
             artists_view = new Widgets.Views.ArtistsView ();
             artists_view.artist_selected.connect (() => {

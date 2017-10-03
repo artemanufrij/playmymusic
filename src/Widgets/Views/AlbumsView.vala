@@ -30,13 +30,22 @@ namespace PlayMyMusic.Widgets.Views {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Settings settings;
 
+        private string _filter = "";
+        public string filter {
+            get {
+                return _filter;
+            } set {
+                if (_filter != value) {
+                    _filter = value;
+                    albums.invalidate_filter ();
+                }
+            }
+        }
+
         Gtk.FlowBox albums;
         Gtk.Stack stack;
         Gtk.Box content;
         Widgets.AlbumView album_view;
-        Granite.Widgets.Welcome welcome;
-
-        string query = "";
 
         public bool is_album_view_visible {
             get {
@@ -85,7 +94,7 @@ namespace PlayMyMusic.Widgets.Views {
             content.pack_start (albums_scroll, true, true, 0);
             content.pack_start (album_view, false, false, 0);
 
-            welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add music to your library.");
+            var welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add music to your library.");
             welcome.append ("folder-music", _("Change Music Folder"), _("Load music from a folder, a network or an external disk."));
             welcome.append ("document-import", _("Import Music"), _("Import music from a source into your library."));
             welcome.activated.connect ((index) => {
@@ -107,8 +116,8 @@ namespace PlayMyMusic.Widgets.Views {
             });
 
             stack = new Gtk.Stack ();
-            stack.add (welcome);
-            stack.add (content);
+            stack.add_named (welcome, "welcome");
+            stack.add_named (content, "content");
 
             this.add (stack);
             this.show_all ();
@@ -129,9 +138,7 @@ namespace PlayMyMusic.Widgets.Views {
             foreach (var child in albums.get_children ()) {
                 albums.remove (child);
             }
-            if (albums.get_children ().length () == 0) {
-                stack.set_visible_child (welcome);
-            }
+            stack.set_visible_child_name ("welcome");
         }
 
         private void show_album_viewer (Gtk.FlowBoxChild item) {
@@ -164,17 +171,13 @@ namespace PlayMyMusic.Widgets.Views {
             return false;
         }
 
-        public void filter (string query) {
-            this.query = query.strip ().down ();
-            albums.invalidate_filter ();
-        }
 
         private bool albums_filter_func (Gtk.FlowBoxChild child) {
-            if (query.length == 0) {
+            if (filter.strip ().length == 0) {
                 return true;
             }
 
-            string[] filter_elements = query.split (" ");
+            string[] filter_elements = filter.strip ().down ().split (" ");
             var album = (child as PlayMyMusic.Widgets.Album).album;
 
             foreach (string filter_element in filter_elements) {
