@@ -39,6 +39,9 @@ namespace PlayMyMusic.Widgets {
         Gtk.Image icon_shuffle_off;
         Gtk.Button repeat_button;
         Gtk.Button shuffle_button;
+        Gtk.Label artist_name;
+        Gtk.Label artist_sub_title;
+        Gtk.Image cover;
 
         public PlayMyMusic.Objects.Artist current_artist { get; private set; }
 
@@ -86,6 +89,23 @@ namespace PlayMyMusic.Widgets {
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
             tracks_scroll.expand = true;
 
+            var header = new Gtk.Grid ();
+            header.row_spacing = 6;
+
+            artist_name = new Gtk.Label ("");
+            artist_name.valign = Gtk.Align.END;
+            artist_name.hexpand = true;
+            artist_name.get_style_context ().add_class (Granite.StyleClass.H1_TEXT);
+            header.attach (artist_name, 0, 0);
+
+            artist_sub_title = new Gtk.Label ("");
+            artist_sub_title.valign = Gtk.Align.START;
+            artist_sub_title.use_markup = true;
+            header.attach (artist_sub_title, 0, 1);
+
+            cover = new Gtk.Image ();
+            header.attach (cover, 1, 0, 1, 2);
+
             tracks = new Gtk.ListBox ();
             tracks.set_sort_func (tracks_sort_func);
             tracks_scroll.add (tracks);
@@ -127,6 +147,8 @@ namespace PlayMyMusic.Widgets {
             action_toolbar.pack_end (repeat_button);
             action_toolbar.pack_end (shuffle_button);
 
+            content.pack_start (header, false, false, 0);
+            content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
 
@@ -138,17 +160,28 @@ namespace PlayMyMusic.Widgets {
         public void show_artist_viewer (PlayMyMusic.Objects.Artist artist) {
             if (current_artist != null) {
                 current_artist.track_added.disconnect (add_track);
+                current_artist.cover_changed.disconnect (change_cover);
             }
 
             current_artist = artist;
-            this.tracks.@foreach ((child) => {
-                this.tracks.remove (child);
-            });
-            this.show_all ();
+            update_header ();
+            change_cover ();
+
+            this.reset ();
             foreach (var track in artist.tracks) {
                 add_track (track);
             }
             current_artist.track_added.connect (add_track);
+            current_artist.cover_changed.connect (change_cover);
+        }
+
+        private void change_cover () {
+            cover.pixbuf = current_artist.cover;
+        }
+
+        private void update_header () {
+            artist_name.label = current_artist.name;
+            artist_sub_title.label =  _("<span color='#666666'><b>%d Tracks</b> in <b>%d Album</b>(s)</span>").printf ((int)current_artist.tracks.length (), (int)current_artist.albums.length ());
         }
 
         public void reset () {
@@ -161,6 +194,7 @@ namespace PlayMyMusic.Widgets {
             var item = new PlayMyMusic.Widgets.Track (track);
             this.tracks.add (item);
             item.show_all ();
+            update_header ();
         }
 
         private void play_track () {

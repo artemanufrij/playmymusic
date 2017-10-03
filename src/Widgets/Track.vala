@@ -50,8 +50,8 @@ namespace PlayMyMusic.Widgets {
 
         public void build_ui () {
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            content.spacing = 6;
-            content.margin = 6;
+            content.spacing = 12;
+            content.margin = 12;
             content.halign = Gtk.Align.FILL;
 
             cover = new Gtk.Image ();
@@ -79,6 +79,8 @@ namespace PlayMyMusic.Widgets {
 
         public void hide_album_cover () {
             cover.hide ();
+            content.margin = 6;
+            content.spacing = 6;
         }
     }
 }
