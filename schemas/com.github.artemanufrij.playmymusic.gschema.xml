@@ -10,6 +10,16 @@
 			<summary>The saved height of the window.</summary>
 			<description>The saved height of the window.</description>
 		</key>
+		<key name="last-artist-id" type="i">
+			<default>0</default>
+			<summary>Last Artist ID.</summary>
+			<description>Last Artist ID.</description>
+		</key>
+		<key name="last-album-id" type="i">
+			<default>0</default>
+			<summary>Last Album ID.</summary>
+			<description>Last Album ID.</description>
+		</key>
 		<key name="window-maximized" type="b">
 			<default>false</default>
 			<summary>Maximized window.</summary>

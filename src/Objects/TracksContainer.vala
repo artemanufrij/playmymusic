@@ -38,7 +38,9 @@ namespace PlayMyMusic.Objects {
         public string name { get; set; }
         protected int _ID = 0;
         protected GLib.List<Track> _tracks = null;
+
         protected bool is_cover_loading = false;
+        protected bool is_background_loading = false;
 
         public string background_path { get; protected set; default = ""; }
         public string cover_path { get; protected set; default = ""; }

@@ -66,8 +66,6 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        bool is_loading = false;
-
         construct {
             this._albums = new GLib.List<Album> ();
             this.cover_changed.connect (() => {
@@ -187,15 +185,15 @@ namespace PlayMyMusic.Objects {
         }
 
         private void create_background () {
-            if (this.cover == null || is_loading) {
+            if (this.cover == null || is_background_loading) {
                 return;
             }
-            is_loading = true;
+            is_background_loading = true;
 
             new Thread<void*> (null, () => {
                 File f = File.new_for_path (this.background_path);
                 if (f.query_exists ()) {
-                    is_loading = false;
+                    is_background_loading = false;
                     return null;
                 }
 
@@ -215,7 +213,7 @@ namespace PlayMyMusic.Objects {
                 surface.context.paint ();
 
                 surface.surface.write_to_png (this.background_path);
-                is_loading = false;
+                is_background_loading = false;
                 background_changed ();
                 return null;
             });
