@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Widgets.Views {
     public class ArtistsView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
 
         private string _filter = "";
         public string filter {
@@ -47,6 +48,7 @@ namespace PlayMyMusic.Widgets.Views {
         PlayMyMusic.Widgets.ArtistView artist_view;
 
         construct {
+            settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.added_new_artist.connect((artist) => {
                 add_artist (artist);
@@ -58,6 +60,13 @@ namespace PlayMyMusic.Widgets.Views {
 
         public ArtistsView () {
             build_ui ();
+            this.draw.connect (first_draw);
+        }
+
+        private bool first_draw () {
+            this.draw.disconnect (first_draw);
+            activate_by_id (settings.last_artist_id);
+            return false;
         }
 
         private void build_ui () {
@@ -91,6 +100,15 @@ namespace PlayMyMusic.Widgets.Views {
             artists.add (a);
         }
 
+        public void activate_by_id (int id) {
+            foreach (var child in artists.get_children ()) {
+                if ((child as Widgets.Artist).artist.ID == id) {
+                    child.activate ();
+                    return;
+                }
+            }
+        }
+
         public void reset () {
             foreach (var child in artists.get_children ()) {
                 artists.remove (child);
@@ -104,13 +122,14 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        public void change_cover () {
-            artist_view.change_cover ();
+        public void change_background () {
+            artist_view.change_background ();
         }
 
         private void show_artist_viewer (Gtk.FlowBoxChild item) {
-            var artist = (item as PlayMyMusic.Widgets.Artist);
-            artist_view.show_artist_viewer (artist.artist);
+            var artist = (item as PlayMyMusic.Widgets.Artist).artist;
+            settings.last_artist_id = artist.ID;
+            artist_view.show_artist_viewer (artist);
             if (library_manager.player.current_track != null) {
                 artist_view.mark_playing_track (library_manager.player.current_track);
             }

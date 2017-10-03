@@ -129,6 +129,15 @@ namespace PlayMyMusic.Widgets.Views {
             albums.add (a);
         }
 
+        public void activate_by_id (int id) {
+            foreach (var child in albums.get_children ()) {
+                if ((child as Widgets.Album).album.ID == id) {
+                    child.activate ();
+                    return;
+                }
+            }
+        }
+
         public void hide_album_details () {
             album_view.hide ();
         }
@@ -142,8 +151,9 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void show_album_viewer (Gtk.FlowBoxChild item) {
-            var album = (item as PlayMyMusic.Widgets.Album);
-            album_view.show_album_viewer (album.album);
+            var album = (item as PlayMyMusic.Widgets.Album).album;
+            settings.last_album_id = album.ID;
+            album_view.show_album_viewer (album);
             if (library_manager.player.current_track != null) {
                 album_view.mark_playing_track (library_manager.player.current_track);
             }
@@ -167,7 +177,6 @@ namespace PlayMyMusic.Widgets.Views {
                     }
                 }
             }
-
             return false;
         }
 
@@ -179,7 +188,7 @@ namespace PlayMyMusic.Widgets.Views {
 
             string[] filter_elements = filter.strip ().down ().split (" ");
             var album = (child as PlayMyMusic.Widgets.Album).album;
-
+            settings.last_album_id = album.ID;
             foreach (string filter_element in filter_elements) {
                 if (!album.title.down ().contains (filter_element) && !album.artist.name.down ().contains (filter_element)) {
                     bool track_title = false;

@@ -131,7 +131,7 @@ namespace PlayMyMusic.Objects {
                     }
                 }
 
-                string[] cover_files = {"artist.jpg", "Artist.jpg", "artist.png", "Artist.png", "interpeter.jpg", "Interpeter.jpg", "interpeter.png", "Interpeter.png"}; //PlayMyMusic.Settings.get_default ().covers;
+                string[] cover_files = PlayMyMusic.Settings.get_default ().artists;
 
                 foreach (var track in tracks) {
                     var dir_name = GLib.Path.get_dirname (track.path);
@@ -185,7 +185,7 @@ namespace PlayMyMusic.Objects {
         }
 
         private void create_background () {
-            if (this.cover == null || is_background_loading) {
+            if (this.cover == null || is_background_loading || this.ID == 0) {
                 return;
             }
             is_background_loading = true;

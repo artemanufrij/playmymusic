@@ -111,16 +111,18 @@ namespace PlayMyMusic {
             } else {
                 this.set_default_size (settings.window_width, settings.window_height);
             }
+            this.window_position = Gtk.WindowPosition.CENTER;
             build_ui ();
 
             load_content_from_database.begin ((obj, res) => {
+                albums_view.activate_by_id (settings.last_album_id);
                 library_manager.scan_local_library (settings.library_location);
             });
 
             this.configure_event.connect ((event) => {
                 settings.window_width = event.width;
                 settings.window_height = event.height;
-                artists_view.change_cover ();
+                artists_view.change_background ();
                 return false;
             });
 

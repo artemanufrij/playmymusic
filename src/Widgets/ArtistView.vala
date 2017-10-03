@@ -41,7 +41,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Button shuffle_button;
         Gtk.Label artist_name;
         Gtk.Label artist_sub_title;
-        Gtk.Image cover;
+        Gtk.Image background;
         Gtk.Grid header;
 
         public PlayMyMusic.Objects.Artist current_artist { get; private set; }
@@ -103,15 +103,12 @@ namespace PlayMyMusic.Widgets {
         private void build_ui () {
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
-            var tracks_scroll = new Gtk.ScrolledWindow (null, null);
-            tracks_scroll.expand = true;
 
             header = new Gtk.Grid ();
             header.row_spacing = 6;
             header.valign = Gtk.Align.CENTER;
 
             artist_name = new Gtk.Label ("");
-            artist_name.use_markup = true;
             artist_name.valign = Gtk.Align.END;
             artist_name.hexpand = true;
             artist_name.get_style_context ().add_class (Granite.StyleClass.H1_TEXT);
@@ -124,17 +121,20 @@ namespace PlayMyMusic.Widgets {
             artist_sub_title.get_style_context ().add_class ("artist-sub-title");
             header.attach (artist_sub_title, 0, 1);
 
-            cover = new Gtk.Image ();
+            background = new Gtk.Image ();
 
             var overlay = new Gtk.Overlay ();
             overlay.height_request = 256;
-            overlay.add_overlay (cover);
+            overlay.add_overlay (background);
             overlay.add_overlay (header);
+
+            var tracks_scroll = new Gtk.ScrolledWindow (null, null);
+            tracks_scroll.expand = true;
 
             tracks = new Gtk.ListBox ();
             tracks.set_sort_func (tracks_sort_func);
-            tracks_scroll.add (tracks);
             tracks.selected_rows_changed.connect (play_track);
+            tracks_scroll.add (tracks);
 
             var action_toolbar = new Gtk.ActionBar ();
             action_toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR);
@@ -185,47 +185,37 @@ namespace PlayMyMusic.Widgets {
         public void show_artist_viewer (PlayMyMusic.Objects.Artist artist) {
             if (current_artist != null) {
                 current_artist.track_added.disconnect (add_track);
-                current_artist.cover_changed.disconnect (change_cover);
-                current_artist.background_changed.disconnect (change_backound);
+                current_artist.background_changed.disconnect (change_background);
+                current_artist.background = null;
             }
-
             current_artist = artist;
-            update_header ();
-            cover.pixbuf = null;
-            change_cover ();
+
+            background.pixbuf = null;
+            change_background ();
 
             this.reset ();
             foreach (var track in artist.tracks) {
                 add_track (track);
             }
+
             current_artist.track_added.connect (add_track);
-            current_artist.cover_changed.connect (change_cover);
-            current_artist.background_changed.connect (change_backound);
+            current_artist.background_changed.connect (change_background);
         }
 
-        private void change_backound () {
-            cover.pixbuf = null;
-            change_cover ();
-        }
-
-        public void change_cover () {
-            if (current_artist == null || current_artist.background_path == null || (cover.pixbuf != null && cover.pixbuf.width == header.get_allocated_width ())) {
+        public void change_background () {
+            int width = this.header.get_allocated_width ();
+            int height = background.get_allocated_height ();
+            if (current_artist == null || current_artist.background_path == null || current_artist.background == null || (background.pixbuf != null && background.pixbuf.width == width)) {
                 return;
             }
-
-            File f = File.new_for_path (current_artist.background_path);
-            if (f.query_exists ()) {
-                Gdk.Pixbuf pix;
-                try {
-                    pix =  new Gdk.Pixbuf.from_file_at_scale (current_artist.background_path, header.get_allocated_width (), -1, true);
-                    cover.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - cover.get_allocated_height ()) / 2, header.get_allocated_width (), cover.get_allocated_height ());
-                } catch (Error err) {
-                    warning (err.message);
-                    cover.pixbuf = null;
-                }
-            } else {
-                cover.pixbuf = null;
+            try {
+                var pix =  current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
+                background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
+            } catch (Error err) {
+                warning (err.message);
+                background.pixbuf = null;
             }
+            return;
         }
 
         private void update_header () {

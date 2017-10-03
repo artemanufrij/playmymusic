@@ -57,6 +57,26 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        Gdk.Pixbuf? _background = null;
+        public Gdk.Pixbuf? background {
+            get {
+                if (_background == null && background_path != "") {
+                    File f = File.new_for_path (background_path);
+                    if (f.query_exists ()) {
+                        try {
+                            _background = new Gdk.Pixbuf.from_file (background_path);
+                        } catch (Error err) {
+                            warning (err.message);
+                        }
+                    }
+                }
+                return _background;
+            } set {
+                _background = value;
+                background_changed ();
+            }
+        }
+
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
         }
