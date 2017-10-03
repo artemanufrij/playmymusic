@@ -148,8 +148,7 @@ namespace PlayMyMusic.Objects {
                 if (_tracks == null) {
                     _tracks = new GLib.List<Track> ();
                 }
-                this._tracks.append (track);
-                _tracks.sort_with_data ((a, b) => {
+                this._tracks.insert_sorted_with_data (track, (a, b) => {
                     if (a.album.year != b.album.year) {
                         return a.album.year - b.album.year;
                     }

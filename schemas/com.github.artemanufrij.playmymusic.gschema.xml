@@ -36,7 +36,7 @@
 			<description>Repeat mode.</description>
 		</key>
 		<key name="artists" type="as">
-			<default>['artist.jpg','Artist.jpg', 'interpreter.jpg', 'Interpreter.jpg']</default>
+			<default>['artist.jpg','Artist.jpg','artist.png','Artist.png','interpreter.jpg','Interpreter.jpg','interpreter.png','Interpreter.png']</default>
 			<summary>Artwork file names.</summary>
 			<description>Artwork file names.</description>
 		</key>
