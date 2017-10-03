@@ -38,8 +38,6 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        public string background_path { get; protected set; }
-
         GLib.List<Album> _albums;
         public GLib.List<Album> albums {
             get {
@@ -73,7 +71,7 @@ namespace PlayMyMusic.Objects {
         construct {
             this._albums = new GLib.List<Album> ();
             this.cover_changed.connect (() => {
-                make_background ();
+                create_background ();
             });
         }
 
@@ -188,14 +186,12 @@ namespace PlayMyMusic.Objects {
             return return_value;
         }
 
-        public void make_background () {
+        private void create_background () {
             if (this.cover == null || is_loading) {
                 return;
             }
-
             is_loading = true;
 
-            Gdk.Pixbuf? return_value = null;
             new Thread<void*> (null, () => {
                 File f = File.new_for_path (this.background_path);
                 if (f.query_exists ()) {
@@ -203,34 +199,15 @@ namespace PlayMyMusic.Objects {
                     return null;
                 }
 
-                Gdk.Pixbuf image = this.cover;
+                double target_size = 1000;
 
-                var screen = Gdk.Screen.get_default ();
-                int primary_monitor = screen.get_primary_monitor ();
-                int monitor_scale = screen.get_monitor_scale_factor (primary_monitor);
-                Gdk.Rectangle geometry;
-                screen.get_monitor_geometry (primary_monitor, out geometry);
+                int width = this.cover.get_width();
 
-                var H = geometry.height * monitor_scale;
-                var W = 1400;
+                var surface = new Granite.Drawing.BufferSurface ((int)target_size, (int)target_size);
 
-                int width = image.get_width();
-                int height = image.get_height();
+                double zoom = target_size / (double) width;
 
-                var surface = new Granite.Drawing.BufferSurface (W, W);
-
-                double zoom;
-
-                double zoomh = H / (double) height;
-                double zoomw = W / (double) width;
-
-                if (zoomw >= zoomh) {
-                    zoom = zoomw;
-                } else {
-                    zoom = zoomh;
-                }
-
-                Gdk.cairo_set_source_pixbuf (surface.context, image, 0, 0);
+                Gdk.cairo_set_source_pixbuf (surface.context, this.cover, 0, 0);
                 surface.context.scale (zoom, zoom);
                 surface.context.paint ();
 
@@ -239,6 +216,7 @@ namespace PlayMyMusic.Objects {
 
                 surface.surface.write_to_png (this.background_path);
                 is_loading = false;
+                background_changed ();
                 return null;
             });
         }

@@ -27,6 +27,7 @@
 
 // JUST A TRY. NOT REALY RELEVANT
 
+/*
 namespace PlayMyMusic.Services {
     public class ArtworkDownloader {
         public static Gdk.Pixbuf? get_arist_artwork (string name) {
@@ -111,5 +112,5 @@ namespace PlayMyMusic.Services {
         }
     }
 }
-
+*/
 

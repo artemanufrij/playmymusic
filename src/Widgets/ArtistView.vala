@@ -42,12 +42,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Label artist_name;
         Gtk.Label artist_sub_title;
         Gtk.Image cover;
-        Gtk.ScrolledWindow cover_container;
         Gtk.Grid header;
-
-        Gtk.Adjustment hadju;
-
-        Thread<void*> thread = null;
 
         public PlayMyMusic.Objects.Artist current_artist { get; private set; }
 
@@ -191,6 +186,7 @@ namespace PlayMyMusic.Widgets {
             if (current_artist != null) {
                 current_artist.track_added.disconnect (add_track);
                 current_artist.cover_changed.disconnect (change_cover);
+                current_artist.background_changed.disconnect (change_backound);
             }
 
             current_artist = artist;
@@ -204,6 +200,12 @@ namespace PlayMyMusic.Widgets {
             }
             current_artist.track_added.connect (add_track);
             current_artist.cover_changed.connect (change_cover);
+            current_artist.background_changed.connect (change_backound);
+        }
+
+        private void change_backound () {
+            cover.pixbuf = null;
+            change_cover ();
         }
 
         public void change_cover () {
@@ -213,9 +215,14 @@ namespace PlayMyMusic.Widgets {
 
             File f = File.new_for_path (current_artist.background_path);
             if (f.query_exists ()) {
-                var pix =  new Gdk.Pixbuf.from_file_at_scale (current_artist.background_path, header.get_allocated_width (), -1, true);
-                pix = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - cover.get_allocated_height ()) / 2, header.get_allocated_width (), cover.get_allocated_height ());
-                cover.pixbuf = pix;
+                Gdk.Pixbuf pix;
+                try {
+                    pix =  new Gdk.Pixbuf.from_file_at_scale (current_artist.background_path, header.get_allocated_width (), -1, true);
+                    cover.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - cover.get_allocated_height ()) / 2, header.get_allocated_width (), cover.get_allocated_height ());
+                } catch (Error err) {
+                    warning (err.message);
+                    cover.pixbuf = null;
+                }
             } else {
                 cover.pixbuf = null;
             }

@@ -32,6 +32,7 @@ namespace PlayMyMusic.Objects {
         public signal void track_added (Track track);
         public signal void track_removed (Track track);
         public signal void cover_changed ();
+        public signal void background_changed ();
 
         public string title { get; set; }
         public string name { get; set; }
@@ -39,7 +40,9 @@ namespace PlayMyMusic.Objects {
         protected GLib.List<Track> _tracks = null;
         protected bool is_cover_loading = false;
 
-        public string cover_path { get; protected set; }
+        public string background_path { get; protected set; default = ""; }
+        public string cover_path { get; protected set; default = ""; }
+
         GLib.List<int> shuffle_index = null;
 
         Gdk.Pixbuf? _cover = null;
@@ -144,6 +147,10 @@ namespace PlayMyMusic.Objects {
         }
 
         public void set_new_cover (Gdk.Pixbuf cover, int size) {
+            if (background_path != "") {
+                File f = File.new_for_path (background_path);
+                f.delete_async.begin ();
+            }
             this.cover = save_cover (cover, size);
         }
 
