@@ -1,7 +1,10 @@
 [Desktop Entry]
 Name=Music Player
+Name[lt]=Muzikos grotuvas
 GenericName=Music Player
+GenericName[lt]=Muzikos grotuvas
 Comment=Listen your music
+Comment[lt]=Klausytis savo muzikos
 Keywords=music;radio;
 Exec=com.github.artemanufrij.playmymusic %U
 Icon=artemanufrij.playmymusic
