@@ -176,15 +176,19 @@ namespace PlayMyMusic {
             view_mode.valign = Gtk.Align.CENTER;
             view_mode.margin_left = 12;
 
-            view_mode.append_icon ("view-grid-symbolic", Gtk.IconSize.BUTTON);
+            var album_button = new Gtk.Image.from_icon_name ("view-grid-symbolic", Gtk.IconSize.BUTTON);
+            album_button.tooltip_text = _("Albums");
+            view_mode.append (album_button);
 
             artist_button = new Gtk.Image.from_icon_name ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
+            artist_button.tooltip_text = _("Artists");
             view_mode.append (artist_button);
             artist_button.sensitive = library_manager.artists.length () > 0;
 
             //view_mode.append_icon ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
-
-            view_mode.append_icon ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
+            var radio_button = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
+            radio_button.tooltip_text = _("Radio Stations");
+            view_mode.append (radio_button);
 
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
