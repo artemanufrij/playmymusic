@@ -4,6 +4,8 @@
 
 ![screenshot](Screenshot.png)
 
+![screenshot](Screenshot_Artists.png)
+
 ## Install from Github.
 
 As first you need elementary SDK
