@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-01 21:58+0200\n"
+"POT-Creation-Date: 2017-10-04 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,55 +21,60 @@ msgstr ""
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
 msgstr ""
 
-#: ../src/Widgets/AlbumView.vala:64 ../src/Widgets/Radio.vala:79
+#: ../src/Widgets/AlbumView.vala:94 ../src/Widgets/Artist.vala:79
+#: ../src/Widgets/Radio.vala:79
 msgid "Set new Cover…"
 msgstr ""
 
-#: ../src/Widgets/AlbumView.vala:98
+#: ../src/Widgets/AlbumView.vala:128 ../src/Widgets/ArtistView.vala:151
 msgid "Shuffle"
 msgstr ""
 
-#: ../src/Widgets/AlbumView.vala:120
+#: ../src/Widgets/AlbumView.vala:143 ../src/Widgets/ArtistView.vala:166
 msgid "Repeat"
 msgstr ""
 
-#: ../src/Widgets/Views/AlbumsView.vala:102
+#: ../src/Widgets/ArtistView.vala:223
+msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:98
 msgid "Change Music Folder"
 msgstr ""
 
-#: ../src/Widgets/Views/AlbumsView.vala:102
+#: ../src/Widgets/Views/AlbumsView.vala:98
 msgid "Load music from a folder, a network or an external disk."
 msgstr ""
 
-#: ../src/Widgets/Views/AlbumsView.vala:103
+#: ../src/Widgets/Views/AlbumsView.vala:99
 msgid "Import Music"
 msgstr ""
 
-#: ../src/Widgets/Views/AlbumsView.vala:103
+#: ../src/Widgets/Views/AlbumsView.vala:99
 msgid "Import music from a source into your library."
 msgstr ""
 
-#: ../src/Widgets/Views/RadiosView.vala:97
+#: ../src/Widgets/Views/RadiosView.vala:108
 msgid "Add a radio station"
 msgstr ""
 
-#: ../src/Widgets/Views/RadiosView.vala:132
+#: ../src/Widgets/Views/RadiosView.vala:143
 msgid "Choose a Cover"
 msgstr ""
 
-#: ../src/Widgets/Views/RadiosView.vala:146
+#: ../src/Widgets/Views/RadiosView.vala:157
 msgid "Add"
 msgstr ""
 
-#: ../src/Widgets/Views/RadiosView.vala:168
-msgid "No Radio Stations"
+#: ../src/Widgets/Views/RadiosView.vala:178
+msgid "Add Radio Station"
 msgstr ""
 
-#: ../src/Widgets/Views/RadiosView.vala:171
-msgid "Click the '+' button for adding a new Radion Station."
+#: ../src/Widgets/Views/RadiosView.vala:178
+msgid "Add a Stream URL like .pls or .m3u."
 msgstr ""
 
-#: ../src/Widgets/Track.vala:41
+#: ../src/Widgets/Track.vala:42
 msgid ""
 "File couldn't be found\n"
 "%s"
@@ -79,68 +84,68 @@ msgstr ""
 msgid "Remove Radio Station"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:178
+#: ../src/Services/LibraryManager.vala:180
 msgid "Choose an image…"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:180
-#: ../src/Services/LibraryManager.vala:201
+#: ../src/Services/LibraryManager.vala:182
+#: ../src/Services/LibraryManager.vala:203
 msgid "_Cancel"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:181
-#: ../src/Services/LibraryManager.vala:202
+#: ../src/Services/LibraryManager.vala:183
+#: ../src/Services/LibraryManager.vala:204
 msgid "_Open"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:184
+#: ../src/Services/LibraryManager.vala:186
 msgid "Images"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:200
+#: ../src/Services/LibraryManager.vala:202
 msgid "Select a folder."
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:205
+#: ../src/Services/LibraryManager.vala:207
 msgid "Folder"
 msgstr ""
 
-#: ../src/MainWindow.vala:67
+#: ../src/MainWindow.vala:76
 msgid "Pause"
 msgstr ""
 
-#: ../src/MainWindow.vala:90 ../src/MainWindow.vala:126
+#: ../src/MainWindow.vala:99 ../src/MainWindow.vala:140
 msgid "Play My Music"
 msgstr ""
 
-#: ../src/MainWindow.vala:93 ../src/MainWindow.vala:143
+#: ../src/MainWindow.vala:102 ../src/MainWindow.vala:157
 msgid "Play"
 msgstr ""
 
-#: ../src/MainWindow.vala:135
+#: ../src/MainWindow.vala:149
 msgid "Previous"
 msgstr ""
 
-#: ../src/MainWindow.vala:150
+#: ../src/MainWindow.vala:164
 msgid "Next"
 msgstr ""
 
-#: ../src/MainWindow.vala:192
+#: ../src/MainWindow.vala:224
 msgid "Change Music Folder…"
 msgstr ""
 
-#: ../src/MainWindow.vala:201
+#: ../src/MainWindow.vala:233
 msgid "Import Music…"
 msgstr ""
 
-#: ../src/MainWindow.vala:209
+#: ../src/MainWindow.vala:241
 msgid "Rescan Library"
 msgstr ""
 
-#: ../src/MainWindow.vala:226
+#: ../src/MainWindow.vala:262
 msgid "Search Music"
 msgstr ""
 
-#: ../src/MainWindow.vala:265
+#: ../src/MainWindow.vala:319
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
