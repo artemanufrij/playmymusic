@@ -99,7 +99,7 @@ msgstr "_Atsisakyti"
 #: ../src/Services/LibraryManager.vala:183
 #: ../src/Services/LibraryManager.vala:204
 msgid "_Open"
-msgstr "_Atverti"
+msgstr "A_tverti"
 
 #: ../src/Services/LibraryManager.vala:186
 msgid "Images"
