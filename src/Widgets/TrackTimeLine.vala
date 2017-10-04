@@ -83,6 +83,7 @@ namespace PlayMyMusic.Widgets {
                 timer = 0;
             }
             timeline.change_value (Gtk.ScrollType.NONE, 0);
+            current_time.label = "0:00";
         }
 
         public void pause_playing () {

@@ -181,14 +181,19 @@ namespace PlayMyMusic.Services {
                 return;
             }
 
-            PlayMyMusic.Objects.Track? prev_track = null;
-            if (play_mode == PlayMode.ALBUM) {
-                prev_track = current_track.album.get_prev_track (current_track);
-            } else if (play_mode == PlayMode.ARTIST) {
-                prev_track = current_track.album.artist.get_prev_track (current_track);
-            }
-            if (prev_track != null) {
-                set_track (prev_track, play_mode);
+            if (get_position_sec () < 1) {
+                PlayMyMusic.Objects.Track? prev_track = null;
+                if (play_mode == PlayMode.ALBUM) {
+                    prev_track = current_track.album.get_prev_track (current_track);
+                } else if (play_mode == PlayMode.ARTIST) {
+                    prev_track = current_track.album.artist.get_prev_track (current_track);
+                }
+                if (prev_track != null) {
+                    set_track (prev_track, play_mode);
+                }
+            } else {
+                stop ();
+                play ();
             }
         }
 
@@ -234,6 +239,16 @@ namespace PlayMyMusic.Services {
         public void seek_to_position (int64 position) {
             Gst.Format fmt = Gst.Format.TIME;
             playbin.seek_simple (fmt, Gst.SeekFlags.FLUSH, position);
+        }
+
+         public unowned int64 get_position_sec () {
+            Gst.Format fmt = Gst.Format.TIME;
+            int64 current = 0;
+
+            if (this.playbin.query_position (fmt, out current)) {
+                return current / 1000000000;
+            }
+            return -1;
         }
 
         public unowned double get_position_progress () {
