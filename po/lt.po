@@ -1,141 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Moo, 2017.
+#
 msgid ""
 msgstr ""
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-04 18:57+0200\n"
+"POT-Creation-Date: 2017-10-04 23:21+0300\n"
+"PO-Revision-Date: 2017-10-04 23:33+0300\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
-"%100<10 || n%100>=20) ? 1 : 2;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: Moo\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: lt\n"
 
 #: ../src/Widgets/TrackTimeLine.vala:118
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> iš <b>%s</b>, atlieka <b>%s</b>"
 
 #: ../src/Widgets/AlbumView.vala:94 ../src/Widgets/Artist.vala:79
 #: ../src/Widgets/Radio.vala:79
 msgid "Set new Cover…"
-msgstr ""
+msgstr "Nustatyti naują viršelį…"
 
 #: ../src/Widgets/AlbumView.vala:128 ../src/Widgets/ArtistView.vala:151
 msgid "Shuffle"
-msgstr ""
+msgstr "Maišyti"
 
 #: ../src/Widgets/AlbumView.vala:143 ../src/Widgets/ArtistView.vala:166
 msgid "Repeat"
-msgstr ""
+msgstr "Kartoti"
 
 #: ../src/Widgets/ArtistView.vala:223
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr ""
+msgstr "<b>%d takeliai(-ių)</b> <b>%d albumuose</b>(-ų)"
 
 #: ../src/Widgets/Views/AlbumsView.vala:98
 msgid "Change Music Folder"
-msgstr ""
+msgstr "Keisti muzikos aplanką"
 
 #: ../src/Widgets/Views/AlbumsView.vala:98
 msgid "Load music from a folder, a network or an external disk."
-msgstr ""
+msgstr "Įkelkite muziką iš aplanko, tinklo ar išorinio disko."
 
 #: ../src/Widgets/Views/AlbumsView.vala:99
 msgid "Import Music"
-msgstr ""
+msgstr "Importuoti muziką"
 
 #: ../src/Widgets/Views/AlbumsView.vala:99
 msgid "Import music from a source into your library."
-msgstr ""
+msgstr "Importuokite muziką iš šaltinio į savo biblioteką."
 
 #: ../src/Widgets/Views/RadiosView.vala:108
 msgid "Add a radio station"
-msgstr ""
+msgstr "Pridėti radijo stotį"
 
 #: ../src/Widgets/Views/RadiosView.vala:143
 msgid "Choose a Cover"
-msgstr ""
+msgstr "Pasirinkti viršelį"
 
 #: ../src/Widgets/Views/RadiosView.vala:157
 msgid "Add"
-msgstr ""
+msgstr "Pridėti"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
-msgstr ""
+msgstr "Pridėti radijo stotį"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
-msgstr ""
+msgstr "Pridėkite srauto URL, tokius kaip .pls ar .m3u."
 
 #: ../src/Widgets/Track.vala:42
 msgid ""
 "File couldn't be found\n"
 "%s"
 msgstr ""
+"Nepavyko rasti failo\n"
+"%s"
 
 #: ../src/Widgets/Radio.vala:95
 msgid "Remove Radio Station"
-msgstr ""
+msgstr "Šalinti radijo stotį"
 
 #: ../src/Services/LibraryManager.vala:180
 msgid "Choose an image…"
-msgstr ""
+msgstr "Pasirinkti paveikslą…"
 
 #: ../src/Services/LibraryManager.vala:182
 #: ../src/Services/LibraryManager.vala:203
 msgid "_Cancel"
-msgstr ""
+msgstr "_Atsisakyti"
 
 #: ../src/Services/LibraryManager.vala:183
 #: ../src/Services/LibraryManager.vala:204
 msgid "_Open"
-msgstr ""
+msgstr "_Atverti"
 
 #: ../src/Services/LibraryManager.vala:186
 msgid "Images"
-msgstr ""
+msgstr "Paveikslai"
 
 #: ../src/Services/LibraryManager.vala:202
 msgid "Select a folder."
-msgstr ""
+msgstr "Pasirinkti aplanką."
 
 #: ../src/Services/LibraryManager.vala:207
 msgid "Folder"
-msgstr ""
+msgstr "Aplankas"
 
 #: ../src/MainWindow.vala:76
 msgid "Pause"
-msgstr ""
+msgstr "Pristabdyti"
 
 #: ../src/MainWindow.vala:99 ../src/MainWindow.vala:140
 msgid "Play My Music"
-msgstr ""
+msgstr "Groti mano muziką"
 
 #: ../src/MainWindow.vala:102 ../src/MainWindow.vala:157
 msgid "Play"
-msgstr ""
+msgstr "Groti"
 
 #: ../src/MainWindow.vala:149
 msgid "Previous"
-msgstr ""
+msgstr "Ankstesnis"
 
 #: ../src/MainWindow.vala:164
 msgid "Next"
-msgstr ""
+msgstr "Kitas"
 
 #: ../src/MainWindow.vala:224
 msgid "Change Music Folder…"
-msgstr ""
+msgstr "Keisti muzikos aplanką…"
 
 #: ../src/MainWindow.vala:233
 msgid "Import Music…"
-msgstr ""
+msgstr "Importuoti muziką…"
 
 #: ../src/MainWindow.vala:241
 msgid "Rescan Library"
-msgstr ""
+msgstr "Iš naujo peržiūrėti biblioteką"
 
 #: ../src/MainWindow.vala:262
 msgid "Search Music"
-msgstr ""
+msgstr "Ieškoti muzikos"
 
 #: ../src/MainWindow.vala:319
 msgid "<b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b>, atlieka<b>%s</b>"
