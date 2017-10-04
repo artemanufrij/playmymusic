@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-04 18:57+0200\n"
+"POT-Creation-Date: 2017-10-04 23:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/Widgets/TrackTimeLine.vala:118
+#: ../src/Widgets/TrackTimeLine.vala:119
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
 msgstr ""
 
@@ -130,22 +130,34 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: ../src/MainWindow.vala:224
+#: ../src/MainWindow.vala:180
+msgid "Albums"
+msgstr ""
+
+#: ../src/MainWindow.vala:184
+msgid "Artists"
+msgstr ""
+
+#: ../src/MainWindow.vala:190
+msgid "Radio Stations"
+msgstr ""
+
+#: ../src/MainWindow.vala:228
 msgid "Change Music Folder…"
 msgstr ""
 
-#: ../src/MainWindow.vala:233
+#: ../src/MainWindow.vala:237
 msgid "Import Music…"
 msgstr ""
 
-#: ../src/MainWindow.vala:241
+#: ../src/MainWindow.vala:245
 msgid "Rescan Library"
 msgstr ""
 
-#: ../src/MainWindow.vala:262
+#: ../src/MainWindow.vala:266
 msgid "Search Music"
 msgstr ""
 
-#: ../src/MainWindow.vala:319
+#: ../src/MainWindow.vala:323
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
