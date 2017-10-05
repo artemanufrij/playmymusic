@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-04 23:29+0200\n"
+"POT-Creation-Date: 2017-10-05 22:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,6 @@ msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
 msgstr ""
 
 #: ../src/Widgets/AlbumView.vala:94 ../src/Widgets/Artist.vala:79
-#: ../src/Widgets/Radio.vala:79
 msgid "Set new Cover…"
 msgstr ""
 
@@ -62,16 +61,20 @@ msgstr ""
 msgid "Choose a Cover"
 msgstr ""
 
-#: ../src/Widgets/Views/RadiosView.vala:157
-msgid "Add"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:178
+#: ../src/Widgets/Views/RadiosView.vala:179
 msgid "Add Radio Station"
 msgstr ""
 
-#: ../src/Widgets/Views/RadiosView.vala:178
+#: ../src/Widgets/Views/RadiosView.vala:179
 msgid "Add a Stream URL like .pls or .m3u."
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:227
+msgid "Add"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:229
+msgid "Save"
 msgstr ""
 
 #: ../src/Widgets/Track.vala:42
@@ -81,32 +84,36 @@ msgid ""
 msgstr ""
 
 #: ../src/Widgets/Radio.vala:95
+msgid "Edit Radio Station…"
+msgstr ""
+
+#: ../src/Widgets/Radio.vala:103
 msgid "Remove Radio Station"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:180
+#: ../src/Services/LibraryManager.vala:186
 msgid "Choose an image…"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:182
-#: ../src/Services/LibraryManager.vala:203
+#: ../src/Services/LibraryManager.vala:188
+#: ../src/Services/LibraryManager.vala:209
 msgid "_Cancel"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:183
-#: ../src/Services/LibraryManager.vala:204
+#: ../src/Services/LibraryManager.vala:189
+#: ../src/Services/LibraryManager.vala:210
 msgid "_Open"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:186
+#: ../src/Services/LibraryManager.vala:192
 msgid "Images"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:202
+#: ../src/Services/LibraryManager.vala:208
 msgid "Select a folder."
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:207
+#: ../src/Services/LibraryManager.vala:213
 msgid "Folder"
 msgstr ""
 
