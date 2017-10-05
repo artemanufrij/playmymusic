@@ -21,25 +21,13 @@
      id="defs4168">
     <linearGradient
        inkscape:collect="always"
-       id="linearGradient4166">
-      <stop
-         style="stop-color:#000000;stop-opacity:0.1254902"
-         offset="0"
-         id="stop4168" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4170" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
        id="linearGradient4202">
       <stop
-         style="stop-color:#000000;stop-opacity:0.1254902"
+         style="stop-color:#ffffff;stop-opacity:0"
          offset="0"
          id="stop4204" />
       <stop
-         style="stop-color:#ffffff;stop-opacity:0.43921569"
+         style="stop-color:#ffffff;stop-opacity:0.3764706"
          offset="1"
          id="stop4206" />
     </linearGradient>
@@ -105,15 +93,6 @@
        x2="16"
        y2="1024"
        gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4166"
-       id="linearGradient4172"
-       x1="15.823223"
-       y1="1048.4714"
-       x2="15.823223"
-       y2="1024.5389"
-       gradientUnits="userSpaceOnUse" />
     <filter
        style="color-interpolation-filters:sRGB;"
        inkscape:label="Drop Shadow"
@@ -178,7 +157,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="15.994964"
+     inkscape:cx="8.4377603"
      inkscape:cy="16.012224"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -186,8 +165,8 @@
      units="px"
      inkscape:window-width="1640"
      inkscape:window-height="1241"
-     inkscape:window-x="1380"
-     inkscape:window-y="86"
+     inkscape:window-x="126"
+     inkscape:window-y="80"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata4171">
@@ -257,15 +236,6 @@
          d="m 44,28.000019 0,18 c 0,0 8.970303,-1.587422 9,-9.375001 0.0297,-7.787579 -9,-8.624999 -9,-8.624999 z"
          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
-    <rect
-       ry=""
-       rx="1"
-       y="1024.3622"
-       x="4"
-       height="24"
-       width="24"
-       id="rect4759"
-       style="opacity:1;fill:url(#linearGradient4172);fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0" />
     <g
        transform="matrix(0.45413557,0,0,0.43242756,1.4676325,1022.0381)"
        id="g4235">

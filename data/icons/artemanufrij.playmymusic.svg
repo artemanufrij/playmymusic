@@ -44,28 +44,16 @@
          style="stop-color:#000000;stop-opacity:0" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
-       id="linearGradient4207">
-      <stop
-         style="stop-color:#000000;stop-opacity:0.1254902"
-         offset="0"
-         id="stop4209" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0"
-         offset="1"
-         id="stop4211" />
-    </linearGradient>
-    <linearGradient
        id="linearGradient4199"
        inkscape:collect="always">
       <stop
          id="stop4201"
          offset="0"
-         style="stop-color:#000000;stop-opacity:0.1254902" />
+         style="stop-color:#ffffff;stop-opacity:0" />
       <stop
          id="stop4203"
          offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.43921569" />
+         style="stop-color:#ffffff;stop-opacity:0.3764706" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
@@ -98,15 +86,6 @@
        x2="32"
        y2="993"
        gradientTransform="translate(0,1.0087664)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4207"
-       id="linearGradient4213"
-       x1="32"
-       y1="1046"
-       x2="32"
-       y2="993"
-       gradientUnits="userSpaceOnUse" />
     <filter
        style="color-interpolation-filters:sRGB;"
        inkscape:label="Drop Shadow"
@@ -218,16 +197,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.9999998"
-     inkscape:cx="-36.512128"
-     inkscape:cy="36.833393"
+     inkscape:zoom="7.9999996"
+     inkscape:cx="7.1445865"
+     inkscape:cy="30.325337"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1724"
      inkscape:window-height="1043"
-     inkscape:window-x="228"
-     inkscape:window-y="252"
+     inkscape:window-x="266"
+     inkscape:window-y="187"
      inkscape:window-maximized="0"
      units="px" />
   <metadata
@@ -301,15 +280,6 @@
        y="993.86218"
        rx="2.5"
        ry="2.5" />
-    <rect
-       ry="2"
-       rx="2"
-       y="994.36218"
-       x="6"
-       height="52"
-       width="52"
-       id="rect4205"
-       style="opacity:1;fill:url(#linearGradient4213);fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
   <g
      inkscape:groupmode="layer"
