@@ -26,7 +26,7 @@
  */
 
 namespace PlayMyMusic {
-    public class PlayMyMusicApp : Granite.Application {
+    public class PlayMyMusicApp : Gtk.Application {
         public string DB_PATH { get; private set; }
         public string COVER_FOLDER { get; private set; }
 
@@ -45,8 +45,6 @@ namespace PlayMyMusic {
         construct {
             this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
             this.application_id = "com.github.artemanufrij.playmymusic";
-            this.program_name = "Play My Music";
-            this.exec_name = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
 
             var library_path = File.new_for_path (settings.library_location);
