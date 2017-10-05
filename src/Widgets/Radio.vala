@@ -29,11 +29,14 @@ namespace PlayMyMusic.Widgets {
     public class Radio : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
 
+        public signal void edit_request ();
+
         public PlayMyMusic.Objects.Radio radio { get; private set; }
         public string title { get { return radio.title; } }
 
         Gtk.Image cover;
         Gtk.Menu menu;
+        Gtk.Label station_title;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -42,11 +45,22 @@ namespace PlayMyMusic.Widgets {
         public Radio (PlayMyMusic.Objects.Radio radio) {
             this.radio = radio;
             this.radio.cover_changed.connect (() => {
-                cover.pixbuf = this.radio.cover;
+                if (this.radio.cover != null) {
+                    cover.pixbuf = this.radio.cover;
+                }
             });
             this.radio.removed.connect (() => {
                 this.destroy ();
             });
+
+            this.radio.notify["title"].connect (() => {
+                station_title.label = ("<b>%s</b>").printf(this.radio.title);
+            });
+
+            this.radio.notify["url"].connect (() => {
+                this.tooltip_text = this.radio.url;
+            });
+
             build_ui ();
         }
 
@@ -65,28 +79,22 @@ namespace PlayMyMusic.Widgets {
             cover.halign = Gtk.Align.CENTER;
             if (this.radio.cover == null) {
                 cover.set_from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
+                cover.height_request = 64;
+                cover.width_request = 64;
             } else {
                 cover.pixbuf = this.radio.cover;
             }
             content.attach (cover, 0, 0);
 
-            var title = new Gtk.Label (("<b>%s</b>").printf(radio.title));
-            title.use_markup = true;
-            title.halign = Gtk.Align.CENTER;
-            content.attach (title, 0, 1);
+            station_title = new Gtk.Label (("<b>%s</b>").printf(radio.title));
+            station_title.use_markup = true;
+            station_title.halign = Gtk.Align.CENTER;
+            content.attach (station_title, 0, 1);
 
             menu = new Gtk.Menu ();
-            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Edit Radio Station…"));
             menu_new_cover.activate.connect (() => {
-                var new_cover = library_manager.choose_new_cover ();
-                if (new_cover != null) {
-                    try {
-                        var pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 64);
-                        radio.set_new_cover (pixbuf);
-                    } catch (Error err) {
-                        warning (err.message);
-                    }
-                }
+                edit_request ();
             });
             menu.append (menu_new_cover);
 

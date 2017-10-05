@@ -34,7 +34,7 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        public int ID { get; set; }
+        public int ID { get; set; default = 0; }
         public string title { get; set; default = ""; }
         public string genre { get; set; default = ""; }
         public int track { get; set; default = 0; }

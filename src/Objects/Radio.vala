@@ -37,15 +37,14 @@ namespace PlayMyMusic.Objects {
                 return _ID;
             } set {
                 _ID = value;
-                if (cover != null) {
-                    save_cover (cover);
-                } else {
-                    load_cover ();
-                }
+                cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
+                load_cover ();
             }
         }
-        public string title { get; set; }
-        public string url { get; set; }
+        public string title { get; set; default = ""; }
+        public string url { get; set; default = ""; }
+
+        string cover_cache_path = "";
 
         string? _file = null;
         public string? file {
@@ -62,7 +61,7 @@ namespace PlayMyMusic.Objects {
         public Gdk.Pixbuf? cover {
             get {
                 return _cover;
-            } private set {
+            } set {
                 _cover = value;
                 cover_changed ();
             }
@@ -71,7 +70,6 @@ namespace PlayMyMusic.Objects {
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             removed.connect (() => {
-                var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
                 var file = File.new_for_path (cover_cache_path);
                 if (file.query_exists ()) {
                     file.delete_async.begin ();
@@ -81,10 +79,8 @@ namespace PlayMyMusic.Objects {
 
         public Radio () {}
 
-        public Radio.with_parameters (string title, string url, Gdk.Pixbuf? cover = null) {
-            this.title = title;
-            this.url = url;
-            this.cover = cover;
+        public void reset_stream_file () {
+            _file = null;
         }
 
         private string? get_stream_file () {
@@ -164,22 +160,22 @@ namespace PlayMyMusic.Objects {
         }
 
         public void set_new_cover (Gdk.Pixbuf cover) {
-            this.cover = save_cover (cover);
+            this.cover = cover;
+            save_cover ();
         }
 
-        private Gdk.Pixbuf? save_cover (Gdk.Pixbuf p) {
-            var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
-            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, 64);
-            try {
-                pixbuf.save (cover_cache_path, "jpeg", "quality", "100");
-            } catch (Error err) {
-                warning (err.message);
+        public void save_cover () {
+            if (this.cover != null) {
+                this.cover = library_manager.align_and_scale_pixbuf (this.cover, 64);
+                try {
+                    this.cover.save (cover_cache_path, "jpeg", "quality", "100");
+                } catch (Error err) {
+                    warning (err.message);
+                }
             }
-            return pixbuf;
         }
 
         private void load_cover () {
-            var cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
             var file = File.new_for_path (cover_cache_path);
             if (file.query_exists ()) {
                 try {

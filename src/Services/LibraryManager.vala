@@ -155,8 +155,14 @@ namespace PlayMyMusic.Services {
             return db_manager.radio_station_exists (url);
         }
 
-        public void insert_new_radio_station (PlayMyMusic.Objects.Radio radio) {
-            db_manager.insert_radio (radio);
+        public void save_radio_station (PlayMyMusic.Objects.Radio radio) {
+            if (radio.ID == 0) {
+                db_manager.insert_radio (radio);
+            } else {
+                db_manager.update_radio (radio);
+                radio.reset_stream_file ();
+            }
+            radio.save_cover ();
         }
 
         public void remove_radio_station (PlayMyMusic.Objects.Radio radio) {

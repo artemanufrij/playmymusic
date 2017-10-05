@@ -381,6 +381,45 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
+        public PlayMyMusic.Objects.Radio? get_radio_by_id (int id) {
+            lock (_radios) {
+                foreach (var radio in radios) {
+                    if (radio.ID == id) {
+                        return radio;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public PlayMyMusic.Objects.Radio? get_radio_by_url (string url) {
+            lock (_radios) {
+                foreach (var radio in radios) {
+                    if (radio.url == url) {
+                        return radio;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void update_radio (PlayMyMusic.Objects.Radio radio) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                UPDATE radios SET title=$TITLE, url=$URL WHERE id=$ID;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$TITLE", radio.title);
+            set_parameter_str (stmt, sql, "$URL", radio.url);
+            set_parameter_int (stmt, sql, "$ID", radio.ID);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
         public void insert_radio (PlayMyMusic.Objects.Radio radio) {
             Sqlite.Statement stmt;
 
