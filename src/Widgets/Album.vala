@@ -68,7 +68,7 @@ namespace PlayMyMusic.Widgets {
             title.ellipsize = Pango.EllipsizeMode.END;
             title.max_width_chars = 0;
 
-            var artist = new Gtk.Label (this.album.artist.name.replace ("&", "&amp;"));
+            var artist = new Gtk.Label (this.album.artist.name);
             artist.halign = Gtk.Align.FILL;
             artist.ellipsize = Pango.EllipsizeMode.END;
             artist.max_width_chars = 0;
