@@ -54,7 +54,7 @@ namespace PlayMyMusic.Services {
         GLib.List<PlayMyMusic.Objects.Radio> _radios = null;
         public  GLib.List<PlayMyMusic.Objects.Radio> radios {
             get {
-                    if (_radios == null) {
+                if (_radios == null) {
                     _radios = get_radio_collection ();
                 }
                 return _radios;
@@ -65,7 +65,6 @@ namespace PlayMyMusic.Services {
         string errormsg;
 
         construct {
-            _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
         }
 
         private DataBaseManager () {
@@ -158,15 +157,11 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public async void reset_database () {
-            SourceFunc callback = reset_database.callback;
-            _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
+        public void reset_database () {
+            _artists = null;
             File cache = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
-            cache.delete_async.begin (Priority.DEFAULT, null, (obj, res) => {
-                open_database ();
-                Idle.add((owned) callback);
-            });
-            yield;
+            cache.@delete ();
+            open_database ();
         }
 
 // ARTIST REGION
@@ -216,9 +211,8 @@ namespace PlayMyMusic.Services {
                     artist.ID = stmt.column_int (0);
                     added_new_artist (artist);
                     stdout.printf ("Artist ID: %d\n", artist.ID);
-                    lock (_artists) {
-                        _artists.append (artist);
-                    }
+                    _artists.append (artist);
+                    _artists.append (artist);
                 } else {
                     warning ("Error: %d: %s", db.errcode (), db.errmsg ());
                 }
@@ -235,7 +229,7 @@ namespace PlayMyMusic.Services {
                         break;
                     }
                 }
-                 return return_value;
+                return return_value;
             }
         }
 
@@ -263,37 +257,39 @@ namespace PlayMyMusic.Services {
         }
 
         public void insert_album (PlayMyMusic.Objects.Album album) {
-            Sqlite.Statement stmt;
+            lock (db) {
+                Sqlite.Statement stmt;
 
-            string sql = """
-                INSERT OR IGNORE INTO albums (artist_id, title, year) VALUES ($ARTIST_ID, $TITLE, $YEAR);
-            """;
-            db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
-            set_parameter_str (stmt, sql, "$TITLE", album.title);
-            set_parameter_int (stmt, sql, "$YEAR", album.year);
+                string sql = """
+                    INSERT OR IGNORE INTO albums (artist_id, title, year) VALUES ($ARTIST_ID, $TITLE, $YEAR);
+                """;
+                db.prepare_v2 (sql, sql.length, out stmt);
+                set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
+                set_parameter_str (stmt, sql, "$TITLE", album.title);
+                set_parameter_int (stmt, sql, "$YEAR", album.year);
 
-            if (stmt.step () != Sqlite.DONE) {
-                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+                if (stmt.step () != Sqlite.DONE) {
+                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+                }
+                stmt.reset ();
+
+                sql = """
+                    SELECT id FROM albums WHERE artist_id=$ARTIST_ID AND title=$TITLE;
+                """;
+
+                db.prepare_v2 (sql, sql.length, out stmt);
+                set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
+                set_parameter_str (stmt, sql, "$TITLE", album.title);
+
+                if (stmt.step () == Sqlite.ROW) {
+                    album.ID = stmt.column_int (0);
+                    this.added_new_album (album);
+                    stdout.printf ("Album ID: %d\n", album.ID);
+                } else {
+                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+                }
+                stmt.reset ();
             }
-            stmt.reset ();
-
-            sql = """
-                SELECT id FROM albums WHERE artist_id=$ARTIST_ID AND title=$TITLE;
-            """;
-
-            db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
-            set_parameter_str (stmt, sql, "$TITLE", album.title);
-
-            if (stmt.step () == Sqlite.ROW) {
-                album.ID = stmt.column_int (0);
-                this.added_new_album (album);
-                stdout.printf ("Album ID: %d\n", album.ID);
-            } else {
-                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-            }
-            stmt.reset ();
         }
 
 // TRACK REGION
@@ -324,39 +320,41 @@ namespace PlayMyMusic.Services {
         }
 
         public void insert_track (PlayMyMusic.Objects.Track track) {
-            Sqlite.Statement stmt;
+            lock (db) {
+                Sqlite.Statement stmt;
 
-            string sql = """
-                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, disc, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DISC, $DURATION, $PATH);
-            """;
-            db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
-            set_parameter_str (stmt, sql, "$TITLE", track.title);
-            set_parameter_str (stmt, sql, "$GENRE", track.genre);
-            set_parameter_int (stmt, sql, "$TRACK", track.track);
-            set_parameter_int (stmt, sql, "$DISC", track.disc);
-            set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
-            set_parameter_str (stmt, sql, "$PATH", track.path);
+                string sql = """
+                    INSERT OR IGNORE INTO tracks (album_id, title, genre, track, disc, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DISC, $DURATION, $PATH);
+                """;
+                db.prepare_v2 (sql, sql.length, out stmt);
+                set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
+                set_parameter_str (stmt, sql, "$TITLE", track.title);
+                set_parameter_str (stmt, sql, "$GENRE", track.genre);
+                set_parameter_int (stmt, sql, "$TRACK", track.track);
+                set_parameter_int (stmt, sql, "$DISC", track.disc);
+                set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
+                set_parameter_str (stmt, sql, "$PATH", track.path);
 
-            if (stmt.step () != Sqlite.DONE) {
-                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+                if (stmt.step () != Sqlite.DONE) {
+                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+                }
+                stmt.reset ();
+
+                sql = """
+                    SELECT id FROM tracks WHERE path=$PATH;
+                """;
+
+                db.prepare_v2 (sql, sql.length, out stmt);
+                set_parameter_str (stmt, sql, "$PATH", track.path);
+
+                if (stmt.step () == Sqlite.ROW) {
+                    track.ID = stmt.column_int (0);
+                    stdout.printf ("Track ID: %d\n", track.ID);
+                } else {
+                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+                }
+                stmt.reset ();
             }
-            stmt.reset ();
-
-            sql = """
-                SELECT id FROM tracks WHERE path=$PATH;
-            """;
-
-            db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_str (stmt, sql, "$PATH", track.path);
-
-            if (stmt.step () == Sqlite.ROW) {
-                track.ID = stmt.column_int (0);
-                stdout.printf ("Track ID: %d\n", track.ID);
-            } else {
-                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-            }
-            stmt.reset ();
         }
 
 // RADIO REGION
