@@ -77,10 +77,10 @@ namespace PlayMyMusic.Objects {
             album.set_artist (this);
             lock (this._albums) {
                 this._albums.append (album);
+                album.track_added.connect ((track) => {
+                    add_track (track);
+                });
             }
-            album.track_added.connect ((track) => {
-                add_track (track);
-            });
             load_cover_async.begin ();
         }
 

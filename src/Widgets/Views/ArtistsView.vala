@@ -95,9 +95,15 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void add_artist (Objects.Artist artist) {
+            lock (artists) {
             var a = new Widgets.Artist (artist);
             a.show_all ();
             artists.add (a);
+            }
+        }
+
+        public void activate_by_track (Objects.Track track) {
+            activate_by_id (track.album.artist.ID);
         }
 
         public void activate_by_id (int id) {
@@ -130,9 +136,6 @@ namespace PlayMyMusic.Widgets.Views {
             var artist = (item as PlayMyMusic.Widgets.Artist).artist;
             settings.last_artist_id = artist.ID;
             artist_view.show_artist_viewer (artist);
-            if (library_manager.player.current_track != null) {
-                artist_view.mark_playing_track (library_manager.player.current_track);
-            }
             artist_selected ();
         }
 

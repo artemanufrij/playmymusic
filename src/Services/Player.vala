@@ -48,7 +48,7 @@ namespace PlayMyMusic.Services {
         public PlayMyMusic.Objects.Track current_track { get; private set; }
         public PlayMyMusic.Objects.Radio current_radio { get; private set; }
         public File current_file { get; private set; }
-        private PlayMode play_mode;
+        public PlayMode play_mode { get; private set; }
 
         int64 _duration = 0;
         public int64 duration {

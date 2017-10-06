@@ -26,7 +26,8 @@
  */
 
 namespace PlayMyMusic.Widgets {
-    public class TrackTimeLine : Gtk.Stack {
+    public class TrackTimeLine : Gtk.Grid {
+        public signal void goto_current_track (PlayMyMusic.Objects.Track current_track);
         Gtk.Label playing_track;
         Gtk.Label end_time;
         Gtk.Label current_time;
@@ -59,6 +60,12 @@ namespace PlayMyMusic.Widgets {
             playing_track = new Gtk.Label ("");
             playing_track.use_markup = true;
             playing_track.ellipsize = Pango.EllipsizeMode.END;
+            playing_track.set_has_window (true);
+            playing_track.events |= Gdk.EventMask.BUTTON_RELEASE_MASK;
+            playing_track.button_release_event.connect (() => {
+                goto_current_track (current_track);
+                return false;
+            });
             content.attach (playing_track, 1, 0);
 
             timeline = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 1000, 1);
@@ -73,8 +80,23 @@ namespace PlayMyMusic.Widgets {
             });
             content.attach (timeline, 1, 1);
 
-            this.add_named (content, "timeline");
+            var goto_button = new Gtk.Button.from_icon_name ("go-jump-symbolic", Gtk.IconSize.MENU);
+            content.attach (goto_button, 2, 0);
+
+
+            enter_notify_event.connect ((event) => {
+                goto_button.show ();
+                return true;
+            });
+            leave_notify_event.connect ((event) => {
+                goto_button.hide ();
+                return true;
+            });
+
+            this.add (content);
             this.show_all ();
+
+            goto_button.hide ();
         }
 
         public void stop_playing () {

@@ -58,7 +58,7 @@ namespace PlayMyMusic.Widgets.Views {
         construct {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            library_manager.added_new_album.connect((album) => {
+            library_manager.added_new_album.connect ((album) => {
                 add_album (album);
             });
         }
@@ -124,9 +124,15 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void add_album (Objects.Album album) {
-            var a = new Widgets.Album (album);
-            a.show_all ();
-            albums.add (a);
+            lock (albums) {
+                var a = new Widgets.Album (album);
+                a.show_all ();
+                albums.add (a);
+            }
+        }
+
+        public void activate_by_track (Objects.Track track) {
+            activate_by_id (track.album.ID);
         }
 
         public void activate_by_id (int id) {
@@ -154,9 +160,6 @@ namespace PlayMyMusic.Widgets.Views {
             var album = (item as PlayMyMusic.Widgets.Album).album;
             settings.last_album_id = album.ID;
             album_view.show_album_viewer (album);
-            if (library_manager.player.current_track != null) {
-                album_view.mark_playing_track (library_manager.player.current_track);
-            }
             album_selected ();
         }
 

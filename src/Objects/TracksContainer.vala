@@ -163,8 +163,8 @@ namespace PlayMyMusic.Objects {
                     }
                     return a.title.collate (b.title);
                 });
+                track_added (track);
             }
-            track_added (track);
         }
 
         public void set_new_cover (Gdk.Pixbuf cover, int size) {

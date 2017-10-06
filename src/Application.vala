@@ -29,6 +29,7 @@ namespace PlayMyMusic {
     public class PlayMyMusicApp : Gtk.Application {
         public string DB_PATH { get; private set; }
         public string COVER_FOLDER { get; private set; }
+        public string CACHE_FOLDER { get; private set; }
 
         PlayMyMusic.Settings settings;
 
@@ -47,31 +48,34 @@ namespace PlayMyMusic {
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
 
+            create_cache_folders ();
+        }
+
+        public void create_cache_folders () {
             var library_path = File.new_for_path (settings.library_location);
             if (settings.library_location == "" || !library_path.query_exists ()) {
                 settings.library_location = GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC);
             }
-            var cache_folder = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), application_id);
+            CACHE_FOLDER = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), application_id);
             try {
-                File file = File.new_for_path (cache_folder);
+                File file = File.new_for_path (CACHE_FOLDER);
                 if (!file.query_exists ()) {
                     file.make_directory ();
                 }
             } catch (Error e) {
                 warning (e.message);
             }
-            DB_PATH = GLib.Path.build_filename (cache_folder, "database.db");
+            DB_PATH = GLib.Path.build_filename (CACHE_FOLDER, "database.db");
 
-            var cover_folder = GLib.Path.build_filename (cache_folder, "covers");
+            COVER_FOLDER = GLib.Path.build_filename (CACHE_FOLDER, "covers");
             try {
-                File file = File.new_for_path (cover_folder);
+                File file = File.new_for_path (COVER_FOLDER);
                 if (!file.query_exists ()) {
                     file.make_directory ();
                 }
             } catch (Error e) {
                 warning (e.message);
             }
-            COVER_FOLDER = cover_folder;
         }
 
         private PlayMyMusicApp () {}

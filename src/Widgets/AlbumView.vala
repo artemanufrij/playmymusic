@@ -166,6 +166,7 @@ namespace PlayMyMusic.Widgets {
             foreach (var item in tracks.get_children ()) {
                 if ((item as Widgets.Track).track.ID == track.ID) {
                     (item as Widgets.Track).activate ();
+                    return;
                 }
             }
         }
@@ -189,27 +190,40 @@ namespace PlayMyMusic.Widgets {
         }
 
         public void show_album_viewer (PlayMyMusic.Objects.Album album) {
+            if (current_album == album) {
+                return;
+            }
+
             if (current_album != null) {
                 current_album.track_added.disconnect (add_track);
                 current_album.cover_changed.disconnect (change_cover);
             }
             current_album = album;
-            this.tracks.@foreach ((child) => {
-                this.tracks.remove (child);
-            });
-            if (album.cover == null) {
+
+            reset ();
+            if (current_album.cover == null) {
                 cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
                 cover.height_request = 256;
                 cover.width_request = 256;
             } else {
-                cover.pixbuf = album.cover;
+                cover.pixbuf = current_album.cover;
             }
             this.show_all ();
-            foreach (var track in album.tracks) {
+            foreach (var track in current_album.tracks) {
                 add_track (track);
             }
             current_album.track_added.connect (add_track);
             current_album.cover_changed.connect (change_cover);
+
+            if (player.current_track != null) {
+                mark_playing_track (player.current_track);
+            }
+        }
+
+        private void reset () {
+            foreach (var child in tracks.get_children ()) {
+                tracks.remove (child);
+            }
         }
 
         private void change_cover () {

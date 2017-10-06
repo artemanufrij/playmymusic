@@ -218,6 +218,20 @@ namespace PlayMyMusic {
 
             // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
+            timeline.goto_current_track.connect ((track) => {
+                if (track != null) {
+                    switch (library_manager.player.play_mode) {
+                        case PlayMyMusic.Services.PlayMode.ALBUM:
+                            view_mode.set_active (0);
+                            albums_view.activate_by_track (track);
+                            break;
+                        case PlayMyMusic.Services.PlayMode.ARTIST:
+                            view_mode.set_active (1);
+                            artists_view.activate_by_track (track);
+                            break;
+                    }
+                }
+            });
 
             // SETTINGS MENU
             var app_menu = new Gtk.MenuButton ();
