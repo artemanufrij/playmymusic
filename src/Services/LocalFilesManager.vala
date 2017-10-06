@@ -51,10 +51,18 @@ namespace PlayMyMusic.Services {
             new Thread<void*> (null, () => {
                 File directory = File.new_for_path (path);
                 try {
-                    var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN, 0);
+                    var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN + "," + FileAttribute.STANDARD_IS_SYMLINK + "," + FileAttribute.STANDARD_SYMLINK_TARGET, GLib.FileQueryInfoFlags.NONE);
                     FileInfo file_info;
+
                     while ((file_info = children.next_file ()) != null) {
-                        if (file_info.get_file_type () == FileType.DIRECTORY) {
+                        if (file_info.get_is_symlink ()) {
+                            string target = file_info.get_symlink_target ();
+                            var symlink = File.new_for_path (target);
+                            var file_type = symlink.query_file_type (0);
+                            if (file_type == FileType.DIRECTORY) {
+                                scan_local_files (target);
+                            }
+                        } else if (file_info.get_file_type () == FileType.DIRECTORY) {
                             scan_local_files (GLib.Path.build_filename (path, file_info.get_name ()));
                         } else {
                             string mime_type = file_info.get_content_type ();
