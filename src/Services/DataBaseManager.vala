@@ -153,15 +153,18 @@ namespace PlayMyMusic.Services {
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                     warning (errormsg);
                 }
-
             }
         }
 
         public void reset_database () {
             _artists = null;
-            File cache = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
-            cache.@delete ();
-            open_database ();
+            File db_path = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
+            try {
+                db_path.@delete ();
+                open_database ();
+            } catch (Error err) {
+                warning (err.message);
+            }
         }
 
 // ARTIST REGION
