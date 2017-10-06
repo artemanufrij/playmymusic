@@ -30,7 +30,7 @@ cd playmymusic
 
 Create **build** folder, compile and start application
 ```
-mkdir
+mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 make
