@@ -62,6 +62,9 @@ namespace PlayMyMusic.Objects {
                         foreach (var track in album.tracks) {
                             add_track (track);
                         }
+                        if (album.artist_track_added_signal_id == 0) {
+                           album.artist_track_added_signal_id = album.track_added.connect (add_album_track);
+                        }
                     }
                 }
                 load_cover_async.begin ();
@@ -81,7 +84,12 @@ namespace PlayMyMusic.Objects {
 
         private void add_album (Album album) {
             this._albums.append (album);
-            album.track_added.connect (add_album_track);
+            if (album.artist_track_added_signal_id == 0) {
+               album.artist_track_added_signal_id = album.track_added.connect (add_album_track);
+            }
+            foreach (var track in album.tracks) {
+                add_track (track);
+            }
         }
 
         private void add_album_track (Track track) {

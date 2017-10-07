@@ -97,9 +97,9 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void add_artist (Objects.Artist artist) {
             lock (artists) {
-            var a = new Widgets.Artist (artist);
-            a.show_all ();
-            artists.add (a);
+                var a = new Widgets.Artist (artist);
+                a.show_all ();
+                artists.add (a);
             }
         }
 

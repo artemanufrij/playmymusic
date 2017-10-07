@@ -258,6 +258,8 @@ namespace PlayMyMusic {
 
             menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));
             menu_item_rescan.activate.connect (() => {
+                settings.last_artist_id = 0;
+                settings.last_album_id = 0;
                 view_mode.set_active (0);
                 artist_button.sensitive = false;
                 albums_view.reset ();

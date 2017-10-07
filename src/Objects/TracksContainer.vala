@@ -40,6 +40,8 @@ namespace PlayMyMusic.Objects {
         protected int _ID = 0;
         protected GLib.List<Track> _tracks = null;
 
+        public ulong artist_track_added_signal_id { get; set; default = 0; }
+
         protected bool is_cover_loading = false;
         protected bool is_background_loading = false;
 

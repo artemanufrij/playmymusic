@@ -102,7 +102,7 @@ namespace PlayMyMusic.Widgets {
 
         public void set_playing_file (File file) {
             current_track = null;
-            playing_track.label = file.get_basename ();
+            playing_track.label = file.get_basename ().replace ("&", "&amp;");
 
             end_time.label = PlayMyMusic.Utils.get_formated_duration (duration);
             timer = GLib.Timeout.add (250, () => {
