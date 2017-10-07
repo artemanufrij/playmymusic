@@ -35,8 +35,8 @@ namespace PlayMyMusic.Objects {
         public signal void cover_changed ();
         public signal void background_changed ();
 
-        public string title { get; set; }
-        public string name { get; set; }
+        public string title { get; set; default = ""; }
+        public string name { get; set; default = ""; }
         protected int _ID = 0;
         protected GLib.List<Track> _tracks = null;
 

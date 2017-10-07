@@ -158,9 +158,7 @@ namespace PlayMyMusic.Objects {
                     try {
                         info = discoverer.discover_uri (file.get_uri ());
                     } catch (Error err) {
-                        warning (err.message);
-                        Idle.add ((owned) callback);
-                        return null;
+                        continue;
                     }
                     if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                         continue;

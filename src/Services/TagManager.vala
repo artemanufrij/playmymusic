@@ -45,6 +45,8 @@ namespace PlayMyMusic.Services {
 
         int discover_counter = 0;
 
+        string unknown = _("Unknown");
+
         construct {
             try {
                 discoverer = new Gst.PbUtils.Discoverer ((Gst.ClockTime) (5 * Gst.SECOND));
@@ -58,7 +60,7 @@ namespace PlayMyMusic.Services {
         private void discovered (Gst.PbUtils.DiscovererInfo info, Error err) {
             new Thread<void*> (null, () => {
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
-                    warning ("DISCOVER ERROR: %s %s (%s)", err.message, info.get_result ().to_string (), info.get_uri ());
+                    warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), info.get_uri ());
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
@@ -73,30 +75,6 @@ namespace PlayMyMusic.Services {
                         uint u;
                         uint64 u64 = 0;
 
-                        // ARTIST REGION
-                        var artist = new PlayMyMusic.Objects.Artist ();
-                        if (tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
-                            artist.name = o;
-                        } else if (tags.get_string (Gst.Tags.ARTIST, out o)) {
-                            artist.name = o;
-                        }
-
-                        // ALBUM REGION
-                        var album = new PlayMyMusic.Objects.Album ();
-                        if (tags.get_string (Gst.Tags.ALBUM, out o)) {
-                            album.title = o;
-                        }
-
-                        if (tags.get_date_time (Gst.Tags.DATE_TIME, out dt)) {
-                            if (dt != null) {
-                                album.year = dt.get_year ();
-                            } else if (tags.get_date (Gst.Tags.DATE, out d)) {
-                                if (d != null) {
-                                    album.year = dt.get_year ();
-                                }
-                            }
-                        }
-
                         // TRACK REGION
                         var track = new PlayMyMusic.Objects.Track ();
                         track.duration = duration;
@@ -104,6 +82,10 @@ namespace PlayMyMusic.Services {
                         if (tags.get_string (Gst.Tags.TITLE, out o)) {
                             track.title = o;
                         }
+                        if (track.title.strip () == "") {
+                            track.title = f.get_basename ();;
+                        }
+
                         if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
                             track.track = (int)u;
                         }
@@ -116,6 +98,49 @@ namespace PlayMyMusic.Services {
                         if (track.duration == 0 && tags.get_uint64 (Gst.Tags.DURATION, out u64)) {
                             track.duration = u64;
                         }
+
+                        // ALBUM REGION
+                        var album = new PlayMyMusic.Objects.Album ();
+                        if (tags.get_string (Gst.Tags.ALBUM, out o)) {
+                            album.title = o;
+                        }
+
+                        if (album.title.strip () == "") {
+                            f = f.get_parent ();
+                            if (f != null) {
+                                album.title = f.get_basename ();
+                            } else {
+                                album.title = unknown;
+                            }
+                        }
+
+                        if (tags.get_date_time (Gst.Tags.DATE_TIME, out dt)) {
+                            if (dt != null) {
+                                album.year = dt.get_year ();
+                            } else if (tags.get_date (Gst.Tags.DATE, out d)) {
+                                if (d != null) {
+                                    album.year = dt.get_year ();
+                                }
+                            }
+                        }
+
+                        // ARTIST REGION
+                        var artist = new PlayMyMusic.Objects.Artist ();
+                        if (tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
+                            artist.name = o;
+                        } else if (tags.get_string (Gst.Tags.ARTIST, out o)) {
+                            artist.name = o;
+                        }
+
+                        if (artist.name.strip () == "") {
+                            f = f.get_parent ();
+                            if (f != null) {
+                                artist.name = f.get_basename ();
+                            } else {
+                                artist.name = unknown;
+                            }
+                        }
+
                         discovered_new_item (artist, album, track);
                     }
                 }
