@@ -107,11 +107,8 @@ namespace PlayMyMusic.Services {
         }
 
         // DATABASE REGION
-        public void discovered_new_local_item (PlayMyMusic.Objects.Artist artist) {
+        public void discovered_new_local_item (PlayMyMusic.Objects.Artist artist, PlayMyMusic.Objects.Album album, PlayMyMusic.Objects.Track track) {
             new Thread<void*> (null, () => {
-                var album = artist.albums.first ().data;
-                var track = album.tracks.first ().data;
-
                 var db_artist = db_manager.insert_artist_if_not_exists (artist);
                 var db_album = db_artist.add_album_if_not_exists (album);
                 db_album.add_track_if_not_exists (track);

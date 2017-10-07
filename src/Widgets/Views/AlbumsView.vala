@@ -151,7 +151,7 @@ namespace PlayMyMusic.Widgets.Views {
         public void reset () {
             album_view.hide ();
             foreach (var child in albums.get_children ()) {
-                albums.remove (child);
+                child.destroy ();
             }
             stack.set_visible_child_name ("welcome");
         }

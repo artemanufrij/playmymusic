@@ -157,7 +157,6 @@ namespace PlayMyMusic.Services {
         }
 
         public void reset_database () {
-            _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
             File db_path = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
             try {
                 db_path.delete ();
@@ -165,6 +164,7 @@ namespace PlayMyMusic.Services {
             } catch (Error err) {
                 warning (err.message);
             }
+            _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
         }
 
 // ARTIST REGION
@@ -211,9 +211,9 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () == Sqlite.ROW) {
                 artist.ID = stmt.column_int (0);
-                added_new_artist (artist);
                 stdout.printf ("Artist ID: %d - %s\n", artist.ID, artist.name);
                 _artists.append (artist);
+                added_new_artist (artist);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
@@ -231,11 +231,10 @@ namespace PlayMyMusic.Services {
                 }
                 if (return_value == null) {
                     insert_artist (new_artist);
-                    new_artist.clear_albums ();
                     return_value = new_artist;
                 }
+                return return_value;
             }
-            return return_value;
         }
 
 // ALBUM REGION

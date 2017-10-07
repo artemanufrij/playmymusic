@@ -37,7 +37,7 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public signal void discovered_new_item (PlayMyMusic.Objects.Artist artist);
+        public signal void discovered_new_item (PlayMyMusic.Objects.Artist artist, PlayMyMusic.Objects.Album album, PlayMyMusic.Objects.Track track);
         public signal void discover_started ();
         public signal void discover_finished ();
 
@@ -82,7 +82,7 @@ namespace PlayMyMusic.Services {
                         }
 
                         // ALBUM REGION
-                        var album = new PlayMyMusic.Objects.Album (artist);
+                        var album = new PlayMyMusic.Objects.Album ();
                         if (tags.get_string (Gst.Tags.ALBUM, out o)) {
                             album.title = o;
                         }
@@ -97,10 +97,8 @@ namespace PlayMyMusic.Services {
                             }
                         }
 
-                        artist.add_album (album);
-
                         // TRACK REGION
-                        var track = new PlayMyMusic.Objects.Track (album);
+                        var track = new PlayMyMusic.Objects.Track ();
                         track.duration = duration;
                         track.path = path;
                         if (tags.get_string (Gst.Tags.TITLE, out o)) {
@@ -118,8 +116,7 @@ namespace PlayMyMusic.Services {
                         if (track.duration == 0 && tags.get_uint64 (Gst.Tags.DURATION, out u64)) {
                             track.duration = u64;
                         }
-                        album.add_track (track);
-                        discovered_new_item (artist);
+                        discovered_new_item (artist, album, track);
                     }
                 }
 

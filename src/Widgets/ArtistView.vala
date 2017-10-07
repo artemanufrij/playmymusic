@@ -226,7 +226,7 @@ namespace PlayMyMusic.Widgets {
 
         public void reset () {
             foreach (var child in tracks.get_children ()) {
-                tracks.remove (child);
+                child.destroy ();
             }
             background.pixbuf = null;
             artist_name.label = "";

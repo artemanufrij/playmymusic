@@ -73,6 +73,7 @@ namespace PlayMyMusic.Widgets.Views {
             artists = new Gtk.FlowBox ();
             artists.margin = 24;
             artists.row_spacing = 12;
+            artists.valign = Gtk.Align.START;
             artists.max_children_per_line = 1;
             artists.set_sort_func (artists_sort_func);
             artists.set_filter_func (artists_filter_func);
@@ -117,7 +118,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void reset () {
             foreach (var child in artists.get_children ()) {
-                artists.remove (child);
+                child.destroy ();
             }
             artist_view.reset ();
         }

@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Objects {
     public class Album : TracksContainer {
-        Artist _artist;
+        Artist _artist = null;
         public Artist artist {
             get {
                 return _artist;
@@ -39,8 +39,10 @@ namespace PlayMyMusic.Objects {
                 return _ID;
             } set {
                 _ID = value;
-                this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("album_%d.jpg").printf(this.ID));
-                load_cover_async.begin ();
+                if (value > 0) {
+                    this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("album_%d.jpg").printf(this.ID));
+                    load_cover_async.begin ();
+                }
             }
         }
 
@@ -59,8 +61,10 @@ namespace PlayMyMusic.Objects {
             year = -1;
         }
 
-        public Album (Artist artist) {
-            this.set_artist (artist);
+        public Album (Artist? artist = null) {
+            if (artist != null) {
+                this.set_artist (artist);
+            }
         }
 
         public void set_artist (Artist artist) {
@@ -91,7 +95,7 @@ namespace PlayMyMusic.Objects {
 
 // COVER REGION
         private async void load_cover_async () {
-            if (is_cover_loading || cover != null || this.ID == 0) {
+            if (is_cover_loading || cover != null || this.ID == 0 || this.tracks.length () == 0) {
                 return;
             }
             is_cover_loading = true;

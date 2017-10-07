@@ -222,7 +222,7 @@ namespace PlayMyMusic.Widgets {
 
         private void reset () {
             foreach (var child in tracks.get_children ()) {
-                tracks.remove (child);
+                child.destroy ();
             }
         }
 
