@@ -34,15 +34,18 @@ namespace PlayMyMusic.Widgets {
 
         Gtk.Box content;
         Gtk.Image cover;
+        Gtk.Image warning;
 
         public Track (PlayMyMusic.Objects.Track track ) {
             this.track = track;
             this.track.path_not_found.connect (() => {
-                var warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
-                warning.tooltip_text = _("File couldn't be found\n%s").printf (track.path);
-                warning.halign = Gtk.Align.END;
-                content.pack_end (warning);
-                warning.show_all ();
+                if (warning == null) {
+                    warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
+                    warning.tooltip_text = _("File couldn't be found\n%s").printf (track.path);
+                    warning.halign = Gtk.Align.END;
+                    content.pack_end (warning);
+                    warning.show_all ();
+                }
             });
 
             this.track.album.cover_changed.connect (() => {
