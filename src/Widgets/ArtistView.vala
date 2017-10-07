@@ -193,11 +193,9 @@ namespace PlayMyMusic.Widgets {
                 current_artist.background = null;
             }
             current_artist = artist;
-
-            background.pixbuf = null;
-            change_background ();
-
             this.reset ();
+
+            change_background ();
             foreach (var track in artist.tracks) {
                 add_track (track);
             }
@@ -230,6 +228,9 @@ namespace PlayMyMusic.Widgets {
             foreach (var child in tracks.get_children ()) {
                 tracks.remove (child);
             }
+            background.pixbuf = null;
+            artist_name.label = "";
+            artist_sub_title.label = "";
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
