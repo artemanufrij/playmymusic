@@ -66,7 +66,7 @@ namespace PlayMyMusic.Services {
                             scan_local_files (GLib.Path.build_filename (path, file_info.get_name ()));
                         } else {
                             string mime_type = file_info.get_content_type ();
-                            bool valid_file = !file_info.get_is_hidden () && mime_type.contains ("audio") && !mime_type.contains ("x-mpegurl");
+                            bool valid_file = !file_info.get_is_hidden () && mime_type.has_prefix ("audio/") && !mime_type.contains ("x-mpegurl");
                             if (valid_file) {
                                 string found_path = GLib.Path.build_filename (path, file_info.get_name ());
                                 found_music_file (found_path);
