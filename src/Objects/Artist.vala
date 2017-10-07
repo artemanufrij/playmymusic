@@ -67,38 +67,45 @@ namespace PlayMyMusic.Objects {
         }
 
         construct {
-            this._albums = new GLib.List<Album> ();
             this.cover_changed.connect (() => {
                 create_background ();
             });
         }
 
+        public void clear_albums () {
+            _albums = new GLib.List<Album> ();
+        }
+
         public void add_album (Album album) {
             album.set_artist (this);
-            lock (this._albums) {
-                this._albums.append (album);
-                album.track_added.connect ((track) => {
-                    add_track (track);
-                });
-            }
+            this._albums.append (album);
+            album.track_added.connect ((track) => {
+                add_track (track);
+            });
             load_cover_async.begin ();
         }
 
-        public void remove_album (Album album) {
-            this._albums.remove (album);
-        }
-
-        public Album? get_album_by_title (string title) {
+        public Album add_album_if_not_exists (Album new_album) {
             Album? return_value = null;
             lock (_albums) {
                 foreach (var album in albums) {
-                    if (album.title == title) {
+                    if (album.title == new_album.title) {
                         return_value = album;
                         break;
                     }
                 }
-                return return_value;
+                if (return_value == null) {
+                    add_album (new_album);
+                    db_manager.insert_album (new_album);
+                    new_album.clear_tracks ();
+                    return_value = new_album;
+                }
             }
+            return return_value;
+        }
+
+        public void remove_album (Album album) {
+            this._albums.remove (album);
         }
 
         private async void load_cover_async () {

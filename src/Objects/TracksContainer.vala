@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Objects {
     public class TracksContainer : GLib.Object {
         protected PlayMyMusic.Services.LibraryManager library_manager;
+        protected PlayMyMusic.Services.DataBaseManager db_manager;
 
         public signal void track_added (Track track);
         public signal void track_removed (Track track);
@@ -79,9 +80,10 @@ namespace PlayMyMusic.Objects {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            db_manager = library_manager.db_manager;
         }
 
-        public Track? get_track_by_path (string path) {
+       /* public Track? get_track_by_path (string path) {
             Track? return_value = null;
             lock (_tracks) {
                 foreach (var track in _tracks) {
@@ -92,7 +94,7 @@ namespace PlayMyMusic.Objects {
                 }
                 return return_value;
             }
-        }
+        }*/
 
         public Track? get_next_track (Track current) {
             shuffle_index = null;
@@ -165,6 +167,10 @@ namespace PlayMyMusic.Objects {
                 });
                 track_added (track);
             }
+        }
+
+        public void clear_tracks () {
+            _tracks = new GLib.List<Track> ();
         }
 
         public void set_new_cover (Gdk.Pixbuf cover, int size) {

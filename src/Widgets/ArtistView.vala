@@ -217,13 +217,8 @@ namespace PlayMyMusic.Widgets {
             if (current_artist == null || current_artist.background_path == null || current_artist.background == null || (background.pixbuf != null && background.pixbuf.width == width)) {
                 return;
             }
-            try {
-                var pix =  current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
-                background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
-            } catch (Error err) {
-                warning (err.message);
-                background.pixbuf = null;
-            }
+            var pix =  current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
+            background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
             return;
         }
 

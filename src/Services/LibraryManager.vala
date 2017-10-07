@@ -108,30 +108,15 @@ namespace PlayMyMusic.Services {
 
         // DATABASE REGION
         public void discovered_new_local_item (PlayMyMusic.Objects.Artist artist) {
-            var album = artist.albums.first ().data;
-            var track = album.tracks.first ().data;
+            new Thread<void*> (null, () => {
+                var album = artist.albums.first ().data;
+                var track = album.tracks.first ().data;
 
-            var db_artist = db_manager.get_artist_by_name (artist.name);
-            if (db_artist == null) {
-                db_manager.insert_artist (artist);
-                db_manager.insert_album (album);
-                db_manager.insert_track (track);
-            } else {
-                var album_db = db_artist.get_album_by_title (album.title);
-                if (album_db == null) {
-                    artist.remove_album (album);
-                    db_artist.add_album (album);
-                    db_manager.insert_album (album);
-                    db_manager.insert_track (track);
-                } else {
-                    var track_db = album_db.get_track_by_path (track.path);
-                    if (track_db == null) {
-                        album.remove_track (track);
-                        album_db.add_track (track);
-                        db_manager.insert_track (track);
-                    }
-                }
-            }
+                var db_artist = db_manager.insert_artist_if_not_exists (artist);
+                var db_album = db_artist.add_album_if_not_exists (album);
+                db_album.add_track_if_not_exists (track);
+                return null;
+            });
         }
 
         public void rescan_library () {
@@ -143,7 +128,7 @@ namespace PlayMyMusic.Services {
                 FileInfo file_info;
                 while ((file_info = children.next_file ()) != null) {
                      var file = File.new_for_path (GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, file_info.get_name ()));
-                     file.@delete ();
+                     file.delete ();
                 }
             } catch (Error err) {
                 warning (err.message);

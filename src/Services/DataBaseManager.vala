@@ -157,10 +157,10 @@ namespace PlayMyMusic.Services {
         }
 
         public void reset_database () {
-            _artists = null;
+            _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
             File db_path = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
             try {
-                db_path.@delete ();
+                db_path.delete ();
                 open_database ();
             } catch (Error err) {
                 warning (err.message);
@@ -189,51 +189,53 @@ namespace PlayMyMusic.Services {
         }
 
         public void insert_artist (PlayMyMusic.Objects.Artist artist) {
-            lock (_artists) {
-                Sqlite.Statement stmt;
-                string sql = """
-                    INSERT OR IGNORE INTO artists (name) VALUES ($NAME);
-                """;
+            Sqlite.Statement stmt;
+            string sql = """
+                INSERT OR IGNORE INTO artists (name) VALUES ($NAME);
+            """;
 
-                db.prepare_v2 (sql, sql.length, out stmt);
-                set_parameter_str (stmt, sql, "$NAME", artist.name);
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$NAME", artist.name);
 
-                if (stmt.step () != Sqlite.DONE) {
-                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-                }
-                stmt.reset ();
-
-                sql = """
-                    SELECT id FROM artists WHERE name=$NAME;
-                """;
-
-                db.prepare_v2 (sql, sql.length, out stmt);
-                set_parameter_str (stmt, sql, "$NAME", artist.name);
-
-                if (stmt.step () == Sqlite.ROW) {
-                    artist.ID = stmt.column_int (0);
-                    added_new_artist (artist);
-                    stdout.printf ("Artist ID: %d\n", artist.ID);
-                    _artists.append (artist);
-                    _artists.append (artist);
-                } else {
-                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-                }
-                stmt.reset ();
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
+            stmt.reset ();
+
+            sql = """
+                SELECT id FROM artists WHERE name=$NAME;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$NAME", artist.name);
+
+            if (stmt.step () == Sqlite.ROW) {
+                artist.ID = stmt.column_int (0);
+                added_new_artist (artist);
+                stdout.printf ("Artist ID: %d - %s\n", artist.ID, artist.name);
+                _artists.append (artist);
+            } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
         }
 
-        public PlayMyMusic.Objects.Artist? get_artist_by_name (string name) {
+        public PlayMyMusic.Objects.Artist insert_artist_if_not_exists (PlayMyMusic.Objects.Artist new_artist) {
             PlayMyMusic.Objects.Artist? return_value = null;
             lock (_artists) {
                 foreach (var artist in artists) {
-                    if (artist.name == name) {
+                    if (artist.name == new_artist.name) {
                         return_value = artist;
                         break;
                     }
                 }
-                return return_value;
+                if (return_value == null) {
+                    insert_artist (new_artist);
+                    new_artist.clear_albums ();
+                    return_value = new_artist;
+                }
             }
+            return return_value;
         }
 
 // ALBUM REGION
@@ -260,39 +262,37 @@ namespace PlayMyMusic.Services {
         }
 
         public void insert_album (PlayMyMusic.Objects.Album album) {
-            lock (db) {
-                Sqlite.Statement stmt;
+            Sqlite.Statement stmt;
 
-                string sql = """
-                    INSERT OR IGNORE INTO albums (artist_id, title, year) VALUES ($ARTIST_ID, $TITLE, $YEAR);
-                """;
-                db.prepare_v2 (sql, sql.length, out stmt);
-                set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
-                set_parameter_str (stmt, sql, "$TITLE", album.title);
-                set_parameter_int (stmt, sql, "$YEAR", album.year);
+            string sql = """
+                INSERT OR IGNORE INTO albums (artist_id, title, year) VALUES ($ARTIST_ID, $TITLE, $YEAR);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
+            set_parameter_str (stmt, sql, "$TITLE", album.title);
+            set_parameter_int (stmt, sql, "$YEAR", album.year);
 
-                if (stmt.step () != Sqlite.DONE) {
-                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-                }
-                stmt.reset ();
-
-                sql = """
-                    SELECT id FROM albums WHERE artist_id=$ARTIST_ID AND title=$TITLE;
-                """;
-
-                db.prepare_v2 (sql, sql.length, out stmt);
-                set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
-                set_parameter_str (stmt, sql, "$TITLE", album.title);
-
-                if (stmt.step () == Sqlite.ROW) {
-                    album.ID = stmt.column_int (0);
-                    this.added_new_album (album);
-                    stdout.printf ("Album ID: %d\n", album.ID);
-                } else {
-                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-                }
-                stmt.reset ();
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
+            stmt.reset ();
+
+            sql = """
+                SELECT id FROM albums WHERE artist_id=$ARTIST_ID AND title=$TITLE;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
+            set_parameter_str (stmt, sql, "$TITLE", album.title);
+
+            if (stmt.step () == Sqlite.ROW) {
+                album.ID = stmt.column_int (0);
+                this.added_new_album (album);
+                stdout.printf ("Album ID: %d\n", album.ID);
+            } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
         }
 
 // TRACK REGION
@@ -323,41 +323,39 @@ namespace PlayMyMusic.Services {
         }
 
         public void insert_track (PlayMyMusic.Objects.Track track) {
-            lock (db) {
-                Sqlite.Statement stmt;
+            Sqlite.Statement stmt;
 
-                string sql = """
-                    INSERT OR IGNORE INTO tracks (album_id, title, genre, track, disc, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DISC, $DURATION, $PATH);
-                """;
-                db.prepare_v2 (sql, sql.length, out stmt);
-                set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
-                set_parameter_str (stmt, sql, "$TITLE", track.title);
-                set_parameter_str (stmt, sql, "$GENRE", track.genre);
-                set_parameter_int (stmt, sql, "$TRACK", track.track);
-                set_parameter_int (stmt, sql, "$DISC", track.disc);
-                set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
-                set_parameter_str (stmt, sql, "$PATH", track.path);
+            string sql = """
+                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, disc, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DISC, $DURATION, $PATH);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
+            set_parameter_str (stmt, sql, "$TITLE", track.title);
+            set_parameter_str (stmt, sql, "$GENRE", track.genre);
+            set_parameter_int (stmt, sql, "$TRACK", track.track);
+            set_parameter_int (stmt, sql, "$DISC", track.disc);
+            set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
+            set_parameter_str (stmt, sql, "$PATH", track.path);
 
-                if (stmt.step () != Sqlite.DONE) {
-                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-                }
-                stmt.reset ();
-
-                sql = """
-                    SELECT id FROM tracks WHERE path=$PATH;
-                """;
-
-                db.prepare_v2 (sql, sql.length, out stmt);
-                set_parameter_str (stmt, sql, "$PATH", track.path);
-
-                if (stmt.step () == Sqlite.ROW) {
-                    track.ID = stmt.column_int (0);
-                    stdout.printf ("Track ID: %d\n", track.ID);
-                } else {
-                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-                }
-                stmt.reset ();
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
+            stmt.reset ();
+
+            sql = """
+                SELECT id FROM tracks WHERE path=$PATH;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$PATH", track.path);
+
+            if (stmt.step () == Sqlite.ROW) {
+                track.ID = stmt.column_int (0);
+                stdout.printf ("Track ID: %d\n", track.ID);
+            } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
         }
 
 // RADIO REGION
