@@ -80,23 +80,8 @@ namespace PlayMyMusic.Widgets {
             });
             content.attach (timeline, 1, 1);
 
-            var goto_button = new Gtk.Button.from_icon_name ("go-jump-symbolic", Gtk.IconSize.MENU);
-            content.attach (goto_button, 2, 0);
-
-
-            enter_notify_event.connect ((event) => {
-                goto_button.show ();
-                return true;
-            });
-            leave_notify_event.connect ((event) => {
-                goto_button.hide ();
-                return true;
-            });
-
             this.add (content);
             this.show_all ();
-
-            goto_button.hide ();
         }
 
         public void stop_playing () {

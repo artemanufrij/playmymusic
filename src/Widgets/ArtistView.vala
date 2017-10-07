@@ -43,7 +43,6 @@ namespace PlayMyMusic.Widgets {
         Gtk.Label artist_sub_title;
         Gtk.Image background;
         Gtk.Grid header;
-        Gtk.ScrolledWindow tracks_scroll;
 
         public PlayMyMusic.Objects.Artist current_artist { get; private set; }
 
@@ -129,7 +128,7 @@ namespace PlayMyMusic.Widgets {
             overlay.add_overlay (background);
             overlay.add_overlay (header);
 
-            tracks_scroll = new Gtk.ScrolledWindow (null, null);
+            var tracks_scroll = new Gtk.ScrolledWindow (null, null);
             tracks_scroll.expand = true;
 
             tracks = new Gtk.ListBox ();
@@ -265,12 +264,6 @@ namespace PlayMyMusic.Widgets {
             foreach (var child in tracks.get_children ()) {
                 if ((child as Widgets.Track).track.ID == track.ID) {
                     (child as Widgets.Track).activate ();
-
-                    Gtk.Allocation alloc;
-                    child.get_allocation (out alloc);
-
-                    stdout.printf ("alloc %d - %d\n", alloc.y, child.get_allocated_height ());
-                    return;
                 }
             }
         }
