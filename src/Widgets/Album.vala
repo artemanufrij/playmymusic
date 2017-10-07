@@ -79,6 +79,8 @@ namespace PlayMyMusic.Widgets {
 
             this.add (content);
             this.valign = Gtk.Align.START;
+
+            this.show_all ();
         }
     }
 }

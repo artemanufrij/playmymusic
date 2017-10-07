@@ -96,6 +96,8 @@ namespace PlayMyMusic.Widgets {
 
             this.add (event_box);
             this.valign = Gtk.Align.START;
+
+            this.show_all ();
         }
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {

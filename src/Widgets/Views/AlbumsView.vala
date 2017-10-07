@@ -126,7 +126,6 @@ namespace PlayMyMusic.Widgets.Views {
         public void add_album (Objects.Album album) {
             lock (albums) {
                 var a = new Widgets.Album (album);
-                a.show_all ();
                 albums.add (a);
             }
         }

@@ -121,7 +121,7 @@ namespace PlayMyMusic.Services {
             db_manager.reset_database ();
             File directory = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER);
             try {
-                var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN, 0);
+                var children = directory.enumerate_children ("", 0);
                 FileInfo file_info;
                 while ((file_info = children.next_file ()) != null) {
                      var file = File.new_for_path (GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, file_info.get_name ()));
