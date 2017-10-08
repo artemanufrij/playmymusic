@@ -71,6 +71,7 @@ namespace PlayMyMusic.Widgets {
             timeline = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 1000, 1);
             timeline.draw_value = false;
             timeline.can_focus = false;
+            timeline.width_request = 400;
             timeline.change_value.connect ((scroll, new_value) => {
                 if (scroll == Gtk.ScrollType.JUMP) {
                     var seek_position = (int64)(duration / 1000 * new_value);
