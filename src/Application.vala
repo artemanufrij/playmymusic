@@ -86,7 +86,8 @@ namespace PlayMyMusic {
             if (mainwindow == null) {
                 mainwindow = new MainWindow ();
                 mainwindow.application = this;
-                Services.MediaKeyListener.listen ();
+                Interfaces.MediaKeyListener.listen ();
+                Interfaces.SoundIndicator.listen ();
             }
             mainwindow.present ();
         }

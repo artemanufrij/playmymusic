@@ -25,7 +25,7 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
-namespace PlayMyMusic.Services {
+namespace PlayMyMusic.Interfaces {
     [DBus (name = "org.gnome.SettingsDaemon.MediaKeys")]
     public interface GnomeMediaKeys : GLib.Object {
         public abstract void GrabMediaPlayerKeys (string application, uint32 time) throws IOError;

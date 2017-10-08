@@ -10,7 +10,7 @@ com.github.artemanufrij.playmymusic (0.1.2) xenial; urgency=low
  * &-char issue
 
 [NEW]
- * Edit Radio Staion
+ * Edit Radio Station
  * Follow symbol links while scanning library
 
 [CHANGED]

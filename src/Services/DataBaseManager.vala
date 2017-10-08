@@ -160,11 +160,11 @@ namespace PlayMyMusic.Services {
             File db_path = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
             try {
                 db_path.delete ();
-                open_database ();
             } catch (Error err) {
                 warning (err.message);
             }
             _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
+            open_database ();
         }
 
 // ARTIST REGION
