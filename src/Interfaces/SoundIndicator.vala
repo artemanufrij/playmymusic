@@ -26,74 +26,136 @@
  */
 
 namespace PlayMyMusic.Interfaces {
-
-
     public class SoundIndicator {
-
         public static SoundIndicator instance { get; private set; }
         public static void listen () {
             instance = new SoundIndicator ();
             instance.initialize ();
         }
 
-        public SoundIndicatorControls controls = null;
+        SoundIndicatorPlayer player;
+        SoundIndicatorRoot root;
 
-        private unowned DBusConnection conn;
-        private uint owner_id;
+        unowned DBusConnection conn;
+        uint owner_id;
+        uint root_id;
+        uint player_id;
 
         private void initialize () {
-            owner_id = Bus.own_name(BusType.SESSION, "org.mpris.MediaPlayer2.PlayMyMusic", GLib.BusNameOwnerFlags.NONE, on_bus_acquired, on_name_acquired, on_name_lost);
-            if(owner_id == 0) {
-                warning("Could not initialize MPRIS session.\n");
+            owner_id = Bus.own_name (BusType.SESSION, "org.mpris.MediaPlayer2.PlayMyMusic", GLib.BusNameOwnerFlags.NONE, on_bus_acquired, on_name_acquired, on_name_lost);
+            if (owner_id == 0) {
+                warning ("Could not initialize MPRIS session.\n");
             }
-            else {
-
-            }
+            PlayMyMusic.PlayMyMusicApp.instance.mainwindow.destroy.connect (() => {
+                this.conn.unregister_object (root_id);
+                this.conn.unregister_object (player_id);
+                Bus.unown_name (owner_id);
+            });
         }
 
         private void on_bus_acquired (DBusConnection connection, string name) {
             this.conn = connection;
-            debug ("bus acquired");
             try {
-                controls = new SoundIndicatorControls (connection);
-                connection.register_object ("/org/mpris/MediaPlayer2", controls);
+                root = new SoundIndicatorRoot ();
+                root_id = connection.register_object ("/org/mpris/MediaPlayer2", root);
+                player = new SoundIndicatorPlayer (connection);
+                player_id = connection.register_object ("/org/mpris/MediaPlayer2", player);
             }
             catch(IOError e) {
-                warning("could not create MPRIS player: %s\n", e.message);
+                warning ("could not create MPRIS player: %s\n", e.message);
             }
         }
 
-        private void on_name_acquired(DBusConnection connection, string name) {
-            debug ("name acquired");
+        private void on_name_acquired (DBusConnection connection, string name) {
+            stdout.printf ("ac\n");
         }
 
-        private void on_name_lost(DBusConnection connection, string name) {
-            debug ("name_lost");
+        private void on_name_lost (DBusConnection connection, string name) {
+            stdout.printf ("lost\n");
         }
     }
 
+    [DBus(name = "org.mpris.MediaPlayer2")]
+    public class SoundIndicatorRoot : GLib.Object {
+        PlayMyMusic.PlayMyMusicApp app;
+
+        construct {
+            this.app = PlayMyMusic.PlayMyMusicApp.instance;
+        }
+
+        public string DesktopEntry {
+            owned get {
+                return app.application_id;
+            }
+        }
+    }
 
     [DBus(name = "org.mpris.MediaPlayer2.Player")]
-    public class SoundIndicatorControls : GLib.Object {
+    public class SoundIndicatorPlayer : GLib.Object {
         PlayMyMusic.Services.Player player;
-        DBusConnection conn;
+        DBusConnection connection;
+        PlayMyMusic.PlayMyMusicApp app;
 
-        HashTable<string,Variant> changed_properties = null;
-        HashTable<string,Variant> metadata;
-
-        public SoundIndicatorControls (DBusConnection conn) {
-            this.conn = conn;
+        public SoundIndicatorPlayer (DBusConnection connection) {
+            this.app = PlayMyMusic.PlayMyMusicApp.instance;
+            this.connection = connection;
             player = PlayMyMusic.Services.Player.instance;
             player.state_changed.connect_after ((state) => {
+                Variant property;
                 switch (state) {
                     case Gst.State.PLAYING:
+                        property = "Playing";
+                        var metadata = new HashTable<string, Variant> (null, null);
+                        var file = File.new_for_path (player.current_track.album.cover_path);
+                        metadata.insert("mpris:artUrl", file.get_uri ());
+                        metadata.insert("xesam:title", player.current_track.title);
+                        metadata.insert("xesam:artist", get_simple_string_array (player.current_track.album.artist.name));
+                        send_properties ("Metadata", metadata);
                         break;
                     case Gst.State.PAUSED:
+                        property = "Paused";
                         break;
                     default:
+                        property = "Stopped";
+                        var metadata = new HashTable<string, Variant> (null, null);
+                        metadata.insert("mpris:artUrl", "");
+                        metadata.insert("xesam:title", "");
+                        metadata.insert("xesam:artist", new string [0]);
+                        send_properties ("Metadata", metadata);
                         break;
                 }
+                send_properties ("PlaybackStatus", property);
             });
+        }
+
+        private static string[] get_simple_string_array (string text) {
+            string[] array = new string[0];
+            array += text;
+            return array;
+        }
+
+        private void send_properties (string property, Variant val) {
+            var property_list = new HashTable<string,Variant> (str_hash, str_equal);
+            property_list.insert (property, val);
+
+            var builder = new VariantBuilder (VariantType.ARRAY);
+            var invalidated_builder = new VariantBuilder (new VariantType("as"));
+
+            foreach(string name in property_list.get_keys ()) {
+                Variant variant = property_list.lookup (name);
+                builder.add ("{sv}", name, variant);
+            }
+
+            try {
+                connection.emit_signal (null,
+                                  "/org/mpris/MediaPlayer2",
+                                  "org.freedesktop.DBus.Properties",
+                                  "PropertiesChanged",
+                                  new Variant("(sa{sv}as)", "org.mpris.MediaPlayer2.Player", builder, invalidated_builder));
+            }
+            catch(Error e) {
+                print("Could not send MPRIS property change: %s\n", e.message);
+            }
         }
 
         public bool CanGoNext { get { return true; } }
@@ -104,21 +166,16 @@ namespace PlayMyMusic.Interfaces {
 
         public bool CanPause { get { return true; } }
 
-        public void PlayPause() {
-
-            player.play ();
-        }
-
-        public void Play () {
-            player.play ();
-        }
-
-        public void Pause () {
-            player.pause ();
+        public void PlayPause () {
+            app.mainwindow.play ();
         }
 
         public void Next () {
-            player.next ();
+            app.mainwindow.next ();
+        }
+
+        public void Previous() {
+            app.mainwindow.prev ();
         }
 
     }

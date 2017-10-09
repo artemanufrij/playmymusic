@@ -51,6 +51,8 @@ namespace PlayMyMusic {
 
         Notification desktop_notification;
 
+        bool send_desktop_notification = true;
+
         construct {
             settings = PlayMyMusic.Settings.get_default ();
 
@@ -127,6 +129,7 @@ namespace PlayMyMusic {
             });
 
             this.destroy.connect (() => {
+                library_manager.player.stop ();
                 settings.window_maximized = this.is_maximized;
                 settings.view_index = view_mode.selected;
             });
@@ -331,7 +334,7 @@ namespace PlayMyMusic {
         }
 
         private void send_notification (Objects.Track track) {
-            if (!is_active) {
+            if (!is_active && send_desktop_notification) {
                 if (desktop_notification == null) {
                     desktop_notification = new Notification ("");
                 }
@@ -357,6 +360,7 @@ namespace PlayMyMusic {
         }
 
         public void play () {
+            send_desktop_notification = false;
             if (library_manager.player.current_track != null || library_manager.player.current_radio != null || library_manager.player.current_file != null) {
                 library_manager.player.toggle_playing ();
             } else {
@@ -369,6 +373,19 @@ namespace PlayMyMusic {
                         break;
                 }
             }
+            send_desktop_notification = true;
+        }
+
+        public void next () {
+            send_desktop_notification = false;
+            library_manager.player.next ();
+            send_desktop_notification = true;
+        }
+
+        public void prev () {
+            send_desktop_notification = false;
+            library_manager.player.prev ();
+            send_desktop_notification = true;
         }
 
         public void open_file (File file) {
