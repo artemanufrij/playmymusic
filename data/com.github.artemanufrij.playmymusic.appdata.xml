@@ -33,4 +33,18 @@
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/Screenshot_Radio_Stations.png</image>
         </screenshot>
     </screenshots>
+    <releases>
+        <release version="0.1.4" date="2017-10-09">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Sound Indicator</li>
+                </ul>
+                <p>Miscellaneous:</p>
+                <ul>
+                    <li>Small style improvements</li>
+                </ul>
+            </description>
+        </release>
+    </releases>
 </component>

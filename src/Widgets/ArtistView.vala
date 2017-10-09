@@ -88,7 +88,6 @@ namespace PlayMyMusic.Widgets {
                     .artist-sub-title {
                         color: #fff;
                         text-shadow: 0px 1px 2px alpha (#000, 1);
-                        opacity: 0.75;
                     }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
@@ -112,13 +111,12 @@ namespace PlayMyMusic.Widgets {
             artist_name.valign = Gtk.Align.END;
             artist_name.hexpand = true;
             artist_name.get_style_context ().add_class (Granite.StyleClass.H1_TEXT);
-            artist_name.get_style_context ().add_class ("artist-title");
             header.attach (artist_name, 0, 0);
 
             artist_sub_title = new Gtk.Label ("");
             artist_sub_title.valign = Gtk.Align.START;
             artist_sub_title.use_markup = true;
-            artist_sub_title.get_style_context ().add_class ("artist-sub-title");
+            artist_sub_title.opacity = 0.75;
             header.attach (artist_sub_title, 0, 1);
 
             background = new Gtk.Image ();
@@ -216,7 +214,8 @@ namespace PlayMyMusic.Widgets {
             }
             var pix =  current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
             background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
-            return;
+            artist_name.get_style_context ().add_class ("artist-title");
+            artist_sub_title.get_style_context ().add_class ("artist-sub-title");
         }
 
         private void update_header () {
@@ -231,6 +230,8 @@ namespace PlayMyMusic.Widgets {
             background.pixbuf = null;
             artist_name.label = "";
             artist_sub_title.label = "";
+            artist_name.get_style_context ().remove_class ("artist-title");
+            artist_sub_title.get_style_context ().remove_class ("artist-sub-title");
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
