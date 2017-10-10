@@ -59,7 +59,9 @@ namespace PlayMyMusic.Widgets.Views {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.added_new_album.connect ((album) => {
-                add_album (album);
+                Idle.add (() => {
+                    add_album (album);
+                });
             });
         }
 

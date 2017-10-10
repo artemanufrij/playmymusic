@@ -58,12 +58,16 @@ namespace PlayMyMusic {
 
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.tag_discover_started.connect (() => {
-                spinner.active = true;
-                menu_item_rescan.sensitive = false;
+                Idle.add (() => {
+                    spinner.active = true;
+                    menu_item_rescan.sensitive = false;
+                });
             });
             library_manager.tag_discover_finished.connect (() => {
-                spinner.active = false;
-                menu_item_rescan.sensitive = true;
+                Idle.add (() => {
+                    spinner.active = false;
+                    menu_item_rescan.sensitive = true;
+                });
             });
             library_manager.added_new_artist.connect (() => {
                 if (!artist_button.sensitive) {
