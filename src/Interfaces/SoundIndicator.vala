@@ -67,11 +67,9 @@ namespace PlayMyMusic.Interfaces {
         }
 
         private void on_name_acquired (DBusConnection connection, string name) {
-            stdout.printf ("ac\n");
         }
 
         private void on_name_lost (DBusConnection connection, string name) {
-            stdout.printf ("lost\n");
         }
     }
 

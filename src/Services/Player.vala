@@ -208,14 +208,20 @@ namespace PlayMyMusic.Services {
         }
 
         public void toggle_playing () {
-            Gst.State state = Gst.State.NULL;
-            Gst.State pending;
-            playbin.get_state (out state, out pending, (Gst.ClockTime) (Gst.SECOND));
+            var state = get_state ();
             if (state == Gst.State.PLAYING) {
                 pause ();
             } else if (state == Gst.State.PAUSED || state == Gst.State.READY) {
                 play ();
             }
+        }
+
+        public Gst.State get_state () {
+            Gst.State state = Gst.State.NULL;
+            Gst.State pending;
+            playbin.get_state (out state, out pending, (Gst.ClockTime) (Gst.SECOND));
+
+            return state;
         }
 
         private bool bus_callback (Gst.Bus bus, Gst.Message message) {

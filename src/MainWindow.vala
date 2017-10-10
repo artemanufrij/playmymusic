@@ -128,6 +128,14 @@ namespace PlayMyMusic {
                 return false;
             });
 
+            this.delete_event.connect (() => {
+                if (settings.play_in_background && library_manager.player.get_state () == Gst.State.PLAYING) {
+                    this.hide_on_delete ();
+                    return true;
+                }
+                return false;
+            });
+
             this.destroy.connect (() => {
                 library_manager.player.stop ();
                 settings.window_maximized = this.is_maximized;
@@ -271,10 +279,18 @@ namespace PlayMyMusic {
                 library_manager.rescan_library ();
             });
 
+            var menu_item_preferences = new Gtk.MenuItem.with_label (_("Preferences"));
+            menu_item_preferences.activate.connect (() => {
+                var preferences = new Dialogs.Preferences (this);
+                preferences.run ();
+            });
+
             settings_menu.append (menu_item_library);
             settings_menu.append (menu_item_import);
             settings_menu.append (new Gtk.SeparatorMenuItem ());
             settings_menu.append (menu_item_rescan);
+            settings_menu.append (new Gtk.SeparatorMenuItem ());
+            settings_menu.append (menu_item_preferences);
             settings_menu.show_all ();
 
             app_menu.popup = settings_menu;

@@ -35,6 +35,11 @@
 			<summary>Repeat mode.</summary>
 			<description>Repeat mode.</description>
 		</key>
+		<key name="play-in-background" type="b">
+			<default>false</default>
+			<summary>Play in background if closed.</summary>
+			<description>Play in background if closed.</description>
+		</key>
 		<key name="artists" type="as">
 			<default>['artist.jpg','Artist.jpg','artist.png','Artist.png','interpreter.jpg','Interpreter.jpg','interpreter.png','Interpreter.png']</default>
 			<summary>Artwork file names.</summary>
