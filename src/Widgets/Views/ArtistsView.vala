@@ -50,7 +50,7 @@ namespace PlayMyMusic.Widgets.Views {
         construct {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            library_manager.added_new_artist.connect((artist) => {
+            library_manager.added_new_artist.connect ((artist) => {
                 Idle.add (() => {
                     add_artist (artist);
                 });
