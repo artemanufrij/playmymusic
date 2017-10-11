@@ -2,139 +2,143 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-04 18:57+0200\n"
+"PO-Revision-Date: 2017-10-11 23:33+0300\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
+"Last-Translator: Rafael Campos Nunes\n"
+"Language: pt_BR\n"
+
 
 #: ../src/Widgets/TrackTimeLine.vala:118
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> do álbum <b>%s</b> por <b>%s</b>"
 
 #: ../src/Widgets/AlbumView.vala:94 ../src/Widgets/Artist.vala:79
 #: ../src/Widgets/Radio.vala:79
 msgid "Set new Cover…"
-msgstr ""
+msgstr "Selecionar nova capa"
 
 #: ../src/Widgets/AlbumView.vala:128 ../src/Widgets/ArtistView.vala:151
 msgid "Shuffle"
-msgstr ""
+msgstr "Aleatório"
 
 #: ../src/Widgets/AlbumView.vala:143 ../src/Widgets/ArtistView.vala:166
 msgid "Repeat"
-msgstr ""
+msgstr "Repetir"
 
 #: ../src/Widgets/ArtistView.vala:223
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr ""
+msgstr "<b>%d</b> músicas no <b>Álbum %d</b>"
 
 #: ../src/Widgets/Views/AlbumsView.vala:98
 msgid "Change Music Folder"
-msgstr ""
+msgstr "Mudar diretório de músicas"
 
 #: ../src/Widgets/Views/AlbumsView.vala:98
 msgid "Load music from a folder, a network or an external disk."
-msgstr ""
+msgstr "Carregar música de um diretório, rede ou disco externo."
 
 #: ../src/Widgets/Views/AlbumsView.vala:99
 msgid "Import Music"
-msgstr ""
+msgstr "Importar música"
 
 #: ../src/Widgets/Views/AlbumsView.vala:99
 msgid "Import music from a source into your library."
-msgstr ""
+msgstr "Importar música de uma fonte externa à biblioteca"
 
 #: ../src/Widgets/Views/RadiosView.vala:108
 msgid "Add a radio station"
-msgstr ""
+msgstr "Adicionar uma estação de rádio"
 
 #: ../src/Widgets/Views/RadiosView.vala:143
 msgid "Choose a Cover"
-msgstr ""
+msgstr "Selecionar uma capa"
 
 #: ../src/Widgets/Views/RadiosView.vala:157
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
-msgstr ""
+msgstr "Adicionar estação de rádio"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
-msgstr ""
+msgstr "Adicionar uma lista de músicas (.pls ou .m3u)"
 
 #: ../src/Widgets/Track.vala:42
 msgid ""
 "File couldn't be found\n"
 "%s"
-msgstr ""
+msgstr "Arquivo não pôde ser encontrado\n%s"
 
 #: ../src/Widgets/Radio.vala:95
 msgid "Remove Radio Station"
-msgstr ""
+msgstr "Remover estação de rádio"
 
 #: ../src/Services/LibraryManager.vala:180
 msgid "Choose an image…"
-msgstr ""
+msgstr "Escolher uma imagem..."
 
 #: ../src/Services/LibraryManager.vala:182
 #: ../src/Services/LibraryManager.vala:203
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: ../src/Services/LibraryManager.vala:183
 #: ../src/Services/LibraryManager.vala:204
 msgid "_Open"
-msgstr ""
+msgstr "_Abrir"
 
 #: ../src/Services/LibraryManager.vala:186
 msgid "Images"
-msgstr ""
+msgstr "Imagens"
 
 #: ../src/Services/LibraryManager.vala:202
 msgid "Select a folder."
-msgstr ""
+msgstr "Selecionar diretório"
 
 #: ../src/Services/LibraryManager.vala:207
 msgid "Folder"
-msgstr ""
+msgstr "Diretório"
 
 #: ../src/MainWindow.vala:76
 msgid "Pause"
-msgstr ""
+msgstr "Pausar"
 
 #: ../src/MainWindow.vala:99 ../src/MainWindow.vala:140
 msgid "Play My Music"
-msgstr ""
+msgstr "Tocar minha música"
 
 #: ../src/MainWindow.vala:102 ../src/MainWindow.vala:157
 msgid "Play"
-msgstr ""
+msgstr "Tocar"
 
 #: ../src/MainWindow.vala:149
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #: ../src/MainWindow.vala:164
 msgid "Next"
-msgstr ""
+msgstr "Próxima"
 
 #: ../src/MainWindow.vala:224
 msgid "Change Music Folder…"
-msgstr ""
+msgstr "Mudar diretório de músicas..."
 
 #: ../src/MainWindow.vala:233
 msgid "Import Music…"
-msgstr ""
+msgstr "Importar música..."
 
 #: ../src/MainWindow.vala:241
 msgid "Rescan Library"
-msgstr ""
+msgstr "Reescanear biblioteca"
 
 #: ../src/MainWindow.vala:262
 msgid "Search Music"
-msgstr ""
+msgstr "Pesquisar música"
 
 #: ../src/MainWindow.vala:319
 msgid "<b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> por <b>%s</b>"
