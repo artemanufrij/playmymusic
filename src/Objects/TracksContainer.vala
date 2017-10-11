@@ -38,6 +38,14 @@ namespace PlayMyMusic.Objects {
         public string title { get; set; default = ""; }
         public string name { get; set; default = ""; }
         protected int _ID = 0;
+        public int ID {
+            get {
+                return _ID;
+            } set {
+                _ID = value;
+            }
+        }
+
         protected GLib.List<Track> _tracks = null;
 
         public ulong artist_track_added_signal_id { get; set; default = 0; }

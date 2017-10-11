@@ -25,50 +25,7 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
-namespace PlayMyMusic.Objects {
-    public class Track : GLib.Object {
-        Album _album;
-        public Album album {
-            get {
-                return _album;
-            }
-        }
-
-        public int ID { get; set; default = 0; }
-        public string title { get; set; default = ""; }
-        public string genre { get; set; default = ""; }
-        public int track { get; set; default = 0; }
-        public int disc { get; set; default = 0; }
-        public uint64 duration { get; set; default = 0; }
-
-        //LOCATION
-        string _path = "";
-        public string path {
-            get {
-                return _path;
-            } set {
-                _path = value;
-                var f = File.new_for_path (_path);
-                _uri = f.get_uri ();
-            }
-        }
-        string _uri = "";
-        public string uri {
-            get {
-                return _uri;
-            }
-        }
-
-        public signal void path_not_found ();
-
-        public Track (TracksContainer? container = null) {
-            if (container != null && container is Album) {
-                this.set_album (container as Album);
-            }
-        }
-
-        public void set_album (Album album) {
-            this._album = album;
-        }
+namespace PlayMyMusic.Widgets {
+    public class Playlist : Gtk.FlowBoxChild {
     }
 }

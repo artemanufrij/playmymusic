@@ -21,12 +21,14 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Widgets/ArtistView.vala
     Widgets/Album.vala
     Widgets/AlbumView.vala
+    Widgets/Playlist.vala
     Widgets/Track.vala
     Widgets/TrackTimeLine.vala
     Widgets/Radio.vala
     Widgets/Views/AlbumsView.vala
     Widgets/Views/RadiosView.vala
     Widgets/Views/ArtistsView.vala
+    Widgets/Views/PlaylistsView.vala
     Dialogs/Preferences.vala
     Settings.vala
     MainWindow.vala

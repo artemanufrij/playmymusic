@@ -39,6 +39,7 @@ namespace PlayMyMusic.Services {
         public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
+        public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
 
         GLib.List<PlayMyMusic.Objects.Artist> _artists = null;
@@ -58,6 +59,16 @@ namespace PlayMyMusic.Services {
                     _radios = get_radio_collection ();
                 }
                 return _radios;
+            }
+        }
+
+        GLib.List<PlayMyMusic.Objects.Playlist> _playlists = null;
+        public GLib.List<PlayMyMusic.Objects.Playlist> playlists {
+            get {
+                if (_playlists == null) {
+                    _playlists = get_playlist_collection ();
+                }
+                return _playlists;
             }
         }
 
@@ -120,6 +131,14 @@ namespace PlayMyMusic.Services {
                     warning (errormsg);
                 }
 
+                q = """CREATE TABLE blacklist (
+                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                    path        TEXT        NOT NULL
+                    )""";
+                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                    warning (errormsg);
+                }
+
                 q = """CREATE TABLE radios (
                     ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
                     title       TEXT        NOT NULL,
@@ -150,6 +169,11 @@ namespace PlayMyMusic.Services {
                     FOREIGN KEY (playlist_id) REFERENCES playlists (ID)
                         ON DELETE CASCADE
                     );""";
+                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                    warning (errormsg);
+                }
+
+                q = """PRAGMA foreign_keys = ON;""";
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                     warning (errormsg);
                 }
@@ -294,8 +318,28 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
+// PLAYlist REGION
+        public GLib.List<PlayMyMusic.Objects.Playlist> get_playlist_collection () {
+            GLib.List<PlayMyMusic.Objects.Playlist> return_value = new GLib.List<PlayMyMusic.Objects.Playlist> ();
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT id, title FROM playlists ORDER BY title;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+
+            while (stmt.step () == Sqlite.ROW) {
+                var item = new PlayMyMusic.Objects.Playlist ();
+                item.ID = stmt.column_int (0);
+                item.title = stmt.column_text (1);
+                return_value.append (item);
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
 // TRACK REGION
-        public GLib.List<PlayMyMusic.Objects.Track> get_track_collection (PlayMyMusic.Objects.Album album) {
+        public GLib.List<PlayMyMusic.Objects.Track> get_track_collection (PlayMyMusic.Objects.TracksContainer container) {
             GLib.List<PlayMyMusic.Objects.Track> return_value = new GLib.List<PlayMyMusic.Objects.Track> ();
             Sqlite.Statement stmt;
 
@@ -304,10 +348,10 @@ namespace PlayMyMusic.Services {
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_int (stmt, sql, "$ALBUM_ID", album.ID);
+            set_parameter_int (stmt, sql, "$ALBUM_ID", container.ID);
 
             while (stmt.step () == Sqlite.ROW) {
-                var item = new PlayMyMusic.Objects.Track (album);
+                var item = new PlayMyMusic.Objects.Track (container);
                 item.ID = stmt.column_int (0);
                 item.title = stmt.column_text (1);
                 item.genre = stmt.column_text (2);

@@ -47,6 +47,7 @@ namespace PlayMyMusic {
         Widgets.Views.AlbumsView albums_view;
         Widgets.Views.ArtistsView artists_view;
         Widgets.Views.RadiosView radios_view;
+        Widgets.Views.PlaylistsView playlists_view;
         Widgets.TrackTimeLine timeline;
 
         Notification desktop_notification;
@@ -200,7 +201,10 @@ namespace PlayMyMusic {
             view_mode.append (artist_button);
             artist_button.sensitive = library_manager.artists.length () > 0;
 
-            //view_mode.append_icon ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            var playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            playlist_button.tooltip_text = _("Playlists");
+            view_mode.append (playlist_button);
+
             var radio_button = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
             radio_button.tooltip_text = _("Radio Stations");
             view_mode.append (radio_button);
@@ -216,6 +220,10 @@ namespace PlayMyMusic {
                         }
                         break;
                     case 2:
+                        content.set_visible_child_name ("playlists");
+                        search_entry.text = playlists_view.filter;
+                        break;
+                    case 3:
                         if (library_manager.player.current_radio == null) {
                             search_entry.grab_focus ();
                         }
@@ -310,6 +318,9 @@ namespace PlayMyMusic {
                         artists_view.filter = search_entry.text;
                         break;
                     case 2:
+                        playlists_view.filter = search_entry.text;
+                        break;
+                    case 3:
                         radios_view.filter = search_entry.text;
                         break;
                     default:
@@ -330,8 +341,6 @@ namespace PlayMyMusic {
                 next_button.sensitive = true;
             });
 
-            radios_view = new Widgets.Views.RadiosView ();
-
             artists_view = new Widgets.Views.ArtistsView ();
             artists_view.artist_selected.connect (() => {
                 previous_button.sensitive = true;
@@ -339,8 +348,13 @@ namespace PlayMyMusic {
                 next_button.sensitive = true;
             });
 
+            playlists_view = new Widgets.Views.PlaylistsView ();
+
+            radios_view = new Widgets.Views.RadiosView ();
+
             content.add_named (albums_view, "albums");
             content.add_named (artists_view, "artists");
+            content.add_named (playlists_view, "playlists");
             content.add_named (radios_view, "radios");
             this.add (content);
 

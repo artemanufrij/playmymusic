@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Objects {
     public class Artist : TracksContainer {
-        public int ID {
+        public new int ID {
             get {
                 return _ID;
             } set {

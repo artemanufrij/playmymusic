@@ -34,7 +34,7 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        public int ID {
+        public new int ID {
             get {
                 return _ID;
             } set {

@@ -26,6 +26,6 @@
  */
 
 namespace PlayMyMusic.Objects {
-    public class Paylist : TracksContainer {
+    public class Playlist : TracksContainer {
     }
 }
