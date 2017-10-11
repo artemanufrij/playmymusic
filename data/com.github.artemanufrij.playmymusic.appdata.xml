@@ -34,6 +34,14 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.1.5" date="2017-10-15">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Play in Backgound</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.1.4" date="2017-10-09">
             <description>
                 <p>New:</p>
