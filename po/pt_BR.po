@@ -12,7 +12,7 @@ msgstr ""
 
 #: ../src/Widgets/TrackTimeLine.vala:118
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr "%s de%s por %s %"
+msgstr "<b>%s</b> do álbum <b>%s</b> por <b>%s</b>"
 
 #: ../src/Widgets/AlbumView.vala:94 ../src/Widgets/Artist.vala:79
 #: ../src/Widgets/Radio.vala:79
