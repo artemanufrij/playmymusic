@@ -220,6 +220,9 @@ namespace PlayMyMusic {
                         }
                         break;
                     case 2:
+                        if (library_manager.player.current_track == null) {
+                            search_entry.grab_focus ();
+                        }
                         content.set_visible_child_name ("playlists");
                         search_entry.text = playlists_view.filter;
                         break;

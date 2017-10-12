@@ -42,6 +42,8 @@ namespace PlayMyMusic.Widgets {
         Gtk.Button repeat_button;
         Gtk.Button shuffle_button;
 
+        bool only_mark = false;
+
         public PlayMyMusic.Objects.Album current_album { get; private set; }
 
         construct {
@@ -165,7 +167,9 @@ namespace PlayMyMusic.Widgets {
             }
             foreach (var item in tracks.get_children ()) {
                 if ((item as Widgets.Track).track.ID == track.ID) {
+                    only_mark = true;
                     (item as Widgets.Track).activate ();
+                    only_mark = false;
                     return;
                 }
             }
@@ -184,7 +188,7 @@ namespace PlayMyMusic.Widgets {
 
         private void play_track () {
             var selected_row = tracks.get_selected_row ();
-            if (selected_row != null) {
+            if (selected_row != null && !only_mark) {
                 library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.ALBUM);
             }
         }

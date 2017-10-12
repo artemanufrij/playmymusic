@@ -44,9 +44,34 @@ namespace PlayMyMusic.Widgets.Views {
 
         Gtk.FlowBox playlists;
 
+        Gtk.Image icon_repeat_on;
+        Gtk.Image icon_repeat_off;
+        Gtk.Image icon_shuffle_on;
+        Gtk.Image icon_shuffle_off;
+        Gtk.Button repeat_button;
+        Gtk.Button shuffle_button;
+
         construct {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+
+            settings.notify["repeat-mode"].connect (() => {
+                if (settings.repeat_mode) {
+                    repeat_button.set_image (icon_repeat_on);
+                } else {
+                    repeat_button.set_image (icon_repeat_off);
+                }
+                repeat_button.show_all ();
+            });
+
+            settings.notify["shuffle-mode"].connect (() => {
+                if (settings.shuffle_mode) {
+                    shuffle_button.set_image (icon_shuffle_on);
+                } else {
+                    shuffle_button.set_image (icon_shuffle_off);
+                }
+                repeat_button.show_all ();
+            });
         }
 
         public PlaylistsView () {
@@ -55,15 +80,57 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_ui () {
             playlists = new Gtk.FlowBox ();
+            playlists.margin = 24;
+            playlists.selection_mode = Gtk.SelectionMode.NONE;
+            playlists.column_spacing = 24;
+            playlists.homogeneous = true;
 
             var playlists_scroll = new Gtk.ScrolledWindow (null, null);
             playlists_scroll.add (playlists);
 
             var action_toolbar = new Gtk.ActionBar ();
+            action_toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR);
+
+            var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
+            add_button.tooltip_text = _("Add a playlist");
+            action_toolbar.pack_start (add_button);
+
+            icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
+
+            shuffle_button = new Gtk.Button ();
+            if (settings.shuffle_mode) {
+                shuffle_button.set_image (icon_shuffle_on);
+            } else {
+                shuffle_button.set_image (icon_shuffle_off);
+            }
+            shuffle_button.tooltip_text = _("Shuffle");
+            shuffle_button.can_focus = false;
+            shuffle_button.clicked.connect (() => {
+                settings.shuffle_mode = !settings.shuffle_mode;
+            });
+
+            icon_repeat_on = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
+
+            repeat_button = new Gtk.Button ();
+            if (settings.repeat_mode) {
+                repeat_button.set_image (icon_repeat_on);
+            } else {
+                repeat_button.set_image (icon_repeat_off);
+            }
+            repeat_button.tooltip_text = _("Repeat");
+            repeat_button.can_focus = false;
+            repeat_button.clicked.connect (() => {
+                settings.repeat_mode = !settings.repeat_mode;
+            });
+
+            action_toolbar.pack_end (repeat_button);
+            action_toolbar.pack_end (shuffle_button);
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
-            content.pack_start (playlists_scroll, false, false, 0);
+            content.pack_start (playlists_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
 
             var stack = new Gtk.Stack ();
@@ -72,6 +139,28 @@ namespace PlayMyMusic.Widgets.Views {
 
             this.add (stack);
             this.show_all ();
+
+            show_playlists_from_database.begin ();
+        }
+
+        private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
+            var p = new Widgets.Playlist (playlist);
+            p.track_selected.connect (() => {
+                foreach (var child in playlists.get_children ()) {
+                    if (child != p) {
+                        (child as Widgets.Playlist).unselect_all ();
+                    }
+                }
+            });
+            p.show_all ();
+            playlists.min_children_per_line = library_manager.playlists.length ();
+            playlists.add (p);
+        }
+
+        private async void show_playlists_from_database () {
+            foreach (var playlist in library_manager.playlists) {
+                add_playlist (playlist);
+            }
         }
     }
 }

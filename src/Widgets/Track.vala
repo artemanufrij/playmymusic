@@ -27,6 +27,8 @@
 
 namespace PlayMyMusic.Widgets {
     public class Track : Gtk.ListBoxRow {
+        PlayMyMusic.Services.LibraryManager library_manager;
+
         public PlayMyMusic.Objects.Track track { get; private set; }
         public string title { get { return track.title; } }
         public int track_number { get { return track.track; } }
@@ -35,6 +37,12 @@ namespace PlayMyMusic.Widgets {
         Gtk.Box content;
         Gtk.Image cover;
         Gtk.Image warning;
+        Gtk.Menu menu;
+        Gtk.Menu playlists;
+
+        construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+        }
 
         public Track (PlayMyMusic.Objects.Track track ) {
             this.track = track;
@@ -56,11 +64,24 @@ namespace PlayMyMusic.Widgets {
         }
 
         public void build_ui () {
+            var event_box = new Gtk.EventBox ();
+            event_box.button_press_event.connect (show_context_menu);
+
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.spacing = 12;
             content.margin = 12;
             content.margin_top = content.margin_bottom = 6;
             content.halign = Gtk.Align.FILL;
+            event_box.add (content);
+
+            menu = new Gtk.Menu ();
+            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
+            menu.add (menu_add_into_playlist);
+
+            playlists = new Gtk.Menu ();
+            menu_add_into_playlist.set_submenu (playlists);
+
+            menu.show_all ();
 
             cover = new Gtk.Image ();
             cover.get_style_context ().add_class ("card");
@@ -81,7 +102,7 @@ namespace PlayMyMusic.Widgets {
             var duration = new Gtk.Label (PlayMyMusic.Utils.get_formated_duration(this.track.duration));
             duration.halign = Gtk.Align.END;
             content.pack_end (duration, false, false, 0);
-            this.add (content);
+            this.add (event_box);
             this.halign = Gtk.Align.FILL;
         }
 
@@ -89,6 +110,26 @@ namespace PlayMyMusic.Widgets {
             cover.hide ();
             content.margin = 6;
             content.spacing = 6;
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                foreach (var child in playlists.get_children ()) {
+                    child.destroy ();
+                }
+                foreach (var playlist in library_manager.playlists) {
+                    var item = new Gtk.MenuItem.with_label (playlist.title);
+                    item.activate.connect (() => {
+                        library_manager.add_track_into_playlist (playlist, track);
+                    });
+                    playlists.add (item);
+                }
+                playlists.show_all ();
+
+                menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -37,14 +37,14 @@ namespace PlayMyMusic.Objects {
                 return _ID;
             } set {
                 _ID = value;
-                cover_cache_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
+                cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
                 load_cover ();
             }
         }
         public string title { get; set; default = ""; }
         public string url { get; set; default = ""; }
 
-        string cover_cache_path = "";
+        public string cover_path { get; private set; default = ""; }
 
         string? _file = null;
         public string? file {
@@ -70,7 +70,7 @@ namespace PlayMyMusic.Objects {
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             removed.connect (() => {
-                var file = File.new_for_path (cover_cache_path);
+                var file = File.new_for_path (cover_path);
                 if (file.query_exists ()) {
                     file.delete_async.begin ();
                 }
@@ -168,7 +168,7 @@ namespace PlayMyMusic.Objects {
             if (this.cover != null) {
                 this.cover = library_manager.align_and_scale_pixbuf (this.cover, 64);
                 try {
-                    this.cover.save (cover_cache_path, "jpeg", "quality", "100");
+                    this.cover.save (cover_path, "jpeg", "quality", "100");
                 } catch (Error err) {
                     warning (err.message);
                 }
@@ -176,10 +176,10 @@ namespace PlayMyMusic.Objects {
         }
 
         private void load_cover () {
-            var file = File.new_for_path (cover_cache_path);
+            var file = File.new_for_path (cover_path);
             if (file.query_exists ()) {
                 try {
-                    this.cover = new Gdk.Pixbuf.from_file (cover_cache_path);
+                    this.cover = new Gdk.Pixbuf.from_file (cover_path);
                 } catch (Error err) {
                     warning (err.message);
                 }

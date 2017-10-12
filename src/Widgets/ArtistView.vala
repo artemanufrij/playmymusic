@@ -44,6 +44,8 @@ namespace PlayMyMusic.Widgets {
         Gtk.Image background;
         Gtk.Grid header;
 
+        bool only_mark = false;
+
         public PlayMyMusic.Objects.Artist current_artist { get; private set; }
 
         construct {
@@ -243,7 +245,7 @@ namespace PlayMyMusic.Widgets {
 
         private void play_track () {
             var selected_row = tracks.get_selected_row ();
-            if (selected_row != null) {
+            if (selected_row != null && !only_mark) {
                 library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.ARTIST);
             }
         }
@@ -265,7 +267,9 @@ namespace PlayMyMusic.Widgets {
             }
             foreach (var child in tracks.get_children ()) {
                 if ((child as Widgets.Track).track.ID == track.ID) {
+                    only_mark = true;
                     (child as Widgets.Track).activate ();
+                    only_mark = false;
                 }
             }
         }

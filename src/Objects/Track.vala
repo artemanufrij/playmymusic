@@ -27,9 +27,14 @@
 
 namespace PlayMyMusic.Objects {
     public class Track : GLib.Object {
-        Album _album;
+        PlayMyMusic.Services.LibraryManager library_manager;
+
+        Album _album = null;
         public Album album {
             get {
+                if (_album == null) {
+                    _album = library_manager.db_manager.get_album_by_track_id (this.ID);
+                }
                 return _album;
             }
         }
@@ -60,6 +65,10 @@ namespace PlayMyMusic.Objects {
         }
 
         public signal void path_not_found ();
+
+        construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+        }
 
         public Track (TracksContainer? container = null) {
             if (container != null && container is Album) {

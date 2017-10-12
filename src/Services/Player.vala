@@ -90,12 +90,10 @@ namespace PlayMyMusic.Services {
             if (track == current_track || track == null) {
                 return;
             }
-
-            this.play_mode = play_mode;
-
+            current_track = track;
             current_radio = null;
             current_file = null;
-            current_track = track;
+            this.play_mode = play_mode;
 
             var file = File.new_for_path (track.path);
             if (!file.query_exists ()) {
@@ -112,8 +110,6 @@ namespace PlayMyMusic.Services {
             current_radio = null;
             current_track = null;
             current_file = file;
-
-            stdout.printf (file.get_path ());
 
             stop ();
             playbin.uri = file.get_uri ();
@@ -230,7 +226,7 @@ namespace PlayMyMusic.Services {
                 GLib.Error err;
                 string debug;
                 message.parse_error (out err, out debug);
-                stdout.printf ("Error: %s\n", err.message);
+                stdout.printf ("Error: %s\n%s\n", err.message, debug);
                 break;
             case Gst.MessageType.EOS:
                 state_changed (Gst.State.NULL);

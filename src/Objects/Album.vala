@@ -30,6 +30,9 @@ namespace PlayMyMusic.Objects {
         Artist _artist = null;
         public Artist artist {
             get {
+                if (_artist == null) {
+                    _artist = db_manager.get_artist_by_album_id (this.ID);
+                }
                 return _artist;
             }
         }

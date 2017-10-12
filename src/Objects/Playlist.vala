@@ -27,5 +27,26 @@
 
 namespace PlayMyMusic.Objects {
     public class Playlist : TracksContainer {
+        public new GLib.List<Track> tracks {
+            get {
+                if (_tracks == null) {
+                    _tracks = library_manager.db_manager.get_track_collection (this);
+                }
+                return _tracks;
+            }
+        }
+
+        public new void add_track (Track track) {
+            base.add_track (track);
+        }
+
+        public bool has_track (Track track) {
+            foreach (var t in tracks) {
+                if (t.ID == track.ID) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

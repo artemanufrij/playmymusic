@@ -41,6 +41,10 @@
                     <li>Play in Backgound</li>
                     <li>Translation: Portuguese</li>
                 </ul>
+                <p>Fix:</p>
+                <ul>
+                    <li>Crash on try to stream online radio</li>
+                </ul>
             </description>
         </release>
         <release version="0.1.4" date="2017-10-09">

@@ -64,6 +64,12 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public GLib.List<PlayMyMusic.Objects.Playlist> playlists {
+            get {
+                return db_manager.playlists;
+            }
+        }
+
         construct {
             settings = PlayMyMusic.Settings.get_default ();
 
@@ -149,6 +155,12 @@ namespace PlayMyMusic.Services {
 
         public void remove_radio_station (PlayMyMusic.Objects.Radio radio) {
             db_manager.delete_radio (radio);
+        }
+
+        public void add_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track) {
+            if (!playlist.has_track (track)) {
+                db_manager.insert_track_into_playlist (playlist, track);
+            }
         }
 
         //PLAYER REGION

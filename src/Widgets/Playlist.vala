@@ -27,5 +27,77 @@
 
 namespace PlayMyMusic.Widgets {
     public class Playlist : Gtk.FlowBoxChild {
+        PlayMyMusic.Services.LibraryManager library_manager;
+
+        PlayMyMusic.Objects.Playlist playlist { get; private set; }
+
+        Gtk.ListBox tracks;
+
+        public signal void track_selected ();
+
+        construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+        }
+
+        public Playlist (PlayMyMusic.Objects.Playlist playlist) {
+            this.playlist = playlist;
+
+            this.playlist.track_added.connect ((track) => {
+                add_track (track);
+            });
+
+            build_ui ();
+
+            show_tracks ();
+        }
+
+        private void build_ui () {
+            this.can_focus = false;
+            this.width_request = 256;
+
+            var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            content.spacing = 12;
+
+            var title = new Gtk.Label (this.playlist.title);
+            title.get_style_context ().add_class ("h2");
+
+            tracks = new Gtk.ListBox ();
+            tracks.selected_rows_changed.connect (play_track);
+
+            var tracks_scroll = new Gtk.ScrolledWindow (null, null);
+            tracks_scroll.expand = true;
+
+            tracks_scroll.add (tracks);
+
+            content.pack_start (title, false, false, 0);
+            content.pack_start (tracks_scroll, true, true, 0);
+
+            this.add (content);
+        }
+
+        private void show_tracks () {
+            tracks.unselect_all ();
+            foreach (var track in this.playlist.tracks) {
+                add_track (track);
+            }
+        }
+
+        private void add_track (PlayMyMusic.Objects.Track track) {
+            var item = new PlayMyMusic.Widgets.Track (track);
+            this.tracks.add (item);
+            item.show_all ();
+        }
+
+        private void play_track () {
+            var selected_row = tracks.get_selected_row ();
+            if (selected_row != null) {
+                library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.PLAYLIST);
+                track_selected ();
+            }
+        }
+
+        public void unselect_all () {
+            tracks.unselect_all ();
+        }
     }
 }

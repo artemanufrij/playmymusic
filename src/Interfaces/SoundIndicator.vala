@@ -104,10 +104,17 @@ namespace PlayMyMusic.Interfaces {
                     case Gst.State.PLAYING:
                         property = "Playing";
                         var metadata = new HashTable<string, Variant> (null, null);
-                        var file = File.new_for_path (player.current_track.album.cover_path);
-                        metadata.insert("mpris:artUrl", file.get_uri ());
-                        metadata.insert("xesam:title", player.current_track.title);
-                        metadata.insert("xesam:artist", get_simple_string_array (player.current_track.album.artist.name));
+                        if (player.current_track != null) {
+                            var file = File.new_for_path (player.current_track.album.cover_path);
+                            metadata.insert("mpris:artUrl", file.get_uri ());
+                            metadata.insert("xesam:title", player.current_track.title);
+                            metadata.insert("xesam:artist", get_simple_string_array (player.current_track.album.artist.name));
+                        } else if (player.current_radio != null) {
+                            var file = File.new_for_path (player.current_radio.cover_path);
+                            metadata.insert("mpris:artUrl", file.get_uri ());
+                            metadata.insert("xesam:title", player.current_radio.title);
+                            metadata.insert("xesam:artist", get_simple_string_array (player.current_radio.url));
+                        }
                         send_properties ("Metadata", metadata);
                         break;
                     case Gst.State.PAUSED:

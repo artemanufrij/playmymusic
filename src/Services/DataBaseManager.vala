@@ -203,12 +203,41 @@ namespace PlayMyMusic.Services {
             db.prepare_v2 (sql, sql.length, out stmt);
 
             while (stmt.step () == Sqlite.ROW) {
-                var item = new PlayMyMusic.Objects.Artist ();
-                item.ID = stmt.column_int (0);
-                item.name = stmt.column_text (1);
-                return_value.append (item);
+                return_value.append (_fill_artist (stmt));
             }
             stmt.reset ();
+            return return_value;
+        }
+
+        public PlayMyMusic.Objects.Artist? get_artist_by_album_id (int id) {
+            PlayMyMusic.Objects.Artist? return_value = null;
+            Sqlite.Statement stmt;
+            string sql = """
+                SELECT artist_id
+                FROM albums
+                WHERE id=$ALBUMS_ID
+                ;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ALBUMS_ID", id);
+
+            if (stmt.step () == Sqlite.ROW) {
+                var artist_id = stmt.column_int (0);
+                foreach (var artist in artists) {
+                    if (artist.ID == artist_id) {
+                        return artist;
+                    }
+                }
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
+        public PlayMyMusic.Objects.Artist _fill_artist (Sqlite.Statement stmt) {
+            PlayMyMusic.Objects.Artist return_value = new PlayMyMusic.Objects.Artist ();
+            return_value.ID = stmt.column_int (0);
+            return_value.name = stmt.column_text (1);
             return return_value;
         }
 
@@ -274,13 +303,38 @@ namespace PlayMyMusic.Services {
             set_parameter_int (stmt, sql, "$ARTIST_ID", artist.ID);
 
             while (stmt.step () == Sqlite.ROW) {
-                var item = new PlayMyMusic.Objects.Album (artist);
-                item.ID = stmt.column_int (0);
-                item.title = stmt.column_text (1);
-                item.year = stmt.column_int (2);
-                return_value.append (item);
+                return_value.append (_fill_album (stmt, artist));
             }
             stmt.reset ();
+            return return_value;
+        }
+
+        public PlayMyMusic.Objects.Album? get_album_by_track_id (int id) {
+            PlayMyMusic.Objects.Album? return_value = null;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT albums.id, albums.title, year
+                FROM tracks LEFT JOIN albums
+                ON tracks.album_id = albums.id
+                WHERE tracks.id=$TRACK_ID;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$TRACK_ID", id);
+
+            if (stmt.step () == Sqlite.ROW) {
+                return_value = _fill_album (stmt, null);
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
+        private PlayMyMusic.Objects.Album _fill_album (Sqlite.Statement stmt, PlayMyMusic.Objects.Artist? artist) {
+            PlayMyMusic.Objects.Album return_value = new PlayMyMusic.Objects.Album (artist);
+            return_value.ID = stmt.column_int (0);
+            return_value.title = stmt.column_text (1);
+            return_value.year = stmt.column_int (2);
             return return_value;
         }
 
@@ -318,7 +372,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-// PLAYlist REGION
+// PLAYLIST REGION
         public GLib.List<PlayMyMusic.Objects.Playlist> get_playlist_collection () {
             GLib.List<PlayMyMusic.Objects.Playlist> return_value = new GLib.List<PlayMyMusic.Objects.Playlist> ();
             Sqlite.Statement stmt;
@@ -338,17 +392,50 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
+        public void insert_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track) {
+            Sqlite.Statement stmt;
+            string sql = """
+                INSERT INTO playlist_tracks (playlist_id, track_id, sort) VALUES ($PLAYLIST_ID, $TRACK_ID, $SORT);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$PLAYLIST_ID", playlist.ID);
+            set_parameter_int (stmt, sql, "$TRACK_ID", track.ID);
+            set_parameter_int (stmt, sql, "$SORT", (int)playlist.tracks.length ());
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                playlist.add_track (track);
+            }
+            stmt.reset ();
+        }
+
 // TRACK REGION
         public GLib.List<PlayMyMusic.Objects.Track> get_track_collection (PlayMyMusic.Objects.TracksContainer container) {
             GLib.List<PlayMyMusic.Objects.Track> return_value = new GLib.List<PlayMyMusic.Objects.Track> ();
             Sqlite.Statement stmt;
 
-            string sql = """
-                SELECT id, title, genre, track, disc, duration, path FROM tracks WHERE album_id=$ALBUM_ID ORDER BY disc, track;
-            """;
+            string sql;
+
+            if (container is PlayMyMusic.Objects.Album) {
+                sql = """
+                    SELECT id, title, genre, track, disc, duration, path
+                    FROM tracks
+                    WHERE album_id=$CONTAINER_ID
+                    ORDER BY disc, track;
+                """;
+            } else {
+                sql = """
+                    SELECT tracks.id, title, genre, track, disc, duration, path
+                    FROM playlist_tracks LEFT JOIN tracks
+                    ON playlist_tracks.track_id = tracks.id
+                    WHERE playlist_id=$CONTAINER_ID
+                    ORDER BY sort;
+                """;
+            }
 
             db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_int (stmt, sql, "$ALBUM_ID", container.ID);
+            set_parameter_int (stmt, sql, "$CONTAINER_ID", container.ID);
 
             while (stmt.step () == Sqlite.ROW) {
                 var item = new PlayMyMusic.Objects.Track (container);

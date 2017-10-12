@@ -103,6 +103,7 @@ namespace PlayMyMusic.Widgets.Views {
             radios_scroll.add (radios);
 
             var action_toolbar = new Gtk.ActionBar ();
+            action_toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR);
 
             var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
             add_button.tooltip_text = _("Add a radio station");
@@ -198,7 +199,7 @@ namespace PlayMyMusic.Widgets.Views {
 
             this.add (stack);
             this.show_all ();
-            show_albums_from_database.begin ();
+            show_radios_from_database.begin ();
         }
 
         private void add_radion (PlayMyMusic.Objects.Radio radio) {
@@ -273,7 +274,7 @@ namespace PlayMyMusic.Widgets.Views {
             library_manager.play_radio (radio);
         }
 
-        private async void show_albums_from_database () {
+        private async void show_radios_from_database () {
             foreach (var radio in library_manager.radios) {
                 add_radion (radio);
             }
