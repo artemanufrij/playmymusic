@@ -29,7 +29,7 @@ msgstr "Repetir"
 
 #: ../src/Widgets/ArtistView.vala:223
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr "<b>%d</b> músicas no <b>Álbum %d</b>"
+msgstr "<b>%d músicas</b> em <b>%d álbuns</b>"
 
 #: ../src/Widgets/Views/AlbumsView.vala:98
 msgid "Change Music Folder"
