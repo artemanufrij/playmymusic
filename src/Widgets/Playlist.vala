@@ -29,14 +29,29 @@ namespace PlayMyMusic.Widgets {
     public class Playlist : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
 
-        PlayMyMusic.Objects.Playlist playlist { get; private set; }
+        public PlayMyMusic.Objects.Playlist playlist { get; private set; }
+        public string title { get { return playlist.title; } }
 
         Gtk.ListBox tracks;
+        Gtk.Menu menu;
 
         public signal void track_selected ();
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+
+            Granite.Widgets.Utils.set_theming_for_screen (
+                this.get_screen (),
+                """
+                    .track-list {
+                        background: transparent;
+                    }
+                    .header {
+                        padding: 6px;
+                    }
+                """,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
         }
 
         public Playlist (PlayMyMusic.Objects.Playlist playlist) {
@@ -58,10 +73,29 @@ namespace PlayMyMusic.Widgets {
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.spacing = 12;
 
+            var event_box = new Gtk.EventBox ();
+            event_box.button_press_event.connect (show_context_menu);
+
             var title = new Gtk.Label (this.playlist.title);
+            title.margin = 4;
             title.get_style_context ().add_class ("h2");
+            title.get_style_context ().add_class ("header");
+            title.get_style_context ().add_class ("card");
+            event_box.add (title);
+
+            menu = new Gtk.Menu ();
+            var menu_remove_playlist = new Gtk.MenuItem.with_label (_("Remove Playlist"));
+            menu_remove_playlist.activate.connect (() => {
+                library_manager.remove_playlist (playlist);
+            });
+            menu.add (menu_remove_playlist);
+            var menu_rename_playlist = new Gtk.MenuItem.with_label (_("Rename Playlist"));
+            menu.add (menu_rename_playlist);
+
+            menu.show_all ();
 
             tracks = new Gtk.ListBox ();
+            tracks.get_style_context ().add_class ("track-list");
             tracks.selected_rows_changed.connect (play_track);
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
@@ -69,7 +103,7 @@ namespace PlayMyMusic.Widgets {
 
             tracks_scroll.add (tracks);
 
-            content.pack_start (title, false, false, 0);
+            content.pack_start (event_box, false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
             this.add (content);
@@ -98,6 +132,14 @@ namespace PlayMyMusic.Widgets {
 
         public void unselect_all () {
             tracks.unselect_all ();
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -38,8 +38,9 @@ namespace PlayMyMusic.Services {
         }
         public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
-        public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
+        public signal void removed_playlist (PlayMyMusic.Objects.Playlist playlist);
+        public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
 
         GLib.List<PlayMyMusic.Objects.Artist> _artists = null;
@@ -364,7 +365,7 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () == Sqlite.ROW) {
                 album.ID = stmt.column_int (0);
-                this.added_new_album (album);
+                added_new_album (album);
                 stdout.printf ("Album ID: %d\n", album.ID);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
@@ -392,6 +393,49 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
+        public PlayMyMusic.Objects.Playlist? get_playlist_by_title (string title) {
+            foreach (var playlist in playlists) {
+                if (playlist.title == title) {
+                    return playlist;
+                }
+            }
+            return null;
+        }
+
+        public void insert_playlist (PlayMyMusic.Objects.Playlist playlist) {
+            Sqlite.Statement stmt;
+            string sql = """
+                INSERT INTO playlists (title) VALUES ($TITLE);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$TITLE", playlist.title);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+
+            sql = """
+                SELECT id FROM playlists WHERE title=$TITLE;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$TITLE", playlist.title);
+
+            if (stmt.step () == Sqlite.ROW) {
+                playlist.ID = stmt.column_int (0);
+                _playlists.insert_sorted_with_data (playlist, (a, b) => {
+                    return a.title.collate (b.title);
+                });
+                added_new_playlist (playlist);
+                stdout.printf ("Playlist ID: %d\n", playlist.ID);
+
+            } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
         public void insert_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track) {
             Sqlite.Statement stmt;
             string sql = """
@@ -406,6 +450,24 @@ namespace PlayMyMusic.Services {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             } else {
                 playlist.add_track (track);
+            }
+            stmt.reset ();
+        }
+
+        public void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
+            this.pragma_foreign_keys ();
+            Sqlite.Statement stmt;
+
+            string sql = """
+                DELETE FROM playlists WHERE id=$PLAYLIST_ID;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$PLAYLIST_ID", playlist.ID);
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                _playlists.remove (playlist);
+                removed_playlist (playlist);
             }
             stmt.reset ();
         }
@@ -653,6 +715,13 @@ namespace PlayMyMusic.Services {
         private void set_parameter_str (Sqlite.Statement? stmt, string sql, string par, string val) {
             int par_position = stmt.bind_parameter_index (par);
             stmt.bind_text (par_position, val);
+        }
+
+        private void pragma_foreign_keys () {
+            string sql = """PRAGMA foreign_keys = ON;""";
+            if (db.exec (sql, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
         }
     }
 }

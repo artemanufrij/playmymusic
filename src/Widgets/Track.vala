@@ -117,8 +117,17 @@ namespace PlayMyMusic.Widgets {
                 foreach (var child in playlists.get_children ()) {
                     child.destroy ();
                 }
+                var item = new Gtk.MenuItem.with_label (_("Create New Playlist"));
+                item.activate.connect (() => {
+                    var new_playlist = library_manager.create_new_playlist ();
+                    library_manager.add_track_into_playlist (new_playlist, track);
+                });
+                playlists.add (item);
+                if (library_manager.playlists.length () > 0) {
+                    playlists.add (new Gtk.SeparatorMenuItem ());
+                }
                 foreach (var playlist in library_manager.playlists) {
-                    var item = new Gtk.MenuItem.with_label (playlist.title);
+                    item = new Gtk.MenuItem.with_label (playlist.title);
                     item.activate.connect (() => {
                         library_manager.add_track_into_playlist (playlist, track);
                     });

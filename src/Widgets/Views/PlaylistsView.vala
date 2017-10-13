@@ -54,6 +54,12 @@ namespace PlayMyMusic.Widgets.Views {
         construct {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager.added_new_playlist.connect ((playlist) => {
+                add_playlist (playlist);
+            });
+            library_manager.removed_playlist.connect ((playlist) => {
+                remove_playlist (playlist);
+            });
 
             settings.notify["repeat-mode"].connect (() => {
                 if (settings.repeat_mode) {
@@ -81,8 +87,10 @@ namespace PlayMyMusic.Widgets.Views {
         private void build_ui () {
             playlists = new Gtk.FlowBox ();
             playlists.margin = 24;
+            playlists.halign = Gtk.Align.START;
             playlists.selection_mode = Gtk.SelectionMode.NONE;
             playlists.column_spacing = 24;
+            playlists.set_sort_func (playlists_sort_func);
             playlists.homogeneous = true;
 
             var playlists_scroll = new Gtk.ScrolledWindow (null, null);
@@ -157,10 +165,29 @@ namespace PlayMyMusic.Widgets.Views {
             playlists.add (p);
         }
 
+        private void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
+            foreach (var child in playlists.get_children ()) {
+                if ((child as Widgets.Playlist).playlist.ID == playlist.ID) {
+                    playlists.remove (child);
+                    child.destroy ();
+                    playlists.min_children_per_line = library_manager.playlists.length ();
+                }
+            }
+        }
+
         private async void show_playlists_from_database () {
             foreach (var playlist in library_manager.playlists) {
                 add_playlist (playlist);
             }
+        }
+
+        private int playlists_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
+            var item1 = (PlayMyMusic.Widgets.Playlist)child1;
+            var item2 = (PlayMyMusic.Widgets.Playlist)child2;
+            if (item1 != null && item2 != null) {
+                return item1.title.collate (item2.title);
+            }
+            return 0;
         }
     }
 }

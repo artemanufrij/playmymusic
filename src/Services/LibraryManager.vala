@@ -41,6 +41,8 @@ namespace PlayMyMusic.Services {
         public signal void tag_discover_finished ();
         public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
+        public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
+        public signal void removed_playlist (PlayMyMusic.Objects.Playlist playlist);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
         public signal void player_state_changed (Gst.State state);
@@ -81,6 +83,9 @@ namespace PlayMyMusic.Services {
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
             db_manager.added_new_artist.connect ( (artist) => { added_new_artist (artist); });
             db_manager.added_new_album.connect ( (album) => { added_new_album (album); });
+            db_manager.added_new_playlist.connect ( (playlist) => { added_new_playlist (playlist); });
+            db_manager.removed_playlist.connect ( (playlist) => { removed_playlist (playlist); });
+
             db_manager.added_new_radio.connect ( (radio) => { added_new_radio (radio); });
             db_manager.removed_radio.connect ( (radio) => {
                 if (player.current_radio == radio) {
@@ -163,6 +168,29 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public PlayMyMusic.Objects.Playlist create_new_playlist () {
+            string new_title = _("New Playlist");
+
+            string next_title = new_title;
+
+            var playlist = db_manager.get_playlist_by_title (next_title);
+            for (int i = 1; playlist != null; i++) {
+                next_title = "%s (%d)".printf (new_title, i);
+                playlist = db_manager.get_playlist_by_title (next_title);
+            }
+
+            playlist = new PlayMyMusic.Objects.Playlist ();
+            playlist.title = next_title;
+
+            db_manager.insert_playlist (playlist);
+
+            return playlist;
+        }
+
+        public void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
+            db_manager.remove_playlist (playlist);
+        }
+
         //PLAYER REGION
         public void play_track (PlayMyMusic.Objects.Track track, PlayMode play_mode) {
             player.set_track (track, play_mode);
@@ -173,7 +201,6 @@ namespace PlayMyMusic.Services {
         }
 
         //PIXBUF
-
         public string? choose_new_cover () {
             string? return_value = null;
             var cover = new Gtk.FileChooserDialog (
