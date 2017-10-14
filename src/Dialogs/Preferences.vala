@@ -52,18 +52,29 @@ namespace PlayMyMusic.Dialogs {
             this.resizable = false;
             var content = get_content_area () as Gtk.Box;
 
+            var grid = new Gtk.Grid ();
+            grid.column_spacing = 12;
+            grid.row_spacing = 12;
+            grid.margin = 12;
+
             var play_in_background_label = new Gtk.Label (_("Play in background if closed"));
             var play_in_background = new Gtk.Switch ();
             play_in_background.active = settings.play_in_background;
             play_in_background.notify["active"].connect (() => {
                 settings.play_in_background = play_in_background.active;
             });
-            var grid = new Gtk.Grid ();
-            grid.column_spacing = 12;
-            grid.margin = 12;
+
+            var look_for_new_files_label = new Gtk.Label (_("Look for new files on start up"));
+            var look_for_new_files = new Gtk.Switch ();
+            look_for_new_files.active = settings.look_for_new_files;
+            look_for_new_files.notify["active"].connect (() => {
+                settings.look_for_new_files = look_for_new_files.active;
+            });
 
             grid.attach (play_in_background_label, 0, 0);
             grid.attach (play_in_background, 1, 0);
+            grid.attach (look_for_new_files_label, 0, 1);
+            grid.attach (look_for_new_files, 1, 1);
 
             content.pack_start (grid, false, false, 0);
 

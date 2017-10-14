@@ -189,7 +189,7 @@ namespace PlayMyMusic.Widgets {
             if (current_artist != null) {
                 current_artist.track_added.disconnect (add_track);
                 current_artist.background_changed.disconnect (change_background);
-                current_artist.background = null;
+                current_artist.background.dispose ();// = null;
             }
             current_artist = artist;
             this.reset ();

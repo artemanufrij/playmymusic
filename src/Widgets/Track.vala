@@ -40,11 +40,14 @@ namespace PlayMyMusic.Widgets {
         Gtk.Menu menu;
         Gtk.Menu playlists;
 
+        bool show_cover;
+
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
         }
 
-        public Track (PlayMyMusic.Objects.Track track ) {
+        public Track (PlayMyMusic.Objects.Track track, bool show_cover = true) {
+            this.show_cover = show_cover;
             this.track = track;
             this.track.path_not_found.connect (() => {
                 if (warning == null) {
@@ -56,9 +59,11 @@ namespace PlayMyMusic.Widgets {
                 }
             });
 
-            this.track.album.cover_changed.connect (() => {
-                cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
-            });
+            if (show_cover) {
+                this.track.album.cover_changed.connect (() => {
+                    cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
+                });
+            }
 
             this.track.removed.connect (() => {
                 this.destroy ();
@@ -74,8 +79,13 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            content.spacing = 12;
-            content.margin = 12;
+            if (this.show_cover) {
+                content.spacing = 12;
+                content.margin = 12;
+            } else {
+                content.margin = 6;
+                content.spacing = 6;
+            }
             content.margin_top = content.margin_bottom = 6;
             content.halign = Gtk.Align.FILL;
             event_box.add (content);
@@ -97,16 +107,18 @@ namespace PlayMyMusic.Widgets {
 
             menu.show_all ();
 
-            cover = new Gtk.Image ();
-            cover.get_style_context ().add_class ("card");
-            cover.halign = Gtk.Align.CENTER;
-            cover.tooltip_text = this.track.album.title;
-            if (this.track.album.cover == null) {
-                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DND);
-            } else {
-                cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
+            if (this.show_cover) {
+                cover = new Gtk.Image ();
+                cover.get_style_context ().add_class ("card");
+                cover.halign = Gtk.Align.CENTER;
+                cover.tooltip_text = this.track.album.title;
+                if (this.track.album.cover == null) {
+                    cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DND);
+                } else {
+                    cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
+                }
+                content.pack_start (cover, false, false, 0);
             }
-            content.pack_start (cover, false, false, 0);
 
             var title = new Gtk.Label (this.track.title);
             title.xalign = 0;
@@ -118,12 +130,6 @@ namespace PlayMyMusic.Widgets {
             content.pack_end (duration, false, false, 0);
             this.add (event_box);
             this.halign = Gtk.Align.FILL;
-        }
-
-        public void hide_album_cover () {
-            cover.hide ();
-            content.margin = 6;
-            content.spacing = 6;
         }
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {

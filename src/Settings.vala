@@ -42,6 +42,7 @@ namespace PlayMyMusic {
         public int last_artist_id { get; set; }
         public int last_album_id { get; set; }
         public bool play_in_background { get; set; }
+        public bool look_for_new_files { get; set; }
         public string [] artists { get; set; }
         public string [] covers { get; set; }
         public string library_location { get; set; }
