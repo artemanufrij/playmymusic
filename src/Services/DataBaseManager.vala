@@ -89,8 +89,10 @@ namespace PlayMyMusic.Services {
 
             Sqlite.Database.open (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH, out db);
 
+            string q;
+
             if (!database_exists) {
-                string q = """CREATE TABLE artists (
+                q = """CREATE TABLE artists (
                     ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
                     name        TEXT    NOT NULL,
                     CONSTRAINT unique_artist UNIQUE (name)
@@ -173,11 +175,11 @@ namespace PlayMyMusic.Services {
                 if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                     warning (errormsg);
                 }
+            }
 
-                q = """PRAGMA foreign_keys = ON;""";
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """PRAGMA foreign_keys = ON;""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
             }
         }
 
@@ -490,7 +492,6 @@ namespace PlayMyMusic.Services {
         }
 
         public void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
-            this.pragma_foreign_keys ();
             Sqlite.Statement stmt;
 
             string sql = """
@@ -774,13 +775,6 @@ namespace PlayMyMusic.Services {
         private void set_parameter_str (Sqlite.Statement? stmt, string sql, string par, string val) {
             int par_position = stmt.bind_parameter_index (par);
             stmt.bind_text (par_position, val);
-        }
-
-        private void pragma_foreign_keys () {
-            string sql = """PRAGMA foreign_keys = ON;""";
-            if (db.exec (sql, null, out errormsg) != Sqlite.OK) {
-                warning (errormsg);
-            }
         }
     }
 }

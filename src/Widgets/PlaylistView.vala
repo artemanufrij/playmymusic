@@ -75,7 +75,7 @@ namespace PlayMyMusic.Widgets {
             this.width_request = 256;
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            content.spacing = 12;
+            content.spacing = 6;
 
             var event_box = new Gtk.EventBox ();
             event_box.button_press_event.connect (show_context_menu);
@@ -143,6 +143,7 @@ namespace PlayMyMusic.Widgets {
             tracks_scroll.add (tracks);
 
             content.pack_start (event_box, false, false, 0);
+            content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
             this.add (content);
