@@ -26,7 +26,7 @@
  */
 
 namespace PlayMyMusic.Widgets {
-    public class Playlist : Gtk.FlowBoxChild {
+    public class PlaylistView : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
 
         public PlayMyMusic.Objects.Playlist playlist { get; private set; }
@@ -50,16 +50,12 @@ namespace PlayMyMusic.Widgets {
                     .track-list {
                         background: transparent;
                     }
-                    .header {
-                        padding: 6px;
-                        border-radius: 3px;
-                    }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
         }
 
-        public Playlist (PlayMyMusic.Objects.Playlist playlist) {
+        public PlaylistView (PlayMyMusic.Objects.Playlist playlist) {
             this.playlist = playlist;
 
             this.playlist.track_added.connect ((track) => {
@@ -67,6 +63,7 @@ namespace PlayMyMusic.Widgets {
             });
             this.playlist.property_changed.connect (() => {
                 playlist_title.label = this.playlist.title;
+                playlist_title.tooltip_text = this.playlist.title;
             });
 
             build_ui ();
@@ -85,13 +82,9 @@ namespace PlayMyMusic.Widgets {
 
             playlist_title = new Gtk.Label (this.playlist.title);
             playlist_title.tooltip_text = this.playlist.title;
-            playlist_title.margin_bottom = 6;
-            playlist_title.margin_top = 2;
-            playlist_title.margin_left = 2;
-            playlist_title.margin_right = 2;
-            playlist_title.get_style_context ().add_class ("h2");
-            playlist_title.get_style_context ().add_class ("header");
-            playlist_title.get_style_context ().add_class ("card");
+            playlist_title.halign = Gtk.Align.START;
+            playlist_title.get_style_context ().add_class ("h3");
+            playlist_title.margin_left = 12;
             playlist_title.ellipsize = Pango.EllipsizeMode.END;
             event_box.add (playlist_title);
 
@@ -150,6 +143,7 @@ namespace PlayMyMusic.Widgets {
             tracks_scroll.add (tracks);
 
             content.pack_start (event_box, false, false, 0);
+            content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
             this.add (content);

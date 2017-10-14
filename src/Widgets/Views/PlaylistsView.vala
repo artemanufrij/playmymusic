@@ -67,7 +67,7 @@ namespace PlayMyMusic.Widgets.Views {
             library_manager.player_state_changed.connect ((state) => {
                 if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST) {
                     foreach (var child in playlists.get_children ()) {
-                        (child as Widgets.Playlist).unselect_all ();
+                        (child as Widgets.PlaylistView).unselect_all ();
                     }
                 } else {
                     activate_by_track (library_manager.player.current_track);
@@ -99,7 +99,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_ui () {
             playlists = new Gtk.FlowBox ();
-            playlists.margin = 22;
+            playlists.margin = 24;
             playlists.margin_bottom = 0;
             playlists.halign = Gtk.Align.START;
             playlists.selection_mode = Gtk.SelectionMode.NONE;
@@ -211,11 +211,11 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
-            var p = new Widgets.Playlist (playlist);
+            var p = new Widgets.PlaylistView (playlist);
             p.track_selected.connect (() => {
                 foreach (var child in playlists.get_children ()) {
                     if (child != p) {
-                        (child as Widgets.Playlist).unselect_all ();
+                        (child as Widgets.PlaylistView).unselect_all ();
                     }
                 }
             });
@@ -229,7 +229,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
             foreach (var child in playlists.get_children ()) {
-                if ((child as Widgets.Playlist).playlist.ID == playlist.ID) {
+                if ((child as Widgets.PlaylistView).playlist.ID == playlist.ID) {
                     playlists.remove (child);
                     child.destroy ();
                     playlists.min_children_per_line = library_manager.playlists.length ();
@@ -243,7 +243,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void activate_by_track (Objects.Track track) {
             foreach (var child in playlists.get_children ()) {
-                var playlist = child as Widgets.Playlist;
+                var playlist = child as Widgets.PlaylistView;
                 if (playlist.playlist.ID == track.playlist.ID) {
                     playlist.mark_playing_track (track);
                 }
@@ -261,8 +261,8 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private int playlists_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
-            var item1 = (PlayMyMusic.Widgets.Playlist)child1;
-            var item2 = (PlayMyMusic.Widgets.Playlist)child2;
+            var item1 = (PlayMyMusic.Widgets.PlaylistView)child1;
+            var item2 = (PlayMyMusic.Widgets.PlaylistView)child2;
             if (item1 != null && item2 != null) {
                 return item1.title.collate (item2.title);
             }

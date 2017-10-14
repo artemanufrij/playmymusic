@@ -177,8 +177,7 @@ namespace PlayMyMusic.Widgets {
             content.pack_start (tracks_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
 
-            var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
-            this.attach (separator, 0, 0);
+            this.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 0, 0);
             this.attach (content, 1, 0);
         }
 
