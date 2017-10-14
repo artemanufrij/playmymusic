@@ -65,11 +65,7 @@ namespace PlayMyMusic.Widgets.Views {
                 remove_playlist (playlist);
             });
             library_manager.player_state_changed.connect ((state) => {
-                if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST) {
-                    foreach (var child in playlists.get_children ()) {
-                        (child as Widgets.PlaylistView).unselect_all ();
-                    }
-                } else {
+                if (state == Gst.State.PLAYING && library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.PLAYLIST) {
                     activate_by_track (library_manager.player.current_track);
                 }
             });
@@ -213,13 +209,6 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
             var p = new Widgets.PlaylistView (playlist);
-            p.track_selected.connect (() => {
-                foreach (var child in playlists.get_children ()) {
-                    if (child != p) {
-                        (child as Widgets.PlaylistView).unselect_all ();
-                    }
-                }
-            });
             playlist.property_changed.connect (() => {
                 playlists.invalidate_sort ();
             });

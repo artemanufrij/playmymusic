@@ -43,6 +43,11 @@ namespace PlayMyMusic.Widgets {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager.player_state_changed.connect ((state) => {
+                if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || library_manager.player.current_track.playlist.ID != playlist.ID) {
+                    tracks.unselect_all ();
+                }
+            });
 
             Granite.Widgets.Utils.set_theming_for_screen (
                 this.get_screen (),
@@ -184,14 +189,12 @@ namespace PlayMyMusic.Widgets {
             }
         }
 
-        public void unselect_all () {
-            tracks.unselect_all ();
-        }
-
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
+            } if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                library_manager.play_track (playlist.get_first_track (), Services.PlayMode.PLAYLIST);
             }
             return false;
         }
