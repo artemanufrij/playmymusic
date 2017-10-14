@@ -603,7 +603,7 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () == Sqlite.ROW) {
                 track.ID = stmt.column_int (0);
-                stdout.printf ("Track ID: %d\n", track.ID);
+                stdout.printf ("Track ID: %d - %s\n", track.ID, track.title);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }

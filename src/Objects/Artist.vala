@@ -59,15 +59,14 @@ namespace PlayMyMusic.Objects {
                 if (_tracks == null) {
                     _tracks = new GLib.List<Track> ();
                     foreach (var album in albums) {
-                        foreach (var track in album.tracks) {
-                            add_track (track);
-                        }
                         if (album.artist_track_added_signal_id == 0) {
-                           album.artist_track_added_signal_id = album.track_added.connect (add_album_track);
+                            album.artist_track_added_signal_id = album.track_added.connect (add_album_track);
+                            foreach (var track in album.tracks) {
+                                add_track (track);
+                            }
                         }
                     }
                 }
-                load_cover_async.begin ();
                 return _tracks;
             }
         }
@@ -116,11 +115,6 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        public void remove_album (Album album) {
-            album.track_added.disconnect (add_album_track);
-            this._albums.remove (album);
-        }
-
         private async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {
                 return;
@@ -152,7 +146,6 @@ namespace PlayMyMusic.Objects {
                 }
 
                 string[] cover_files = PlayMyMusic.Settings.get_default ().artists;
-
                 foreach (var track in tracks) {
                     var dir_name = GLib.Path.get_dirname (track.path);
                     foreach (var cover_file in cover_files) {
@@ -196,6 +189,7 @@ namespace PlayMyMusic.Objects {
                         }
                     }
                 }
+
                 Idle.add ((owned) callback);
                 return null;
             });
