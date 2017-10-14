@@ -84,6 +84,7 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
 
             playlist_title = new Gtk.Label (this.playlist.title);
+            playlist_title.tooltip_text = this.playlist.title;
             playlist_title.margin_bottom = 6;
             playlist_title.margin_top = 2;
             playlist_title.margin_left = 2;
@@ -91,6 +92,7 @@ namespace PlayMyMusic.Widgets {
             playlist_title.get_style_context ().add_class ("h2");
             playlist_title.get_style_context ().add_class ("header");
             playlist_title.get_style_context ().add_class ("card");
+            playlist_title.ellipsize = Pango.EllipsizeMode.END;
             event_box.add (playlist_title);
 
 // POPOVER REGION
