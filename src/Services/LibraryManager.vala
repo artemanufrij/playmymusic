@@ -85,7 +85,6 @@ namespace PlayMyMusic.Services {
             db_manager.added_new_album.connect ( (album) => { added_new_album (album); });
             db_manager.added_new_playlist.connect ( (playlist) => { added_new_playlist (playlist); });
             db_manager.removed_playlist.connect ( (playlist) => { removed_playlist (playlist); });
-
             db_manager.added_new_radio.connect ( (radio) => { added_new_radio (radio); });
             db_manager.removed_radio.connect ( (radio) => {
                 if (player.current_radio == radio) {
@@ -162,9 +161,9 @@ namespace PlayMyMusic.Services {
             db_manager.delete_radio (radio);
         }
 
-        public void add_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track) {
-            if (!playlist.has_track (track)) {
-                db_manager.insert_track_into_playlist (playlist, track);
+        public void add_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, int track_id) {
+            if (!playlist.has_track (track_id)) {
+                db_manager.insert_track_into_playlist (playlist, track_id);
             }
         }
 

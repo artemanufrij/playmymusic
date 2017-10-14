@@ -45,9 +45,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Image new_station_cover;
         Gtk.Button new_station_save;
         Gtk.Popover add_new_station_popover;
-
         Gtk.Stack stack;
-
         Gtk.FlowBox radios;
 
         GLib.Regex protocol_regex;
@@ -167,7 +165,6 @@ namespace PlayMyMusic.Widgets.Views {
             new_station.attach (new_station_controls, 0, 2, 2, 1);
 
             add_new_station_popover = new Gtk.Popover (null);
-            add_new_station_popover.position = Gtk.PositionType.TOP;
             add_new_station_popover.add (new_station);
             add_button.clicked.connect (() => {
                 add_new_station_popover.set_relative_to (add_button);

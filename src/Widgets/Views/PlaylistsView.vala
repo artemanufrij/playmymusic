@@ -43,22 +43,35 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         Gtk.FlowBox playlists;
-
+        Gtk.Stack stack;
         Gtk.Image icon_repeat_on;
         Gtk.Image icon_repeat_off;
         Gtk.Image icon_shuffle_on;
         Gtk.Image icon_shuffle_off;
         Gtk.Button repeat_button;
         Gtk.Button shuffle_button;
+        Gtk.Popover new_playlist_popover;
+        Gtk.Entry new_playlist_entry;
+        Gtk.Button new_playlist_save;
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.added_new_playlist.connect ((playlist) => {
                 add_playlist (playlist);
+                stack.set_visible_child_name ("content");
             });
             library_manager.removed_playlist.connect ((playlist) => {
                 remove_playlist (playlist);
+            });
+            library_manager.player_state_changed.connect ((state) => {
+                if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST) {
+                    foreach (var child in playlists.get_children ()) {
+                        (child as Widgets.Playlist).unselect_all ();
+                    }
+                } else {
+                    activate_by_track (library_manager.player.current_track);
+                }
             });
 
             settings.notify["repeat-mode"].connect (() => {
@@ -86,7 +99,8 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_ui () {
             playlists = new Gtk.FlowBox ();
-            playlists.margin = 24;
+            playlists.margin = 22;
+            playlists.margin_bottom = 0;
             playlists.halign = Gtk.Align.START;
             playlists.selection_mode = Gtk.SelectionMode.NONE;
             playlists.column_spacing = 24;
@@ -101,6 +115,12 @@ namespace PlayMyMusic.Widgets.Views {
 
             var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
             add_button.tooltip_text = _("Add a playlist");
+            add_button.clicked.connect (() => {
+                new_playlist_popover.set_relative_to (add_button);
+                new_playlist_entry.text = "";
+                new_playlist_save.sensitive = false;
+                new_playlist_popover.show_all ();
+            });
             action_toolbar.pack_start (add_button);
 
             icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
@@ -136,13 +156,52 @@ namespace PlayMyMusic.Widgets.Views {
             action_toolbar.pack_end (repeat_button);
             action_toolbar.pack_end (shuffle_button);
 
+            new_playlist_popover = new Gtk.Popover (null);
+
+            var new_playlist = new Gtk.Grid ();
+            new_playlist.row_spacing = 6;
+            new_playlist.column_spacing = 12;
+            new_playlist.margin = 12;
+            new_playlist_popover.add (new_playlist);
+
+            new_playlist_entry = new Gtk.Entry ();
+            new_playlist_save = new Gtk.Button.with_label (_("Add"));
+            new_playlist_save.get_style_context ().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            new_playlist_save.sensitive = false;
+
+            new_playlist_entry.changed.connect (() => {
+                string new_title = new_playlist_entry.text.strip ();
+                new_playlist_save.sensitive = new_title != "" && library_manager.db_manager.get_playlist_by_title (new_title) == null;
+            });
+            new_playlist.attach (new_playlist_entry, 0, 0);
+
+
+            new_playlist_save.clicked.connect (() => {
+                var playlist = new PlayMyMusic.Objects.Playlist ();
+                playlist.title = new_playlist_entry.text.strip ();
+                library_manager.db_manager.insert_playlist (playlist);
+                new_playlist_popover.hide ();
+            });
+            new_playlist.attach (new_playlist_save, 0, 1);
+
+            var welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add playlist to your library.");
+            welcome.append ("document-new", _("Add Playlist"), _("Add a playlist for manage your favorite songs."));
+            welcome.activated.connect ((index) => {
+                switch (index) {
+                    case 0:
+                        new_playlist_popover.set_relative_to (welcome.get_button_from_index (index));
+                        new_playlist_popover.show_all ();
+                        break;
+                }
+            });
+
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
             content.pack_start (playlists_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
 
-            var stack = new Gtk.Stack ();
-            //stack.add_named (welcome, "welcome");
+            stack = new Gtk.Stack ();
+            stack.add_named (welcome, "welcome");
             stack.add_named (content, "content");
 
             this.add (stack);
@@ -160,6 +219,9 @@ namespace PlayMyMusic.Widgets.Views {
                     }
                 }
             });
+            playlist.property_changed.connect (() => {
+                playlists.invalidate_sort ();
+            });
             p.show_all ();
             playlists.min_children_per_line = library_manager.playlists.length ();
             playlists.add (p);
@@ -173,11 +235,28 @@ namespace PlayMyMusic.Widgets.Views {
                     playlists.min_children_per_line = library_manager.playlists.length ();
                 }
             }
+
+            if (playlists.get_children ().length () == 0) {
+                stack.set_visible_child_name ("welcome");
+            }
+        }
+
+        public void activate_by_track (Objects.Track track) {
+            foreach (var child in playlists.get_children ()) {
+                var playlist = child as Widgets.Playlist;
+                if (playlist.playlist.ID == track.playlist.ID) {
+                    playlist.mark_playing_track (track);
+                }
+            }
         }
 
         private async void show_playlists_from_database () {
             foreach (var playlist in library_manager.playlists) {
                 add_playlist (playlist);
+            }
+
+            if (playlists.get_children ().length () > 0) {
+                stack.set_visible_child_name ("content");
             }
         }
 

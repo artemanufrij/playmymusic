@@ -42,6 +42,7 @@ namespace PlayMyMusic {
         Gtk.Image icon_pause;
 
         Gtk.Image artist_button;
+        Gtk.Image playlist_button;
 
         Granite.Widgets.ModeButton view_mode;
         Widgets.Views.AlbumsView albums_view;
@@ -73,6 +74,7 @@ namespace PlayMyMusic {
             library_manager.added_new_artist.connect (() => {
                 if (!artist_button.sensitive) {
                     artist_button.sensitive = true;
+                    playlist_button.sensitive = true;
                 }
             });
 
@@ -201,9 +203,10 @@ namespace PlayMyMusic {
             view_mode.append (artist_button);
             artist_button.sensitive = library_manager.artists.length () > 0;
 
-            var playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
             playlist_button.tooltip_text = _("Playlists");
             view_mode.append (playlist_button);
+            playlist_button.sensitive = library_manager.artists.length () > 0;
 
             var radio_button = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
             radio_button.tooltip_text = _("Radio Stations");
@@ -220,11 +223,15 @@ namespace PlayMyMusic {
                         }
                         break;
                     case 2:
-                        if (library_manager.player.current_track == null) {
-                            search_entry.grab_focus ();
+                        if (playlist_button.sensitive) {
+                            if (library_manager.player.current_track == null) {
+                                search_entry.grab_focus ();
+                            }
+                            content.set_visible_child_name ("playlists");
+                            search_entry.text = playlists_view.filter;
+                        } else {
+                            view_mode.set_active (0);
                         }
-                        content.set_visible_child_name ("playlists");
-                        search_entry.text = playlists_view.filter;
                         break;
                     case 3:
                         if (library_manager.player.current_radio == null) {
@@ -254,6 +261,10 @@ namespace PlayMyMusic {
                         case PlayMyMusic.Services.PlayMode.ARTIST:
                             view_mode.set_active (1);
                             artists_view.activate_by_track (track);
+                            break;
+                        case PlayMyMusic.Services.PlayMode.PLAYLIST:
+                            view_mode.set_active (2);
+                            playlists_view.activate_by_track (track);
                             break;
                     }
                 }
@@ -288,6 +299,7 @@ namespace PlayMyMusic {
                 settings.last_album_id = 0;
                 view_mode.set_active (0);
                 artist_button.sensitive = false;
+                playlist_button.sensitive = false;
                 albums_view.reset ();
                 artists_view.reset ();
                 radios_view.reset ();

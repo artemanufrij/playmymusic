@@ -120,7 +120,7 @@ namespace PlayMyMusic.Widgets {
                 var item = new Gtk.MenuItem.with_label (_("Create New Playlist"));
                 item.activate.connect (() => {
                     var new_playlist = library_manager.create_new_playlist ();
-                    library_manager.add_track_into_playlist (new_playlist, track);
+                    library_manager.add_track_into_playlist (new_playlist, track.ID);
                 });
                 playlists.add (item);
                 if (library_manager.playlists.length () > 0) {
@@ -129,7 +129,7 @@ namespace PlayMyMusic.Widgets {
                 foreach (var playlist in library_manager.playlists) {
                     item = new Gtk.MenuItem.with_label (playlist.title);
                     item.activate.connect (() => {
-                        library_manager.add_track_into_playlist (playlist, track);
+                        library_manager.add_track_into_playlist (playlist, track.ID);
                     });
                     playlists.add (item);
                 }

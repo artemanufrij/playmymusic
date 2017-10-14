@@ -32,8 +32,12 @@ namespace PlayMyMusic.Widgets {
         public PlayMyMusic.Objects.Playlist playlist { get; private set; }
         public string title { get { return playlist.title; } }
 
+        Gtk.Label playlist_title;
         Gtk.ListBox tracks;
         Gtk.Menu menu;
+        Gtk.Popover rename_playlist_popover;
+
+        bool only_mark = false;
 
         public signal void track_selected ();
 
@@ -48,6 +52,7 @@ namespace PlayMyMusic.Widgets {
                     }
                     .header {
                         padding: 6px;
+                        border-radius: 3px;
                     }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
@@ -60,9 +65,11 @@ namespace PlayMyMusic.Widgets {
             this.playlist.track_added.connect ((track) => {
                 add_track (track);
             });
+            this.playlist.property_changed.connect (() => {
+                playlist_title.label = this.playlist.title;
+            });
 
             build_ui ();
-
             show_tracks ();
         }
 
@@ -71,27 +78,64 @@ namespace PlayMyMusic.Widgets {
             this.width_request = 256;
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            content.spacing = 12;
+            content.spacing = 6;
 
             var event_box = new Gtk.EventBox ();
             event_box.button_press_event.connect (show_context_menu);
 
-            var title = new Gtk.Label (this.playlist.title);
-            title.margin = 4;
-            title.get_style_context ().add_class ("h2");
-            title.get_style_context ().add_class ("header");
-            title.get_style_context ().add_class ("card");
-            event_box.add (title);
+            playlist_title = new Gtk.Label (this.playlist.title);
+            playlist_title.margin_bottom = 6;
+            playlist_title.margin_top = 2;
+            playlist_title.margin_left = 2;
+            playlist_title.margin_right = 2;
+            playlist_title.get_style_context ().add_class ("h2");
+            playlist_title.get_style_context ().add_class ("header");
+            playlist_title.get_style_context ().add_class ("card");
+            event_box.add (playlist_title);
 
+// POPOVER REGION
+            rename_playlist_popover = new Gtk.Popover (playlist_title);
+            rename_playlist_popover.position = Gtk.PositionType.BOTTOM;
+
+            var rename_playlist = new Gtk.Grid ();
+            rename_playlist.row_spacing = 6;
+            rename_playlist.column_spacing = 12;
+            rename_playlist.margin = 12;
+            rename_playlist_popover.add (rename_playlist);
+
+            var rename_playlist_entry = new Gtk.Entry ();
+            var rename_playlist_save = new Gtk.Button.with_label (_("Rename"));
+            rename_playlist_save.get_style_context ().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+
+            rename_playlist_entry.changed.connect (() => {
+                string new_title = rename_playlist_entry.text.strip ();
+                rename_playlist_save.sensitive = new_title != "" && library_manager.db_manager.get_playlist_by_title (new_title) == null;
+            });
+            rename_playlist.attach (rename_playlist_entry, 0, 0);
+
+            rename_playlist_save.clicked.connect (() => {
+                this.playlist.title = rename_playlist_entry.text.strip ();
+                library_manager.db_manager.update_playlist (this.playlist);
+                rename_playlist_popover.hide ();
+            });
+            rename_playlist.attach (rename_playlist_save, 0, 1);
+
+// CONTEXT MENU REGION
             menu = new Gtk.Menu ();
+            var menu_rename_playlist = new Gtk.MenuItem.with_label (_("Rename Playlist"));
+            menu_rename_playlist.activate.connect (() => {
+                rename_playlist_entry.text = playlist.title;
+                rename_playlist_popover.show_all ();
+            });
+            menu.add (menu_rename_playlist);
+
+            menu.add (new Gtk.SeparatorMenuItem ());
+
             var menu_remove_playlist = new Gtk.MenuItem.with_label (_("Remove Playlist"));
             menu_remove_playlist.activate.connect (() => {
                 library_manager.remove_playlist (playlist);
             });
             menu.add (menu_remove_playlist);
-            var menu_rename_playlist = new Gtk.MenuItem.with_label (_("Rename Playlist"));
-            menu.add (menu_rename_playlist);
-
             menu.show_all ();
 
             tracks = new Gtk.ListBox ();
@@ -124,9 +168,23 @@ namespace PlayMyMusic.Widgets {
 
         private void play_track () {
             var selected_row = tracks.get_selected_row ();
-            if (selected_row != null) {
+            if (selected_row != null && !only_mark) {
                 library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.PLAYLIST);
                 track_selected ();
+            }
+        }
+
+        public void mark_playing_track (Objects.Track? track) {
+            tracks.unselect_all ();
+            if (track == null) {
+                return;
+            }
+            foreach (var child in tracks.get_children ()) {
+                if ((child as Widgets.Track).track.ID == track.ID) {
+                    only_mark = true;
+                    (child as Widgets.Track).activate ();
+                    only_mark = false;
+                }
             }
         }
 

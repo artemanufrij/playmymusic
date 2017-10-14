@@ -29,13 +29,20 @@ namespace PlayMyMusic.Objects {
     public class Track : GLib.Object {
         PlayMyMusic.Services.LibraryManager library_manager;
 
-        Album _album = null;
+        Album? _album = null;
         public Album album {
             get {
                 if (_album == null) {
                     _album = library_manager.db_manager.get_album_by_track_id (this.ID);
                 }
                 return _album;
+            }
+        }
+
+        Playlist? _playlist = null;
+        public Playlist? playlist {
+            get {
+                return _playlist;
             }
         }
 
@@ -73,11 +80,17 @@ namespace PlayMyMusic.Objects {
         public Track (TracksContainer? container = null) {
             if (container != null && container is Album) {
                 this.set_album (container as Album);
+            } else if (container != null && container is Playlist) {
+                this.set_playlist (container as Playlist);
             }
         }
 
         public void set_album (Album album) {
             this._album = album;
+        }
+
+        public void set_playlist (Playlist playlist) {
+            this._playlist = playlist;
         }
     }
 }

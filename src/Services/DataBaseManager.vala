@@ -317,7 +317,7 @@ namespace PlayMyMusic.Services {
             string sql = """
                 SELECT albums.id, albums.title, year
                 FROM tracks LEFT JOIN albums
-                ON tracks.album_id = albums.id
+                ON tracks.album_id=albums.id
                 WHERE tracks.id=$TRACK_ID;
             """;
 
@@ -402,6 +402,22 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
+        public void update_playlist (PlayMyMusic.Objects.Playlist playlist) {
+            Sqlite.Statement stmt;
+            string sql = """
+                UPDATE playlists SET title=$TITLE WHERE id=$ID;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$TITLE", playlist.title);
+            set_parameter_int (stmt, sql, "$ID", playlist.ID);
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                playlist.property_changed ("title");
+            }
+            stmt.reset ();
+        }
+
         public void insert_playlist (PlayMyMusic.Objects.Playlist playlist) {
             Sqlite.Statement stmt;
             string sql = """
@@ -436,19 +452,22 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void insert_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track) {
+        public void insert_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, int track_id) {
             Sqlite.Statement stmt;
             string sql = """
                 INSERT INTO playlist_tracks (playlist_id, track_id, sort) VALUES ($PLAYLIST_ID, $TRACK_ID, $SORT);
             """;
             db.prepare_v2 (sql, sql.length, out stmt);
             set_parameter_int (stmt, sql, "$PLAYLIST_ID", playlist.ID);
-            set_parameter_int (stmt, sql, "$TRACK_ID", track.ID);
+            set_parameter_int (stmt, sql, "$TRACK_ID", track_id);
             set_parameter_int (stmt, sql, "$SORT", (int)playlist.tracks.length ());
 
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             } else {
+                var track = get_track_by_id (track_id);
+                track.track = (int)playlist.tracks.length ();
+                track.set_playlist (playlist);
                 playlist.add_track (track);
             }
             stmt.reset ();
@@ -488,7 +507,7 @@ namespace PlayMyMusic.Services {
                 """;
             } else {
                 sql = """
-                    SELECT tracks.id, title, genre, track, disc, duration, path
+                    SELECT tracks.id, title, genre, sort, disc, duration, path
                     FROM playlist_tracks LEFT JOIN tracks
                     ON playlist_tracks.track_id = tracks.id
                     WHERE playlist_id=$CONTAINER_ID
@@ -500,17 +519,41 @@ namespace PlayMyMusic.Services {
             set_parameter_int (stmt, sql, "$CONTAINER_ID", container.ID);
 
             while (stmt.step () == Sqlite.ROW) {
-                var item = new PlayMyMusic.Objects.Track (container);
-                item.ID = stmt.column_int (0);
-                item.title = stmt.column_text (1);
-                item.genre = stmt.column_text (2);
-                item.track = stmt.column_int (3);
-                item.disc = stmt.column_int (4);
-                item.duration = (uint64)stmt.column_int64 (5);
-                item.path = stmt.column_text (6);
-                return_value.append (item);
+                return_value.append (_fill_track (stmt, container));
             }
             stmt.reset ();
+            return return_value;
+        }
+
+        public PlayMyMusic.Objects.Track? get_track_by_id (int id) {
+            PlayMyMusic.Objects.Track? return_value = null;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT id, title, genre, track, disc, duration, path
+                FROM tracks
+                WHERE id=$ID;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", id);
+
+            if (stmt.step () == Sqlite.ROW) {
+                return_value = _fill_track (stmt, null);
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
+        private PlayMyMusic.Objects.Track _fill_track (Sqlite.Statement stmt, PlayMyMusic.Objects.TracksContainer? container) {
+            PlayMyMusic.Objects.Track return_value = new PlayMyMusic.Objects.Track (container);
+            return_value.ID = stmt.column_int (0);
+            return_value.title = stmt.column_text (1);
+            return_value.genre = stmt.column_text (2);
+            return_value.track = stmt.column_int (3);
+            return_value.disc = stmt.column_int (4);
+            return_value.duration = (uint64)stmt.column_int64 (5);
+            return_value.path = stmt.column_text (6);
             return return_value;
         }
 

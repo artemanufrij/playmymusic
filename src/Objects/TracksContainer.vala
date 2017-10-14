@@ -34,6 +34,7 @@ namespace PlayMyMusic.Objects {
         public signal void track_removed (Track track);
         public signal void cover_changed ();
         public signal void background_changed ();
+        public signal void property_changed (string property);
 
         public string title { get; set; default = ""; }
         public string name { get; set; default = ""; }
@@ -147,23 +148,31 @@ namespace PlayMyMusic.Objects {
                 if (_tracks == null) {
                     _tracks = new GLib.List<Track> ();
                 }
-                this._tracks.insert_sorted_with_data (track, (a, b) => {
-                    if (a.album.year != b.album.year) {
-                        return a.album.year - b.album.year;
-                    }
-                    if (a.album.title != b.album.title) {
-                        return a.album.title.collate (b.album.title);
-                    }
-                    if (a.disc != b.disc) {
-                        return a.disc - b.disc;
-                    }
-                    if (a.track != b.track) {
+                if (this is Playlist) {
+                    this._tracks.insert_sorted_with_data (track, (a, b) => {
                         return a.track - b.track;
-                    }
-                    return a.title.collate (b.title);
-                });
+                    });
+                } else {
+                    this._tracks.insert_sorted_with_data (track, sort_function);
+                }
                 track_added (track);
             }
+        }
+
+        private int sort_function (Track a, Track b) {
+            if (a.album.year != b.album.year) {
+                return a.album.year - b.album.year;
+            }
+            if (a.album.title != b.album.title) {
+                return a.album.title.collate (b.album.title);
+            }
+            if (a.disc != b.disc) {
+                return a.disc - b.disc;
+            }
+            if (a.track != b.track) {
+                return a.track - b.track;
+            }
+            return a.title.collate (b.title);
         }
 
         public void clear_tracks () {

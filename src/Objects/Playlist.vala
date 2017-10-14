@@ -40,9 +40,9 @@ namespace PlayMyMusic.Objects {
             base.add_track (track);
         }
 
-        public bool has_track (Track track) {
-            foreach (var t in tracks) {
-                if (t.ID == track.ID) {
+        public bool has_track (int track_id) {
+            foreach (var track in tracks) {
+                if (track.ID == track_id) {
                     return true;
                 }
             }

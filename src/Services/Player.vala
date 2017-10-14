@@ -165,6 +165,20 @@ namespace PlayMyMusic.Services {
                         next_track = current_track.album.artist.get_first_track ();
                     }
                 }
+            } else if (play_mode == PlayMode.PLAYLIST) {
+                if (settings.shuffle_mode) {
+                    next_track = current_track.playlist.get_shuffle_track (current_track);
+                } else {
+                    next_track = current_track.playlist.get_next_track (current_track);
+                }
+
+                if (next_track == null && settings.repeat_mode) {
+                    if (settings.shuffle_mode) {
+                        next_track = current_track.playlist.get_shuffle_track (null);
+                    } else {
+                        next_track = current_track.playlist.get_first_track ();
+                    }
+                }
             }
 
             if (next_track != null) {
@@ -183,6 +197,8 @@ namespace PlayMyMusic.Services {
                     prev_track = current_track.album.get_prev_track (current_track);
                 } else if (play_mode == PlayMode.ARTIST) {
                     prev_track = current_track.album.artist.get_prev_track (current_track);
+                } else if (play_mode == PlayMode.PLAYLIST) {
+                    prev_track = current_track.playlist.get_prev_track (current_track);
                 }
                 if (prev_track != null) {
                     set_track (prev_track, play_mode);
