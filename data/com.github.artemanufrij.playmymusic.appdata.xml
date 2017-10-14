@@ -37,6 +37,14 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.1.6" date="2017-10-20">
+            <description>
+                <p>Fix:</p>
+                <ul>
+                    <li>[artist view] Don't show track twice</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.1.5" date="2017-10-15">
             <description>
                 <p>New:</p>
