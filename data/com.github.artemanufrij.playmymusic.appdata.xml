@@ -41,12 +41,13 @@
             <description>
                 <p>New:</p>
                 <ul>
+                    <li>Playlist support</li>
                     <li>Play in Backgound</li>
                     <li>Translation: Portuguese</li>
                 </ul>
                 <p>Fix:</p>
                 <ul>
-                    <li>Crash on try to stream online radio</li>
+                    <li>Crash on trying to stream online radio</li>
                 </ul>
             </description>
         </release>

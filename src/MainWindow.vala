@@ -224,7 +224,7 @@ namespace PlayMyMusic {
                         break;
                     case 2:
                         if (playlist_button.sensitive) {
-                            if (library_manager.player.current_track == null || playlists_view.filter != "") {
+                            if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || playlists_view.filter != "") {
                                 search_entry.grab_focus ();
                             }
                             content.set_visible_child_name ("playlists");
