@@ -35,7 +35,6 @@ namespace PlayMyMusic.Objects {
                 if (value > 0) {
                     this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d.jpg").printf(this.ID));
                     this.background_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d_background.png").printf(this.ID));
-                    load_cover_async.begin ();
                 }
             }
         }
@@ -49,7 +48,6 @@ namespace PlayMyMusic.Objects {
                         add_album (album);
                     }
                 }
-                load_cover_async.begin ();
                 return _albums;
             }
         }
@@ -64,6 +62,10 @@ namespace PlayMyMusic.Objects {
             this.cover_changed.connect (() => {
                 create_background ();
             });
+
+            this.track_added.connect (() => {
+                load_cover_async.begin ();
+            });
         }
 
         public void clear_albums () {
@@ -73,16 +75,11 @@ namespace PlayMyMusic.Objects {
         private void add_album (Album album) {
             this._albums.append (album);
             if (album.artist_track_added_signal_id == 0) {
-               album.artist_track_added_signal_id = album.track_added.connect (add_album_track);
+               album.artist_track_added_signal_id = album.track_added.connect (add_track);
+               foreach (var track in album.tracks) {
+                    add_track (track);
+               }
             }
-            foreach (var track in album.tracks) {
-                add_track (track);
-            }
-        }
-
-        private void add_album_track (Track track) {
-            add_track (track);
-            load_cover_async.begin ();
         }
 
         public Album add_album_if_not_exists (Album new_album) {
@@ -178,7 +175,6 @@ namespace PlayMyMusic.Objects {
                         }
                     }
                 }
-
                 Idle.add ((owned) callback);
                 return null;
             });
