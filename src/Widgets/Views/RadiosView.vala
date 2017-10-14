@@ -36,6 +36,7 @@ namespace PlayMyMusic.Widgets.Views {
             } set {
                 if (_filter != value) {
                     _filter = value;
+                    radios.invalidate_filter ();
                 }
             }
         }

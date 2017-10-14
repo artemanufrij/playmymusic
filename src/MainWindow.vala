@@ -234,7 +234,7 @@ namespace PlayMyMusic {
                         }
                         break;
                     case 3:
-                        if (library_manager.player.current_radio == null) {
+                        if (library_manager.player.current_radio == null || radios_view.filter != "") {
                             search_entry.grab_focus ();
                         }
                         content.set_visible_child_name ("radios");
