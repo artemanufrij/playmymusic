@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-14 20:21+0200\n"
+"POT-Creation-Date: 2017-10-14 20:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -147,7 +147,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/Widgets/Track.vala:84
+#: ../src/Widgets/Track.vala:84 ../src/Widgets/Album.vala:64
 msgid "Add into Playlist"
 msgstr ""
 
@@ -155,7 +155,7 @@ msgstr ""
 msgid "Remove from Playlist"
 msgstr ""
 
-#: ../src/Widgets/Track.vala:134
+#: ../src/Widgets/Track.vala:134 ../src/Widgets/Album.vala:111
 msgid "Create New Playlist"
 msgstr ""
 
