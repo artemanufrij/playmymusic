@@ -60,6 +60,10 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
             });
 
+            this.track.removed.connect (() => {
+                this.destroy ();
+            });
+
             build_ui ();
         }
 
@@ -79,6 +83,14 @@ namespace PlayMyMusic.Widgets {
             menu = new Gtk.Menu ();
             var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
             menu.add (menu_add_into_playlist);
+
+            if (track.playlist != null) {
+                var menu_remove_from_playlist = new Gtk.MenuItem.with_label (_("Remove from Playlist"));
+                menu_remove_from_playlist.activate.connect (() => {
+                    library_manager.remove_track_from_playlist (track);
+                });
+                menu.add (menu_remove_from_playlist);
+            }
 
             playlists = new Gtk.Menu ();
             menu_add_into_playlist.set_submenu (playlists);

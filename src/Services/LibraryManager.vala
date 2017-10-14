@@ -190,6 +190,10 @@ namespace PlayMyMusic.Services {
             db_manager.remove_playlist (playlist);
         }
 
+        public void remove_track_from_playlist (PlayMyMusic.Objects.Track track) {
+            db_manager.remove_track_from_playlist (track);
+        }
+
         //PLAYER REGION
         public void play_track (PlayMyMusic.Objects.Track track, PlayMode play_mode) {
             player.set_track (track, play_mode);

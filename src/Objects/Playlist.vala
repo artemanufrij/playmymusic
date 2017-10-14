@@ -31,6 +31,11 @@ namespace PlayMyMusic.Objects {
             get {
                 if (_tracks == null) {
                     _tracks = library_manager.db_manager.get_track_collection (this);
+                    foreach (var track in _tracks) {
+                        track.removed.connect (() => {
+                            _tracks.remove (track);
+                        });
+                    }
                 }
                 return _tracks;
             }
@@ -38,6 +43,9 @@ namespace PlayMyMusic.Objects {
 
         public new void add_track (Track track) {
             base.add_track (track);
+            track.removed.connect (() => {
+                _tracks.remove (track);
+            });
         }
 
         public bool has_track (int track_id) {

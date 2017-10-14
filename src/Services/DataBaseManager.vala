@@ -418,6 +418,22 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
+        public void remove_track_from_playlist (PlayMyMusic.Objects.Track track) {
+            Sqlite.Statement stmt;
+            string sql = """
+                DELETE FROM playlist_tracks WHERE playlist_id=$PLAYLIST_ID AND track_id=$TRACK_ID;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$PLAYLIST_ID", track.playlist.ID);
+            set_parameter_int (stmt, sql, "$TRACK_ID", track.ID);
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                track.removed ();
+            }
+            stmt.reset ();
+        }
+
         public void insert_playlist (PlayMyMusic.Objects.Playlist playlist) {
             Sqlite.Statement stmt;
             string sql = """

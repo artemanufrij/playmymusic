@@ -29,6 +29,8 @@ namespace PlayMyMusic.Objects {
     public class Track : GLib.Object {
         PlayMyMusic.Services.LibraryManager library_manager;
 
+        public signal void removed ();
+
         Album? _album = null;
         public Album album {
             get {

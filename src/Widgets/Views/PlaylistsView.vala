@@ -105,6 +105,7 @@ namespace PlayMyMusic.Widgets.Views {
             playlists.selection_mode = Gtk.SelectionMode.NONE;
             playlists.column_spacing = 24;
             playlists.set_sort_func (playlists_sort_func);
+            playlists.set_filter_func (playlists_filter_func);
             playlists.homogeneous = true;
 
             var playlists_scroll = new Gtk.ScrolledWindow (null, null);
@@ -267,6 +268,30 @@ namespace PlayMyMusic.Widgets.Views {
                 return item1.title.collate (item2.title);
             }
             return 0;
+        }
+
+         private bool playlists_filter_func (Gtk.FlowBoxChild child) {
+            if (filter.strip ().length == 0) {
+                return true;
+            }
+
+            string[] filter_elements = filter.strip ().down ().split (" ");
+            var playlist = (child as PlayMyMusic.Widgets.PlaylistView).playlist;
+            foreach (string filter_element in filter_elements) {
+                if (!playlist.title.down ().contains (filter_element)) {
+                    bool track_title = false;
+                    foreach (var track in playlist.tracks) {
+                        if (track.title.down ().contains (filter_element) || track.album.title.down ().contains (filter_element) || track.album.artist.name.down ().contains (filter_element)) {
+                            track_title = true;
+                        }
+                    }
+                    if (track_title) {
+                        continue;
+                    }
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
