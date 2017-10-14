@@ -150,6 +150,27 @@ namespace PlayMyMusic {
                 settings.window_maximized = this.is_maximized;
                 settings.view_index = view_mode.selected;
             });
+
+            Granite.Widgets.Utils.set_theming_for_screen (
+                this.get_screen (),
+                """
+                    .artist-title {
+                        color: #fff;
+                        text-shadow: 0px 1px 2px alpha (#000, 1);
+                    }
+                    .artist-sub-title {
+                        color: #fff;
+                        text-shadow: 0px 1px 2px alpha (#000, 1);
+                    }
+                    .playlist-tracks {
+                        background: transparent;
+                    }
+                    .mode_button_left {
+                        border-left-width: 1px;
+                    }
+                """,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
         }
 
         public void build_ui () {
@@ -193,6 +214,7 @@ namespace PlayMyMusic {
 
             // VIEW BUTTONS
             view_mode = new Granite.Widgets.ModeButton ();
+            view_mode.homogeneous = false;
             view_mode.valign = Gtk.Align.CENTER;
             view_mode.margin_left = 12;
 
@@ -213,6 +235,9 @@ namespace PlayMyMusic {
             var radio_button = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
             radio_button.tooltip_text = _("Radio Stations");
             view_mode.append (radio_button);
+            var wid = view_mode.get_children ().last ().data;
+            wid.margin_left = 4;
+            wid.get_style_context ().add_class ("mode_button_left");
 
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {

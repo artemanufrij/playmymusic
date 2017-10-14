@@ -79,22 +79,6 @@ namespace PlayMyMusic.Widgets {
                 }
                 repeat_button.show_all ();
             });
-
-            Granite.Widgets.Utils.set_theming_for_screen (
-                this.get_screen (),
-                """
-                    .artist-title {
-                        color: #fff;
-                        text-shadow: 0px 1px 2px alpha (#000, 1);
-                    }
-                    .artist-sub-title {
-                        color: #fff;
-                        text-shadow: 0px 1px 2px alpha (#000, 1);
-                    }
-                """,
-                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            );
-
         }
 
         public ArtistView () {
@@ -189,7 +173,9 @@ namespace PlayMyMusic.Widgets {
             if (current_artist != null) {
                 current_artist.track_added.disconnect (add_track);
                 current_artist.background_changed.disconnect (change_background);
-                current_artist.background.dispose ();// = null;
+                if (current_artist.background != null) {
+                    current_artist.background.dispose ();
+                }
             }
             current_artist = artist;
             this.reset ();

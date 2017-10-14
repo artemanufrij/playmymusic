@@ -48,16 +48,6 @@ namespace PlayMyMusic.Widgets {
                     tracks.unselect_all ();
                 }
             });
-
-            Granite.Widgets.Utils.set_theming_for_screen (
-                this.get_screen (),
-                """
-                    .track-list {
-                        background: transparent;
-                    }
-                """,
-                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            );
         }
 
         public PlaylistView (PlayMyMusic.Objects.Playlist playlist) {
@@ -139,7 +129,7 @@ namespace PlayMyMusic.Widgets {
             menu.show_all ();
 
             tracks = new Gtk.ListBox ();
-            tracks.get_style_context ().add_class ("track-list");
+            tracks.get_style_context ().add_class ("playlist-tracks");
             tracks.selected_rows_changed.connect (play_track);
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
