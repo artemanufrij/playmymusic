@@ -165,7 +165,7 @@ namespace PlayMyMusic {
                     .playlist-tracks {
                         background: transparent;
                     }
-                    .mode_button_left {
+                    .mode_button_split {
                         border-left-width: 1px;
                     }
                 """,
@@ -237,7 +237,7 @@ namespace PlayMyMusic {
             view_mode.append (radio_button);
             var wid = view_mode.get_children ().last ().data;
             wid.margin_left = 4;
-            wid.get_style_context ().add_class ("mode_button_left");
+            wid.get_style_context ().add_class ("mode_button_split");
 
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
