@@ -27,11 +27,19 @@
 
 namespace PlayMyMusic.Widgets {
     public class Album : Gtk.FlowBoxChild {
+        PlayMyMusic.Services.LibraryManager library_manager;
+
         public PlayMyMusic.Objects.Album album { get; private set; }
         public string title { get { return album.title; } }
         public int year { get { return album.year; } }
 
         Gtk.Image cover;
+        Gtk.Menu menu;
+        Gtk.Menu playlists;
+
+        construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+        }
 
         public Album (PlayMyMusic.Objects.Album album) {
             this.album = album;
@@ -46,7 +54,19 @@ namespace PlayMyMusic.Widgets {
         private void build_ui () {
             this.tooltip_markup = ("<b>%s</b>\n%s").printf (album.title.replace ("&", "&amp;"), album.artist.name.replace ("&", "&amp;"));
 
+            var event_box = new Gtk.EventBox ();
+            event_box.button_press_event.connect (show_context_menu);
+
             var content = new Gtk.Grid ();
+            event_box.add (content);
+
+            menu = new Gtk.Menu ();
+            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
+            menu.add (menu_add_into_playlist);
+            playlists = new Gtk.Menu ();
+            menu_add_into_playlist.set_submenu (playlists);
+
+            menu.show_all ();
 
             content.margin = 12;
             content.halign = Gtk.Align.CENTER;
@@ -77,10 +97,43 @@ namespace PlayMyMusic.Widgets {
             content.attach (title, 0, 1);
             content.attach (artist, 0, 2);
 
-            this.add (content);
+            this.add (event_box);
             this.valign = Gtk.Align.START;
 
             this.show_all ();
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                foreach (var child in playlists.get_children ()) {
+                    child.destroy ();
+                }
+                var item = new Gtk.MenuItem.with_label (_("Create New Playlist"));
+                item.activate.connect (() => {
+                    var new_playlist = library_manager.create_new_playlist ();
+                    foreach (var track in album.tracks) {
+                        library_manager.add_track_into_playlist (new_playlist, track.ID);
+                    }
+                });
+                playlists.add (item);
+                if (library_manager.playlists.length () > 0) {
+                    playlists.add (new Gtk.SeparatorMenuItem ());
+                }
+                foreach (var playlist in library_manager.playlists) {
+                    item = new Gtk.MenuItem.with_label (playlist.title);
+                    item.activate.connect (() => {
+                        foreach (var track in album.tracks) {
+                            library_manager.add_track_into_playlist (playlist, track.ID);
+                        }
+                    });
+                    playlists.add (item);
+                }
+                playlists.show_all ();
+
+                menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            }
+            return false;
         }
     }
 }
