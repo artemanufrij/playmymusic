@@ -194,7 +194,9 @@ namespace PlayMyMusic.Widgets {
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
             } if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
-                library_manager.play_track (playlist.get_first_track (), Services.PlayMode.PLAYLIST);
+                if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || library_manager.player.current_track.playlist.ID != playlist.ID) {
+                    library_manager.play_track (playlist.get_first_track (), Services.PlayMode.PLAYLIST);
+                }
             }
             return false;
         }
