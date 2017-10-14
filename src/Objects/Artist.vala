@@ -56,17 +56,6 @@ namespace PlayMyMusic.Objects {
 
         public new GLib.List<Track> tracks {
             get {
-                if (_tracks == null) {
-                    _tracks = new GLib.List<Track> ();
-                    foreach (var album in albums) {
-                        if (album.artist_track_added_signal_id == 0) {
-                            album.artist_track_added_signal_id = album.track_added.connect (add_album_track);
-                            foreach (var track in album.tracks) {
-                                add_track (track);
-                            }
-                        }
-                    }
-                }
                 return _tracks;
             }
         }
