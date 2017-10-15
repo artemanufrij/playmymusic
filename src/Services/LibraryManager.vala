@@ -126,7 +126,7 @@ namespace PlayMyMusic.Services {
             });
         }
 
-        public void rescan_library () {
+        public void reset_library () {
             player.reset_playing ();
             db_manager.reset_database ();
             File directory = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER);
@@ -140,6 +140,10 @@ namespace PlayMyMusic.Services {
             } catch (Error err) {
                 warning (err.message);
             }
+        }
+
+        public void rescan_library () {
+            reset_library ();
             scan_local_library (settings.library_location);
         }
 

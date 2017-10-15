@@ -222,10 +222,13 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
-            var item = new PlayMyMusic.Widgets.Track (track);
-            this.tracks.add (item);
-            item.show_all ();
-            update_header ();
+            Idle.add (() => {
+                var item = new PlayMyMusic.Widgets.Track (track);
+                this.tracks.add (item);
+                item.show_all ();
+                update_header ();
+                return false;
+            });
         }
 
         private void play_track () {

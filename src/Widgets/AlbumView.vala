@@ -235,9 +235,12 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
-            var item = new PlayMyMusic.Widgets.Track (track, false);
-            this.tracks.add (item);
-            item.show_all ();
+            Idle.add (() => {
+                var item = new PlayMyMusic.Widgets.Track (track, false);
+                this.tracks.add (item);
+                item.show_all ();
+                return false;
+            });
         }
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {

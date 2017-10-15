@@ -38,6 +38,7 @@ namespace PlayMyMusic {
         Gtk.Button next_button;
         Gtk.Button previous_button;
         Gtk.MenuItem menu_item_rescan;
+        Gtk.MenuItem menu_item_reset;
         Gtk.Image icon_play;
         Gtk.Image icon_pause;
 
@@ -63,12 +64,14 @@ namespace PlayMyMusic {
                 Idle.add (() => {
                     spinner.active = true;
                     menu_item_rescan.sensitive = false;
+                    menu_item_reset.sensitive = false;
                 });
             });
             library_manager.tag_discover_finished.connect (() => {
                 Idle.add (() => {
                     spinner.active = false;
                     menu_item_rescan.sensitive = true;
+                    menu_item_reset.sensitive = true;
                 });
             });
             library_manager.added_new_artist.connect (() => {
@@ -320,16 +323,15 @@ namespace PlayMyMusic {
                 }
             });
 
+            menu_item_reset = new Gtk.MenuItem.with_label (_("Reset all views"));
+            menu_item_reset.activate.connect (() => {
+                reset_all_views ();
+                library_manager.reset_library ();
+            });
+
             menu_item_rescan = new Gtk.MenuItem.with_label (_("Rescan Library"));
             menu_item_rescan.activate.connect (() => {
-                settings.last_artist_id = 0;
-                settings.last_album_id = 0;
-                view_mode.set_active (0);
-                artist_button.sensitive = false;
-                playlist_button.sensitive = false;
-                albums_view.reset ();
-                artists_view.reset ();
-                radios_view.reset ();
+                reset_all_views ();
                 library_manager.rescan_library ();
             });
 
@@ -343,6 +345,7 @@ namespace PlayMyMusic {
             settings_menu.append (menu_item_import);
             settings_menu.append (new Gtk.SeparatorMenuItem ());
             settings_menu.append (menu_item_rescan);
+            settings_menu.append (menu_item_reset);
             settings_menu.append (new Gtk.SeparatorMenuItem ());
             settings_menu.append (menu_item_preferences);
             settings_menu.show_all ();
@@ -433,6 +436,17 @@ namespace PlayMyMusic {
                     albums_view.add_album (album);
                 }
             }
+        }
+
+        private void reset_all_views () {
+            settings.last_artist_id = 0;
+            settings.last_album_id = 0;
+            view_mode.set_active (0);
+            artist_button.sensitive = false;
+            playlist_button.sensitive = false;
+            albums_view.reset ();
+            artists_view.reset ();
+            radios_view.reset ();
         }
 
         public void play () {

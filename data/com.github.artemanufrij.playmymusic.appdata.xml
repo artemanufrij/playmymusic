@@ -39,6 +39,10 @@
     <releases>
         <release version="0.1.6" date="2017-10-20">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>[option] Look for new music files on start up [on/off]</li>
+                </ul>
                 <p>Fix:</p>
                 <ul>
                     <li>[artist view] Don't show track twice</li>
