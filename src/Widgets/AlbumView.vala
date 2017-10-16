@@ -49,16 +49,12 @@ namespace PlayMyMusic.Widgets {
         construct {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            library_manager.player_state_changed.connect ((state) => {
-                var curret_track = library_manager.player.current_track;
-                if (state == Gst.State.PLAYING && curret_track != null) {
-                    mark_playing_track (curret_track);
-                } else if (state == Gst.State.NULL || curret_track == null) {
-                    mark_playing_track (null);
-                }
+            player = library_manager.player;
+            player.state_changed.connect ((state) => {
+                mark_playing_track (player.current_track);
             });
 
-            player = PlayMyMusic.Services.Player.instance;
+
 
             settings.notify["repeat-mode"].connect (() => {
                 if (settings.repeat_mode) {
@@ -218,10 +214,6 @@ namespace PlayMyMusic.Widgets {
             }
             current_album.track_added.connect (add_track);
             current_album.cover_changed.connect (change_cover);
-
-            if (player.current_track != null) {
-                mark_playing_track (player.current_track);
-            }
         }
 
         private void reset () {
@@ -239,6 +231,9 @@ namespace PlayMyMusic.Widgets {
                 var item = new PlayMyMusic.Widgets.Track (track, false);
                 this.tracks.add (item);
                 item.show_all ();
+                if (player.current_track != null && player.current_track.ID == track.ID) {
+                    item.activate ();
+                }
                 return false;
             });
         }
