@@ -13,7 +13,7 @@
         <category>Music</category>
     </categories>
     <custom>
-        <value key="x-appcenter-color-primary">#00485B</value>
+        <value key="x-appcenter-color-primary">#004988</value>
         <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
         <value key="x-appcenter-suggested-price">1</value>
     </custom>
@@ -37,7 +37,7 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.1.6" date="2017-10-20">
+        <release version="0.1.6" date="2017-10-16">
             <description>
                 <p>New:</p>
                 <ul>
@@ -45,7 +45,12 @@
                 </ul>
                 <p>Fix:</p>
                 <ul>
+                    <li>Crash while importing files</li>
                     <li>[artist view] Don't show track twice</li>
+                </ul>
+                <p>Change:</p>
+                <ul>
+                    <li>App icon</li>
                 </ul>
             </description>
         </release>
