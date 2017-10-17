@@ -274,7 +274,7 @@ namespace PlayMyMusic.Services {
             int64 current = 0;
 
             if (this.playbin.query_position (fmt, out current) && this.playbin.query_duration (fmt, out _duration)) {
-                int p = (int)((double)1000 / duration * current);
+                var p = ((double)1 / duration * current);
                 return (double)p;
             }
             return -1;
