@@ -107,7 +107,7 @@ namespace PlayMyMusic.Objects {
 
             session.send_async.begin (msg, null, (obj, res) => {
                 var content_type = msg.response_headers.get_one ("Content-Type");
-                if (content_type != "audio/mpeg") {
+                if (content_type != null && content_type != "audio/mpeg" && content_type != "audio/aacp") {
                     session.send_message (msg);
                     var data = (string) msg.response_body.data;
                     if (msg.status_code == 200) {
