@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Services {
 
-    public enum PlayMode { ALBUM, ARTIST, PLAYLIST }
+    public enum PlayMode { ALBUM, ARTIST, PLAYLIST, FILE }
 
     public class Player : GLib.Object {
         static Player _instance = null;
@@ -107,6 +107,7 @@ namespace PlayMyMusic.Services {
         }
 
         public void set_file (File file) {
+            this.play_mode = PlayMode.FILE;
             current_radio = null;
             current_track = null;
             current_file = file;

@@ -31,7 +31,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Label playing_track;
         Gtk.Grid content;
 
-        Granite.Widgets.SeekBar timeline;
+        Granite.SeekBar timeline;
 
         uint timer = 0;
         int64 duration = 0;
@@ -60,7 +60,7 @@ namespace PlayMyMusic.Widgets {
             });
             content.attach (playing_track, 0, 0);
 
-            timeline = new Granite.Widgets.SeekBar (0);
+            timeline = new Granite.SeekBar (0);
             timeline.scale.change_value.connect ((scroll, new_value) => {
                 if (scroll == Gtk.ScrollType.JUMP) {
                     var seek_position = (int64)(new_value * duration * 1000000000);
