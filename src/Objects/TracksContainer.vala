@@ -59,12 +59,15 @@ namespace PlayMyMusic.Objects {
 
         GLib.List<int> shuffle_index = null;
 
+        public Gdk.Pixbuf? cover_32 { get; private set; }
+
         Gdk.Pixbuf? _cover = null;
         public Gdk.Pixbuf? cover {
             get {
                 return _cover;
             } protected set {
                 _cover = value;
+                cover_32 = value.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
                 cover_changed ();
             }
         }

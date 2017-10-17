@@ -59,12 +59,6 @@ namespace PlayMyMusic.Widgets {
                 }
             });
 
-            if (show_cover) {
-                this.track.album.cover_changed.connect (() => {
-                    cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
-                });
-            }
-
             this.track.removed.connect (() => {
                 this.destroy ();
             });
@@ -115,9 +109,12 @@ namespace PlayMyMusic.Widgets {
                 if (this.track.album.cover == null) {
                     cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DND);
                 } else {
-                    cover.pixbuf = this.track.album.cover.scale_simple (32, 32, Gdk.InterpType.BILINEAR);
+                    cover.pixbuf = this.track.album.cover_32;
                 }
                 content.pack_start (cover, false, false, 0);
+                this.track.album.cover_changed.connect (() => {
+                    cover.pixbuf = this.track.album.cover_32;
+                });
             }
 
             var title = new Gtk.Label (this.track.title);

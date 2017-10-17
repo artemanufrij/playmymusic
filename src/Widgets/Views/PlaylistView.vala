@@ -25,7 +25,7 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
-namespace PlayMyMusic.Widgets {
+namespace PlayMyMusic.Widgets.Views {
     public class PlaylistView : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
 

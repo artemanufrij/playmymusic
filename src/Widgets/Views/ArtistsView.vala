@@ -45,7 +45,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.FlowBox artists;
         Gtk.Box content;
 
-        PlayMyMusic.Widgets.ArtistView artist_view;
+        PlayMyMusic.Widgets.Views.ArtistView artist_view;
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
@@ -85,7 +85,7 @@ namespace PlayMyMusic.Widgets.Views {
             artists_scroll.width_request = 200;
             artists_scroll.add (artists);
 
-            artist_view = new PlayMyMusic.Widgets.ArtistView ();
+            artist_view = new PlayMyMusic.Widgets.Views.ArtistView ();
             artist_view.expand = true;
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);

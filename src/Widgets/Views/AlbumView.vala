@@ -25,12 +25,14 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
-namespace PlayMyMusic.Widgets {
-    public class ArtistView : Gtk.Grid {
+namespace PlayMyMusic.Widgets.Views {
+    public class AlbumView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Services.Player player;
         PlayMyMusic.Settings settings;
 
+        Gtk.Menu menu;
+        Gtk.Image cover;
         Gtk.ListBox tracks;
 
         Gtk.Image icon_repeat_on;
@@ -39,19 +41,15 @@ namespace PlayMyMusic.Widgets {
         Gtk.Image icon_shuffle_off;
         Gtk.Button repeat_button;
         Gtk.Button shuffle_button;
-        Gtk.Label artist_name;
-        Gtk.Label artist_sub_title;
-        Gtk.Image background;
-        Gtk.Grid header;
 
         bool only_mark = false;
 
-        public PlayMyMusic.Objects.Artist current_artist { get; private set; }
+        public PlayMyMusic.Objects.Album current_album { get; private set; }
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            player = PlayMyMusic.Services.Player.instance;
+            player = library_manager.player;
             player.state_changed.connect ((state) => {
                 mark_playing_track (player.current_track);
             });
@@ -77,39 +75,36 @@ namespace PlayMyMusic.Widgets {
             });
         }
 
-        public ArtistView () {
+        public AlbumView () {
             build_ui ();
         }
 
         private void build_ui () {
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            content.expand = true;
+            content.vexpand = true;
+            var event_box = new Gtk.EventBox ();
+            event_box.button_press_event.connect (show_context_menu);
 
-            header = new Gtk.Grid ();
-            header.row_spacing = 6;
-            header.valign = Gtk.Align.CENTER;
+            cover = new Gtk.Image ();
+            event_box.add (cover);
 
-            artist_name = new Gtk.Label ("");
-            artist_name.valign = Gtk.Align.END;
-            artist_name.hexpand = true;
-            artist_name.get_style_context ().add_class (Granite.StyleClass.H1_TEXT);
-            header.attach (artist_name, 0, 0);
-
-            artist_sub_title = new Gtk.Label ("");
-            artist_sub_title.valign = Gtk.Align.START;
-            artist_sub_title.use_markup = true;
-            artist_sub_title.opacity = 0.75;
-            header.attach (artist_sub_title, 0, 1);
-
-            background = new Gtk.Image ();
-
-            var overlay = new Gtk.Overlay ();
-            overlay.height_request = 256;
-            overlay.add_overlay (background);
-            overlay.add_overlay (header);
+            menu = new Gtk.Menu ();
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            menu_new_cover.activate.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
+                        current_album.set_new_cover (pixbuf, 256);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+            });
+            menu.append (menu_new_cover);
+            menu.show_all ();
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
-            tracks_scroll.expand = true;
 
             tracks = new Gtk.ListBox ();
             tracks.set_sort_func (tracks_sort_func);
@@ -152,95 +147,13 @@ namespace PlayMyMusic.Widgets {
             action_toolbar.pack_end (repeat_button);
             action_toolbar.pack_end (shuffle_button);
 
-            content.pack_start (overlay, false, false, 0);
-            content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
+            content.pack_start (event_box, false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
 
-            this.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 0, 0);
+            var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
+            this.attach (separator, 0, 0);
             this.attach (content, 1, 0);
-        }
-
-        public void show_artist_viewer (PlayMyMusic.Objects.Artist artist) {
-            if (current_artist == artist) {
-                return;
-            }
-
-            if (current_artist != null) {
-                current_artist.track_added.disconnect (add_track);
-                current_artist.background_changed.disconnect (change_background);
-                if (current_artist.background != null) {
-                    current_artist.background.dispose ();
-                }
-            }
-            current_artist = artist;
-            this.reset ();
-
-            change_background ();
-            foreach (var track in artist.tracks) {
-                add_track (track);
-            }
-
-            current_artist.track_added.connect (add_track);
-            current_artist.background_changed.connect (change_background);
-        }
-
-        public void change_background () {
-            int width = this.header.get_allocated_width ();
-            int height = background.get_allocated_height ();
-            if (current_artist == null || current_artist.background_path == null || current_artist.background == null || (background.pixbuf != null && background.pixbuf.width == width)) {
-                return;
-            }
-            var pix =  current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
-            background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
-            artist_name.get_style_context ().add_class ("artist-title");
-            artist_sub_title.get_style_context ().add_class ("artist-sub-title");
-        }
-
-        private void update_header () {
-            artist_name.label = current_artist.name;
-            artist_sub_title.label =  _("<b>%d Tracks</b> in <b>%d Album</b>(s)").printf ((int)current_artist.tracks.length (), (int)current_artist.albums.length ());
-        }
-
-        public void reset () {
-            foreach (var child in tracks.get_children ()) {
-                child.destroy ();
-            }
-            background.pixbuf = null;
-            artist_name.label = "";
-            artist_sub_title.label = "";
-            artist_name.get_style_context ().remove_class ("artist-title");
-            artist_sub_title.get_style_context ().remove_class ("artist-sub-title");
-        }
-
-        private void add_track (PlayMyMusic.Objects.Track track) {
-            Idle.add (() => {
-                var item = new PlayMyMusic.Widgets.Track (track);
-                this.tracks.add (item);
-                item.show_all ();
-                update_header ();
-                if (player.current_track != null && player.current_track.ID == track.ID) {
-                    item.activate ();
-                }
-                return false;
-            });
-        }
-
-        private void play_track () {
-            var selected_row = tracks.get_selected_row ();
-            if (selected_row != null && !only_mark) {
-                library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.ARTIST);
-            }
-        }
-
-        public void play_artist () {
-            Objects.Track? track;
-            if (settings.shuffle_mode) {
-                track = current_artist.get_shuffle_track (null);
-            } else {
-                track = current_artist.get_first_track ();
-            }
-            library_manager.play_track (track, Services.PlayMode.ARTIST);
         }
 
         public void mark_playing_track (Objects.Track? track) {
@@ -248,25 +161,95 @@ namespace PlayMyMusic.Widgets {
             if (track == null) {
                 return;
             }
-            foreach (var child in tracks.get_children ()) {
-                if ((child as Widgets.Track).track.ID == track.ID) {
+            foreach (var item in tracks.get_children ()) {
+                if ((item as Widgets.Track).track.ID == track.ID) {
                     only_mark = true;
-                    (child as Widgets.Track).activate ();
+                    (item as Widgets.Track).activate ();
                     only_mark = false;
+                    return;
                 }
             }
+        }
+
+        public void play_album () {
+            Objects.Track? track;
+
+            if (settings.shuffle_mode) {
+                track = current_album.get_shuffle_track (null);
+            } else {
+                track = current_album.get_first_track ();
+            }
+            library_manager.play_track (track, Services.PlayMode.ALBUM);
+        }
+
+        private void play_track () {
+            var selected_row = tracks.get_selected_row ();
+            if (selected_row != null && !only_mark) {
+                library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.ALBUM);
+            }
+        }
+
+        public void show_album_viewer (PlayMyMusic.Objects.Album album) {
+            if (current_album == album) {
+                return;
+            }
+
+            if (current_album != null) {
+                current_album.track_added.disconnect (add_track);
+                current_album.cover_changed.disconnect (change_cover);
+            }
+            current_album = album;
+
+            reset ();
+            if (current_album.cover == null) {
+                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
+                cover.height_request = 256;
+                cover.width_request = 256;
+            } else {
+                cover.pixbuf = current_album.cover;
+            }
+            this.show_all ();
+            foreach (var track in current_album.tracks) {
+                add_track (track);
+            }
+            current_album.track_added.connect (add_track);
+            current_album.cover_changed.connect (change_cover);
+        }
+
+        private void reset () {
+            foreach (var child in tracks.get_children ()) {
+                child.destroy ();
+            }
+        }
+
+        private void change_cover () {
+            cover.pixbuf = current_album.cover;
+        }
+
+        private void add_track (PlayMyMusic.Objects.Track track) {
+            Idle.add (() => {
+                var item = new PlayMyMusic.Widgets.Track (track, false);
+                this.tracks.add (item);
+                item.show_all ();
+                if (player.current_track != null && player.current_track.ID == track.ID) {
+                    item.activate ();
+                }
+                return false;
+            });
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            }
+            return false;
         }
 
         private int tracks_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
             var item1 = (Widgets.Track)child1;
             var item2 = (Widgets.Track)child2;
             if (item1 != null && item2 != null) {
-                if (item1.track.album.year != item2.track.album.year) {
-                    return item1.track.album.year - item2.track.album.year;
-                }
-                if (item1.track.album.title != item2.track.album.title) {
-                    return item1.track.album.title.collate (item2.track.album.title);
-                }
                 if (item1.disc_number != item2.disc_number){
                     return item1.disc_number - item2.disc_number;
                 }

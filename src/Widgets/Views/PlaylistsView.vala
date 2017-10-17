@@ -208,7 +208,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
-            var p = new Widgets.PlaylistView (playlist);
+            var p = new Widgets.Views.PlaylistView (playlist);
             playlist.property_changed.connect (() => {
                 playlists.invalidate_sort ();
             });
@@ -219,7 +219,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
             foreach (var child in playlists.get_children ()) {
-                if ((child as Widgets.PlaylistView).playlist.ID == playlist.ID) {
+                if ((child as Widgets.Views.PlaylistView).playlist.ID == playlist.ID) {
                     playlists.remove (child);
                     child.destroy ();
                     playlists.min_children_per_line = library_manager.playlists.length ();
@@ -233,7 +233,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void activate_by_track (Objects.Track track) {
             foreach (var child in playlists.get_children ()) {
-                var playlist = child as Widgets.PlaylistView;
+                var playlist = child as Widgets.Views.PlaylistView;
                 if (playlist.playlist.ID == track.playlist.ID) {
                     playlist.mark_playing_track (track);
                 }
@@ -251,8 +251,8 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private int playlists_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
-            var item1 = (PlayMyMusic.Widgets.PlaylistView)child1;
-            var item2 = (PlayMyMusic.Widgets.PlaylistView)child2;
+            var item1 = (PlayMyMusic.Widgets.Views.PlaylistView)child1;
+            var item2 = (PlayMyMusic.Widgets.Views.PlaylistView)child2;
             if (item1 != null && item2 != null) {
                 return item1.title.collate (item2.title);
             }
@@ -265,7 +265,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
 
             string[] filter_elements = filter.strip ().down ().split (" ");
-            var playlist = (child as PlayMyMusic.Widgets.PlaylistView).playlist;
+            var playlist = (child as PlayMyMusic.Widgets.Views.PlaylistView).playlist;
             foreach (string filter_element in filter_elements) {
                 if (!playlist.title.down ().contains (filter_element)) {
                     bool track_title = false;

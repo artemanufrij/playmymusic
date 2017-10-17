@@ -45,7 +45,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.FlowBox albums;
         Gtk.Stack stack;
         Gtk.Box content;
-        Widgets.AlbumView album_view;
+        Widgets.Views.AlbumView album_view;
 
         public bool is_album_view_visible {
             get {
@@ -89,7 +89,7 @@ namespace PlayMyMusic.Widgets.Views {
 
             albums_scroll.add (albums);
 
-            album_view = new PlayMyMusic.Widgets.AlbumView ();
+            album_view = new PlayMyMusic.Widgets.Views.AlbumView ();
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.expand = true;
