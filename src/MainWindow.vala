@@ -28,6 +28,7 @@
 namespace PlayMyMusic {
     public class MainWindow : Gtk.Window {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Services.DeviceManager device_manager;
         PlayMyMusic.Settings settings;
 
         //CONTROLS
@@ -41,15 +42,20 @@ namespace PlayMyMusic {
         Gtk.MenuItem menu_item_reset;
         Gtk.Image icon_play;
         Gtk.Image icon_pause;
+        Gtk.Stack content;
 
+        Gtk.Widget audio_cd_widget;
         Gtk.Image artist_button;
         Gtk.Image playlist_button;
 
         Granite.Widgets.ModeButton view_mode;
+
         Widgets.Views.AlbumsView albums_view;
         Widgets.Views.ArtistsView artists_view;
         Widgets.Views.RadiosView radios_view;
         Widgets.Views.PlaylistsView playlists_view;
+        Widgets.Views.AudioCDView audio_cd_view;
+
         Widgets.TrackTimeLine timeline;
 
         Notification desktop_notification;
@@ -114,6 +120,22 @@ namespace PlayMyMusic {
                     play_button.tooltip_text = _("Play");
                 }
             });
+
+            device_manager = PlayMyMusic.Services.DeviceManager.instance;
+            device_manager.volume_added.connect ((volume) => {
+                if (audio_cd_view.volume == null) {
+                    audio_cd_view.volume = volume;
+                    audio_cd_widget.show ();
+                }
+            });
+
+            device_manager.volume_removed.connect ((volume) => {
+                if (audio_cd_view.volume == volume) {
+                    audio_cd_widget.hide ();
+                    audio_cd_view.volume = null;
+                }
+            });
+
         }
 
         public MainWindow () {
@@ -125,6 +147,8 @@ namespace PlayMyMusic {
             }
             this.window_position = Gtk.WindowPosition.CENTER;
             build_ui ();
+
+            device_manager.init ();
 
             load_content_from_database.begin ((obj, res) => {
                 albums_view.activate_by_id (settings.last_album_id);
@@ -178,7 +202,7 @@ namespace PlayMyMusic {
 
         public void build_ui () {
             // CONTENT
-            var content = new Gtk.Stack ();
+            content = new Gtk.Stack ();
 
             headerbar = new Gtk.HeaderBar ();
             headerbar.title = _("Play My Music");
@@ -215,69 +239,7 @@ namespace PlayMyMusic {
             headerbar.pack_start (play_button);
             headerbar.pack_start (next_button);
 
-            // VIEW BUTTONS
-            view_mode = new Granite.Widgets.ModeButton ();
-            view_mode.homogeneous = false;
-            view_mode.valign = Gtk.Align.CENTER;
-            view_mode.margin_left = 12;
-
-            var album_button = new Gtk.Image.from_icon_name ("view-grid-symbolic", Gtk.IconSize.BUTTON);
-            album_button.tooltip_text = _("Albums");
-            view_mode.append (album_button);
-
-            artist_button = new Gtk.Image.from_icon_name ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
-            artist_button.tooltip_text = _("Artists");
-            view_mode.append (artist_button);
-            artist_button.sensitive = library_manager.artists.length () > 0;
-
-            playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
-            playlist_button.tooltip_text = _("Playlists");
-            view_mode.append (playlist_button);
-            playlist_button.sensitive = library_manager.artists.length () > 0;
-
-            var radio_button = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
-            radio_button.tooltip_text = _("Radio Stations");
-            view_mode.append (radio_button);
-            var wid = view_mode.get_children ().last ().data;
-            wid.margin_left = 4;
-            wid.get_style_context ().add_class ("mode_button_split");
-
-            view_mode.mode_changed.connect (() => {
-                switch (view_mode.selected) {
-                    case 1:
-                        if (artist_button.sensitive) {
-                            content.set_visible_child_name ("artists");
-                            search_entry.text = artists_view.filter;
-                        } else {
-                            view_mode.set_active (0);
-                        }
-                        break;
-                    case 2:
-                        if (playlist_button.sensitive) {
-                            if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || playlists_view.filter != "") {
-                                search_entry.grab_focus ();
-                            }
-                            content.set_visible_child_name ("playlists");
-                            search_entry.text = playlists_view.filter;
-                        } else {
-                            view_mode.set_active (0);
-                        }
-                        break;
-                    case 3:
-                        if (library_manager.player.current_radio == null || radios_view.filter != "") {
-                            search_entry.grab_focus ();
-                        }
-                        content.set_visible_child_name ("radios");
-                        search_entry.text = radios_view.filter;
-                        break;
-                    default:
-                        content.set_visible_child_name ("albums");
-                        search_entry.text = albums_view.filter;
-                        break;
-                }
-            });
-
-            headerbar.pack_start (view_mode);
+            build_mode_buttons ();
 
             // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
@@ -397,19 +359,98 @@ namespace PlayMyMusic {
 
             radios_view = new Widgets.Views.RadiosView ();
 
+            audio_cd_view = new Widgets.Views.AudioCDView ();
+
             content.add_named (albums_view, "albums");
             content.add_named (artists_view, "artists");
             content.add_named (playlists_view, "playlists");
             content.add_named (radios_view, "radios");
+            content.add_named (audio_cd_view, "audiocd");
             this.add (content);
 
             this.show_all ();
 
+            audio_cd_widget.hide ();
             albums_view.hide_album_details ();
 
             view_mode.set_active (settings.view_index);
             radios_view.unselect_all ();
             search_entry.grab_focus ();
+        }
+
+        private void build_mode_buttons () {
+            // VIEW BUTTONS
+            view_mode = new Granite.Widgets.ModeButton ();
+            view_mode.homogeneous = false;
+            view_mode.valign = Gtk.Align.CENTER;
+            view_mode.margin_left = 12;
+
+            var album_button = new Gtk.Image.from_icon_name ("view-grid-symbolic", Gtk.IconSize.BUTTON);
+            album_button.tooltip_text = _("Albums");
+            view_mode.append (album_button);
+
+            artist_button = new Gtk.Image.from_icon_name ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
+            artist_button.tooltip_text = _("Artists");
+            view_mode.append (artist_button);
+            artist_button.sensitive = library_manager.artists.length () > 0;
+
+            playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            playlist_button.tooltip_text = _("Playlists");
+            view_mode.append (playlist_button);
+            playlist_button.sensitive = library_manager.artists.length () > 0;
+
+            var radio_button = new Gtk.Image.from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.BUTTON);
+            radio_button.tooltip_text = _("Radio Stations");
+            view_mode.append (radio_button);
+            var wid = view_mode.get_children ().last ().data;
+            wid.margin_left = 4;
+            wid.get_style_context ().add_class ("mode_button_split");
+
+            var audio_cd_button = new Gtk.Image.from_icon_name ("media-optical-cd-audio-symbolic", Gtk.IconSize.BUTTON);
+            audio_cd_button.tooltip_text = _("Audio CD");
+            view_mode.append (audio_cd_button);
+            audio_cd_widget = view_mode.get_children ().last ().data;
+
+
+            view_mode.mode_changed.connect (() => {
+                switch (view_mode.selected) {
+                    case 1:
+                        if (artist_button.sensitive) {
+                            content.set_visible_child_name ("artists");
+                            search_entry.text = artists_view.filter;
+                        } else {
+                            view_mode.set_active (0);
+                        }
+                        break;
+                    case 2:
+                        if (playlist_button.sensitive) {
+                            if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || playlists_view.filter != "") {
+                                search_entry.grab_focus ();
+                            }
+                            content.set_visible_child_name ("playlists");
+                            search_entry.text = playlists_view.filter;
+                        } else {
+                            view_mode.set_active (0);
+                        }
+                        break;
+                    case 3:
+                        if (library_manager.player.current_radio == null || radios_view.filter != "") {
+                            search_entry.grab_focus ();
+                        }
+                        content.set_visible_child_name ("radios");
+                        search_entry.text = radios_view.filter;
+                        break;
+                    case 4:
+                        content.set_visible_child_name ("audiocd");
+                        break;
+                    default:
+                        content.set_visible_child_name ("albums");
+                        search_entry.text = albums_view.filter;
+                        break;
+                }
+            });
+
+            headerbar.pack_start (view_mode);
         }
 
         private void send_notification (Objects.Track track) {

@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Services {
 
-    public enum PlayMode { ALBUM, ARTIST, PLAYLIST, FILE }
+    public enum PlayMode { ALBUM, ARTIST, PLAYLIST, FILE, AUDIOCD }
 
     public class Player : GLib.Object {
         static Player _instance = null;
@@ -95,7 +95,7 @@ namespace PlayMyMusic.Services {
             current_file = null;
             this.play_mode = play_mode;
 
-            var file = File.new_for_path (track.path);
+            var file = File.new_for_uri (track.uri);
             if (!file.query_exists ()) {
                 track.path_not_found ();
                 next ();

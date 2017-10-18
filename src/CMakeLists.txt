@@ -15,6 +15,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Services/LibraryManager.vala
     Services/Player.vala
     Services/ArtworkDownloader.vala
+    Services/DeviceManager.vala
     Interfaces/MediaKeys.vala
     Interfaces/SoundIndicator.vala
     Widgets/Artist.vala
@@ -29,6 +30,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Widgets/Views/RadiosView.vala
     Widgets/Views/ArtistsView.vala
     Widgets/Views/PlaylistsView.vala
+    Widgets/Views/AudioCDView.vala
     Dialogs/Preferences.vala
     Settings.vala
     MainWindow.vala
