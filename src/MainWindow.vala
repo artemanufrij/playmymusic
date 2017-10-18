@@ -131,11 +131,10 @@ namespace PlayMyMusic {
 
             device_manager.volume_removed.connect ((volume) => {
                 if (audio_cd_view.volume == volume) {
-                    audio_cd_widget.hide ();
                     audio_cd_view.volume = null;
+                    audio_cd_widget.hide ();
                 }
             });
-
         }
 
         public MainWindow () {
@@ -147,8 +146,6 @@ namespace PlayMyMusic {
             }
             this.window_position = Gtk.WindowPosition.CENTER;
             build_ui ();
-
-            device_manager.init ();
 
             load_content_from_database.begin ((obj, res) => {
                 albums_view.activate_by_id (settings.last_album_id);
@@ -373,7 +370,13 @@ namespace PlayMyMusic {
             audio_cd_widget.hide ();
             albums_view.hide_album_details ();
 
-            view_mode.set_active (settings.view_index);
+            device_manager.init ();
+
+            if (settings.view_index != 4 || audio_cd_view.volume != null) {
+                view_mode.set_active (settings.view_index);
+            } else {
+                view_mode.set_active (0);
+            }
             radios_view.unselect_all ();
             search_entry.grab_focus ();
         }
