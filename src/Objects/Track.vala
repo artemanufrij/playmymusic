@@ -48,6 +48,13 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public AudioCD _audio_cd = null;
+        public AudioCD audio_cd {
+            get {
+                return _audio_cd;
+            }
+        }
+
         public int ID { get; set; default = 0; }
         public string title { get; set; default = ""; }
         public string genre { get; set; default = ""; }
@@ -70,6 +77,8 @@ namespace PlayMyMusic.Objects {
         public string uri {
             get {
                 return _uri;
+            } set {
+                _uri = value;
             }
         }
 
@@ -84,6 +93,8 @@ namespace PlayMyMusic.Objects {
                 this.set_album (container as Album);
             } else if (container != null && container is Playlist) {
                 this.set_playlist (container as Playlist);
+            } else if (container != null && container is AudioCD) {
+                this.set_audio_cd (container as AudioCD);
             }
         }
 
@@ -93,6 +104,10 @@ namespace PlayMyMusic.Objects {
 
         public void set_playlist (Playlist playlist) {
             this._playlist = playlist;
+        }
+
+        private void set_audio_cd (AudioCD audio_cd) {
+            this._audio_cd = audio_cd;
         }
     }
 }

@@ -27,6 +27,82 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class AudioCDView : Gtk.Grid {
-        public Volume? volume { get; set; }
+        PlayMyMusic.Services.LibraryManager library_manager;
+        public PlayMyMusic.Objects.AudioCD? current_audio_cd { get; private set; }
+
+        Gtk.ListBox tracks;
+
+        bool only_mark = false;
+
+         construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            var player = library_manager.player;
+            player.state_changed.connect ((state) => {
+                mark_playing_track (player.current_track);
+            });
+        }
+
+        public AudioCDView () {
+            build_ui ();
+        }
+
+        private void build_ui () {
+            tracks = new Gtk.ListBox ();
+            tracks.expand = true;
+            tracks.selected_rows_changed.connect (play_track);
+
+            this.add (tracks);
+            this.show_all ();
+        }
+
+        public void show_audio_cd (PlayMyMusic.Objects.AudioCD audio_cd) {
+            if (current_audio_cd == audio_cd) {
+                return;
+            }
+            if (current_audio_cd != null) {
+                current_audio_cd.track_added.disconnect (add_track);
+            }
+            current_audio_cd = audio_cd;
+
+            foreach (var track in current_audio_cd.tracks) {
+                add_track (track);
+            }
+            current_audio_cd.track_added.connect (add_track);
+        }
+
+        public void mark_playing_track (Objects.Track? track) {
+            tracks.unselect_all ();
+            if (track == null) {
+                return;
+            }
+            foreach (var child in tracks.get_children ()) {
+                if ((child as Widgets.Track).track.uri == track.uri) {
+                    only_mark = true;
+                    (child as Widgets.Track).activate ();
+                    only_mark = false;
+                }
+            }
+        }
+
+        private void add_track (PlayMyMusic.Objects.Track track) {
+            var item = new PlayMyMusic.Widgets.Track (track, false);
+            this.tracks.add (item);
+            item.show_all ();
+        }
+
+        public void reset () {
+            foreach (var child in tracks.get_children ()) {
+                child.destroy ();
+            }
+            current_audio_cd = null;
+        }
+
+        private void play_track () {
+            var selected_row = tracks.get_selected_row ();
+            if (selected_row != null && !only_mark) {
+                library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.AUDIO_CD);
+            }
+        }
     }
 }

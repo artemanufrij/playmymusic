@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Services {
 
-    public enum PlayMode { ALBUM, ARTIST, PLAYLIST, FILE, AUDIOCD }
+    public enum PlayMode { ALBUM, ARTIST, PLAYLIST, FILE, AUDIO_CD }
 
     public class Player : GLib.Object {
         static Player _instance = null;
@@ -95,11 +95,13 @@ namespace PlayMyMusic.Services {
             current_file = null;
             this.play_mode = play_mode;
 
-            var file = File.new_for_uri (track.uri);
-            if (!file.query_exists ()) {
-                track.path_not_found ();
-                next ();
-                return;
+            if (play_mode != PlayMode.AUDIO_CD) {
+                var file = File.new_for_uri (track.uri);
+                if (!file.query_exists ()) {
+                    track.path_not_found ();
+                    next ();
+                    return;
+                }
             }
             stop ();
             playbin.uri = current_track.uri;
@@ -178,6 +180,20 @@ namespace PlayMyMusic.Services {
                         next_track = current_track.playlist.get_shuffle_track (null);
                     } else {
                         next_track = current_track.playlist.get_first_track ();
+                    }
+                }
+            } else if (play_mode == PlayMode.AUDIO_CD) {
+                if (settings.shuffle_mode) {
+                    next_track = current_track.audio_cd.get_shuffle_track (current_track);
+                } else {
+                    next_track = current_track.audio_cd.get_next_track (current_track);
+                }
+
+                if (next_track == null && settings.repeat_mode) {
+                    if (settings.shuffle_mode) {
+                        next_track = current_track.audio_cd.get_shuffle_track (null);
+                    } else {
+                        next_track = current_track.audio_cd.get_first_track ();
                     }
                 }
             }

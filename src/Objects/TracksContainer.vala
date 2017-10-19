@@ -155,6 +155,8 @@ namespace PlayMyMusic.Objects {
                     this._tracks.insert_sorted_with_data (track, (a, b) => {
                         return a.track - b.track;
                     });
+                } else if (this is AudioCD) {
+                    this._tracks.append (track);
                 } else {
                     this._tracks.insert_sorted_with_data (track, sort_function);
                 }

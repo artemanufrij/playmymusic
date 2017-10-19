@@ -46,11 +46,14 @@ namespace PlayMyMusic.Services {
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
         public signal void player_state_changed (Gst.State state);
+        public signal void audio_cd_connected (PlayMyMusic.Objects.AudioCD ausdio_cd);
+        public signal void audio_cd_disconnected (Volume volume);
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
         public PlayMyMusic.Services.DataBaseManager db_manager { get; construct set; }
         public PlayMyMusic.Services.LocalFilesManager lf_manager { get; construct set; }
         public PlayMyMusic.Services.Player player { get; construct set; }
+        public PlayMyMusic.Services.DeviceManager device_manager { get; construct set; }
 
         PlayMyMusic.Settings settings;
 
@@ -98,6 +101,15 @@ namespace PlayMyMusic.Services {
 
             player = PlayMyMusic.Services.Player.instance;
             player.state_changed.connect ((state) => { player_state_changed (state); });
+
+            device_manager = PlayMyMusic.Services.DeviceManager.instance;
+            device_manager.volume_added.connect ((volume) => {
+                var audio_cd = new PlayMyMusic.Objects.AudioCD (volume);
+                audio_cd_connected (audio_cd);
+            });
+            device_manager.volume_removed.connect ((volume) => {
+                audio_cd_disconnected (volume);
+            });
         }
 
         private LibraryManager () { }

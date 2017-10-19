@@ -9,6 +9,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Objects/Artist.vala
     Objects/Track.vala
     Objects/Radio.vala
+    Objects/AudioCD.vala
     Services/DataBaseManager.vala
     Services/LocalFilesManager.vala
     Services/TagManager.vala

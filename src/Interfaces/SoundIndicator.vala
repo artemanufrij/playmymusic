@@ -105,10 +105,15 @@ namespace PlayMyMusic.Interfaces {
                         property = "Playing";
                         var metadata = new HashTable<string, Variant> (null, null);
                         if (player.current_track != null) {
-                            var file = File.new_for_path (player.current_track.album.cover_path);
-                            metadata.insert("mpris:artUrl", file.get_uri ());
-                            metadata.insert("xesam:title", player.current_track.title);
-                            metadata.insert("xesam:artist", get_simple_string_array (player.current_track.album.artist.name));
+                            if (player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
+                                metadata.insert("xesam:title", player.current_track.title);
+                                metadata.insert("xesam:artist", new string [1]{_("Audio CD")});
+                            } else {
+                                var file = File.new_for_path (player.current_track.album.cover_path);
+                                metadata.insert("mpris:artUrl", file.get_uri ());
+                                metadata.insert("xesam:title", player.current_track.title);
+                                metadata.insert("xesam:artist", get_simple_string_array (player.current_track.album.artist.name));
+                            }
                         } else if (player.current_radio != null) {
                             var file = File.new_for_path (player.current_radio.cover_path);
                             metadata.insert("mpris:artUrl", file.get_uri ());

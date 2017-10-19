@@ -28,7 +28,6 @@
 namespace PlayMyMusic {
     public class MainWindow : Gtk.Window {
         PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Services.DeviceManager device_manager;
         PlayMyMusic.Settings settings;
 
         //CONTROLS
@@ -121,17 +120,14 @@ namespace PlayMyMusic {
                 }
             });
 
-            device_manager = PlayMyMusic.Services.DeviceManager.instance;
-            device_manager.volume_added.connect ((volume) => {
-                if (audio_cd_view.volume == null) {
-                    audio_cd_view.volume = volume;
-                    audio_cd_widget.show ();
-                }
+            library_manager.audio_cd_connected.connect ((audio_cd) => {
+                audio_cd_view.show_audio_cd (audio_cd);
+                audio_cd_widget.show ();
             });
 
-            device_manager.volume_removed.connect ((volume) => {
-                if (audio_cd_view.volume == volume) {
-                    audio_cd_view.volume = null;
+            library_manager.audio_cd_disconnected.connect ((volume) => {
+                if (audio_cd_view.current_audio_cd != null && audio_cd_view.current_audio_cd.volume == volume) {
+                    audio_cd_view.reset ();
                     audio_cd_widget.hide ();
                 }
             });
@@ -370,9 +366,9 @@ namespace PlayMyMusic {
             audio_cd_widget.hide ();
             albums_view.hide_album_details ();
 
-            device_manager.init ();
+            library_manager.device_manager.init ();
 
-            if (settings.view_index != 4 || audio_cd_view.volume != null) {
+            if (settings.view_index != 4 || audio_cd_view.current_audio_cd != null) {
                 view_mode.set_active (settings.view_index);
             } else {
                 view_mode.set_active (0);

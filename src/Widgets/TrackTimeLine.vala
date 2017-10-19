@@ -110,10 +110,13 @@ namespace PlayMyMusic.Widgets {
         public void set_playing_track (PlayMyMusic.Objects.Track track) {
             current_track = track;
 
-            playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title.replace ("&", "&amp;"),
-                track.album.title.replace ("&", "&amp;"),
-                track.album.artist.name.replace ("&", "&amp;"));
-
+            if (track.album != null) {
+                playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title.replace ("&", "&amp;"),
+                    track.album.title.replace ("&", "&amp;"),
+                    track.album.artist.name.replace ("&", "&amp;"));
+            } else if (track.audio_cd != null) {
+                playing_track.label = _("Audio CD: <b>Track %d</b>").printf (track.track);
+            }
             duration = (int64)track.duration / 1000000000;
             timeline.playback_duration = duration;
 
@@ -122,6 +125,12 @@ namespace PlayMyMusic.Widgets {
                 if (pos_rel < 0) {
                     return true;
                 }
+
+                if (duration == 0) {
+                    duration = PlayMyMusic.Services.Player.instance.duration / 1000000000;
+                    timeline.playback_duration = duration;
+                }
+
                 timeline.playback_progress = pos_rel;
                 return true;
             });
