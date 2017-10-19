@@ -56,8 +56,6 @@ namespace PlayMyMusic.Widgets.Views {
                 mark_playing_track (player.current_track);
             });
 
-
-
             settings.notify["repeat-mode"].connect (() => {
                 if (settings.repeat_mode) {
                     repeat_button.set_image (icon_repeat_on);

@@ -55,7 +55,6 @@ namespace PlayMyMusic.Widgets.Views {
                     add_artist (artist);
                 });
             });
-
         }
 
         public signal void artist_selected ();

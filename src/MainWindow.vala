@@ -458,12 +458,16 @@ namespace PlayMyMusic {
                     desktop_notification = new Notification ("");
                 }
                 desktop_notification.set_title (track.title);
-                desktop_notification.set_body (_("<b>%s</b> by <b>%s</b>").printf (track.album.title, track.album.artist.name));
-                try {
-                    var icon = GLib.Icon.new_for_string (track.album.cover_path);
-                    desktop_notification.set_icon (icon);
-                } catch (Error err) {
-                    warning (err.message);
+                if (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
+                    desktop_notification.set_body (_("<b>%s</b>").printf (_("Audio CD")));
+                } else {
+                    desktop_notification.set_body (_("<b>%s</b> by <b>%s</b>").printf (track.album.title, track.album.artist.name));
+                    try {
+                        var icon = GLib.Icon.new_for_string (track.album.cover_path);
+                        desktop_notification.set_icon (icon);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
                 }
                 this.application.send_notification (PlayMyMusicApp.instance.application_id, desktop_notification);
             }

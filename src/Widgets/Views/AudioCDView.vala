@@ -34,7 +34,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         bool only_mark = false;
 
-         construct {
+        construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             var player = library_manager.player;

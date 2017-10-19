@@ -40,9 +40,9 @@ namespace PlayMyMusic.Objects {
             this.title = "Audio CD";
             volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res)=>{
                 create_track_list ();
+                get_volume_info ();
             });
 
-            get_volume_info ();
         }
 
         public void create_track_list () {
@@ -62,6 +62,17 @@ namespace PlayMyMusic.Objects {
         }
 
         public void get_volume_info () {
+            Checksum checksum = new Checksum (ChecksumType.SHA1);
+            FileStream stream = FileStream.open ("/dev/cdrom", "r");
+            uint8 fbuf[100];
+            size_t size;
+
+            while ((size = stream.read (fbuf)) > 0) {
+                checksum.update (fbuf, size);
+            }
+            string digest = checksum.get_string ();
+
+            stdout.printf ("%s\n", digest);
         }
     }
 }
