@@ -40,39 +40,27 @@ namespace PlayMyMusic.Objects {
             this.title = "Audio CD";
             volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res)=>{
                 create_track_list ();
-                get_volume_info ();
             });
-
         }
 
         public void create_track_list () {
             var file = this.volume.get_activation_root ();
-            var children = file.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE, GLib.FileQueryInfoFlags.NONE);
-            FileInfo file_info;
+            try {
+                var children = file.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE, GLib.FileQueryInfoFlags.NONE);
+                FileInfo file_info;
 
-            int counter = 1;
-            while ((file_info = children.next_file ()) != null) {
-                var track = new Track (this);
-                track.track = counter;
-                track.title = _("Track %d").printf (counter);
-                track.uri = "cdda://%d".printf (counter);
-                add_track (track);
-                counter++;
+                int counter = 1;
+                while ((file_info = children.next_file ()) != null) {
+                    var track = new Track (this);
+                    track.track = counter;
+                    track.title = _("Track %d").printf (counter);
+                    track.uri = "cdda://%d".printf (counter);
+                    add_track (track);
+                    counter++;
+                }
+            } catch (Error err) {
+                warning (err.message);
             }
-        }
-
-        public void get_volume_info () {
-            Checksum checksum = new Checksum (ChecksumType.SHA1);
-            FileStream stream = FileStream.open ("/dev/cdrom", "r");
-            uint8 fbuf[100];
-            size_t size;
-
-            while ((size = stream.read (fbuf)) > 0) {
-                checksum.update (fbuf, size);
-            }
-            string digest = checksum.get_string ();
-
-            stdout.printf ("%s\n", digest);
         }
     }
 }

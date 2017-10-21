@@ -28,13 +28,17 @@
 namespace PlayMyMusic.Widgets.Views {
     public class AudioCDView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
+
         public PlayMyMusic.Objects.AudioCD? current_audio_cd { get; private set; }
 
         Gtk.ListBox tracks;
+        Gtk.Image cover;
 
         bool only_mark = false;
 
         construct {
+            settings = PlayMyMusic.Settings.get_default ();
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             var player = library_manager.player;
@@ -48,11 +52,74 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void build_ui () {
-            tracks = new Gtk.ListBox ();
-            tracks.expand = true;
-            tracks.selected_rows_changed.connect (play_track);
+            cover = new Gtk.Image ();
+            cover.set_from_icon_name ("media-optical-cd-audio-symbolic", Gtk.IconSize.DIALOG);
+            cover.height_request = 256;
+            cover.width_request = 256;
+            cover.get_style_context ().add_class ("card");
+            cover.valign = Gtk.Align.CENTER;
+            cover.margin = 48;
+            this.attach (cover, 0, 0);
 
-            this.add (tracks);
+            var tracks_scroll = new Gtk.ScrolledWindow (null, null);
+            tracks_scroll.expand = true;
+
+
+            tracks = new Gtk.ListBox ();
+            tracks.get_style_context ().add_class ("playlist-tracks");
+            tracks.selected_rows_changed.connect (play_track);
+            tracks.valign = Gtk.Align.CENTER;
+            tracks_scroll.add (tracks);
+
+            var action_toolbar = new Gtk.ActionBar ();
+            action_toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR);
+
+            var eject_button = new Gtk.Button.from_icon_name ("media-eject-symbolic", Gtk.IconSize.BUTTON);
+            eject_button.clicked.connect (() => {
+                if (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
+                    library_manager.player.stop ();
+                }
+                if (current_audio_cd.volume.can_eject ()) {
+                    current_audio_cd.volume.get_drive ().eject_with_operation.begin (MountUnmountFlags.NONE, null);
+                }
+            });
+
+            var icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            var icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
+
+            var shuffle_button = new Gtk.Button ();
+            if (settings.shuffle_mode) {
+                shuffle_button.set_image (icon_shuffle_on);
+            } else {
+                shuffle_button.set_image (icon_shuffle_off);
+            }
+            shuffle_button.tooltip_text = _("Shuffle");
+            shuffle_button.can_focus = false;
+            shuffle_button.clicked.connect (() => {
+                settings.shuffle_mode = !settings.shuffle_mode;
+            });
+
+            var icon_repeat_on = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
+            var icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
+
+            var repeat_button = new Gtk.Button ();
+            if (settings.repeat_mode) {
+                repeat_button.set_image (icon_repeat_on);
+            } else {
+                repeat_button.set_image (icon_repeat_off);
+            }
+            repeat_button.tooltip_text = _("Repeat");
+            repeat_button.can_focus = false;
+            repeat_button.clicked.connect (() => {
+                settings.repeat_mode = !settings.repeat_mode;
+            });
+
+            action_toolbar.pack_start (eject_button);
+            action_toolbar.pack_end (repeat_button);
+            action_toolbar.pack_end (shuffle_button);
+            this.attach (action_toolbar, 0, 1, 2, 1);
+
+            this.attach (tracks_scroll, 1, 0);
             this.show_all ();
         }
 

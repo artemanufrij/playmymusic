@@ -123,12 +123,14 @@ namespace PlayMyMusic {
             library_manager.audio_cd_connected.connect ((audio_cd) => {
                 audio_cd_view.show_audio_cd (audio_cd);
                 audio_cd_widget.show ();
+                view_mode.set_active (4);
             });
 
             library_manager.audio_cd_disconnected.connect ((volume) => {
                 if (audio_cd_view.current_audio_cd != null && audio_cd_view.current_audio_cd.volume == volume) {
                     audio_cd_view.reset ();
                     audio_cd_widget.hide ();
+                    view_mode.set_active (0);
                 }
             });
         }
@@ -250,6 +252,9 @@ namespace PlayMyMusic {
                         case PlayMyMusic.Services.PlayMode.PLAYLIST:
                             view_mode.set_active (2);
                             playlists_view.activate_by_track (track);
+                            break;
+                        case PlayMyMusic.Services.PlayMode.AUDIO_CD:
+                            view_mode.set_active (4);
                             break;
                     }
                 }
@@ -440,6 +445,7 @@ namespace PlayMyMusic {
                         search_entry.text = radios_view.filter;
                         break;
                     case 4:
+                        search_entry.grab_focus ();
                         content.set_visible_child_name ("audiocd");
                         break;
                     default:
