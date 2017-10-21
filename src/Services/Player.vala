@@ -100,7 +100,11 @@ namespace PlayMyMusic.Services {
                 return;
             }
             stop ();
-            playbin.uri = current_track.uri;
+            if (current_track.uri.has_prefix ("cdda://")) {
+                playbin.uri = "cdda://%d".printf (current_track.track);
+            } else {
+                playbin.uri = current_track.uri;
+            }
             play ();
         }
 

@@ -36,6 +36,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Image cover;
 
         bool only_mark = false;
+        string waiting_for_play = "";
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
@@ -58,7 +59,7 @@ namespace PlayMyMusic.Widgets.Views {
             cover.width_request = 256;
             cover.get_style_context ().add_class ("card");
             cover.valign = Gtk.Align.CENTER;
-            cover.margin = 48;
+            cover.margin = 96;
             this.attach (cover, 0, 0);
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
@@ -156,6 +157,9 @@ namespace PlayMyMusic.Widgets.Views {
             var item = new PlayMyMusic.Widgets.Track (track, false);
             this.tracks.add (item);
             item.show_all ();
+            if (waiting_for_play != "" && track.uri == waiting_for_play) {
+                library_manager.play_track (track, Services.PlayMode.AUDIO_CD);
+            }
         }
 
         public void reset () {
@@ -169,6 +173,17 @@ namespace PlayMyMusic.Widgets.Views {
             var selected_row = tracks.get_selected_row ();
             if (selected_row != null && !only_mark) {
                 library_manager.play_track ((selected_row as Widgets.Track).track, Services.PlayMode.AUDIO_CD);
+            }
+        }
+
+        public void open_file (File file) {
+            waiting_for_play = file.get_uri ().replace ("%20", " ");
+            foreach (var child in tracks.get_children ()) {
+                if ((child as Widgets.Track).track.uri == waiting_for_play) {
+                    library_manager.play_track ((child as Widgets.Track).track, Services.PlayMode.AUDIO_CD);
+                    waiting_for_play = "";
+                    return;
+                }
             }
         }
     }

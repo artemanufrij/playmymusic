@@ -82,6 +82,8 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public File? original_file { get; set; }
+
         public signal void path_not_found ();
 
         construct {

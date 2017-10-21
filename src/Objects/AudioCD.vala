@@ -46,7 +46,7 @@ namespace PlayMyMusic.Objects {
         public void create_track_list () {
             var file = this.volume.get_activation_root ();
             try {
-                var children = file.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE, GLib.FileQueryInfoFlags.NONE);
+                var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
                 FileInfo file_info;
 
                 int counter = 1;
@@ -54,7 +54,7 @@ namespace PlayMyMusic.Objects {
                     var track = new Track (this);
                     track.track = counter;
                     track.title = _("Track %d").printf (counter);
-                    track.uri = "cdda://%d".printf (counter);
+                    track.uri = GLib.Path.build_filename (file.get_uri (), file_info.get_name ());
                     add_track (track);
                     counter++;
                 }
