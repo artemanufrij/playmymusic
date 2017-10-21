@@ -87,7 +87,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_ui () {
             radios = new Gtk.FlowBox ();
-            radios.set_filter_func (albums_filter_func);
+            radios.set_filter_func (radios_filter_func);
             radios.set_sort_func (radio_sort_func);
             radios.selection_mode = Gtk.SelectionMode.SINGLE;
             radios.margin = 24;
@@ -282,7 +282,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        private bool albums_filter_func (Gtk.FlowBoxChild child) {
+        private bool radios_filter_func (Gtk.FlowBoxChild child) {
             if (filter.strip ().length == 0) {
                 return true;
             }

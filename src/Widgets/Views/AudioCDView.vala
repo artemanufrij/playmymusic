@@ -31,6 +31,17 @@ namespace PlayMyMusic.Widgets.Views {
         PlayMyMusic.Settings settings;
 
         public PlayMyMusic.Objects.AudioCD? current_audio_cd { get; private set; }
+        private string _filter = "";
+        public string filter {
+            get {
+                return _filter;
+            } set {
+                if (_filter != value) {
+                    _filter = value;
+                    tracks.invalidate_filter ();
+                }
+            }
+        }
 
         Gtk.ListBox tracks;
         Gtk.Image cover;
@@ -42,7 +53,6 @@ namespace PlayMyMusic.Widgets.Views {
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             var player = library_manager.player;
             player.state_changed.connect ((state) => {
@@ -69,11 +79,12 @@ namespace PlayMyMusic.Widgets.Views {
             disc.attach (cover, 0, 0);
 
             title = new Gtk.Label ("");
-            title.get_style_context ().add_class ("h3");
+            title.get_style_context ().add_class ("h2");
             title.ellipsize = Pango.EllipsizeMode.END;
             disc.attach (title, 0, 1);
 
             artist = new Gtk.Label ("");
+            artist.get_style_context ().add_class ("h3");
             artist.ellipsize = Pango.EllipsizeMode.END;
             disc.attach (artist, 0, 2);
 
@@ -81,6 +92,7 @@ namespace PlayMyMusic.Widgets.Views {
             tracks_scroll.expand = true;
 
             tracks = new Gtk.ListBox ();
+            tracks.set_filter_func (tracks_filter_func);
             tracks.get_style_context ().add_class ("playlist-tracks");
             tracks.selected_rows_changed.connect (play_track);
             tracks.valign = Gtk.Align.CENTER;
@@ -217,6 +229,22 @@ namespace PlayMyMusic.Widgets.Views {
                     return;
                 }
             }
+        }
+
+        private bool tracks_filter_func (Gtk.ListBoxRow child) {
+            if (filter.strip ().length == 0) {
+                return true;
+            }
+
+            string[] filter_elements = filter.strip ().down ().split (" ");
+            var track = (child as PlayMyMusic.Widgets.Track).track;
+
+            foreach (string filter_element in filter_elements) {
+                if (!track.title.down ().contains (filter_element)) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

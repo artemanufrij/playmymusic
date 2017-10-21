@@ -29,6 +29,14 @@
 
 /*
 namespace PlayMyMusic.Services {
+
+
+//http://musicbrainz.org/ws/2/release/?query=artist:Sting%20and%20title:The%20Best%20of%2025%20Years&limit=1
+
+//http://ia801503.us.archive.org/32/items/mbid-c38ebc48-4d8a-4d6a-9554-09a931a9d725/index.json
+
+http://coverartarchive.org/release/c38ebc48-4d8a-4d6a-9554-09a931a9d725
+
     public class ArtworkDownloader {
         public static Gdk.Pixbuf? get_arist_artwork (string name) {
 

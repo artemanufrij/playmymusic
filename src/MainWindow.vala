@@ -331,6 +331,9 @@ namespace PlayMyMusic {
                     case 3:
                         radios_view.filter = search_entry.text;
                         break;
+                    case 4:
+                        audio_cd_view.filter = search_entry.text;
+                        break;
                     default:
                         albums_view.filter = search_entry.text;
                         break;
@@ -450,6 +453,7 @@ namespace PlayMyMusic {
                     case 4:
                         search_entry.grab_focus ();
                         content.set_visible_child_name ("audiocd");
+                        search_entry.text = audio_cd_view.filter;
                         break;
                     default:
                         content.set_visible_child_name ("albums");
