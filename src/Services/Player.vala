@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Services {
 
-    public enum PlayMode { ALBUM, ARTIST, PLAYLIST, FILE, AUDIO_CD }
+    public enum PlayMode { NONE, ALBUM, ARTIST, PLAYLIST, FILE, RADIO, AUDIO_CD }
 
     public class Player : GLib.Object {
         static Player _instance = null;
@@ -48,7 +48,19 @@ namespace PlayMyMusic.Services {
         public PlayMyMusic.Objects.Track? current_track { get; private set; }
         public PlayMyMusic.Objects.Radio? current_radio { get; private set; }
         public File? current_file { get; private set; }
-        public PlayMode play_mode { get; private set; }
+
+        PlayMode _play_mode = PlayMode.NONE;
+        public PlayMode play_mode {
+            get {
+                return _play_mode;
+            }
+            private set {
+                current_radio = null;
+                current_track = null;
+                current_file = null;
+                _play_mode = value;
+            }
+        }
 
         int64 _duration = 0;
         public int64 duration {
@@ -78,8 +90,7 @@ namespace PlayMyMusic.Services {
             if (radio == current_radio || radio == null || radio.file == null) {
                 return;
             }
-            current_track = null;
-            current_file = null;
+            play_mode = PlayMode.RADIO;
             current_radio = radio;
             stop ();
             playbin.uri = radio.file;
@@ -90,10 +101,8 @@ namespace PlayMyMusic.Services {
             if (track == current_track || track == null) {
                 return;
             }
-            current_track = track;
-            current_radio = null;
-            current_file = null;
             this.play_mode = play_mode;
+            current_track = track;
 
             if (play_mode != PlayMode.AUDIO_CD && !track.file_exists ()) {
                 next ();
@@ -109,9 +118,7 @@ namespace PlayMyMusic.Services {
         }
 
         public void set_file (File file) {
-            this.play_mode = PlayMode.FILE;
-            current_radio = null;
-            current_track = null;
+            play_mode = PlayMode.FILE;
             current_file = file;
 
             stop ();
@@ -231,9 +238,7 @@ namespace PlayMyMusic.Services {
                 state_changed (Gst.State.READY);
                 state_changed (Gst.State.NULL);
             }
-            current_track = null;
-            current_radio = null;
-            current_file = null;
+            play_mode = PlayMode.NONE;
         }
 
         public void toggle_playing () {

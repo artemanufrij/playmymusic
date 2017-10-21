@@ -128,9 +128,12 @@ namespace PlayMyMusic {
 
             library_manager.audio_cd_disconnected.connect ((volume) => {
                 if (audio_cd_view.current_audio_cd != null && audio_cd_view.current_audio_cd.volume == volume) {
+                    if (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
+                        library_manager.player.reset_playing ();
+                    }
                     audio_cd_view.reset ();
                     audio_cd_widget.hide ();
-                    view_mode.set_active (0);
+                    show_playing_view ();
                 }
             });
         }
@@ -514,6 +517,28 @@ namespace PlayMyMusic {
                 }
             }
             send_desktop_notification = true;
+        }
+
+        private void show_playing_view () {
+            var current_state = library_manager.player.get_state ();
+            if (current_state == Gst.State.PLAYING || current_state == Gst.State.PAUSED){
+                switch (library_manager.player.play_mode) {
+                    case PlayMyMusic.Services.PlayMode.ALBUM:
+                        view_mode.set_active (0);
+                        break;
+                    case PlayMyMusic.Services.PlayMode.ARTIST:
+                        view_mode.set_active (1);
+                        break;
+                    case PlayMyMusic.Services.PlayMode.PLAYLIST:
+                        view_mode.set_active (2);
+                        break;
+                    case PlayMyMusic.Services.PlayMode.RADIO:
+                        view_mode.set_active (3);
+                        break;
+                }
+            } else {
+                view_mode.set_active (0);
+            }
         }
 
         public void next () {

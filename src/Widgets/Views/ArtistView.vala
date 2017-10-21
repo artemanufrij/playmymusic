@@ -251,6 +251,7 @@ namespace PlayMyMusic.Widgets.Views {
                     only_mark = true;
                     (child as Widgets.Track).activate ();
                     only_mark = false;
+                    return;
                 }
             }
         }
