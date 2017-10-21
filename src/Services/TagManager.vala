@@ -161,5 +161,13 @@ namespace PlayMyMusic.Services {
             File f = File.new_for_path (path);
             discoverer.discover_uri_async (f.get_uri ());
         }
+
+        public void add_discover_uri (string uri) {
+            if (discover_counter == 0) {
+                discover_started ();
+            }
+            discover_counter++;
+            discoverer.discover_uri_async (uri);
+        }
     }
 }

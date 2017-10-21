@@ -34,6 +34,8 @@ namespace PlayMyMusic.Widgets.Views {
 
         Gtk.ListBox tracks;
         Gtk.Image cover;
+        Gtk.Label title;
+        Gtk.Label artist;
 
         bool only_mark = false;
         string waiting_for_play = "";
@@ -53,18 +55,30 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void build_ui () {
+            var disc = new Gtk.Grid ();
+            disc.margin = 96;
+            disc.row_spacing = 12;
+            this.attach (disc, 0, 0);
+
             cover = new Gtk.Image ();
             cover.set_from_icon_name ("media-optical-cd-audio-symbolic", Gtk.IconSize.DIALOG);
             cover.height_request = 256;
             cover.width_request = 256;
             cover.get_style_context ().add_class ("card");
             cover.valign = Gtk.Align.CENTER;
-            cover.margin = 96;
-            this.attach (cover, 0, 0);
+            disc.attach (cover, 0, 0);
+
+            title = new Gtk.Label ("");
+            title.get_style_context ().add_class ("h3");
+            title.ellipsize = Pango.EllipsizeMode.END;
+            disc.attach (title, 0, 1);
+
+            artist = new Gtk.Label ("");
+            artist.ellipsize = Pango.EllipsizeMode.END;
+            disc.attach (artist, 0, 2);
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
             tracks_scroll.expand = true;
-
 
             tracks = new Gtk.ListBox ();
             tracks.get_style_context ().add_class ("playlist-tracks");
@@ -130,13 +144,16 @@ namespace PlayMyMusic.Widgets.Views {
             }
             if (current_audio_cd != null) {
                 current_audio_cd.track_added.disconnect (add_track);
+                current_audio_cd.property_changed.disconnect (property_changed);
             }
             current_audio_cd = audio_cd;
+            this.title.label = current_audio_cd.title;
 
             foreach (var track in current_audio_cd.tracks) {
                 add_track (track);
             }
             current_audio_cd.track_added.connect (add_track);
+            current_audio_cd.property_changed.connect (property_changed);
         }
 
         public void mark_playing_track (Objects.Track? track) {
@@ -154,13 +171,25 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        private void add_track (PlayMyMusic.Objects.Track track) {
-            var item = new PlayMyMusic.Widgets.Track (track, false);
-            this.tracks.add (item);
-            item.show_all ();
-            if (waiting_for_play != "" && track.uri == waiting_for_play) {
-                library_manager.play_track (track, Services.PlayMode.AUDIO_CD);
+        private void property_changed (string property) {
+            if (property == "title") {
+                this.title.label = current_audio_cd.title;
             }
+            if (property == "artist") {
+                this.artist.label = current_audio_cd.artist;
+            }
+        }
+
+        private void add_track (PlayMyMusic.Objects.Track track) {
+            Idle.add (() => {
+                var item = new PlayMyMusic.Widgets.Track (track, false);
+                this.tracks.add (item);
+                item.show_all ();
+                if (waiting_for_play != "" && track.uri == waiting_for_play) {
+                    library_manager.play_track (track, Services.PlayMode.AUDIO_CD);
+                }
+                return false;
+            });
         }
 
         public void reset () {
@@ -168,6 +197,8 @@ namespace PlayMyMusic.Widgets.Views {
                 child.destroy ();
             }
             current_audio_cd = null;
+            this.title.label = "";
+            this.artist.label = "";
         }
 
         private void play_track () {

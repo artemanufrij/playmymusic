@@ -115,7 +115,7 @@ namespace PlayMyMusic.Widgets {
                     track.album.title.replace ("&", "&amp;"),
                     track.album.artist.name.replace ("&", "&amp;"));
             } else if (track.audio_cd != null) {
-                playing_track.label = _("Audio CD: <b>Track %d</b>").printf (track.track);
+                playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title, track.audio_cd.title, track.audio_cd.artist);
             }
             duration = (int64)track.duration / 1000000000;
             timeline.playback_duration = duration;
