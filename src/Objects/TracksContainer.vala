@@ -201,5 +201,14 @@ namespace PlayMyMusic.Objects {
             }
             return pixbuf;
         }
+
+        public bool has_available_tracks () {
+            foreach (var track in _tracks) {
+                if (track.file_exists ()) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

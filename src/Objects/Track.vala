@@ -109,5 +109,14 @@ namespace PlayMyMusic.Objects {
         private void set_audio_cd (AudioCD audio_cd) {
             this._audio_cd = audio_cd;
         }
+
+        public bool file_exists () {
+            var file = File.new_for_uri (this.uri);
+            if (!file.query_exists ()) {
+                path_not_found ();
+                return false;
+            }
+            return true;
+        }
     }
 }

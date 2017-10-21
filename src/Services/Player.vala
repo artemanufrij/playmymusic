@@ -95,13 +95,9 @@ namespace PlayMyMusic.Services {
             current_file = null;
             this.play_mode = play_mode;
 
-            if (play_mode != PlayMode.AUDIO_CD) {
-                var file = File.new_for_uri (track.uri);
-                if (!file.query_exists ()) {
-                    track.path_not_found ();
-                    next ();
-                    return;
-                }
+            if (play_mode != PlayMode.AUDIO_CD && !track.file_exists ()) {
+                next ();
+                return;
             }
             stop ();
             playbin.uri = current_track.uri;
@@ -147,7 +143,7 @@ namespace PlayMyMusic.Services {
                     next_track = current_track.album.get_next_track (current_track);
                 }
 
-                if (next_track == null && settings.repeat_mode) {
+                if (next_track == null && settings.repeat_mode && current_track.album.has_available_tracks ()) {
                     if (settings.shuffle_mode) {
                         next_track = current_track.album.get_shuffle_track (null);
                     } else {
@@ -161,7 +157,7 @@ namespace PlayMyMusic.Services {
                     next_track = current_track.album.artist.get_next_track (current_track);
                 }
 
-                if (next_track == null && settings.repeat_mode) {
+                if (next_track == null && settings.repeat_mode && current_track.album.artist.has_available_tracks ()) {
                     if (settings.shuffle_mode) {
                         next_track = current_track.album.artist.get_shuffle_track (null);
                     } else {
@@ -175,7 +171,7 @@ namespace PlayMyMusic.Services {
                     next_track = current_track.playlist.get_next_track (current_track);
                 }
 
-                if (next_track == null && settings.repeat_mode) {
+                if (next_track == null && settings.repeat_mode && current_track.playlist.has_available_tracks ()) {
                     if (settings.shuffle_mode) {
                         next_track = current_track.playlist.get_shuffle_track (null);
                     } else {
