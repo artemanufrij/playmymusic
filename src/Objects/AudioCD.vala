@@ -31,10 +31,10 @@ namespace PlayMyMusic.Objects {
         const string FILE_ATTRIBUTE_ARTIST = "xattr::org.gnome.audio.artist";
         const string FILE_ATTRIBUTE_DURATION = "xattr::org.gnome.audio.duration";
 
-        public signal void mb_disc_id_calculated (string mb_disc_id);
+        public signal void mb_disc_id_calculated ();
 
         public Volume volume { get; private set; }
-        public string artist { get; private set; }
+        public string artist { get; set; }
         public string mb_disc_id { get; private set; }
 
         public new GLib.List<Track> tracks {
@@ -66,12 +66,10 @@ namespace PlayMyMusic.Objects {
                     string? album_title = file_info.get_attribute_string (FILE_ATTRIBUTE_TITLE);
                     if (album_title != null) {
                         this.title = album_title;
-                        property_changed ("title");
                     }
                     string? album_artist = file_info.get_attribute_string (FILE_ATTRIBUTE_ARTIST);
                     if (album_artist != null) {
                         this.artist = album_artist.strip ();
-                        property_changed ("artist");
                     }
 
                     int counter = 1;
@@ -96,6 +94,14 @@ namespace PlayMyMusic.Objects {
                     warning (err.message);
                 }
             });
+        }
+
+        public void update_track_title (int num, string title) {
+            foreach (var track in tracks) {
+                if (track.track == num) {
+                    track.title = title;
+                }
+            }
         }
 
         private void calculate_disc_id () {
@@ -131,7 +137,7 @@ namespace PlayMyMusic.Objects {
                             string s;
                             if (tags.get_string (Gst.Tag.CDDA.MUSICBRAINZ_DISCID, out s)) {
                                 mb_disc_id = s;
-                                mb_disc_id_calculated (s);
+                                mb_disc_id_calculated ();
                             }
                             done = true;
                             break;

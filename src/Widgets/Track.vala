@@ -39,6 +39,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Image warning;
         Gtk.Menu menu;
         Gtk.Menu playlists;
+        Gtk.Label track_title;
 
         bool show_cover;
 
@@ -61,6 +62,10 @@ namespace PlayMyMusic.Widgets {
 
             this.track.removed.connect (() => {
                 this.destroy ();
+            });
+
+            track.notify ["title"].connect (() => {
+                track_title.label = track.title;
             });
 
             build_ui ();
@@ -117,10 +122,10 @@ namespace PlayMyMusic.Widgets {
                 });
             }
 
-            var title = new Gtk.Label (this.track.title);
-            title.xalign = 0;
-            title.ellipsize = Pango.EllipsizeMode.END;
-            content.pack_start (title, true, true, 0);
+            track_title = new Gtk.Label (this.track.title);
+            track_title.xalign = 0;
+            track_title.ellipsize = Pango.EllipsizeMode.END;
+            content.pack_start (track_title, true, true, 0);
 
             if (this.track.duration > 0) {
                 var duration = new Gtk.Label (PlayMyMusic.Utils.get_formated_duration (this.track.duration));

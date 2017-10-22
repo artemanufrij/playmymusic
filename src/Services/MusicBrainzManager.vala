@@ -26,8 +26,61 @@
  */
 
 namespace PlayMyMusic.Services {
-    public class ArtworkDownloader {
-        public static void download_album_cover (string artist, string album, Callback callback) {
+    public class MusicBrainzManager {
+        public static void fill_audio_cd (PlayMyMusic.Objects.AudioCD audio_cd) {
+            var session = new Soup.Session.with_options  ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
+
+            string uri = "http://musicbrainz.org/ws/2/discid/%s?inc=artists+recordings&fmt=json".printf (audio_cd.mb_disc_id);
+            stdout.printf ("%s\n", uri);
+
+            string album_id = "";
+
+            var msg = new Soup.Message ("GET", uri);
+            session.send_message (msg);
+            if (msg.status_code == 200) {
+                var body = (string)msg.response_body.data;
+                var parser = new Json.Parser ();
+                try {
+                    parser.load_from_data (body);
+                    var root = parser.get_root ();
+                    var o = root.get_object ();
+                    if (o.has_member ("releases")) {
+                        var releases = o.get_member ("releases");
+
+                        var release = releases.get_array ().get_element (0);
+                        audio_cd.title = release.get_object ().get_string_member ("title");
+                        album_id = release.get_object ().get_string_member ("id");
+
+                        var media_arr = release.get_object ().get_member ("media");
+                        var media = media_arr.get_array().get_element (0);
+                        var tracks_arr = media.get_object ().get_member ("tracks");
+
+                        foreach (var track in tracks_arr.get_array ().get_elements ()) {
+                            var track_title = track.get_object ().get_string_member ("title");
+                            var track_number = track.get_object ().get_string_member ("number");
+                            audio_cd.update_track_title (int.parse (track_number), track_title);
+                        }
+
+
+
+                        var artist_arr = release.get_object ().get_member ("artist-credit");
+                        var artist = artist_arr.get_array ().get_element (0);
+                        audio_cd.artist = artist.get_object ().get_string_member ("name");
+                    }
+                } catch (Error err) {
+                    warning (err.message);
+                }
+
+               /* if (album_id != "") {
+                    url = "http://coverartarchive.org/release/%s".printf (album_id);
+                    stdout.printf ("%s\n", uri);
+                    msg = new Soup.Message ("GET", uri);
+                    session.send_message (msg);
+                    if (msg.status_code == 200) {
+                        var body = (string)msg.response_body.data;
+                    }
+                }*/
+            }
         }
     }
 }
@@ -35,7 +88,7 @@ namespace PlayMyMusic.Services {
 
 //http://ia801503.us.archive.org/32/items/mbid-c38ebc48-4d8a-4d6a-9554-09a931a9d725/index.json
 
-//http://coverartarchive.org/release/c38ebc48-4d8a-4d6a-9554-09a931a9d725
+//http://coverartarchive.org/release/47cc301f-da6b-4fe6-bdc3-ba84a0d52c58
 
 //http://musicbrainz.org/ws/2/discid/1HayGA2GoYsTEHZvwf07kjxBv8E-?inc=artists
 

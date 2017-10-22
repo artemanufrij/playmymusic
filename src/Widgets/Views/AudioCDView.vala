@@ -156,7 +156,6 @@ namespace PlayMyMusic.Widgets.Views {
             }
             if (current_audio_cd != null) {
                 current_audio_cd.track_added.disconnect (add_track);
-                current_audio_cd.property_changed.disconnect (property_changed);
             }
             current_audio_cd = audio_cd;
             this.title.label = current_audio_cd.title;
@@ -166,7 +165,12 @@ namespace PlayMyMusic.Widgets.Views {
                 add_track (track);
             }
             current_audio_cd.track_added.connect (add_track);
-            current_audio_cd.property_changed.connect (property_changed);
+            current_audio_cd.notify ["title"].connect (() => {
+                this.title.label = current_audio_cd.title;
+            });
+            current_audio_cd.notify ["artist"].connect (() => {
+                this.artist.label = current_audio_cd.artist;
+            });
         }
 
         public void mark_playing_track (Objects.Track? track) {
@@ -181,15 +185,6 @@ namespace PlayMyMusic.Widgets.Views {
                     only_mark = false;
                     return;
                 }
-            }
-        }
-
-        private void property_changed (string property) {
-            if (property == "title") {
-                this.title.label = current_audio_cd.title;
-            }
-            if (property == "artist") {
-                this.artist.label = current_audio_cd.artist;
             }
         }
 

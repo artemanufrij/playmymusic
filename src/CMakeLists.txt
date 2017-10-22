@@ -15,7 +15,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Services/TagManager.vala
     Services/LibraryManager.vala
     Services/Player.vala
-    Services/ArtworkDownloader.vala
+    Services/MusicBrainzManager.vala
     Services/DeviceManager.vala
     Interfaces/MediaKeys.vala
     Interfaces/SoundIndicator.vala
@@ -41,6 +41,7 @@ PACKAGES
     gtk+-3.0
     sqlite3
     libsoup-2.4
+    json-glib-1.0
     gstreamer-pbutils-1.0
     gstreamer-tag-1.0
 OPTIONS

@@ -21,6 +21,7 @@ pkg_check_modules (DEPS REQUIRED
     granite
     sqlite3
     libsoup-2.4
+    json-glib-1.0
     gstreamer-tag-1.0
     gstreamer-pbutils-1.0
     gstreamer-audio-1.0
