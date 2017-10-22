@@ -35,7 +35,19 @@ namespace PlayMyMusic.Objects {
 
         public Volume volume { get; private set; }
         public string artist { get; set; }
-        public string mb_disc_id { get; private set; }
+
+        string _mb_disc_id = "";
+        public string mb_disc_id {
+            get {
+                return _mb_disc_id;
+            } private set {
+                _mb_disc_id = value;
+                this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("audio_cd_%s.jpg").printf (this.mb_disc_id));
+                this.background_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("audio_cd_%s_background.png").printf (this.mb_disc_id));
+                load_cover_async.begin ();
+                mb_disc_id_calculated ();
+            }
+        }
 
         public new GLib.List<Track> tracks {
             get {
@@ -137,7 +149,6 @@ namespace PlayMyMusic.Objects {
                             string s;
                             if (tags.get_string (Gst.Tag.CDDA.MUSICBRAINZ_DISCID, out s)) {
                                 mb_disc_id = s;
-                                mb_disc_id_calculated ();
                             }
                             done = true;
                             break;
@@ -154,6 +165,17 @@ namespace PlayMyMusic.Objects {
                 pipeline.set_state (Gst.State.NULL);
                 return null;
             });
+        }
+
+        public async void load_cover_async () {
+            var cover_full_path = File.new_for_path (cover_path);
+            if (cover_full_path.query_exists ()) {
+                try {
+                    cover = new Gdk.Pixbuf.from_file (cover_path);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+            }
         }
     }
 }

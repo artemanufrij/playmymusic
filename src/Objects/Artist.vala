@@ -33,8 +33,8 @@ namespace PlayMyMusic.Objects {
             } set {
                 _ID = value;
                 if (value > 0) {
-                    this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d.jpg").printf(this.ID));
-                    this.background_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d_background.png").printf(this.ID));
+                    this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d.jpg").printf (this.ID));
+                    this.background_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d_background.png").printf (this.ID));
                 }
             }
         }

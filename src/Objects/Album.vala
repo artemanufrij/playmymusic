@@ -43,7 +43,7 @@ namespace PlayMyMusic.Objects {
             } set {
                 _ID = value;
                 if (value > 0) {
-                    this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("album_%d.jpg").printf(this.ID));
+                    this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("album_%d.jpg").printf (this.ID));
                     load_cover_async.begin ();
                 }
             }

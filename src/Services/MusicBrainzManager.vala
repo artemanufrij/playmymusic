@@ -39,57 +39,78 @@ namespace PlayMyMusic.Services {
             if (msg.status_code == 200) {
                 var body = (string)msg.response_body.data;
                 var parser = new Json.Parser ();
+                Json.Node root = null;
                 try {
                     parser.load_from_data (body);
-                    var root = parser.get_root ();
+                    root = parser.get_root ();
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                if (root != null) {
                     var o = root.get_object ();
                     if (o.has_member ("releases")) {
-                        var release_arr = o.get_member ("releases");
+                        var releases = o.get_member ("releases");
 
-                        var release = release_arr.get_array ().get_element (0);
+                        var release = releases.get_array ().get_element (0);
                         audio_cd.title = release.get_object ().get_string_member ("title");
                         album_id = release.get_object ().get_string_member ("id");
 
                         var media_arr = release.get_object ().get_member ("media");
                         var media = media_arr.get_array().get_element (0);
-                        var tracks_arr = media.get_object ().get_member ("tracks");
+                        var tracks = media.get_object ().get_member ("tracks");
 
-                        foreach (var track in tracks_arr.get_array ().get_elements ()) {
+                        foreach (var track in tracks.get_array ().get_elements ()) {
                             var track_title = track.get_object ().get_string_member ("title");
                             var track_number = track.get_object ().get_string_member ("number");
                             audio_cd.update_track_title (int.parse (track_number), track_title);
                         }
 
-                        var artist_arr = release.get_object ().get_member ("artist-credit");
-                        var artist = artist_arr.get_array ().get_element (0);
+                        var artists = release.get_object ().get_member ("artist-credit");
+                        var artist = artists.get_array ().get_element (0);
                         audio_cd.artist = artist.get_object ().get_string_member ("name");
                     }
-                } catch (Error err) {
-                    warning (err.message);
                 }
 
-                if (album_id != "") {
+                if (album_id != "" && audio_cd.cover == null) {
                     uri = "http://coverartarchive.org/release/%s".printf (album_id);
                     msg = new Soup.Message ("GET", uri);
                     session.send_message (msg);
                     if (msg.status_code == 200) {
                         body = (string)msg.response_body.data;
+                        root = null;
                         try {
                             parser.load_from_data (body);
-                            var root = parser.get_root ();
+                            root = parser.get_root ();
+                        } catch (Error err) {
+                            warning (err.message);
+                        }
+                        if (root != null) {
                             var o = root.get_object ();
                             if (o.has_member ("images")) {
-                                var image_arr = o.get_member ("images");
-                                var image = image_arr.get_array ().get_element (0);
+                                var images = o.get_member ("images");
+                                var image = images.get_array ().get_element (0);
 
                                 o = image.get_object ();
                                 if (o.has_member ("thumbnails")) {
                                     var thumbnail = o.get_member ("thumbnails");
                                     var large = thumbnail.get_object ().get_string_member ("large");
+
+                                    msg = new Soup.Message ("GET", large);
+                                    session.send_message (msg);
+                                    if (msg.status_code == 200) {
+                                        string tmp_file = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), audio_cd.mb_disc_id + ".jpg");
+                                        var fs = FileStream.open(tmp_file, "w");
+                                        fs.write(msg.response_body.data, (size_t)msg.response_body.length);
+                                        var pixbuf = new Gdk.Pixbuf.from_file (tmp_file);
+                                        pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
+                                        pixbuf.save (audio_cd.cover_path, "jpeg", "quality", "100");
+                                        File f = File.new_for_path (tmp_file);
+                                        f.delete_async.begin ();
+
+                                        audio_cd.load_cover_async.begin ();
+                                    }
                                 }
                             }
-                        } catch (Error err) {
-                            warning (err.message);
                         }
                     }
                 }
