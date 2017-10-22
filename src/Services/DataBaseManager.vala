@@ -84,97 +84,113 @@ namespace PlayMyMusic.Services {
         }
 
         private void open_database () {
-            File cache = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
-            bool database_exists = cache.query_exists ();
-
             Sqlite.Database.open (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH, out db);
 
             string q;
+            q = """CREATE TABLE IF NOT EXISTS artists (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                name        TEXT    NOT NULL,
+                CONSTRAINT unique_artist UNIQUE (name)
+                );""";
 
-            if (!database_exists) {
-                q = """CREATE TABLE artists (
-                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    name        TEXT    NOT NULL,
-                    CONSTRAINT unique_artist UNIQUE (name)
-                    );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
 
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """CREATE TABLE IF NOT EXISTS albums (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                artist_id   INT         NOT NULL,
+                title       TEXT        NOT NULL,
+                year        INT         NULL,
+                CONSTRAINT unique_album UNIQUE (artist_id, title),
+                FOREIGN KEY (artist_id) REFERENCES artists (ID)
+                    ON DELETE CASCADE
+                );""";
 
-                q = """CREATE TABLE albums (
-                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    artist_id   INT         NOT NULL,
-                    title       TEXT        NOT NULL,
-                    year        INT         NULL,
-                    CONSTRAINT unique_album UNIQUE (artist_id, title),
-                    FOREIGN KEY (artist_id) REFERENCES artists (ID)
-                        ON DELETE CASCADE
-                    );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
 
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """CREATE TABLE IF NOT EXISTS tracks (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                album_id    INT         NOT NULL,
+                path        TEXT        NOT NULL,
+                title       TEXT        NOT NULL,
+                genre       TEXT        NULL,
+                track       INT         NOT NULL,
+                disc        INT         NOT NULL,
+                duration    INT         NOT NULL,
+                CONSTRAINT unique_track UNIQUE (path),
+                FOREIGN KEY (album_id) REFERENCES albums (ID)
+                    ON DELETE CASCADE
+                );""";
 
-                q = """CREATE TABLE tracks (
-                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    album_id    INT         NOT NULL,
-                    path        TEXT        NOT NULL,
-                    title       TEXT        NOT NULL,
-                    genre       TEXT        NULL,
-                    track       INT         NOT NULL,
-                    disc        INT         NOT NULL,
-                    duration    INT         NOT NULL,
-                    CONSTRAINT unique_track UNIQUE (path),
-                    FOREIGN KEY (album_id) REFERENCES albums (ID)
-                        ON DELETE CASCADE
-                    );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
 
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """CREATE TABLE IF NOT EXISTS blacklist (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                path        TEXT        NOT NULL
+                )""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
 
-                q = """CREATE TABLE blacklist (
-                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    path        TEXT        NOT NULL
-                    )""";
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """CREATE TABLE IF NOT EXISTS radios (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                title       TEXT        NOT NULL,
+                url         TEXT        NOT NULL,
+                CONSTRAINT unique_url UNIQUE (url)
+                );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
 
-                q = """CREATE TABLE radios (
-                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    title       TEXT        NOT NULL,
-                    url         TEXT        NOT NULL,
-                    CONSTRAINT unique_track UNIQUE (url)
-                    );""";
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """CREATE TABLE IF NOT EXISTS playlists (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                title       TEXT        NOT NULL,
+                CONSTRAINT unique_title UNIQUE (title)
+                );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
 
-                q = """CREATE TABLE playlists (
-                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    title       TEXT        NOT NULL,
-                    CONSTRAINT unique_track UNIQUE (title)
-                    );""";
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """CREATE TABLE IF NOT EXISTS playlist_tracks (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                playlist_id INT         NOT NULL,
+                track_id    INT         NOT NULL,
+                sort        INT         NOT NULL,
+                CONSTRAINT unique_track UNIQUE (playlist_id, track_id),
+                FOREIGN KEY (track_id) REFERENCES tracks (ID)
+                    ON DELETE CASCADE,
+                FOREIGN KEY (playlist_id) REFERENCES playlists (ID)
+                    ON DELETE CASCADE
+                );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
 
-                q = """CREATE TABLE playlist_tracks (
-                    ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                    playlist_id INT         NOT NULL,
-                    track_id    INT         NOT NULL,
-                    sort        INT         NOT NULL,
-                    CONSTRAINT unique_track UNIQUE (playlist_id, track_id),
-                    FOREIGN KEY (track_id) REFERENCES tracks (ID)
-                        ON DELETE CASCADE,
-                    FOREIGN KEY (playlist_id) REFERENCES playlists (ID)
-                        ON DELETE CASCADE
-                    );""";
-                if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                    warning (errormsg);
-                }
+            q = """CREATE TABLE IF NOT EXISTS audio_cd (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                title       TEXT        NOT NULL,
+                artist      TEXT        NOT NULL,
+                mb_disc_id  TEXT        NOT NULL,
+                CONSTRAINT unique_mb_disc UNIQUE (mb_disc_id)
+                );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
+
+            q = """CREATE TABLE IF NOT EXISTS audio_cd_tracks (
+                ID              INTEGER     PRIMARY KEY AUTOINCREMENT,
+                audio_cd_id   TEXT        NOT NULL,
+                track           INT         NOT NULL,
+                title           TEXT        NOT NULL,
+                CONSTRAINT unique_track UNIQUE (audio_cd_id, track)
+                );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
             }
 
             q = """PRAGMA foreign_keys = ON;""";
@@ -748,11 +764,29 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT COUNT (*) FROM radios WHERE url=$url;
+                SELECT COUNT (*) FROM radios WHERE url=$URL;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_str (stmt, sql, "$url", url);
+            set_parameter_str (stmt, sql, "$URL", url);
+
+            if (stmt.step () == Sqlite.ROW) {
+                file_exists = stmt.column_int (0) > 0;
+            }
+            stmt.reset ();
+            return file_exists;
+        }
+
+        public bool audio_cd_exits (string mb_disc_id) {
+            bool file_exists = false;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT COUNT (*) FROM audio_cd WHERE mb_disc_id=$ID;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$ID", mb_disc_id);
 
             if (stmt.step () == Sqlite.ROW) {
                 file_exists = stmt.column_int (0) > 0;

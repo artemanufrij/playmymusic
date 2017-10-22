@@ -105,6 +105,7 @@ namespace PlayMyMusic.Services {
             device_manager = PlayMyMusic.Services.DeviceManager.instance;
             device_manager.volume_added.connect ((volume) => {
                 var audio_cd = new PlayMyMusic.Objects.AudioCD (volume);
+                audio_cd.mb_disc_id_calculated.connect (mb_disc_id_calculated);
                 audio_cd_connected (audio_cd);
             });
             device_manager.volume_removed.connect ((volume) => {
@@ -126,6 +127,16 @@ namespace PlayMyMusic.Services {
                 }
                 return null;
             });
+        }
+
+        // AUDIO CD REGION
+        private void mb_disc_id_calculated (string mb_disc_id) {
+            stdout.printf ("MB DISC_ID: %s\n", mb_disc_id);
+            if (db_manager.audio_cd_exits (mb_disc_id)) {
+                stdout.printf ("FILL\n");
+            } else {
+                stdout.printf ("MB CALL\n");
+            }
         }
 
         // DATABASE REGION

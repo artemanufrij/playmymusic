@@ -31,10 +31,11 @@ namespace PlayMyMusic.Objects {
         const string FILE_ATTRIBUTE_ARTIST = "xattr::org.gnome.audio.artist";
         const string FILE_ATTRIBUTE_DURATION = "xattr::org.gnome.audio.duration";
 
+        public signal void mb_disc_id_calculated (string mb_disc_id);
+
         public Volume volume { get; private set; }
         public string artist { get; private set; }
-
-        string hash_sum = "";
+        public string mb_disc_id { get; private set; }
 
         public new GLib.List<Track> tracks {
             get {
@@ -90,31 +91,63 @@ namespace PlayMyMusic.Objects {
                         add_track (track);
                         counter++;
                     }
-                    calculate_hash_sum ();
+                    calculate_disc_id ();
                 } catch (Error err) {
                     warning (err.message);
                 }
             });
         }
 
-        private void calculate_hash_sum () {
-            Checksum checksum = new Checksum (ChecksumType.MD5);
-            FileStream stream = FileStream.open ("/dev/sr0", "r");
-            uint8 fbuf[100];
-            size_t size;
-            while ((size = stream.read (fbuf)) > 0) {
-                checksum.update (fbuf, size);
-            }
-            hash_sum = checksum.get_string ();
-            stdout.printf ("%s\n", hash_sum);
-
-            var CdInfo = new CdInfo ();
-          //  CdInfo.open ("/dev/sr0");
-
+        private void calculate_disc_id () {
+            new Thread<void*> (null, () => {
+                dynamic Gst.Element source = null;
+                try {
+                    source = Gst.Element.make_from_uri (Gst.URIType.SRC, "cdda://", null);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                if (source == null) {
+                    return null;
+                }
+                source.@set ("device", "/dev/cdrom", null);
+                dynamic Gst.Element pipeline = new Gst.Pipeline (null);
+                dynamic Gst.Element sink = Gst.ElementFactory.make ("fakesink", null);
+                (pipeline as Gst.Bin).add_many (source, sink);
+                source.link (sink);
+                pipeline.set_state (Gst.State.PAUSED);
+                Gst.Bus bus = pipeline.get_bus ();
+                bool done = false;
+                while (!done) {
+                    Gst.Message? msg;
+                    Gst.TagList tags;
+                    GLib.Error err;
+                    msg = bus.timed_pop (5 * Gst.SECOND);
+                    if (msg == null) {
+                        break;
+                    }
+                    switch (msg.type) {
+                        case Gst.MessageType.TAG:
+                            msg.parse_tag (out tags);
+                            string s;
+                            if (tags.get_string (Gst.Tag.CDDA.MUSICBRAINZ_DISCID, out s)) {
+                                mb_disc_id = s;
+                                mb_disc_id_calculated (s);
+                            }
+                            done = true;
+                            break;
+                        case Gst.MessageType.ERROR:
+                            string debug;
+                            msg.parse_error (out err, out debug);
+                            warning ("Error: %s\n%s\n", err.message, debug);
+                            done = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                pipeline.set_state (Gst.State.NULL);
+                return null;
+            });
         }
-    }
-
-    private class CdInfo : Gst.Audio.CdSrc {
-
     }
 }

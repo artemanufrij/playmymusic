@@ -37,6 +37,8 @@ namespace PlayMyMusic.Services {
 
 //http://coverartarchive.org/release/c38ebc48-4d8a-4d6a-9554-09a931a9d725
 
+//http://musicbrainz.org/ws/2/discid/1HayGA2GoYsTEHZvwf07kjxBv8E-?inc=artists
+
  /*   public class ArtworkDownloader {
         public static Gdk.Pixbuf? get_arist_artwork (string name) {
 

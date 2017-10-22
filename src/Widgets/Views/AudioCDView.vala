@@ -68,6 +68,7 @@ namespace PlayMyMusic.Widgets.Views {
             var disc = new Gtk.Grid ();
             disc.margin = 96;
             disc.row_spacing = 12;
+            disc.valign = Gtk.Align.CENTER;
             this.attach (disc, 0, 0);
 
             cover = new Gtk.Image ();
@@ -75,7 +76,6 @@ namespace PlayMyMusic.Widgets.Views {
             cover.height_request = 256;
             cover.width_request = 256;
             cover.get_style_context ().add_class ("card");
-            cover.valign = Gtk.Align.CENTER;
             disc.attach (cover, 0, 0);
 
             title = new Gtk.Label ("");
@@ -160,6 +160,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
             current_audio_cd = audio_cd;
             this.title.label = current_audio_cd.title;
+            this.artist.label = current_audio_cd.artist;
 
             foreach (var track in current_audio_cd.tracks) {
                 add_track (track);

@@ -264,7 +264,7 @@ namespace PlayMyMusic.Services {
                 GLib.Error err;
                 string debug;
                 message.parse_error (out err, out debug);
-                stdout.printf ("Error: %s\n%s\n", err.message, debug);
+                warning ("Error: %s\n%s\n", err.message, debug);
                 break;
             case Gst.MessageType.EOS:
                 state_changed (Gst.State.NULL);
