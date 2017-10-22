@@ -34,6 +34,7 @@ namespace PlayMyMusic.Objects {
         public Volume volume { get; private set; }
         public string artist { get; private set; }
 
+        string hash_sum = "";
 
         public new GLib.List<Track> tracks {
             get {
@@ -51,48 +52,61 @@ namespace PlayMyMusic.Objects {
         }
 
         public void create_track_list () {
-                var file = this.volume.get_activation_root ();
-                var attributes = new string[0];
-                attributes += FILE_ATTRIBUTE_TITLE;
-                attributes += FILE_ATTRIBUTE_DURATION;
-                attributes += FILE_ATTRIBUTE_ARTIST;
-                attributes += FileAttribute.STANDARD_NAME;
+            var file = this.volume.get_activation_root ();
+            var attributes = new string[0];
+            attributes += FILE_ATTRIBUTE_TITLE;
+            attributes += FILE_ATTRIBUTE_DURATION;
+            attributes += FILE_ATTRIBUTE_ARTIST;
+            attributes += FileAttribute.STANDARD_NAME;
 
-                file.query_info_async.begin (string.joinv (",", attributes), FileQueryInfoFlags.NONE, Priority.DEFAULT, null, (obj, res) => {
-                    try {
-                        FileInfo file_info = file.query_info_async.end (res);
-                        string? album_title = file_info.get_attribute_string (FILE_ATTRIBUTE_TITLE);
-                        if (album_title != null) {
-                            this.title = album_title;
-                            property_changed ("title");
-                        }
-                        string? album_artist = file_info.get_attribute_string (FILE_ATTRIBUTE_ARTIST);
-                        if (album_artist != null) {
-                            this.artist = album_artist.strip ();
-                            property_changed ("artist");
-                        }
-
-                        int counter = 1;
-                        var children = file.enumerate_children (string.joinv (",", attributes), GLib.FileQueryInfoFlags.NONE);
-                        while ((file_info = children.next_file ()) != null) {
-                            string? title = file_info.get_attribute_string (FILE_ATTRIBUTE_TITLE);
-                            if (title == null) {
-                                title = _("Track %d").printf (counter);
-                            }
-                            uint64 duration = file_info.get_attribute_uint64 (FILE_ATTRIBUTE_DURATION);
-
-                            var track = new Track (this);
-                            track.track = counter;
-                            track.title = title.strip ();
-                            track.uri = GLib.Path.build_filename (file.get_uri (), file_info.get_name ());
-                            track.duration = duration * 1000000000;
-                            add_track (track);
-                            counter++;
-                        }
-                    } catch (Error err) {
-                        warning (err.message);
+            file.query_info_async.begin (string.joinv (",", attributes), FileQueryInfoFlags.NONE, Priority.DEFAULT, null, (obj, res) => {
+                try {
+                    FileInfo file_info = file.query_info_async.end (res);
+                    string? album_title = file_info.get_attribute_string (FILE_ATTRIBUTE_TITLE);
+                    if (album_title != null) {
+                        this.title = album_title;
+                        property_changed ("title");
                     }
-                });
+                    string? album_artist = file_info.get_attribute_string (FILE_ATTRIBUTE_ARTIST);
+                    if (album_artist != null) {
+                        this.artist = album_artist.strip ();
+                        property_changed ("artist");
+                    }
+
+                    int counter = 1;
+                    var children = file.enumerate_children (string.joinv (",", attributes), GLib.FileQueryInfoFlags.NONE);
+                    while ((file_info = children.next_file ()) != null) {
+                        string? title = file_info.get_attribute_string (FILE_ATTRIBUTE_TITLE);
+                        if (title == null) {
+                            title = _("Track %d").printf (counter);
+                        }
+                        uint64 duration = file_info.get_attribute_uint64 (FILE_ATTRIBUTE_DURATION);
+
+                        var track = new Track (this);
+                        track.track = counter;
+                        track.title = title.strip ();
+                        track.uri = GLib.Path.build_filename (file.get_uri (), file_info.get_name ());
+                        track.duration = duration * 1000000000;
+                        add_track (track);
+                        counter++;
+                    }
+                    calculate_hash_sum ();
+                } catch (Error err) {
+                    warning (err.message);
+                }
+            });
+        }
+
+        private void calculate_hash_sum () {
+            Checksum checksum = new Checksum (ChecksumType.MD5);
+            FileStream stream = FileStream.open ("/dev/sr0", "r");
+            uint8 fbuf[100];
+            size_t size;
+            while ((size = stream.read (fbuf)) > 0) {
+                checksum.update (fbuf, size);
+            }
+            hash_sum = checksum.get_string ();
+            stdout.printf ("%s\n", hash_sum);
         }
     }
 }
