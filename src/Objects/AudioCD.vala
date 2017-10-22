@@ -107,6 +107,14 @@ namespace PlayMyMusic.Objects {
             }
             hash_sum = checksum.get_string ();
             stdout.printf ("%s\n", hash_sum);
+
+            var CdInfo = new CdInfo ();
+          //  CdInfo.open ("/dev/sr0");
+
         }
+    }
+
+    private class CdInfo : Gst.Audio.CdSrc {
+
     }
 }
