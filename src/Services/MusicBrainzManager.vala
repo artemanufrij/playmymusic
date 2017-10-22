@@ -31,7 +31,6 @@ namespace PlayMyMusic.Services {
             var session = new Soup.Session.with_options  ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
 
             string uri = "http://musicbrainz.org/ws/2/discid/%s?inc=artists+recordings&fmt=json".printf (audio_cd.mb_disc_id);
-            stdout.printf ("%s\n", uri);
 
             string album_id = "";
 
@@ -45,9 +44,9 @@ namespace PlayMyMusic.Services {
                     var root = parser.get_root ();
                     var o = root.get_object ();
                     if (o.has_member ("releases")) {
-                        var releases = o.get_member ("releases");
+                        var release_arr = o.get_member ("releases");
 
-                        var release = releases.get_array ().get_element (0);
+                        var release = release_arr.get_array ().get_element (0);
                         audio_cd.title = release.get_object ().get_string_member ("title");
                         album_id = release.get_object ().get_string_member ("id");
 
@@ -61,8 +60,6 @@ namespace PlayMyMusic.Services {
                             audio_cd.update_track_title (int.parse (track_number), track_title);
                         }
 
-
-
                         var artist_arr = release.get_object ().get_member ("artist-credit");
                         var artist = artist_arr.get_array ().get_element (0);
                         audio_cd.artist = artist.get_object ().get_string_member ("name");
@@ -71,15 +68,31 @@ namespace PlayMyMusic.Services {
                     warning (err.message);
                 }
 
-               /* if (album_id != "") {
-                    url = "http://coverartarchive.org/release/%s".printf (album_id);
-                    stdout.printf ("%s\n", uri);
+                if (album_id != "") {
+                    uri = "http://coverartarchive.org/release/%s".printf (album_id);
                     msg = new Soup.Message ("GET", uri);
                     session.send_message (msg);
                     if (msg.status_code == 200) {
-                        var body = (string)msg.response_body.data;
+                        body = (string)msg.response_body.data;
+                        try {
+                            parser.load_from_data (body);
+                            var root = parser.get_root ();
+                            var o = root.get_object ();
+                            if (o.has_member ("images")) {
+                                var image_arr = o.get_member ("images");
+                                var image = image_arr.get_array ().get_element (0);
+
+                                o = image.get_object ();
+                                if (o.has_member ("thumbnails")) {
+                                    var thumbnail = o.get_member ("thumbnails");
+                                    var large = thumbnail.get_object ().get_string_member ("large");
+                                }
+                            }
+                        } catch (Error err) {
+                            warning (err.message);
+                        }
                     }
-                }*/
+                }
             }
         }
     }
