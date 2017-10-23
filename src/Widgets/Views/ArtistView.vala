@@ -166,7 +166,7 @@ namespace PlayMyMusic.Widgets.Views {
 
             if (current_artist != null) {
                 current_artist.track_added.disconnect (add_track);
-                current_artist.background_changed.disconnect (change_background);
+                current_artist.background_changed.disconnect (load_background);
                 if (current_artist.background != null) {
                     current_artist.background.dispose ();
                 }
@@ -174,16 +174,16 @@ namespace PlayMyMusic.Widgets.Views {
             current_artist = artist;
             this.reset ();
 
-            change_background ();
+            load_background ();
             foreach (var track in artist.tracks) {
                 add_track (track);
             }
 
             current_artist.track_added.connect (add_track);
-            current_artist.background_changed.connect (change_background);
+            current_artist.background_changed.connect (load_background);
         }
 
-        public void change_background () {
+        public void load_background () {
             int width = this.header.get_allocated_width ();
             int height = background.get_allocated_height ();
             if (current_artist == null || current_artist.background_path == null || current_artist.background == null || (background.pixbuf != null && background.pixbuf.width == width)) {
@@ -213,7 +213,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void add_track (PlayMyMusic.Objects.Track track) {
             Idle.add (() => {
-                var item = new PlayMyMusic.Widgets.Track (track);
+                var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.ARTIST);
                 this.tracks.add (item);
                 item.show_all ();
                 update_header ();

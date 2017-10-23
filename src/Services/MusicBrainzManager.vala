@@ -95,19 +95,15 @@ namespace PlayMyMusic.Services {
                                     var thumbnail = o.get_member ("thumbnails");
                                     var large = thumbnail.get_object ().get_string_member ("large");
 
-                                    msg = new Soup.Message ("GET", large);
-                                    session.send_message (msg);
-                                    if (msg.status_code == 200) {
-                                        string tmp_file = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), audio_cd.mb_disc_id + ".jpg");
-                                        var fs = FileStream.open(tmp_file, "w");
-                                        fs.write(msg.response_body.data, (size_t)msg.response_body.length);
-                                        var pixbuf = new Gdk.Pixbuf.from_file (tmp_file);
-                                        pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
-                                        pixbuf.save (audio_cd.cover_path, "jpeg", "quality", "100");
-                                        File f = File.new_for_path (tmp_file);
-                                        f.delete_async.begin ();
-
-                                        audio_cd.load_cover_async.begin ();
+                                    var pixbuf = get_pixbuf_from_url (large);
+                                    if (pixbuf != null) {
+                                        pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 320);
+                                        try {
+                                            pixbuf.save (audio_cd.cover_path, "jpeg", "quality", "100");
+                                            audio_cd.load_cover_async.begin ();
+                                        } catch (Error err) {
+                                            warning (err.message);
+                                        }
                                     }
                                 }
                             }
@@ -116,98 +112,25 @@ namespace PlayMyMusic.Services {
                 }
             }
         }
-    }
-}
-//http://musicbrainz.org/ws/2/release/?query=artist:Sting%20and%20title:The%20Best%20of%2025%20Years&limit=1
 
-//http://ia801503.us.archive.org/32/items/mbid-c38ebc48-4d8a-4d6a-9554-09a931a9d725/index.json
-
-//http://coverartarchive.org/release/47cc301f-da6b-4fe6-bdc3-ba84a0d52c58
-
-//http://musicbrainz.org/ws/2/discid/1HayGA2GoYsTEHZvwf07kjxBv8E-?inc=artists
-
- /*   public class ArtworkDownloader {
-        public static Gdk.Pixbuf? get_arist_artwork (string name) {
-
-            string request_url = "http://musicbrainz.org/ws/2/artist/?query=artist:" + name.strip().down().replace (" ", "_") + "&limit=5";
-            stdout.printf ("%s\n\n", request_url);
-
-            var session = new Soup.Session.with_options  ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
-            var msg = new Soup.Message ("GET", request_url);
-
+        public static Gdk.Pixbuf? get_pixbuf_from_url (string url) {
+            Gdk.Pixbuf? return_value = null;
+            var session = new Soup.Session.with_options ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
+            var msg = new Soup.Message ("GET", url);
             session.send_message (msg);
-
-            stdout.printf (msg.status_code.to_string () + "\n\n");
-
             if (msg.status_code == 200) {
-                var body = (string)msg.response_body.data;
-
-                var regex = new Regex ("(?<=artist\\sid=\")[\\w-]*");
-                MatchInfo match_info;
-                if (regex.match (body, 0, out match_info)) {
-                    var artist_id = match_info.fetch (0);
-
-                    stdout.printf ("\n%s\n", artist_id);
-
-                    request_url = "http://musicbrainz.org/ws/2/artist/" + artist_id + "?inc=url-rels";
-
-                    msg = new Soup.Message ("GET", request_url);
-                    session.send_message (msg);
-                    if (msg.status_code == 200) {
-                        body = (string)msg.response_body.data;
-
-                        regex = new Regex ("(?<=wikimedia\\.org/wiki/File:)[^<]*");
-                        if (regex.match (body, 0, out match_info)) {
-                            var image_id = match_info.fetch (0);
-                            stdout.printf ("\n%s\n", image_id);
-
-                            request_url = "https://en.wikipedia.org/w/api.php?action=query&titles=File:" + image_id + "&prop=imageinfo&iiprop=url&iiurlwidth=600&iiurlheight=600&format=json";
-                            msg = new Soup.Message ("GET", request_url);
-                            session.send_message (msg);
-                            if (msg.status_code == 200) {
-                                body = (string)msg.response_body.data;
-
-
-                                string image_url = "";
-                                int image_width = 0;
-                                int image_height = 0;
-                                regex = new Regex ("(?<=thumburl\":\")[^\"]*");
-                                if (regex.match (body, 0, out match_info)) {
-                                    image_url = match_info.fetch (0);
-                                }
-                                regex = new Regex ("(?<=thumbwidth\":)[\\d]*");
-                                if (regex.match (body, 0, out match_info)) {
-                                    image_width = int.parse (match_info.fetch (0));
-                                }
-                                regex = new Regex ("(?<=thumbheight\":)[\\d]*");
-                                if (regex.match (body, 0, out match_info)) {
-                                    image_height = int.parse (match_info.fetch (0));
-                                }
-
-                                if (image_url != "" && image_width > 0 && image_height > 0) {
-
-                                    stdout.printf ("w: %d - h: %d: %s\n\n", image_width, image_height, image_url);
-
-                                    msg = new Soup.Message ("GET", image_url);
-                                    session.send_message (msg);
-                                    if (msg.status_code == 200) {
-                                        string tmp_file = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), name + ".jpg");
-                                        var fs = FileStream.open(tmp_file, "w");
-                                        fs.write(msg.response_body.data, (size_t)msg.response_body.length);
-                                        var return_value = new Gdk.Pixbuf.from_file (tmp_file);
-                                        File f = File.new_for_path (tmp_file);
-                                        f.delete_async.begin ();
-                                        return return_value;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                string tmp_file = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), Random.next_int ().to_string () + ".jpg");
+                var fs = FileStream.open(tmp_file, "w");
+                fs.write (msg.response_body.data, (size_t)msg.response_body.length);
+                try {
+                    return_value = new Gdk.Pixbuf.from_file (tmp_file);
+                } catch (Error err) {
+                    warning (err.message);
                 }
+                File f = File.new_for_path (tmp_file);
+                f.delete_async.begin ();
             }
-            return null;
+            return return_value;
         }
     }
 }
-*/
-

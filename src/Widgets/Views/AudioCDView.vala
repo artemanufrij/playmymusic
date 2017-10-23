@@ -43,10 +43,21 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        Gtk.Image icon_repeat_on;
+        Gtk.Image icon_repeat_off;
+        Gtk.Image icon_shuffle_on;
+        Gtk.Image icon_shuffle_off;
+
+        Gtk.Grid content;
+        Gtk.Overlay overlay;
         Gtk.ListBox tracks;
         Gtk.Image cover;
+        Gtk.Image background;
         Gtk.Label title;
         Gtk.Label artist;
+        Gtk.Button shuffle_button;
+        Gtk.Button repeat_button;
+        Gtk.Menu menu;
 
         bool only_mark = false;
         string waiting_for_play = "";
@@ -58,6 +69,24 @@ namespace PlayMyMusic.Widgets.Views {
             player.state_changed.connect ((state) => {
                 mark_playing_track (player.current_track);
             });
+
+            settings.notify["repeat-mode"].connect (() => {
+                if (settings.repeat_mode) {
+                    repeat_button.set_image (icon_repeat_on);
+                } else {
+                    repeat_button.set_image (icon_repeat_off);
+                }
+                repeat_button.show_all ();
+            });
+
+            settings.notify["shuffle-mode"].connect (() => {
+                if (settings.shuffle_mode) {
+                    shuffle_button.set_image (icon_shuffle_on);
+                } else {
+                    shuffle_button.set_image (icon_shuffle_off);
+                }
+                repeat_button.show_all ();
+            });
         }
 
         public AudioCDView () {
@@ -65,37 +94,59 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void build_ui () {
-            var disc = new Gtk.Grid ();
-            disc.margin = 96;
-            disc.row_spacing = 12;
-            disc.valign = Gtk.Align.CENTER;
-            this.attach (disc, 0, 0);
+            overlay = new Gtk.Overlay ();
+            overlay.height_request = 512;
+
+            content = new Gtk.Grid ();
+            content.column_spacing = 96;
+            content.row_spacing = 24;
+            content.margin = 96;
+
+            var event_box = new Gtk.EventBox ();
+            event_box.button_press_event.connect (show_context_menu);
 
             cover = new Gtk.Image ();
             cover.set_from_icon_name ("media-optical-cd-audio-symbolic", Gtk.IconSize.DIALOG);
-            cover.height_request = 256;
-            cover.width_request = 256;
+            cover.height_request = 320;
+            cover.width_request = 320;
             cover.get_style_context ().add_class ("card");
-            disc.attach (cover, 0, 0);
+            cover.valign = Gtk.Align.CENTER;
+            event_box.add (cover);
+
+            menu = new Gtk.Menu ();
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            menu_new_cover.activate.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
+                        this.background.pixbuf = null;
+                        current_audio_cd.set_new_cover (pixbuf, 320);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+            });
+            menu.append (menu_new_cover);
+            menu.show_all ();
 
             title = new Gtk.Label ("");
-            title.get_style_context ().add_class ("h2");
-            title.ellipsize = Pango.EllipsizeMode.END;
-            disc.attach (title, 0, 1);
+            title.get_style_context ().add_class ("h1");
+            title.get_style_context ().add_class ("artist-title");
+            title.halign = Gtk.Align.START;
 
             artist = new Gtk.Label ("");
-            artist.get_style_context ().add_class ("h3");
-            artist.ellipsize = Pango.EllipsizeMode.END;
-            disc.attach (artist, 0, 2);
+            artist.get_style_context ().add_class ("h2");
+            artist.halign = Gtk.Align.START;
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
-            tracks_scroll.expand = true;
 
             tracks = new Gtk.ListBox ();
-            tracks.set_filter_func (tracks_filter_func);
             tracks.get_style_context ().add_class ("playlist-tracks");
+            tracks.set_filter_func (tracks_filter_func);
             tracks.selected_rows_changed.connect (play_track);
             tracks.valign = Gtk.Align.CENTER;
+            tracks.expand = true;
             tracks_scroll.add (tracks);
 
             var action_toolbar = new Gtk.ActionBar ();
@@ -111,10 +162,10 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             });
 
-            var icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
-            var icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
 
-            var shuffle_button = new Gtk.Button ();
+            shuffle_button = new Gtk.Button ();
             if (settings.shuffle_mode) {
                 shuffle_button.set_image (icon_shuffle_on);
             } else {
@@ -126,10 +177,10 @@ namespace PlayMyMusic.Widgets.Views {
                 settings.shuffle_mode = !settings.shuffle_mode;
             });
 
-            var icon_repeat_on = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
-            var icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_on = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
 
-            var repeat_button = new Gtk.Button ();
+            repeat_button = new Gtk.Button ();
             if (settings.repeat_mode) {
                 repeat_button.set_image (icon_repeat_on);
             } else {
@@ -144,9 +195,20 @@ namespace PlayMyMusic.Widgets.Views {
             action_toolbar.pack_start (eject_button);
             action_toolbar.pack_end (repeat_button);
             action_toolbar.pack_end (shuffle_button);
-            this.attach (action_toolbar, 0, 1, 2, 1);
 
-            this.attach (tracks_scroll, 1, 0);
+            content.attach (event_box, 1, 0, 1, 3);
+            content.attach (title, 0, 0);
+            content.attach (artist, 0, 1);
+            content.attach (tracks_scroll, 0, 2);
+
+            background = new Gtk.Image ();
+            background.opacity = 0.5;
+
+            overlay.add_overlay (background);
+            overlay.add_overlay (content);
+
+            this.attach (overlay, 0, 0);
+            this.attach (action_toolbar, 0, 1);
             this.show_all ();
         }
 
@@ -157,11 +219,14 @@ namespace PlayMyMusic.Widgets.Views {
             if (current_audio_cd != null) {
                 current_audio_cd.track_added.disconnect (add_track);
                 current_audio_cd.cover_changed.disconnect (change_cover);
+                current_audio_cd.background_changed.disconnect (load_background);
+                current_audio_cd.background_found.disconnect (load_background);
             }
             current_audio_cd = audio_cd;
             this.title.label = current_audio_cd.title;
             this.artist.label = current_audio_cd.artist;
 
+            load_background ();
             foreach (var track in current_audio_cd.tracks) {
                 add_track (track);
             }
@@ -173,6 +238,16 @@ namespace PlayMyMusic.Widgets.Views {
                 this.artist.label = current_audio_cd.artist;
             });
             current_audio_cd.cover_changed.connect (change_cover);
+            current_audio_cd.background_changed.connect (load_background);
+            current_audio_cd.background_found.connect (load_background);
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            }
+            return false;
         }
 
         public void mark_playing_track (Objects.Track? track) {
@@ -190,13 +265,30 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        public void load_background () {
+            int width = this.overlay.get_allocated_width ();
+            int height = this.overlay.get_allocated_height ();
+
+            if (current_audio_cd == null || current_audio_cd.background == null || (background.pixbuf != null && background.pixbuf.width == width && background.pixbuf.height == height)) {
+                return;
+            }
+
+            if (height < width) {
+                var pix =  current_audio_cd.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
+                background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
+            } else {
+                var pix =  current_audio_cd.background.scale_simple (height, height, Gdk.InterpType.BILINEAR);
+                background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, (int)(pix.width - width) / 2, 0, width, height);
+            }
+        }
+
         private void change_cover () {
             cover.pixbuf = current_audio_cd.cover;
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
             Idle.add (() => {
-                var item = new PlayMyMusic.Widgets.Track (track, false);
+                var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.AUDIO_CD);
                 this.tracks.add (item);
                 item.show_all ();
                 if (waiting_for_play != "" && track.uri == waiting_for_play) {
@@ -211,8 +303,10 @@ namespace PlayMyMusic.Widgets.Views {
                 child.destroy ();
             }
             current_audio_cd = null;
+            background.pixbuf = null;
             this.title.label = "";
             this.artist.label = "";
+            this.cover.set_from_icon_name ("media-optical-cd-audio-symbolic", Gtk.IconSize.DIALOG);
         }
 
         private void play_track () {

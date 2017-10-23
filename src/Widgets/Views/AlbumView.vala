@@ -226,7 +226,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void add_track (PlayMyMusic.Objects.Track track) {
             Idle.add (() => {
-                var item = new PlayMyMusic.Widgets.Track (track, false);
+                var item = new PlayMyMusic.Widgets.Track (track);
                 this.tracks.add (item);
                 item.show_all ();
                 if (player.current_track != null && player.current_track.ID == track.ID) {

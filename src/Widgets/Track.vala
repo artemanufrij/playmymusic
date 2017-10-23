@@ -26,6 +26,9 @@
  */
 
 namespace PlayMyMusic.Widgets {
+
+    public enum TrackStyle { ALBUM, ARTIST, PLAYLIST, AUDIO_CD }
+
     public class Track : Gtk.ListBoxRow {
         PlayMyMusic.Services.LibraryManager library_manager;
 
@@ -41,14 +44,14 @@ namespace PlayMyMusic.Widgets {
         Gtk.Menu playlists;
         Gtk.Label track_title;
 
-        bool show_cover;
+        TrackStyle track_style;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
         }
 
-        public Track (PlayMyMusic.Objects.Track track, bool show_cover = true) {
-            this.show_cover = show_cover;
+        public Track (PlayMyMusic.Objects.Track track, TrackStyle track_style = TrackStyle.ALBUM) {
+            this.track_style = track_style;
             this.track = track;
             this.track.path_not_found.connect (() => {
                 if (warning == null) {
@@ -78,13 +81,14 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            if (this.show_cover) {
+            if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST || this.track_style == TrackStyle.AUDIO_CD) {
                 content.spacing = 12;
                 content.margin = 12;
             } else {
                 content.margin = 6;
                 content.spacing = 6;
             }
+
             content.margin_top = content.margin_bottom = 6;
             content.halign = Gtk.Align.FILL;
             event_box.add (content);
@@ -106,7 +110,7 @@ namespace PlayMyMusic.Widgets {
 
             menu.show_all ();
 
-            if (this.show_cover) {
+            if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST) {
                 cover = new Gtk.Image ();
                 cover.get_style_context ().add_class ("card");
                 cover.halign = Gtk.Align.CENTER;

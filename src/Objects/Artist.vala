@@ -181,40 +181,5 @@ namespace PlayMyMusic.Objects {
             yield;
             return return_value;
         }
-
-        private void create_background () {
-            if (this.cover == null || is_background_loading || this.ID == 0) {
-                return;
-            }
-            is_background_loading = true;
-
-            new Thread<void*> (null, () => {
-                File f = File.new_for_path (this.background_path);
-                if (f.query_exists ()) {
-                    is_background_loading = false;
-                    return null;
-                }
-
-                double target_size = 1000;
-
-                int width = this.cover.get_width();
-
-                var surface = new Granite.Drawing.BufferSurface ((int)target_size, (int)target_size);
-
-                double zoom = target_size / (double) width;
-
-                Gdk.cairo_set_source_pixbuf (surface.context, this.cover, 0, 0);
-                surface.context.scale (zoom, zoom);
-                surface.context.paint ();
-
-                surface.exponential_blur (3);
-                surface.context.paint ();
-
-                surface.surface.write_to_png (this.background_path);
-                is_background_loading = false;
-                background_changed ();
-                return null;
-            });
-        }
     }
 }

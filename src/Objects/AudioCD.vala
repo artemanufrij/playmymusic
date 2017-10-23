@@ -55,12 +55,20 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        construct {
+            this.cover_changed.connect (() => {
+                ID = -1;
+                create_background ();
+            });
+        }
+
         public AudioCD (Volume volume) {
             this.volume = volume;
             this.title = _("Unknown");
             this.artist = _("Unknown");
             volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res)=>{
                 create_track_list ();
+                calculate_disc_id ();
             });
         }
 
@@ -101,7 +109,6 @@ namespace PlayMyMusic.Objects {
                         add_track (track);
                         counter++;
                     }
-                    calculate_disc_id ();
                 } catch (Error err) {
                     warning (err.message);
                 }

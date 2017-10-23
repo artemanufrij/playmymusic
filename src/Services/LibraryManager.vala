@@ -133,13 +133,7 @@ namespace PlayMyMusic.Services {
 
         // AUDIO CD REGION
         private void mb_disc_id_calculated (Objects.AudioCD audio_cd) {
-            stdout.printf ("MB DISC_ID: %s\n", audio_cd.mb_disc_id);
-            if (db_manager.audio_cd_exits (audio_cd.mb_disc_id)) {
-                stdout.printf ("FILL\n");
-            } else {
-                stdout.printf ("MB CALL\n");
-                MusicBrainzManager.fill_audio_cd (audio_cd);
-            }
+            MusicBrainzManager.fill_audio_cd (audio_cd);
         }
 
         // DATABASE REGION

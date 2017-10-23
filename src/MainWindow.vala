@@ -60,6 +60,7 @@ namespace PlayMyMusic {
         Notification desktop_notification;
 
         bool send_desktop_notification = true;
+        uint adjust_timer = 0;
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
@@ -155,10 +156,14 @@ namespace PlayMyMusic {
                 }
             });
 
+
             this.configure_event.connect ((event) => {
                 settings.window_width = event.width;
                 settings.window_height = event.height;
-                artists_view.change_background ();
+                artists_view.load_background ();
+                audio_cd_view.load_background ();
+
+                adjust_background_images ();
                 return false;
             });
 
@@ -428,6 +433,7 @@ namespace PlayMyMusic {
                         if (artist_button.sensitive) {
                             content.set_visible_child_name ("artists");
                             search_entry.text = artists_view.filter;
+                            adjust_background_images ();
                         } else {
                             view_mode.set_active (0);
                         }
@@ -454,6 +460,7 @@ namespace PlayMyMusic {
                         search_entry.grab_focus ();
                         content.set_visible_child_name ("audiocd");
                         search_entry.text = audio_cd_view.filter;
+                        adjust_background_images ();
                         break;
                     default:
                         content.set_visible_child_name ("albums");
@@ -461,7 +468,6 @@ namespace PlayMyMusic {
                         break;
                 }
             });
-
             headerbar.pack_start (view_mode);
         }
 
@@ -472,7 +478,7 @@ namespace PlayMyMusic {
                 }
                 desktop_notification.set_title (track.title);
                 if (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
-                    desktop_notification.set_body (_("<b>%s</b>").printf (_("Audio CD")));
+                    desktop_notification.set_body (_("<b>%s</b> by <b>%s</b>").printf (track.audio_cd.title, track.audio_cd.artist));
                 } else {
                     desktop_notification.set_body (_("<b>%s</b> by <b>%s</b>").printf (track.album.title, track.album.artist.name));
                     try {
@@ -484,6 +490,20 @@ namespace PlayMyMusic {
                 }
                 this.application.send_notification (PlayMyMusicApp.instance.application_id, desktop_notification);
             }
+        }
+
+        private void adjust_background_images () {
+            if (adjust_timer != 0) {
+                Source.remove (adjust_timer);
+                adjust_timer = 0;
+            }
+            adjust_timer = GLib.Timeout.add (100, () => {
+                artists_view.load_background ();
+                audio_cd_view.load_background ();
+                Source.remove (adjust_timer);
+                adjust_timer = 0;
+                return true;
+            });
         }
 
         private async void load_content_from_database () {

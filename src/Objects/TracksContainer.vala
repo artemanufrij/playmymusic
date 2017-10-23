@@ -34,6 +34,7 @@ namespace PlayMyMusic.Objects {
         public signal void track_removed (Track track);
         public signal void cover_changed ();
         public signal void background_changed ();
+        public signal void background_found ();
         public signal void property_changed (string property);
 
         public string title { get; set; default = ""; }
@@ -187,8 +188,13 @@ namespace PlayMyMusic.Objects {
         public void set_new_cover (Gdk.Pixbuf cover, int size) {
             if (background_path != "") {
                 File f = File.new_for_path (background_path);
-                f.delete_async.begin ();
+                try {
+                    f.delete ();
+                } catch (Error err) {
+                    warning (err.message);
+                }
             }
+            this.background = null;
             this.cover = save_cover (cover, size);
         }
 
@@ -209,6 +215,46 @@ namespace PlayMyMusic.Objects {
                 }
             }
             return false;
+        }
+
+        protected void create_background () {
+            if (this.cover == null || is_background_loading || this.ID == 0) {
+                return;
+            }
+            is_background_loading = true;
+
+            new Thread<void*> (null, () => {
+                File f = File.new_for_path (this.background_path);
+                if (f.query_exists ()) {
+                    is_background_loading = false;
+                    background_found ();
+                    return null;
+                }
+
+                double target_size = 1000;
+
+                int width = this.cover.get_width();
+
+                var surface = new Granite.Drawing.BufferSurface ((int)target_size, (int)target_size);
+
+                double zoom = target_size / (double) width;
+
+                Gdk.cairo_set_source_pixbuf (surface.context, this.cover, 0, 0);
+                surface.context.scale (zoom, zoom);
+                surface.context.paint ();
+
+                if (this is AudioCD) {
+                    surface.exponential_blur (32);
+                } else {
+                    surface.exponential_blur (4);
+                }
+                surface.context.paint ();
+
+                surface.surface.write_to_png (this.background_path);
+                is_background_loading = false;
+                background_changed ();
+                return null;
+            });
         }
     }
 }

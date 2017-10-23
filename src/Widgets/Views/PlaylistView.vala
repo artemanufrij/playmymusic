@@ -152,7 +152,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
-            var item = new PlayMyMusic.Widgets.Track (track);
+            var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.PLAYLIST);
             this.tracks.add (item);
             item.show_all ();
         }

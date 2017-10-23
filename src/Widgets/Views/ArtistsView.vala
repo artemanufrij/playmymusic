@@ -129,8 +129,8 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        public void change_background () {
-            artist_view.change_background ();
+        public void load_background () {
+            artist_view.load_background ();
         }
 
         private void show_artist_viewer (Gtk.FlowBoxChild item) {

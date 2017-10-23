@@ -171,28 +171,6 @@ namespace PlayMyMusic.Services {
                 warning (errormsg);
             }
 
-            q = """CREATE TABLE IF NOT EXISTS audio_cd (
-                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
-                title       TEXT        NOT NULL,
-                artist      TEXT        NOT NULL,
-                mb_disc_id  TEXT        NOT NULL,
-                CONSTRAINT unique_mb_disc UNIQUE (mb_disc_id)
-                );""";
-            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                warning (errormsg);
-            }
-
-            q = """CREATE TABLE IF NOT EXISTS audio_cd_tracks (
-                ID              INTEGER     PRIMARY KEY AUTOINCREMENT,
-                audio_cd_id   TEXT        NOT NULL,
-                track           INT         NOT NULL,
-                title           TEXT        NOT NULL,
-                CONSTRAINT unique_track UNIQUE (audio_cd_id, track)
-                );""";
-            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
-                warning (errormsg);
-            }
-
             q = """PRAGMA foreign_keys = ON;""";
             if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                 warning (errormsg);
@@ -777,23 +755,6 @@ namespace PlayMyMusic.Services {
             return file_exists;
         }
 
-        public bool audio_cd_exits (string mb_disc_id) {
-            bool file_exists = false;
-            Sqlite.Statement stmt;
-
-            string sql = """
-                SELECT COUNT (*) FROM audio_cd WHERE mb_disc_id=$ID;
-            """;
-
-            db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_str (stmt, sql, "$ID", mb_disc_id);
-
-            if (stmt.step () == Sqlite.ROW) {
-                file_exists = stmt.column_int (0) > 0;
-            }
-            stmt.reset ();
-            return file_exists;
-        }
 
 // PARAMENTER REGION
         private void set_parameter_int (Sqlite.Statement? stmt, string sql, string par, int val) {
