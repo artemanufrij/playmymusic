@@ -35,6 +35,9 @@
         <screenshot>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/Screenshot_Radio_Stations.png</image>
         </screenshot>
+        <screenshot>
+            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/Screenshot_Audio_CD.png</image>
+        </screenshot>
     </screenshots>
     <releases>
         <release version="0.1.6" date="2017-10-16">
