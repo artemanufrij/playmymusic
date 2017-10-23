@@ -102,6 +102,7 @@ namespace PlayMyMusic.Objects {
                         uint64 duration = file_info.get_attribute_uint64 (FILE_ATTRIBUTE_DURATION);
 
                         var track = new Track (this);
+                        track.ID = counter * -1;
                         track.track = counter;
                         track.title = title.strip ();
                         track.uri = GLib.Path.build_filename (file.get_uri (), file_info.get_name ());

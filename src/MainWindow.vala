@@ -457,7 +457,9 @@ namespace PlayMyMusic {
                         search_entry.text = radios_view.filter;
                         break;
                     case 4:
-                        search_entry.grab_focus ();
+                        if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.AUDIO_CD || audio_cd_view.filter != "") {
+                            search_entry.grab_focus ();
+                        }
                         content.set_visible_child_name ("audiocd");
                         search_entry.text = audio_cd_view.filter;
                         adjust_background_images ();
@@ -502,7 +504,7 @@ namespace PlayMyMusic {
                 audio_cd_view.load_background ();
                 Source.remove (adjust_timer);
                 adjust_timer = 0;
-                return true;
+                return false;
             });
         }
 

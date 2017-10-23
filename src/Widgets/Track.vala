@@ -78,7 +78,6 @@ namespace PlayMyMusic.Widgets {
             this.tooltip_text = this.track.title;
 
             var event_box = new Gtk.EventBox ();
-            event_box.button_press_event.connect (show_context_menu);
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST || this.track_style == TrackStyle.AUDIO_CD) {
@@ -93,22 +92,25 @@ namespace PlayMyMusic.Widgets {
             content.halign = Gtk.Align.FILL;
             event_box.add (content);
 
-            menu = new Gtk.Menu ();
-            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
-            menu.add (menu_add_into_playlist);
+            if (this.track_style != TrackStyle.AUDIO_CD) {
+                event_box.button_press_event.connect (show_context_menu);
+                menu = new Gtk.Menu ();
+                var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
+                menu.add (menu_add_into_playlist);
 
-            if (track.playlist != null) {
-                var menu_remove_from_playlist = new Gtk.MenuItem.with_label (_("Remove from Playlist"));
-                menu_remove_from_playlist.activate.connect (() => {
-                    library_manager.remove_track_from_playlist (track);
-                });
-                menu.add (menu_remove_from_playlist);
+                if (track.playlist != null) {
+                    var menu_remove_from_playlist = new Gtk.MenuItem.with_label (_("Remove from Playlist"));
+                    menu_remove_from_playlist.activate.connect (() => {
+                        library_manager.remove_track_from_playlist (track);
+                    });
+                    menu.add (menu_remove_from_playlist);
+                }
+
+                playlists = new Gtk.Menu ();
+                menu_add_into_playlist.set_submenu (playlists);
+
+                menu.show_all ();
             }
-
-            playlists = new Gtk.Menu ();
-            menu_add_into_playlist.set_submenu (playlists);
-
-            menu.show_all ();
 
             if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST) {
                 cover = new Gtk.Image ();

@@ -101,6 +101,8 @@ namespace PlayMyMusic.Widgets.Views {
             content.column_spacing = 96;
             content.row_spacing = 24;
             content.margin = 96;
+            content.margin_bottom = 48;
+            content.margin_top = 48;
 
             var event_box = new Gtk.EventBox ();
             event_box.button_press_event.connect (show_context_menu);
@@ -110,7 +112,10 @@ namespace PlayMyMusic.Widgets.Views {
             cover.height_request = 320;
             cover.width_request = 320;
             cover.get_style_context ().add_class ("card");
-            cover.valign = Gtk.Align.CENTER;
+            cover.valign = Gtk.Align.START;
+            cover.margin_top = 48;
+            cover.margin_left = 4;
+            cover.margin_right = 4;
             event_box.add (cover);
 
             menu = new Gtk.Menu ();
@@ -132,7 +137,6 @@ namespace PlayMyMusic.Widgets.Views {
 
             title = new Gtk.Label ("");
             title.get_style_context ().add_class ("h1");
-            title.get_style_context ().add_class ("artist-title");
             title.halign = Gtk.Align.START;
 
             artist = new Gtk.Label ("");
