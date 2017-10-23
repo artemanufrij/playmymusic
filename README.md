@@ -7,6 +7,7 @@
 ![screenshot](Screenshot.png)
 ![screenshot](Screenshot_Artists.png)
 ![screenshot](Screenshot_Playlists.png)
+![screenshot](Screenshot_Audio_CD.png)
 
 ## Install from Github.
 
