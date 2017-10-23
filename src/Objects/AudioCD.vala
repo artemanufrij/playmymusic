@@ -157,6 +157,7 @@ namespace PlayMyMusic.Objects {
                             string s;
                             if (tags.get_string (Gst.Tag.CDDA.MUSICBRAINZ_DISCID, out s)) {
                                 mb_disc_id = s;
+                                stdout.printf ("MB DISC ID: %s\n", mb_disc_id);
                             }
                             done = true;
                             break;

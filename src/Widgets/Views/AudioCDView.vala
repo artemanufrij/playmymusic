@@ -149,7 +149,6 @@ namespace PlayMyMusic.Widgets.Views {
             tracks.get_style_context ().add_class ("playlist-tracks");
             tracks.set_filter_func (tracks_filter_func);
             tracks.selected_rows_changed.connect (play_track);
-            tracks.valign = Gtk.Align.CENTER;
             tracks.expand = true;
             tracks_scroll.add (tracks);
 
