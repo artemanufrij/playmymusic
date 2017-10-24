@@ -331,6 +331,16 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        public void play_audio_cd () {
+            Objects.Track? track;
+            if (settings.shuffle_mode) {
+                track = current_audio_cd.get_shuffle_track (null);
+            } else {
+                track = current_audio_cd.get_first_track ();
+            }
+            library_manager.play_track (track, Services.PlayMode.AUDIO_CD);
+        }
+
         private bool tracks_filter_func (Gtk.ListBoxRow child) {
             if (filter.strip ().length == 0) {
                 return true;

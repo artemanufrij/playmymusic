@@ -171,7 +171,6 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void play_album () {
             Objects.Track? track;
-
             if (settings.shuffle_mode) {
                 track = current_album.get_shuffle_track (null);
             } else {

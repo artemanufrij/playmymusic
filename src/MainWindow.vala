@@ -426,7 +426,6 @@ namespace PlayMyMusic {
             view_mode.append (audio_cd_button);
             audio_cd_widget = view_mode.get_children ().last ().data;
 
-
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
                     case 1:
@@ -460,6 +459,9 @@ namespace PlayMyMusic {
                         if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.AUDIO_CD || audio_cd_view.filter != "") {
                             search_entry.grab_focus ();
                         }
+                        previous_button.sensitive = true;
+                        play_button.sensitive = true;
+                        next_button.sensitive = true;
                         content.set_visible_child_name ("audiocd");
                         search_entry.text = audio_cd_view.filter;
                         adjust_background_images ();
@@ -545,6 +547,9 @@ namespace PlayMyMusic {
                         break;
                     case 1:
                         artists_view.play_selected_artist ();
+                        break;
+                    case 4:
+                        audio_cd_view.play_audio_cd ();
                         break;
                 }
             }
