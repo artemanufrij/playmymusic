@@ -40,6 +40,28 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.2.0" date="2017-11-01">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Audio CD support</li>
+                </ul>
+                <p>Fix:</p>
+                <ul>
+                    <li>[online radio] freeze on 'audio/aacp' stream</li>
+                    <li>Critical error when external file playing</li>
+                    <li>Crash if music files are not exist and play mode is 'repeat'</li>
+                </ul>
+                <p>Change:</p>
+                <ul>
+                    <li>Moved to Granite SeekBar</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Lithuanian (by welaq)</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.1.6" date="2017-10-16">
             <description>
                 <p>New:</p>
