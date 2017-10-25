@@ -134,7 +134,9 @@ namespace PlayMyMusic {
                     }
                     audio_cd_view.reset ();
                     audio_cd_widget.hide ();
-                    show_playing_view ();
+                    if (view_mode.selected == 4) {
+                        show_playing_view ();
+                    }
                 }
             });
         }
