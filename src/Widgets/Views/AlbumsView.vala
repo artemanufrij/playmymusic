@@ -136,13 +136,14 @@ namespace PlayMyMusic.Widgets.Views {
             activate_by_id (track.album.ID);
         }
 
-        public void activate_by_id (int id) {
+        public Objects.Album? activate_by_id (int id) {
             foreach (var child in albums.get_children ()) {
                 if ((child as Widgets.Album).album.ID == id) {
                     child.activate ();
-                    return;
+                    return (child as Widgets.Album).album;
                 }
             }
+            return null;
         }
 
         public void hide_album_details () {

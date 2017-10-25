@@ -25,6 +25,8 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
+ //http://musicbrainz.org/ws/2/release/?query=release:the%20best%20of%2025%20years%20AND%20artist:sting&fmt=json
+
 namespace PlayMyMusic.Services {
     public class MusicBrainzManager {
         public static void fill_audio_cd (PlayMyMusic.Objects.AudioCD audio_cd) {

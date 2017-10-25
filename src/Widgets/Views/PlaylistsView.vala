@@ -232,12 +232,17 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void activate_by_track (Objects.Track track) {
+            activate_by_id (track.playlist.ID);
+        }
+
+        public Objects.Playlist? activate_by_id (int id) {
             foreach (var child in playlists.get_children ()) {
-                var playlist = child as Widgets.Views.PlaylistView;
-                if (playlist.playlist.ID == track.playlist.ID) {
-                    playlist.mark_playing_track (track);
+                if ((child as Widgets.Views.PlaylistView).playlist.ID == id) {
+                    (child as Widgets.Views.PlaylistView).mark_playing_track (library_manager.player.current_track);
+                    return (child as Widgets.Views.PlaylistView).playlist;
                 }
             }
+            return null;
         }
 
         private async void show_playlists_from_database () {

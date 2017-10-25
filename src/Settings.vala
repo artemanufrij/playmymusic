@@ -41,6 +41,10 @@ namespace PlayMyMusic {
         public bool repeat_mode { get; set; }
         public int last_artist_id { get; set; }
         public int last_album_id { get; set; }
+        public int last_playlist_id { get; set; }
+        public int last_track_id { get; set; }
+        public double track_progress { get; set; }
+        public string track_source { get; set; }
         public bool play_in_background { get; set; }
         public bool look_for_new_files { get; set; }
         public string [] artists { get; set; }

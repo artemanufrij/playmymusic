@@ -42,6 +42,7 @@ namespace PlayMyMusic.Services {
 
         PlayMyMusic.Settings settings;
 
+        Gst.Format fmt = Gst.Format.TIME;
         dynamic Gst.Element playbin;
         Gst.Bus bus;
 
@@ -62,12 +63,26 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        int64 _duration = 0;
-        public int64 duration {
+        public unowned int64 duration {
             get {
-                return _duration;
+                int64 d = 0;
+                this.playbin.query_duration (fmt, out d);
+                if (d == 0 && current_track != null) {
+                    d = (int64)current_track.duration;
+                }
+                return d;
             }
         }
+
+        public unowned int64 position {
+            get {
+                int64 d = 0;
+                this.playbin.query_position (fmt, out d);
+                return d;
+            }
+        }
+
+        public double target_progress { get; set; default = 0; }
 
         public signal void state_changed (Gst.State state);
 
@@ -97,16 +112,16 @@ namespace PlayMyMusic.Services {
             play ();
         }
 
-        public void set_track (PlayMyMusic.Objects.Track? track, PlayMode play_mode) {
+        public bool load_track (PlayMyMusic.Objects.Track? track, PlayMode play_mode) {
             if (track == current_track || track == null) {
-                return;
+                return false;
             }
             this.play_mode = play_mode;
             current_track = track;
 
             if (play_mode != PlayMode.AUDIO_CD && !track.file_exists ()) {
                 next ();
-                return;
+                return false;
             }
             stop ();
             if (current_track.uri.has_prefix ("cdda://")) {
@@ -114,7 +129,13 @@ namespace PlayMyMusic.Services {
             } else {
                 playbin.uri = current_track.uri;
             }
-            play ();
+            return true;
+        }
+
+        public void set_track (PlayMyMusic.Objects.Track? track, PlayMode play_mode) {
+            if (load_track (track, play_mode)) {
+                play ();
+            }
         }
 
         public void set_file (File file) {
@@ -277,29 +298,23 @@ namespace PlayMyMusic.Services {
         }
 
         public void seek_to_position (int64 position) {
-            Gst.Format fmt = Gst.Format.TIME;
             playbin.seek_simple (fmt, Gst.SeekFlags.FLUSH, position);
         }
 
-         public unowned int64 get_position_sec () {
-            Gst.Format fmt = Gst.Format.TIME;
-            int64 current = 0;
+        public void seek_to_progress (double percent) {
+            seek_to_position ((int64)(percent * duration));
+        }
 
-            if (this.playbin.query_position (fmt, out current)) {
+        public unowned int64 get_position_sec () {
+            int64 current = position;
+            if (current > 0) {
                 return current / 1000000000;
             }
             return -1;
         }
 
         public unowned double get_position_progress () {
-            Gst.Format fmt = Gst.Format.TIME;
-            int64 current = 0;
-
-            if (this.playbin.query_position (fmt, out current) && this.playbin.query_duration (fmt, out _duration)) {
-                var p = ((double)1 / duration * current);
-                return (double)p;
-            }
-            return -1;
+            return (double) 1 / duration * position;
         }
     }
 }

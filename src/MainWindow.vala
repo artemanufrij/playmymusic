@@ -140,12 +140,7 @@ namespace PlayMyMusic {
         }
 
         public MainWindow () {
-            if (settings.window_maximized) {
-                this.maximize ();
-                this.set_default_size (1024, 720);
-            } else {
-                this.set_default_size (settings.window_width, settings.window_height);
-            }
+            load_settings ();
             this.window_position = Gtk.WindowPosition.CENTER;
             build_ui ();
 
@@ -154,8 +149,8 @@ namespace PlayMyMusic {
                 if (settings.look_for_new_files) {
                     library_manager.scan_local_library (settings.library_location);
                 }
+                load_last_played_track ();
             });
-
 
             this.configure_event.connect ((event) => {
                 settings.window_width = event.width;
@@ -176,9 +171,8 @@ namespace PlayMyMusic {
             });
 
             this.destroy.connect (() => {
+                save_settings ();
                 library_manager.player.stop ();
-                settings.window_maximized = this.is_maximized;
-                settings.view_index = view_mode.selected;
             });
 
             Granite.Widgets.Utils.set_theming_for_screen (
@@ -375,8 +369,8 @@ namespace PlayMyMusic {
             content.add_named (playlists_view, "playlists");
             content.add_named (radios_view, "radios");
             content.add_named (audio_cd_view, "audiocd");
-            this.add (content);
 
+            this.add (content);
             this.show_all ();
 
             audio_cd_widget.hide ();
@@ -384,11 +378,6 @@ namespace PlayMyMusic {
 
             library_manager.device_manager.init ();
 
-            if (settings.view_index != 4 || audio_cd_view.current_audio_cd != null) {
-                view_mode.set_active (settings.view_index);
-            } else {
-                view_mode.set_active (0);
-            }
             radios_view.unselect_all ();
             search_entry.grab_focus ();
         }
@@ -595,6 +584,89 @@ namespace PlayMyMusic {
                 audio_cd_view.open_file (file);
             } else if (!albums_view.open_file (file.get_path ())) {
                 library_manager.player.set_file (file);
+            }
+        }
+
+        private void load_last_played_track () {
+            switch (settings.track_source) {
+                case "album":
+                    view_mode.set_active (0);
+                    var album = albums_view.activate_by_id (settings.last_album_id);
+                    if (album != null) {
+                        var track = album.get_track_by_id (settings.last_track_id);
+                        if (track != null) {
+                            library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.ALBUM);
+                        }
+                    }
+                    break;
+                case "artist":
+                    view_mode.set_active (1);
+                    var artist = artists_view.activate_by_id (settings.last_artist_id);
+                    if (artist != null) {
+                        var track = artist.get_track_by_id (settings.last_track_id);
+                        if (track != null) {
+                            library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.ARTIST);
+                        }
+                    }
+                    break;
+                case "playlist":
+                    view_mode.set_active (2);
+                    var playlist = playlists_view.activate_by_id (settings.last_playlist_id);
+                    if (playlist != null) {
+                        var track = playlist.get_track_by_id (settings.last_track_id);
+                        if (track != null) {
+                            library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.PLAYLIST);
+                        }
+                    }
+                    break;
+
+                default:
+                    if (settings.view_index != 4 || audio_cd_view.current_audio_cd != null) {
+                        view_mode.set_active (settings.view_index);
+                    } else {
+                        view_mode.set_active (0);
+                    }
+                    break;
+            }
+        }
+
+        private void load_settings () {
+            if (settings.window_maximized) {
+                this.maximize ();
+                this.set_default_size (1024, 720);
+            } else {
+                this.set_default_size (settings.window_width, settings.window_height);
+            }
+        }
+
+        private void save_settings () {
+            settings.window_maximized = this.is_maximized;
+            settings.view_index = view_mode.selected;
+            var current_track = library_manager.player.current_track;
+
+            if (current_track != null && (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.ALBUM
+                || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.ARTIST
+                || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.PLAYLIST)) {
+                settings.last_track_id = library_manager.player.current_track.ID;
+                settings.track_progress = library_manager.player.get_position_progress ();
+                switch (library_manager.player.play_mode) {
+                    case PlayMyMusic.Services.PlayMode.ALBUM:
+                        settings.last_album_id = current_track.album.ID;
+                        settings.track_source = "album";
+                        break;
+                    case PlayMyMusic.Services.PlayMode.ARTIST:
+                        settings.last_artist_id = current_track.album.artist.ID;
+                        settings.track_source = "artist";
+                        break;
+                    case PlayMyMusic.Services.PlayMode.PLAYLIST:
+                        settings.last_playlist_id = current_track.playlist.ID;
+                        settings.track_source = "playlist";
+                        break;
+                }
+            } else {
+                settings.last_track_id = 0;
+                settings.track_progress = 0;
+                settings.track_source = "";
             }
         }
     }

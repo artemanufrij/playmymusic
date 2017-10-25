@@ -107,13 +107,14 @@ namespace PlayMyMusic.Widgets.Views {
             activate_by_id (track.album.artist.ID);
         }
 
-        public void activate_by_id (int id) {
+        public Objects.Artist? activate_by_id (int id) {
             foreach (var child in artists.get_children ()) {
                 if ((child as Widgets.Artist).artist.ID == id) {
                     child.activate ();
-                    return;
+                    return (child as Widgets.Artist).artist;
                 }
             }
+            return null;
         }
 
         public void reset () {

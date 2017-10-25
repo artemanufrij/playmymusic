@@ -20,6 +20,26 @@
 			<summary>Last Album ID.</summary>
 			<description>Last Album ID.</description>
 		</key>
+		<key name="last-playlist-id" type="i">
+			<default>0</default>
+			<summary>Last Playlist ID.</summary>
+			<description>Last Playlist ID.</description>
+		</key>
+		<key name="last-track-id" type="i">
+			<default>0</default>
+			<summary>Current track position</summary>
+			<description>Current track position.</description>
+		</key>
+		<key name="track-progress" type="d">
+			<default>0</default>
+			<summary>Current track position</summary>
+			<description>Current track position.</description>
+		</key>
+		<key name="track-source" type="s">
+			<default>""</default>
+			<summary>Track source album or artist</summary>
+			<description>Track source album or artist.</description>
+		</key>
 		<key name="window-maximized" type="b">
 			<default>false</default>
 			<summary>Maximized window.</summary>

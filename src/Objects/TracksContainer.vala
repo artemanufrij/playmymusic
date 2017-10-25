@@ -98,6 +98,19 @@ namespace PlayMyMusic.Objects {
             db_manager = library_manager.db_manager;
         }
 
+        public Track? get_track_by_id (int id) {
+            Track? return_value = null;
+            lock (_tracks) {
+                foreach (var track in _tracks) {
+                    if (track.ID == id) {
+                        return_value = track;
+                        break;
+                    }
+                }
+            }
+            return return_value;
+        }
+
         public Track? get_next_track (Track current) {
             shuffle_index = null;
             int i = _tracks.index (current) + 1;
