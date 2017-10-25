@@ -67,6 +67,7 @@ namespace PlayMyMusic.Widgets.Views {
         private bool first_draw () {
             this.draw.disconnect (first_draw);
             activate_by_id (settings.last_artist_id);
+            load_background ();
             return false;
         }
 

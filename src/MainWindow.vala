@@ -589,7 +589,7 @@ namespace PlayMyMusic {
 
         private void load_last_played_track () {
             switch (settings.track_source) {
-                case "album":
+                case "albums":
                     view_mode.set_active (0);
                     var album = albums_view.activate_by_id (settings.last_album_id);
                     if (album != null) {
@@ -599,7 +599,7 @@ namespace PlayMyMusic {
                         }
                     }
                     break;
-                case "artist":
+                case "artists":
                     view_mode.set_active (1);
                     var artist = artists_view.activate_by_id (settings.last_artist_id);
                     if (artist != null) {
@@ -609,7 +609,7 @@ namespace PlayMyMusic {
                         }
                     }
                     break;
-                case "playlist":
+                case "playlists":
                     view_mode.set_active (2);
                     var playlist = playlists_view.activate_by_id (settings.last_playlist_id);
                     if (playlist != null) {
@@ -652,15 +652,15 @@ namespace PlayMyMusic {
                 switch (library_manager.player.play_mode) {
                     case PlayMyMusic.Services.PlayMode.ALBUM:
                         settings.last_album_id = current_track.album.ID;
-                        settings.track_source = "album";
+                        settings.track_source = "albums";
                         break;
                     case PlayMyMusic.Services.PlayMode.ARTIST:
                         settings.last_artist_id = current_track.album.artist.ID;
-                        settings.track_source = "artist";
+                        settings.track_source = "artists";
                         break;
                     case PlayMyMusic.Services.PlayMode.PLAYLIST:
                         settings.last_playlist_id = current_track.playlist.ID;
-                        settings.track_source = "playlist";
+                        settings.track_source = "playlists";
                         break;
                 }
             } else {

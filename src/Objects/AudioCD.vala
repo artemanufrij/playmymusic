@@ -147,7 +147,7 @@ namespace PlayMyMusic.Objects {
                     Gst.Message? msg;
                     Gst.TagList tags;
                     GLib.Error err;
-                    msg = bus.timed_pop (5 * Gst.SECOND);
+                    msg = bus.timed_pop (10 * Gst.SECOND);
                     if (msg == null) {
                         break;
                     }
