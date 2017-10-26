@@ -25,15 +25,105 @@
  * Authored by: Artem Anufrij <artem.anufrij@live.de>
  */
 
- //http://musicbrainz.org/ws/2/release/?query=release:the%20best%20of%2025%20years%20AND%20artist:sting&fmt=json
-
 namespace PlayMyMusic.Services {
     public class MusicBrainzManager {
+        static MusicBrainzManager _instance = null;
+
+        public static MusicBrainzManager instance {
+            get {
+                if (_instance == null) {
+                    _instance = new MusicBrainzManager();
+                }
+                return _instance;
+            }
+        }
+
+        private MusicBrainzManager () {}
+
+        GLib.List<Objects.Artist> artists = new GLib.List<Objects.Artist> ();
+
+        bool artist_thread_running = false;
+
+        public void fill_artist_cover_queue (Objects.Artist artist) {
+            lock (artists) {
+                artists.append (artist);
+            }
+            if (!artist_thread_running) {
+                artist_thread_running = true;
+                new Thread<void*> (null, () => {
+                    var session = new Soup.Session.with_options ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
+                    Objects.Artist? first = null;
+                    while (artists.length () > 0) {
+
+                        lock (artists) {
+                            first = artists.first ().data;
+                            if (first != null) {
+                                artists.remove (first);
+                            }
+                        }
+
+                        if (first!= null && first.cover == null) {
+                            foreach (var album in first.albums) {
+                                Thread.usleep (1000000);
+                                string uri = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.title, first.name);
+                                var msg = new Soup.Message ("GET", uri);
+                                session.send_message (msg);
+                                if (msg.status_code == 200) {
+                                    var body = (string)msg.response_body.data;
+                                    var parser = new Json.Parser ();
+                                    Json.Node root = null;
+                                    try {
+                                        parser.load_from_data (body);
+                                        root = parser.get_root ();
+                                    } catch (Error err) {
+                                        warning (err.message);
+                                    }
+                                    if (root != null) {
+                                        if (root.get_object ().has_member ("releases")) {
+                                            var releases = root.get_object ().get_member ("releases").get_array ();
+                                            if (releases.get_length () > 0) {
+                                                var release = releases.get_element (0).get_object ();
+                                                if (release.has_member ("artist-credit")) {
+                                                    var artists = release.get_member ("artist-credit").get_array ();
+                                                    if (artists.get_length () > 0) {
+                                                        var art = artists.get_element (0).get_object ();
+                                                        if (art.has_member ("artist")) {
+                                                            var art_obj = art.get_member ("artist").get_object ();
+                                                            if (art_obj.has_member ("id")) {
+                                                                var artist_id = art_obj.get_string_member ("id");
+                                                                stdout.printf ("ARTIST ID: %s\n", artist_id);
+                                                                var pixbuf = get_pixbuf_by_artist_id (artist_id);
+                                                                if (pixbuf != null) {
+                                                                    pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
+                                                                    try {
+                                                                        pixbuf.save (first.cover_path, "jpeg", "quality", "100");
+                                                                        first.load_cover_async.begin ();
+                                                                        break;
+                                                                    } catch (Error err) {
+                                                                        warning (err.message);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    artist_thread_running = false;
+                    return null;
+                });
+            }
+        }
+
+
         public static void fill_audio_cd (PlayMyMusic.Objects.AudioCD audio_cd) {
             var session = new Soup.Session.with_options  ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
-
             string uri = "http://musicbrainz.org/ws/2/discid/%s?inc=artists+recordings&fmt=json".printf (audio_cd.mb_disc_id);
-
             string album_id = "";
 
             var msg = new Soup.Message ("GET", uri);
@@ -115,7 +205,71 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public Gdk.Pixbuf? get_pixbuf_by_artist_id (string id) {
+            var session = new Soup.Session.with_options  ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
+            string uri = "http://musicbrainz.org/ws/2/artist/%s?inc=url-rels&fmt=json".printf (id);
+            var msg = new Soup.Message ("GET", uri);
+            session.send_message (msg);
+
+            if (msg.status_code == 200) {
+                var body = (string)msg.response_body.data;
+                var parser = new Json.Parser ();
+                Json.Node root = null;
+                try {
+                    parser.load_from_data (body);
+                    root = parser.get_root ();
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                if (root != null && root.get_object ().has_member ("relations")) {
+                    var array = root.get_object ().get_member ("relations").get_array ();
+                    foreach (unowned Json.Node item in array.get_elements ()) {
+                        var o = item.get_object ();
+                        if (o.has_member ("type") && o.get_string_member ("type") == "image" && o.has_member ("url")) {
+                            var url = o.get_member ("url").get_object ();
+                            if (url.has_member ("resource")) {
+                                var resource = url.get_string_member ("resource");
+                                if (resource.index_of ("wikimedia.org") > -1) {
+                                    var wiki_url = get_raw_url_for_wikimedia (resource);
+                                    return get_pixbuf_from_url (wiki_url);
+                                } else {
+                                    return get_pixbuf_from_url (resource);
+                                }
+                                stdout.printf ("%s\n", resource);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public string get_raw_url_for_wikimedia (string url) {
+            MatchInfo match_info;
+            var regex = new Regex ("(?<=/File:)[^<]*");
+            if (regex.match (url, 0, out match_info)) {
+                var session = new Soup.Session.with_options  ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
+                var image_id = match_info.fetch (0);
+                var request_url = "https://en.wikipedia.org/w/api.php?action=query&titles=File:%s&prop=imageinfo&iiprop=url&iiurlwidth=500&iiurlheight=500&format=json".printf (image_id);
+                var msg = new Soup.Message ("GET", request_url);
+                session.send_message (msg);
+                if (msg.status_code == 200) {
+                    var body = (string)msg.response_body.data;
+                    regex = new Regex ("(?<=\"thumburl\":\")[^\"]*");
+                    if (regex.match (body, 0, out match_info)) {
+                        var result = match_info.fetch (0);
+                        return result;
+                    }
+                }
+            }
+            return "";
+        }
+
         public static Gdk.Pixbuf? get_pixbuf_from_url (string url) {
+            if (!url.has_prefix ("http")) {
+                return null;
+            }
             Gdk.Pixbuf? return_value = null;
             var session = new Soup.Session.with_options ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
             var msg = new Soup.Message ("GET", url);

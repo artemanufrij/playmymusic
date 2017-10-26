@@ -101,7 +101,7 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        private async void load_cover_async () {
+        public async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {
                 return;
             }
@@ -176,6 +176,7 @@ namespace PlayMyMusic.Objects {
                     }
                 }
                 Idle.add ((owned) callback);
+                Services.MusicBrainzManager.instance.fill_artist_cover_queue (this);
                 return null;
             });
             yield;
