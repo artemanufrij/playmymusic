@@ -45,10 +45,11 @@
                 <p>New:</p>
                 <ul>
                     <li>Audio CD support</li>
+                    <li>[artist view] Download artwork from MusicBrainz if exists</li>
                 </ul>
                 <p>Fix:</p>
                 <ul>
-                    <li>[online radio] freeze on 'audio/aacp' stream</li>
+                    <li>[online radio] Freeze on 'audio/aacp' stream</li>
                     <li>Critical error when external file playing</li>
                     <li>Crash if music files are not exist and play mode is 'repeat'</li>
                 </ul>
