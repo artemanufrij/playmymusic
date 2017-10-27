@@ -3,6 +3,7 @@ configure_file (${CMAKE_SOURCE_DIR}/Config.vala.cmake ${CONFIG_FILE})
 
 vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Utils/Utils.vala
+    Utils/MusicBrainz.vala
     Objects/TracksContainer.vala
     Objects/Playlist.vala
     Objects/Album.vala
