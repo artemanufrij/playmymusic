@@ -202,6 +202,7 @@ namespace PlayMyMusic {
         public void build_ui () {
             // CONTENT
             content = new Gtk.Stack ();
+            content.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
 
             headerbar = new Gtk.HeaderBar ();
             headerbar.title = _("Play My Music");
