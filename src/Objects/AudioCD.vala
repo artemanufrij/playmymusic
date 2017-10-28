@@ -106,7 +106,7 @@ namespace PlayMyMusic.Objects {
                         track.track = counter;
                         track.title = title.strip ();
                         track.uri = GLib.Path.build_filename (file.get_uri (), file_info.get_name ());
-                        track.duration = duration * 1000000000;
+                        track.duration = duration * Gst.SECOND;
                         add_track (track);
                         counter++;
                     }
@@ -166,8 +166,6 @@ namespace PlayMyMusic.Objects {
                             msg.parse_error (out err, out debug);
                             warning ("Error: %s\n%s\n", err.message, debug);
                             done = true;
-                            break;
-                        default:
                             break;
                     }
                 }

@@ -27,16 +27,27 @@
 
 namespace PlayMyMusic.Widgets {
     public class TrackTimeLine : Gtk.Grid {
+        PlayMyMusic.Services.Player player;
         public signal void goto_current_track (PlayMyMusic.Objects.Track current_track);
+
         Gtk.Label playing_track;
         Gtk.Grid content;
-
         Granite.SeekBar timeline;
 
-        uint timer = 0;
-        int64 duration = 0;
-
         PlayMyMusic.Objects.Track current_track;
+
+        construct {
+            player = PlayMyMusic.Services.Player.instance;
+            player.current_progress_changed.connect ((position) => {
+                timeline.playback_progress = position;
+                if (timeline.playback_duration == 0) {
+                    timeline.playback_duration = player.duration / Gst.SECOND;
+                }
+            });
+            player.current_duration_changed.connect ((duration) => {
+                timeline.playback_duration = duration / Gst.SECOND;
+            });
+        }
 
         public TrackTimeLine () {
             build_ui ();
@@ -63,8 +74,7 @@ namespace PlayMyMusic.Widgets {
             timeline = new Granite.SeekBar (0);
             timeline.scale.change_value.connect ((scroll, new_value) => {
                 if (scroll == Gtk.ScrollType.JUMP) {
-                    var seek_position = (int64)(new_value * duration * 1000000000);
-                    PlayMyMusic.Services.Player.instance.seek_to_position (seek_position);
+                    PlayMyMusic.Services.Player.instance.seek_to_progress (new_value);
                 }
                 return false;
             });
@@ -74,42 +84,13 @@ namespace PlayMyMusic.Widgets {
             this.show_all ();
         }
 
-        public void stop_playing () {
-            if (timer != 0) {
-                Source.remove (timer);
-                timer = 0;
-            }
-            timeline.playback_progress = 0;
-        }
-
-        public void pause_playing () {
-            if (timer != 0) {
-                Source.remove (timer);
-                timer = 0;
-            }
-        }
-
         public void set_playing_file (File file) {
             current_track = null;
             playing_track.label = file.get_basename ().replace ("&", "&amp;");
-
-            timer = GLib.Timeout.add (250, () => {
-                var pos_rel = PlayMyMusic.Services.Player.instance.get_position_progress ();
-                if (pos_rel < 0) {
-                    return true;
-                }
-                duration = PlayMyMusic.Services.Player.instance.duration / 1000000000;
-                if (timeline.playback_duration != duration) {
-                    timeline.playback_duration = duration;
-                }
-                timeline.playback_progress = pos_rel;
-                return true;
-            });
         }
 
         public void set_playing_track (PlayMyMusic.Objects.Track track) {
             current_track = track;
-
             if (track.album != null) {
                 playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title.replace ("&", "&amp;"),
                     track.album.title.replace ("&", "&amp;"),
@@ -117,23 +98,6 @@ namespace PlayMyMusic.Widgets {
             } else if (track.audio_cd != null) {
                 playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title, track.audio_cd.title, track.audio_cd.artist);
             }
-            duration = (int64)track.duration / 1000000000;
-            timeline.playback_duration = duration;
-
-            timer = GLib.Timeout.add (250, () => {
-                var pos_rel = PlayMyMusic.Services.Player.instance.get_position_progress ();
-                if (pos_rel < 0) {
-                    return true;
-                }
-
-                if (duration == 0) {
-                    duration = PlayMyMusic.Services.Player.instance.duration / 1000000000;
-                    timeline.playback_duration = duration;
-                }
-
-                timeline.playback_progress = pos_rel;
-                return true;
-            });
         }
     }
 }

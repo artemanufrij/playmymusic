@@ -40,6 +40,9 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public signal void current_progress_changed (double percent);
+        public signal void current_duration_changed (int64 duration);
+        uint progress_timer = 0;
         PlayMyMusic.Settings settings;
 
         Gst.Format fmt = Gst.Format.TIME;
@@ -97,7 +100,41 @@ namespace PlayMyMusic.Services {
             state_changed.connect ((state) => {
                 if (state != Gst.State.NULL) {
                     playbin.set_state (state);
+                } else {
+                    stop_progress_signal ();
                 }
+
+                switch (state) {
+                    case Gst.State.PLAYING:
+                        start_progress_signal ();
+                        break;
+                    case Gst.State.READY:
+                        stop_progress_signal ();
+                        break;
+                    case Gst.State.PAUSED:
+                        pause_progress_signal ();
+                        break;
+                }
+            });
+        }
+
+        public void pause_progress_signal () {
+            if (progress_timer != 0) {
+                Source.remove (progress_timer);
+                progress_timer = 0;
+            }
+        }
+
+        public void stop_progress_signal () {
+            pause_progress_signal ();
+            current_progress_changed (0);
+        }
+
+        public void start_progress_signal () {
+            pause_progress_signal ();
+            progress_timer = GLib.Timeout.add (250, () => {
+                current_progress_changed (get_position_progress ());
+                return true;
             });
         }
 
@@ -133,18 +170,22 @@ namespace PlayMyMusic.Services {
         }
 
         public void set_track (PlayMyMusic.Objects.Track? track, PlayMode play_mode) {
+            current_duration_changed (0);
             if (load_track (track, play_mode)) {
                 play ();
+                current_duration_changed (duration);
             }
         }
 
         public void set_file (File file) {
+            current_duration_changed (0);
             play_mode = PlayMode.FILE;
             current_file = file;
 
             stop ();
             playbin.uri = file.get_uri ();
             play ();
+            current_duration_changed (duration);
         }
 
         public void play () {

@@ -201,13 +201,25 @@ namespace PlayMyMusic.Services {
 
         public string get_raw_url_for_wikimedia (string url) {
             MatchInfo match_info;
-            var regex = new Regex ("(?<=/File:)[^<]*");
+            Regex regex = null;
+            try {
+                regex = new Regex ("(?<=/File:)[^<]*");
+            } catch (Error err) {
+                warning (err.message);
+                return "";
+            }
+
             if (regex.match (url, 0, out match_info)) {
                 var image_id = match_info.fetch (0);
                 var request_url = "https://en.wikipedia.org/w/api.php?action=query&titles=File:%s&prop=imageinfo&iiprop=url&iiurlwidth=500&iiurlheight=500&format=json".printf (image_id);
                 var body = get_body_from_url (request_url);
                 if (body != null) {
-                    regex = new Regex ("(?<=\"thumburl\":\")[^\"]*");
+                    try {
+                        regex = new Regex ("(?<=\"thumburl\":\")[^\"]*");
+                    } catch (Error err) {
+                        warning (err.message);
+                        return "";
+                    }
                     if (regex.match (body, 0, out match_info)) {
                         var result = match_info.fetch (0);
                         return result;

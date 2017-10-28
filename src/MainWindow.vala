@@ -109,10 +109,7 @@ namespace PlayMyMusic {
                         next_button.sensitive = false;
                     }
                 } else {
-                    if (state == Gst.State.PAUSED) {
-                        timeline.pause_playing ();
-                    } else {
-                        timeline.stop_playing ();
+                    if (state != Gst.State.PAUSED) {
                         headerbar.set_custom_title (null);
                         headerbar.title = _("Play My Music");
                     }
