@@ -316,7 +316,6 @@ namespace PlayMyMusic.Services {
             Gst.State state = Gst.State.NULL;
             Gst.State pending;
             playbin.get_state (out state, out pending, (Gst.ClockTime) (Gst.SECOND));
-
             return state;
         }
 
@@ -346,12 +345,9 @@ namespace PlayMyMusic.Services {
             seek_to_position ((int64)(percent * duration));
         }
 
-        public unowned int64 get_position_sec () {
+        private unowned int64 get_position_sec () {
             int64 current = position;
-            if (current > 0) {
-                return current / 1000000000;
-            }
-            return -1;
+            return current > 0 ? current / Gst.SECOND : -1;
         }
 
         public unowned double get_position_progress () {
