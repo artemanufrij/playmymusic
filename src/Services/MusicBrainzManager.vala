@@ -55,7 +55,9 @@ namespace PlayMyMusic.Services {
 
         public void fill_artist_cover_queue (Objects.Artist artist) {
             lock (artists) {
-                artists.append (artist);
+                if (artists.index (artist) == -1) {
+                    artists.append (artist);
+                }
             }
             read_artists_queue ();
         }
