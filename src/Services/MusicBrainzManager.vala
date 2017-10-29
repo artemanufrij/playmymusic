@@ -79,13 +79,14 @@ namespace PlayMyMusic.Services {
                     }
 
                     if (first!= null && first.cover == null) {
-                        foreach (var album in first.albums) {
+                        var albums = first.albums_title.copy ();
+                        foreach (var album in albums) {
                             Thread.usleep (1000000);
-                            string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.title.replace ("&", "%26"), first.name.replace ("&", "%26"));
+                            string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.replace ("&", "%26"), first.name.replace ("&", "%26"));
                             var body = get_body_from_url (url);
                             if (body != null) {
                                 var artist_id = Utils.MusicBrainz.get_artist_id_from_artist_ws_2 (body);
-                                stdout.printf ("ARTIST ID: %s (%s / %s)\n", artist_id, album.title, first.name);
+                                stdout.printf ("ARTIST ID: %s (%s / %s)\n", artist_id, album, first.name);
                                 var pixbuf = get_pixbuf_by_artist_id (artist_id);
                                 if (pixbuf != null) {
                                     pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);

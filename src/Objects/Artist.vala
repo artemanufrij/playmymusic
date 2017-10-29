@@ -52,6 +52,19 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        GLib.List<string> _albums_title;
+        public GLib.List<string> albums_title {
+            get {
+                _albums_title = new GLib.List<string> ();
+                lock (_albums) {
+                    foreach (var album in albums) {
+                        _albums_title.append (album.title);
+                    }
+                }
+                return _albums_title;
+            }
+        }
+
         public new GLib.List<Track> tracks {
             get {
                 return _tracks;
