@@ -43,6 +43,7 @@ namespace PlayMyMusic.Services {
         public signal void current_progress_changed (double percent);
         public signal void current_duration_changed (int64 duration);
         uint progress_timer = 0;
+
         PlayMyMusic.Settings settings;
 
         Gst.Format fmt = Gst.Format.TIME;
