@@ -186,7 +186,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        public void show_album_viewer (PlayMyMusic.Objects.Album album) {
+        public void show_album (PlayMyMusic.Objects.Album album) {
             if (current_album == album) {
                 return;
             }

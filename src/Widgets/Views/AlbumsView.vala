@@ -161,7 +161,7 @@ namespace PlayMyMusic.Widgets.Views {
         private void show_album_viewer (Gtk.FlowBoxChild item) {
             var album = (item as PlayMyMusic.Widgets.Album).album;
             settings.last_album_id = album.ID;
-            album_view.show_album_viewer (album);
+            album_view.show_album (album);
             album_selected ();
         }
 
