@@ -58,6 +58,9 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
 
             var content = new Gtk.Grid ();
+            content.margin = 12;
+            content.halign = Gtk.Align.CENTER;
+            content.row_spacing = 6;
             event_box.add (content);
 
             menu = new Gtk.Menu ();
@@ -68,9 +71,6 @@ namespace PlayMyMusic.Widgets {
 
             menu.show_all ();
 
-            content.margin = 12;
-            content.halign = Gtk.Align.CENTER;
-            content.row_spacing = 6;
             cover = new Gtk.Image ();
             cover.get_style_context ().add_class ("card");
             cover.halign = Gtk.Align.CENTER;
@@ -82,7 +82,7 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
-            var title = new Gtk.Label (("<span color='#666666'><b>%s</b></span>").printf(this.title.replace ("&", "&amp;")));
+            var title = new Gtk.Label (("<span color='#666666'><b>%s</b></span>").printf (this.title.replace ("&", "&amp;")));
             title.use_markup = true;
             title.halign = Gtk.Align.FILL;
             title.ellipsize = Pango.EllipsizeMode.END;
