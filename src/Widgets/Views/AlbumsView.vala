@@ -45,6 +45,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.FlowBox albums;
         Gtk.Stack stack;
         Gtk.Box content;
+        Gtk.Revealer action_revealer;
         Widgets.Views.AlbumView album_view;
 
         public bool is_album_view_visible {
@@ -91,10 +92,14 @@ namespace PlayMyMusic.Widgets.Views {
 
             album_view = new PlayMyMusic.Widgets.Views.AlbumView ();
 
+            action_revealer = new Gtk.Revealer ();
+            action_revealer.add (album_view);
+            action_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_LEFT;
+
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.expand = true;
             content.pack_start (albums_scroll, true, true, 0);
-            content.pack_start (album_view, false, false, 0);
+            content.pack_start (action_revealer, false, false, 0);
 
             var welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add music to your library.");
             welcome.append ("folder-music", _("Change Music Folder"), _("Load music from a folder, a network or an external disk."));
@@ -123,6 +128,8 @@ namespace PlayMyMusic.Widgets.Views {
 
             this.add (stack);
             this.show_all ();
+
+            action_revealer.set_reveal_child (false);
         }
 
         public void add_album (Objects.Album album) {
@@ -146,12 +153,8 @@ namespace PlayMyMusic.Widgets.Views {
             return null;
         }
 
-        public void hide_album_details () {
-            album_view.hide ();
-        }
-
         public void reset () {
-            album_view.hide ();
+            action_revealer.set_reveal_child (false);
             foreach (var child in albums.get_children ()) {
                 child.destroy ();
             }
@@ -159,6 +162,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void show_album_viewer (Gtk.FlowBoxChild item) {
+            action_revealer.set_reveal_child (true);
             var album = (item as PlayMyMusic.Widgets.Album).album;
             settings.last_album_id = album.ID;
             album_view.show_album (album);

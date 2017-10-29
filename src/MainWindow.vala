@@ -374,7 +374,6 @@ namespace PlayMyMusic {
             this.show_all ();
 
             audio_cd_widget.hide ();
-            albums_view.hide_album_details ();
 
             library_manager.device_manager.init ();
 
