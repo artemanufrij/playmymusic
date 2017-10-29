@@ -644,7 +644,8 @@ namespace PlayMyMusic {
             settings.view_index = view_mode.selected;
             var current_track = library_manager.player.current_track;
 
-            if (current_track != null && (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.ALBUM
+            if (current_track != null && library_manager.player.get_state () == Gst.State.PLAYING &&
+                (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.ALBUM
                 || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.ARTIST
                 || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.PLAYLIST)) {
                 settings.last_track_id = library_manager.player.current_track.ID;
