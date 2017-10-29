@@ -45,7 +45,10 @@ namespace PlayMyMusic.Widgets {
             build_ui ();
 
             this.artist.cover_changed.connect (() => {
-                cover.pixbuf = this.artist.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+                Idle.add (() => {
+                    cover.pixbuf = this.artist.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+                    return false;
+                });
             });
         }
 
