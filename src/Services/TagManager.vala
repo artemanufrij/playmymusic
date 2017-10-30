@@ -61,6 +61,7 @@ namespace PlayMyMusic.Services {
             new Thread<void*> (null, () => {
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                     warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), info.get_uri ());
+
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
@@ -140,7 +141,7 @@ namespace PlayMyMusic.Services {
                                 artist.name = unknown;
                             }
                         }
-
+                        f.dispose ();
                         discovered_new_item (artist, album, track);
                     }
                 }
@@ -149,6 +150,7 @@ namespace PlayMyMusic.Services {
                 if (discover_counter == 0) {
                     discover_finished ();
                 }
+                info.dispose ();
                 return null;
             });
         }
