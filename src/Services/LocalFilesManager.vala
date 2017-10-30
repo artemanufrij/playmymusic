@@ -77,6 +77,8 @@ namespace PlayMyMusic.Services {
                             }
                         }
                     }
+                    children.close ();
+                    children.dispose ();
                 } catch (Error err) {
                     warning (err.message);
                 }
