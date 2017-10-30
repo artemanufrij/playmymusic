@@ -91,9 +91,10 @@ namespace PlayMyMusic.Services {
                                 if (pixbuf != null) {
                                     pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
                                     try {
-                                        pixbuf.save (first.cover_path, "jpeg", "quality", "100");
-                                        first.load_cover_async.begin ();
-                                        break;
+                                        if (pixbuf.save (first.cover_path, "jpeg", "quality", "100")) {
+                                            first.load_cover_async.begin ();
+                                            break;
+                                        }
                                     } catch (Error err) {
                                         warning (err.message);
                                     }
