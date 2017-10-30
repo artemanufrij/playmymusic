@@ -80,6 +80,7 @@ namespace PlayMyMusic.Services {
                 } catch (Error err) {
                     warning (err.message);
                 }
+                directory.dispose ();
                 return null;
             });
         }
