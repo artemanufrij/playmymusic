@@ -78,7 +78,7 @@ namespace PlayMyMusic.Services {
                         }
                     }
 
-                    if (first!= null && first.cover == null) {
+                    if (first != null && first.cover == null) {
                         var albums = first.albums_title.copy ();
                         foreach (var album in albums) {
                             Thread.usleep (1000000);
@@ -182,10 +182,10 @@ namespace PlayMyMusic.Services {
                     warning (err.message);
                 }
                 if (root != null && root.get_object ().has_member ("relations")) {
-                    var array = root.get_object ().get_member ("relations").get_array ();
-                    foreach (unowned Json.Node item in array.get_elements ()) {
+                    var relations = root.get_object ().get_member ("relations").get_array ();
+                    foreach (unowned Json.Node item in relations.get_elements ()) {
                         var o = item.get_object ();
-                        if (o.has_member ("type") && o.get_string_member ("type") == "image" && o.has_member ("url")) {
+                        if (o.has_member ("url") && o.has_member ("type") && o.get_string_member ("type") == "image") {
                             var res_url = o.get_member ("url").get_object ();
                             if (res_url.has_member ("resource")) {
                                 var resource = res_url.get_string_member ("resource");
