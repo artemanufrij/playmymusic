@@ -71,10 +71,20 @@ namespace PlayMyMusic.Dialogs {
                 settings.look_for_new_files = look_for_new_files.active;
             });
 
+            var load_artist_data_label = new Gtk.Label (_("Load Artist data from MusicBrainz"));
+            var load_artist_data = new Gtk.Switch ();
+            load_artist_data.active = settings.load_artist_from_musicbrainz;
+            load_artist_data.notify["active"].connect (() => {
+                settings.load_artist_from_musicbrainz = load_artist_data.active;
+            });
+
             grid.attach (play_in_background_label, 0, 0);
             grid.attach (play_in_background, 1, 0);
             grid.attach (look_for_new_files_label, 0, 1);
             grid.attach (look_for_new_files, 1, 1);
+            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 2, 2, 1);
+            grid.attach (load_artist_data_label, 0, 3);
+            grid.attach (load_artist_data, 1, 3);
 
             content.pack_start (grid, false, false, 0);
 

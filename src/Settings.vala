@@ -51,6 +51,7 @@ namespace PlayMyMusic {
         public string [] covers { get; set; }
         public string library_location { get; set; }
         public int view_index { get; set; }
+        public bool load_artist_from_musicbrainz { get; set; }
 
         private Settings () {
             base ("com.github.artemanufrij.playmymusic");

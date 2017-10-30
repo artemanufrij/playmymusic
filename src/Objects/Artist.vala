@@ -27,6 +27,8 @@
 
 namespace PlayMyMusic.Objects {
     public class Artist : TracksContainer {
+        PlayMyMusic.Settings settings;
+
         public new int ID {
             get {
                 return _ID;
@@ -72,6 +74,7 @@ namespace PlayMyMusic.Objects {
         }
 
         construct {
+            settings = PlayMyMusic.Settings.get_default ();
             this.cover_changed.connect (() => {
                 create_background ();
             });
@@ -189,7 +192,9 @@ namespace PlayMyMusic.Objects {
                     }
                 }
                 Idle.add ((owned) callback);
-                Services.MusicBrainzManager.instance.fill_artist_cover_queue (this);
+                if (settings.load_artist_from_musicbrainz) {
+                    Services.MusicBrainzManager.instance.fill_artist_cover_queue (this);
+                }
                 return null;
             });
             yield;

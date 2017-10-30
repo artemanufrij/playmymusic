@@ -85,5 +85,10 @@
 			<summary>Last choosed view.</summary>
 			<description>Last choosed view.</description>
 		</key>
+		<key name="load-artist-from-musicbrainz" type="b">
+			<default>true</default>
+			<summary>Load Artist data like Artwork from MusicBrainz.</summary>
+			<description>Load Artist data like Artwork from MusicBrainz.</description>
+		</key>
 	</schema>
 </schemalist>
