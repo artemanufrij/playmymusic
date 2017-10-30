@@ -60,6 +60,7 @@
                     <li>[online radio] Freeze on 'audio/aacp' stream</li>
                     <li>Critical error when external file playing</li>
                     <li>Crash if music files are not exist and play mode is 'repeat'</li>
+                    <li>Crash if you scan a NFS-mounted directory</li>
                 </ul>
                 <p>Change:</p>
                 <ul>

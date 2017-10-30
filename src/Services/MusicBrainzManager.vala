@@ -44,13 +44,16 @@ namespace PlayMyMusic.Services {
         private MusicBrainzManager () {}
 
         private static string? get_body_from_url (string url) {
+            string? return_value = null;
             var session = new Soup.Session.with_options ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
             var msg = new Soup.Message ("GET", url);
             session.send_message (msg);
             if (msg.status_code == 200) {
-                return (string)msg.response_body.data;
+                return_value = (string)msg.response_body.data;
             }
-            return null;
+            msg.dispose ();
+            session.dispose ();
+            return return_value;
         }
 
         public void fill_artist_cover_queue (Objects.Artist artist) {
@@ -253,6 +256,8 @@ namespace PlayMyMusic.Services {
                 File f = File.new_for_path (tmp_file);
                 f.delete_async.begin ();
             }
+            msg.dispose ();
+            session.dispose ();
             return return_value;
         }
     }
