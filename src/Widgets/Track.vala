@@ -115,7 +115,6 @@ namespace PlayMyMusic.Widgets {
             if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST) {
                 cover = new Gtk.Image ();
                 cover.get_style_context ().add_class ("card");
-                cover.halign = Gtk.Align.CENTER;
                 cover.tooltip_text = this.track.album.title;
                 if (this.track.album.cover == null) {
                     cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DND);

@@ -219,7 +219,6 @@ namespace PlayMyMusic.Widgets.Views {
                 }
                 return false;
             });
-
         }
 
         private void play_track () {
