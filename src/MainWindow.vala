@@ -629,6 +629,10 @@ namespace PlayMyMusic {
             }
         }
 
+        public void search () {
+            this.search_entry.grab_focus ();
+        }
+
         private void load_settings () {
             if (settings.window_maximized) {
                 this.maximize ();

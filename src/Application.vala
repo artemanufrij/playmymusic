@@ -48,6 +48,15 @@ namespace PlayMyMusic {
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
 
+            var add_into_clipboard = new SimpleAction ("search", null);
+            add_action (add_into_clipboard);
+            add_accelerator ("<Control>f", "app.search", null);
+            add_into_clipboard.activate.connect (() => {
+                if (mainwindow != null) {
+                    mainwindow.search ();
+                }
+            });
+
             create_cache_folders ();
         }
 

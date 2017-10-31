@@ -31,7 +31,6 @@ namespace PlayMyMusic.Widgets {
         public signal void goto_current_track (PlayMyMusic.Objects.Track current_track);
 
         Gtk.Label playing_track;
-        Gtk.Grid content;
         Granite.SeekBar timeline;
 
         PlayMyMusic.Objects.Track current_track;
@@ -57,8 +56,7 @@ namespace PlayMyMusic.Widgets {
             this.margin_left = 32;
             this.margin_right = 32;
 
-            content = new Gtk.Grid ();
-            content.row_spacing = 0;
+            var content = new Gtk.Grid ();
 
             playing_track = new Gtk.Label ("");
             playing_track.use_markup = true;
