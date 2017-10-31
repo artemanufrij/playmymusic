@@ -177,7 +177,6 @@ namespace PlayMyMusic.Objects {
 
                     if (sample != null) {
                         var buffer = sample.get_buffer ();
-
                         if (buffer != null) {
                             pixbuf = get_pixbuf_from_buffer (buffer);
                             if (pixbuf != null) {

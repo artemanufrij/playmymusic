@@ -167,9 +167,6 @@ namespace PlayMyMusic.Widgets.Views {
             if (current_artist != null) {
                 current_artist.track_added.disconnect (add_track);
                 current_artist.background_changed.disconnect (load_background);
-                if (current_artist.background != null) {
-                    current_artist.background.dispose ();
-                }
             }
             current_artist = artist;
             this.reset ();
@@ -189,7 +186,7 @@ namespace PlayMyMusic.Widgets.Views {
             if (current_artist == null || current_artist.background_path == null || current_artist.background == null || (background.pixbuf != null && background.pixbuf.width == width)) {
                 return;
             }
-            var pix =  current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
+            var pix = current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
             background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
             artist_name.get_style_context ().add_class ("artist-title");
             artist_sub_title.get_style_context ().add_class ("artist-sub-title");
@@ -204,7 +201,7 @@ namespace PlayMyMusic.Widgets.Views {
             foreach (var child in tracks.get_children ()) {
                 child.destroy ();
             }
-            background.pixbuf = null;
+            background.clear ();
             artist_name.label = "";
             artist_sub_title.label = "";
             artist_name.get_style_context ().remove_class ("artist-title");
@@ -222,6 +219,7 @@ namespace PlayMyMusic.Widgets.Views {
                 }
                 return false;
             });
+
         }
 
         private void play_track () {
