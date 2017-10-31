@@ -149,6 +149,7 @@ namespace PlayMyMusic {
                     library_manager.scan_local_library (settings.library_location);
                 }
                 load_last_played_track ();
+                content.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
             });
 
             this.configure_event.connect ((event) => {
@@ -199,7 +200,6 @@ namespace PlayMyMusic {
         public void build_ui () {
             // CONTENT
             content = new Gtk.Stack ();
-            content.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
 
             headerbar = new Gtk.HeaderBar ();
             headerbar.title = _("Play My Music");
