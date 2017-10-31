@@ -189,15 +189,18 @@ namespace PlayMyMusic.Widgets.Views {
             return false;
         }
 
+        public void unselect_all () {
+            albums.unselect_all ();
+            action_revealer.set_reveal_child (false);
+        }
+
 
         private bool albums_filter_func (Gtk.FlowBoxChild child) {
             if (filter.strip ().length == 0) {
                 return true;
             }
-
             string[] filter_elements = filter.strip ().down ().split (" ");
             var album = (child as PlayMyMusic.Widgets.Album).album;
-            settings.last_album_id = album.ID;
             foreach (string filter_element in filter_elements) {
                 if (!album.title.down ().contains (filter_element) && !album.artist.name.down ().contains (filter_element)) {
                     bool track_title = false;

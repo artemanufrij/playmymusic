@@ -634,7 +634,11 @@ namespace PlayMyMusic {
         }
 
         public void search_reset () {
-            this.search_entry.text = "";
+            if (this.search_entry.text != "") {
+                this.search_entry.text = "";
+            } else if (view_mode.selected == 0) {
+                albums_view.unselect_all ();
+            }
         }
 
         private void load_settings () {
