@@ -37,8 +37,8 @@ namespace PlayMyMusic.Widgets {
 
         construct {
             player = PlayMyMusic.Services.Player.instance;
-            player.current_progress_changed.connect ((position) => {
-                timeline.playback_progress = position;
+            player.current_progress_changed.connect ((progress) => {
+                timeline.playback_progress = progress;
                 if (timeline.playback_duration == 0) {
                     timeline.playback_duration = player.duration / Gst.SECOND;
                 }
