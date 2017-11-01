@@ -199,7 +199,7 @@ namespace PlayMyMusic.Services {
                                     return get_pixbuf_from_url (resource);
                                 }
                             }
-                        }
+                        } //https://en.wikipedia.org/w/api.php?action=query&titles=Sting_(musician)&prop=pageimages&format=json&pithumbsize=600
                     }
                 }
             }

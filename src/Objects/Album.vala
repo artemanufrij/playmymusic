@@ -120,6 +120,7 @@ namespace PlayMyMusic.Objects {
                 if (cover_full_path.query_exists ()) {
                     try {
                         return_value = new Gdk.Pixbuf.from_file (cover_path);
+                        cover_full_path.dispose ();
                         Idle.add ((owned) callback);
                         return null;
                     } catch (Error err) {
@@ -137,6 +138,7 @@ namespace PlayMyMusic.Objects {
                         if (cover_full_path.query_exists ()) {
                             try {
                                 return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
+                                cover_full_path.dispose ();
                                 Idle.add ((owned) callback);
                                 return null;
                             } catch (Error err) {
@@ -145,6 +147,7 @@ namespace PlayMyMusic.Objects {
                         }
                     }
                 }
+                cover_full_path.dispose ();
 
                 Gst.PbUtils.Discoverer discoverer;
                 try {
@@ -160,6 +163,7 @@ namespace PlayMyMusic.Objects {
                     Gst.PbUtils.DiscovererInfo info;
                     try {
                         info = discoverer.discover_uri (file.get_uri ());
+                        file.dispose ();
                     } catch (Error err) {
                         continue;
                     }
