@@ -514,6 +514,7 @@ namespace PlayMyMusic {
         }
 
         private void reset_all_views () {
+            search_entry.text = "";
             settings.last_artist_id = 0;
             settings.last_album_id = 0;
             view_mode.set_active (0);

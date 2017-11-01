@@ -52,7 +52,7 @@ namespace PlayMyMusic.Services {
                 File directory = File.new_for_path (path);
                 try {
                     var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN + "," + FileAttribute.STANDARD_IS_SYMLINK + "," + FileAttribute.STANDARD_SYMLINK_TARGET, GLib.FileQueryInfoFlags.NONE);
-                    FileInfo file_info;
+                    FileInfo file_info = null;
 
                     while ((file_info = children.next_file ()) != null) {
                         if (file_info.get_is_hidden ()) {
@@ -70,12 +70,15 @@ namespace PlayMyMusic.Services {
                             scan_local_files (GLib.Path.build_filename (path, file_info.get_name ()));
                         } else {
                             string mime_type = file_info.get_content_type ();
-                            bool valid_file = !file_info.get_is_hidden () && mime_type.has_prefix ("audio/") && !mime_type.contains ("x-mpegurl") && !mime_type.contains ("x-scpls");
+                            bool valid_file = mime_type.has_prefix ("audio/") && !mime_type.contains ("x-mpegurl") && !mime_type.contains ("x-scpls");
                             if (valid_file) {
                                 string found_path = GLib.Path.build_filename (path, file_info.get_name ());
                                 found_music_file (found_path);
                             }
                         }
+                    }
+                    if (file_info != null) {
+                        //file_info.dispose ();
                     }
                     children.close ();
                     children.dispose ();

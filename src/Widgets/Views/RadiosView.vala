@@ -247,6 +247,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void reset () {
+            filter = "";
             foreach (var child in radios.get_children ()) {
                 radios.remove (child);
             }

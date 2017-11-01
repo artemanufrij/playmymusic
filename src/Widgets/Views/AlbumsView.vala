@@ -154,6 +154,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void reset () {
+            filter = "";
             action_revealer.set_reveal_child (false);
             foreach (var child in albums.get_children ()) {
                 child.destroy ();

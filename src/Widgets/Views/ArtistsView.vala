@@ -119,6 +119,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void reset () {
+            filter = "";
             foreach (var child in artists.get_children ()) {
                 child.destroy ();
             }
