@@ -199,11 +199,48 @@ namespace PlayMyMusic.Services {
                                     return get_pixbuf_from_url (resource);
                                 }
                             }
-                        } //https://en.wikipedia.org/w/api.php?action=query&titles=Sting_(musician)&prop=pageimages&format=json&pithumbsize=600
+                        } else if (o.has_member ("url") && o.has_member ("type") && o.get_string_member ("type") == "wikipedia") {
+                            var res_url = o.get_member ("url").get_object ();
+                            if (res_url.has_member ("resource")) {
+                                var resource = res_url.get_string_member ("resource");
+                                var wiki_url = get_raw_url_for_wikipedia (resource);
+                                return get_pixbuf_from_url (wiki_url);
+                            }
+                        }
                     }
                 }
             }
             return null;
+        }
+
+        public string get_raw_url_for_wikipedia (string url) {
+            MatchInfo match_info;
+            Regex regex = null;
+            try {
+                regex = new Regex ("(?<=/wiki/)[^<]*");
+            } catch (Error err) {
+                warning (err.message);
+                return "";
+            }
+
+            if (regex.match (url, 0, out match_info)) {
+                var artikel = match_info.fetch (0);
+                var request_url = "https://en.wikipedia.org/w/api.php?action=query&titles=%s&prop=pageimages&format=json&pithumbsize=600".printf (artikel);
+                var body = get_body_from_url (request_url);
+                if (body != null) {
+                    try {
+                        regex = new Regex ("(?<=\"source\":\")[^\"]*");
+                    } catch (Error err) {
+                        warning (err.message);
+                        return "";
+                    }
+                    if (regex.match (body, 0, out match_info)) {
+                        var result = match_info.fetch (0);
+                        return result;
+                    }
+                }
+            }
+            return "";
         }
 
         public string get_raw_url_for_wikimedia (string url) {
