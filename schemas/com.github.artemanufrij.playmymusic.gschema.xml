@@ -66,7 +66,7 @@
 			<description>Look for new music files on start up.</description>
 		</key>
 		<key name="artists" type="as">
-			<default>['artist.jpg','Artist.jpg','artist.png','Artist.png','interpreter.jpg','Interpreter.jpg','interpreter.png','Interpreter.png']</default>
+			<default>['artist.jpg','Artist.jpg','artist.png','Artist.png','interpreter.jpg','Interpreter.jpg','interpreter.png','Interpreter.png','band.jpg','Band.jpg','band.png','Band.png']</default>
 			<summary>Artwork file names.</summary>
 			<description>Artwork file names.</description>
 		</key>
