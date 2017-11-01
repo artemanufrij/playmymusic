@@ -123,7 +123,10 @@ namespace PlayMyMusic.Widgets {
                 }
                 content.pack_start (cover, false, false, 0);
                 this.track.album.cover_changed.connect (() => {
-                    cover.pixbuf = this.track.album.cover_32;
+                    Idle.add (() => {
+                        cover.pixbuf = this.track.album.cover_32;
+                        return false;
+                    });
                 });
             }
 
