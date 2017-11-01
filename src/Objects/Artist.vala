@@ -126,6 +126,8 @@ namespace PlayMyMusic.Objects {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
                     this.cover = return_value;
+                } else if (settings.load_artist_from_musicbrainz) {
+                    Services.MusicBrainzManager.instance.fill_artist_cover_queue (this);
                 }
                 is_cover_loading = false;
             });
@@ -192,9 +194,6 @@ namespace PlayMyMusic.Objects {
                     }
                 }
                 Idle.add ((owned) callback);
-                if (settings.load_artist_from_musicbrainz) {
-                    Services.MusicBrainzManager.instance.fill_artist_cover_queue (this);
-                }
                 return null;
             });
             yield;
