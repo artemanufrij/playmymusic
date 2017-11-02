@@ -77,14 +77,15 @@ namespace PlayMyMusic.Objects {
         public Gdk.Pixbuf? background {
             get {
                 if (_background == null && background_path != "") {
-                    File f = File.new_for_path (background_path);
-                    if (f.query_exists ()) {
+                    File file = File.new_for_path (background_path);
+                    if (file.query_exists ()) {
                         try {
                             _background = new Gdk.Pixbuf.from_file (background_path);
                         } catch (Error err) {
                             warning (err.message);
                         }
                     }
+                    file.dispose ();
                 }
                 return _background;
             } set {
@@ -240,9 +241,11 @@ namespace PlayMyMusic.Objects {
                 File f = File.new_for_path (this.background_path);
                 if (f.query_exists ()) {
                     is_background_loading = false;
+                    f.dispose ();
                     background_found ();
                     return null;
                 }
+                f.dispose ();
 
                 double target_size = 1000;
 

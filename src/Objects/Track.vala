@@ -71,6 +71,7 @@ namespace PlayMyMusic.Objects {
                 _path = value;
                 var f = File.new_for_path (_path);
                 _uri = f.get_uri ();
+                f.dispose ();
             }
         }
         string _uri = "";
@@ -113,12 +114,14 @@ namespace PlayMyMusic.Objects {
         }
 
         public bool file_exists () {
+            bool return_value = true;
             var file = File.new_for_uri (this.uri);
             if (!file.query_exists ()) {
                 path_not_found ();
-                return false;
+                return_value = false;
             }
-            return true;
+            file.dispose ();
+            return return_value;
         }
     }
 }
