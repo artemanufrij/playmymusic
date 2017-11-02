@@ -159,10 +159,10 @@ namespace PlayMyMusic.Widgets.Views {
             if (track == null) {
                 return;
             }
-            foreach (var item in tracks.get_children ()) {
-                if ((item as Widgets.Track).track.ID == track.ID) {
+            foreach (var child in tracks.get_children ()) {
+                if ((child as Widgets.Track).track.ID == track.ID) {
                     only_mark = true;
-                    (item as Widgets.Track).activate ();
+                    child.activate ();
                     only_mark = false;
                     return;
                 }

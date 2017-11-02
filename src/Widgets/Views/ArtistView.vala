@@ -246,7 +246,7 @@ namespace PlayMyMusic.Widgets.Views {
             foreach (var child in tracks.get_children ()) {
                 if ((child as Widgets.Track).track.ID == track.ID) {
                     only_mark = true;
-                    (child as Widgets.Track).activate ();
+                    child.activate ();
                     only_mark = false;
                     return;
                 }
