@@ -71,6 +71,7 @@ namespace PlayMyMusic {
                     spinner.active = true;
                     menu_item_rescan.sensitive = false;
                     menu_item_reset.sensitive = false;
+                    return false;
                 });
             });
             library_manager.tag_discover_finished.connect (() => {
@@ -78,6 +79,7 @@ namespace PlayMyMusic {
                     spinner.active = false;
                     menu_item_rescan.sensitive = true;
                     menu_item_reset.sensitive = true;
+                    return false;
                 });
             });
             library_manager.added_new_artist.connect (() => {

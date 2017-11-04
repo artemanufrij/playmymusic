@@ -90,7 +90,7 @@ namespace PlayMyMusic.Widgets.Views {
             artist_name = new Gtk.Label ("");
             artist_name.valign = Gtk.Align.END;
             artist_name.hexpand = true;
-            artist_name.get_style_context ().add_class (Granite.StyleClass.H1_TEXT);
+            artist_name.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
             header.attach (artist_name, 0, 0);
 
             artist_sub_title = new Gtk.Label ("");

@@ -62,6 +62,7 @@ namespace PlayMyMusic.Widgets.Views {
             library_manager.added_new_album.connect ((album) => {
                 Idle.add (() => {
                     add_album (album);
+                    return false;
                 });
             });
         }

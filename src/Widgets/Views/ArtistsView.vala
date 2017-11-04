@@ -53,6 +53,7 @@ namespace PlayMyMusic.Widgets.Views {
             library_manager.added_new_artist.connect ((artist) => {
                 Idle.add (() => {
                     add_artist (artist);
+                    return false;
                 });
             });
         }
