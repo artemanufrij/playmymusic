@@ -157,9 +157,12 @@ namespace PlayMyMusic.Services {
                      var file = File.new_for_path (GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, file_info.get_name ()));
                      file.delete ();
                 }
+                children.close ();
+                children.dispose ();
             } catch (Error err) {
                 warning (err.message);
             }
+            directory.dispose ();
         }
 
         public void rescan_library () {
