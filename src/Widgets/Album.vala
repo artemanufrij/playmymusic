@@ -67,6 +67,20 @@ namespace PlayMyMusic.Widgets {
             event_box.add (content);
 
             menu = new Gtk.Menu ();
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            menu_new_cover.activate.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
+                        album.set_new_cover (pixbuf, 256);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+            });
+            menu.add (menu_new_cover);
+
             var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
             menu.add (menu_add_into_playlist);
             playlists = new Gtk.Menu ();
