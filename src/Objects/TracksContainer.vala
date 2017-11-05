@@ -176,14 +176,34 @@ namespace PlayMyMusic.Objects {
         }
 
         protected void add_track (Track track) {
-
             lock (_tracks) {
-                if (_tracks == null) {
-                    _tracks = new GLib.List<Track> ();
+               if (this is Playlist) {
+                    this._tracks.insert_sorted_with_data (track, (a, b) => {
+                        return a.track - b.track;
+                    });
+                } else if (this is AudioCD) {
+                    this._tracks.append (track);
+                } else {
+                    this._tracks.insert_sorted_with_data (track, sort_function);
                 }
-                this._tracks.append (track);
             }
             track_added (track);
+        }
+
+        private int sort_function (Track a, Track b) {
+            if (a.album.year != b.album.year) {
+                return a.album.year - b.album.year;
+            }
+            if (a.album.title != b.album.title) {
+                return a.album.title.collate (b.album.title);
+            }
+            if (a.disc != b.disc) {
+                return a.disc - b.disc;
+            }
+            if (a.track != b.track) {
+                return a.track - b.track;
+            }
+            return a.title.collate (b.title);
         }
 
         public void clear_tracks () {
