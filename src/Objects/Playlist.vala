@@ -48,7 +48,7 @@ namespace PlayMyMusic.Objects {
             });
         }
 
-        public bool has_track (int track_id) {
+        public new bool has_track (int track_id) {
             foreach (var track in tracks) {
                 if (track.ID == track_id) {
                     return true;

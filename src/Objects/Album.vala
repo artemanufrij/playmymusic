@@ -74,26 +74,14 @@ namespace PlayMyMusic.Objects {
             this._artist = artist;
         }
 
-        public new void add_track (Track track) {
-            track.set_album (this);
-            base.add_track (track);
+        public void add_track_if_not_exists (Track new_track) {
+            if (has_track (new_track)) {
+                return;
+            }
+            new_track.set_album (this);
+            db_manager.insert_track (new_track);
+            add_track (new_track);
             load_cover_async.begin ();
-        }
-
-        public Track add_track_if_not_exists (Track new_track) {
-            Track? return_value = null;
-            foreach (var track in tracks) {
-                if (track.path == new_track.path) {
-                    return_value = track;
-                    break;
-                }
-            }
-            if (return_value == null) {
-                this.add_track (new_track);
-                db_manager.insert_track (new_track);
-                return_value = new_track;
-            }
-            return return_value;
         }
 
 // COVER REGION

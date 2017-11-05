@@ -205,7 +205,7 @@ namespace PlayMyMusic.Widgets.Views {
             } else {
                 cover.pixbuf = current_album.cover;
             }
-            this.show_all ();
+
             foreach (var track in current_album.tracks) {
                 add_track (track);
             }
