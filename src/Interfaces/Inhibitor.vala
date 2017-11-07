@@ -51,8 +51,7 @@ namespace PlayMyMusic.Interfaces {
 
         ScreenSaverIface? screensaver_iface = null;
 
-        bool inhibited = false;
-        bool simulator_started = false;
+        uint timer = 0;
 
         private Inhibitor () {
             try {
@@ -63,38 +62,35 @@ namespace PlayMyMusic.Interfaces {
         }
 
         public void inhibit () {
-            if (screensaver_iface != null && !inhibited) {
+            if (screensaver_iface != null && timer == 0) {
                 try {
-                    inhibited = true;
-                    inhibit_cookie = screensaver_iface.Inhibit ("com.github.artemanufrij.playmymusic", "Listening music");
-                    if (simulator_started) {
-                        return;
-                    }
-
-                    simulator_started = true;
-                    Timeout.add_full (Priority.DEFAULT, 120000, ()=> {
-                        if (inhibited) {
-                            try {
-                                screensaver_iface.SimulateUserActivity ();
-                            } catch (Error e) {
-                                warning ("Could not simulate user activity: %s", e.message);
-                            }
-                        } else {
-                            simulator_started = false;
-                        }
-                        return inhibited;
-                    });
+                    inhibit_cookie = screensaver_iface.Inhibit ("com.github.artemanufrij.playmyvideos", "Playing movie");
                 } catch (Error e) {
                     warning ("Could not inhibit screen: %s", e.message);
+                    return;
                 }
+
+                timer = Timeout.add (120000, ()=> {
+                    try {
+                        screensaver_iface.SimulateUserActivity ();
+                    } catch (Error e) {
+                        warning ("Could not simulate user activity: %s", e.message);
+                    }
+                    return true;
+                });
             }
         }
 
         public void uninhibit () {
-            if (screensaver_iface != null && inhibited) {
+            if (timer > 0 ) {
+                Source.remove (timer);
+                timer = 0;
+            }
+
+            if (inhibit_cookie == null) {
                 try {
-                    inhibited = false;
                     screensaver_iface.UnInhibit (inhibit_cookie);
+                    inhibit_cookie = null;
                 } catch (Error e) {
                     warning ("Could not uninhibit screen: %s", e.message);
                 }
