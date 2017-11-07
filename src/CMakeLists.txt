@@ -20,6 +20,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Services/DeviceManager.vala
     Interfaces/MediaKeys.vala
     Interfaces/SoundIndicator.vala
+    Interfaces/Inhibitor.vala
     Widgets/Artist.vala
     Widgets/Album.vala
     Widgets/Track.vala
