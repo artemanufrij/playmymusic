@@ -1,8 +1,17 @@
-# Play My Music
+<div>
+  <h1 align="center">Play My Music</h1>
+  <h3 align="center">A simple music player for listening to local music and online radio stations</h3>
+</div>
 
-[![Get it on AppCenter](https://appcenter.elementary.io/badge.svg)](https://appcenter.elementary.io/com.github.artemanufrij.playmymusic)
+<br/>
 
-### Play My Music is a simple player for listening local music files and online radio stations designed for [elementary OS](https://elementary.io)
+<p align="center">
+  <a href="https://appcenter.elementary.io/com.github.artemanufrij.playmymusic">
+    <img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter">
+  </a>
+</p>
+
+<br/>
 
 ![screenshot](Screenshot.png)
 ![screenshot](Screenshot_Artists.png)
