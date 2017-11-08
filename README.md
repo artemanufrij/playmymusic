@@ -1,6 +1,6 @@
 <div>
   <h1 align="center">Play My Music</h1>
-  <h3 align="center">A simple music player for listening to local music and online radio stations</h3>
+  <h3 align="center">A music player for listening to local music files, online radios, and Audio CD's</h3>
 </div>
 
 <br/>
