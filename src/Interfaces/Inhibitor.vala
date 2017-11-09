@@ -87,7 +87,7 @@ namespace PlayMyMusic.Interfaces {
                 timer = 0;
             }
 
-            if (inhibit_cookie == null) {
+            if (inhibit_cookie != null) {
                 try {
                     screensaver_iface.UnInhibit (inhibit_cookie);
                     inhibit_cookie = null;

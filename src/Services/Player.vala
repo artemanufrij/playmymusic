@@ -104,7 +104,6 @@ namespace PlayMyMusic.Services {
                 } else {
                     stop_progress_signal ();
                 }
-                Interfaces.Inhibitor.instance.uninhibit ();
                 switch (state) {
                     case Gst.State.PLAYING:
                         start_progress_signal ();
@@ -112,9 +111,11 @@ namespace PlayMyMusic.Services {
                         break;
                     case Gst.State.READY:
                         stop_progress_signal ();
+                        Interfaces.Inhibitor.instance.uninhibit ();
                         break;
                     case Gst.State.PAUSED:
                         pause_progress_signal ();
+                        Interfaces.Inhibitor.instance.uninhibit ();
                         break;
                 }
             });
