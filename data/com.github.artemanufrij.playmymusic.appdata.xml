@@ -48,19 +48,12 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.2.3" date="2017-11-15">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Import files by Drag and Drop</li>
-                </ul>
-            </description>
-        </release>
         <release version="0.2.2" date="2017-11-10">
             <description>
                 <p>New:</p>
                 <ul>
                     <li>Disable screensaver while playing</li>
+                    <li>Import files by Drag and Drop</li>
                 </ul>
             </description>
         </release>
