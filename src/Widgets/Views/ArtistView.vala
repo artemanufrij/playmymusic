@@ -33,6 +33,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         Gtk.ListBox tracks;
 
+        Gtk.Box content;
         Gtk.Image icon_repeat_on;
         Gtk.Image icon_repeat_off;
         Gtk.Image icon_shuffle_on;
@@ -80,10 +81,11 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void build_ui () {
-            var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
 
             header = new Gtk.Grid ();
+            header.margin = 92;
             header.row_spacing = 6;
             header.valign = Gtk.Align.CENTER;
 
@@ -100,11 +102,7 @@ namespace PlayMyMusic.Widgets.Views {
             header.attach (artist_sub_title, 0, 1);
 
             background = new Gtk.Image ();
-
-            var overlay = new Gtk.Overlay ();
-            overlay.height_request = 256;
-            overlay.add_overlay (background);
-            overlay.add_overlay (header);
+            background.expand = true;
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
             tracks_scroll.expand = true;
@@ -112,6 +110,7 @@ namespace PlayMyMusic.Widgets.Views {
             tracks = new Gtk.ListBox ();
             tracks.set_sort_func (tracks_sort_func);
             tracks.selected_rows_changed.connect (play_track);
+            tracks.get_style_context ().add_class ("artist-tracks");
             tracks_scroll.add (tracks);
 
             var action_toolbar = new Gtk.ActionBar ();
@@ -150,13 +149,17 @@ namespace PlayMyMusic.Widgets.Views {
             action_toolbar.pack_end (repeat_button);
             action_toolbar.pack_end (shuffle_button);
 
-            content.pack_start (overlay, false, false, 0);
+            content.pack_start (header, false, false, 0);
             content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
             content.pack_end (action_toolbar, false, false, 0);
 
+            var overlay = new Gtk.Overlay ();
+            overlay.add_overlay (background);
+            overlay.add_overlay (content);
+
             this.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 0, 0);
-            this.attach (content, 1, 0);
+            this.attach (overlay, 1, 0);
         }
 
         public void show_artist_viewer (PlayMyMusic.Objects.Artist artist) {
@@ -181,13 +184,19 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void load_background () {
-            int width = this.header.get_allocated_width ();
-            int height = background.get_allocated_height ();
-            if (current_artist == null || current_artist.background_path == null || current_artist.background == null || (background.pixbuf != null && background.pixbuf.width == width)) {
+            int width = this.content.get_allocated_width ();
+            int height = this.content.get_allocated_height ();
+            if (current_artist == null || current_artist.background_path == null || current_artist.background == null || (background.pixbuf != null && background.pixbuf.width == width && background.pixbuf.height == height)) {
                 return;
             }
-            var pix = current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
-            background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
+            if (height < width) {
+                var pix =  current_artist.background.scale_simple (width, width, Gdk.InterpType.BILINEAR);
+                background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, 0, (int)(pix.height - height) / 2, width, height);
+            } else {
+                var pix =  current_artist.background.scale_simple (height, height, Gdk.InterpType.BILINEAR);
+                background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, (int)(pix.width - width) / 2, 0, width, height);
+            }
+
             artist_name.get_style_context ().add_class ("artist-title");
             artist_sub_title.get_style_context ().add_class ("artist-sub-title");
         }

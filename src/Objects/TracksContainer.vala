@@ -273,7 +273,7 @@ namespace PlayMyMusic.Objects {
                 if (this is AudioCD) {
                     surface.exponential_blur (32);
                 } else {
-                    surface.exponential_blur (4);
+                    surface.exponential_blur (8);
                 }
                 surface.context.paint ();
 

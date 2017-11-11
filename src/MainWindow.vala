@@ -194,6 +194,9 @@ namespace PlayMyMusic {
                     .mode_button_split {
                         border-left-width: 1px;
                     }
+                    .artist-tracks {
+                        background: rgba (255, 255, 255, 0.75);
+                    }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
