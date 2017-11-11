@@ -122,7 +122,7 @@ namespace PlayMyMusic.Services {
             lf_manager.scan (path);
         }
 
-        private void found_local_music_file (string path) {
+        public void found_local_music_file (string path) {
             new Thread<void*> (null, () => {
                 if (!db_manager.music_file_exists (path)) {
                     tg_manager.add_discover_path (path);

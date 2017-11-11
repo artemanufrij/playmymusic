@@ -62,6 +62,10 @@ namespace PlayMyMusic {
         bool send_desktop_notification = true;
         uint adjust_timer = 0;
 
+        const Gtk.TargetEntry[] targets = {
+            {"text/uri-list",0,0}
+        };
+
         construct {
             settings = PlayMyMusic.Settings.get_default ();
 
@@ -135,6 +139,30 @@ namespace PlayMyMusic {
                     audio_cd_widget.hide ();
                     if (view_mode.selected == 4) {
                         show_playing_view ();
+                    }
+                }
+            });
+
+            Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.LINK);
+
+            drag_motion.connect ((context, x, y, time) => {
+                Gtk.drag_unhighlight (this);
+                return true;
+            });
+
+            drag_data_received.connect ((drag_context, x, y, data, info, time) => {
+                foreach (var uri in data.get_uris ()) {
+                    var file = File.new_for_uri (uri);
+                    var file_info = file.query_info ("standard::*", GLib.FileQueryInfoFlags.NONE);
+
+                    if (file_info.get_file_type () == FileType.DIRECTORY) {
+                        library_manager.scan_local_library (file.get_path ());
+                        continue;
+                    }
+
+                    string mime_type = file_info.get_content_type ();
+                    if (Utils.is_audio_file (mime_type)) {
+                        library_manager.found_local_music_file (file.get_path ());
                     }
                 }
             });

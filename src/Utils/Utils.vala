@@ -40,4 +40,8 @@ namespace PlayMyMusic.Utils {
         seconds -= minutes * 60;
         return "%u:%02u:%02u".printf (hours, minutes, seconds);
     }
+
+    public static bool is_audio_file (string mime_type) {
+        return mime_type.has_prefix ("audio/") && !mime_type.contains ("x-mpegurl") && !mime_type.contains ("x-scpls");
+    }
 }
