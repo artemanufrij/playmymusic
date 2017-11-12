@@ -40,11 +40,11 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_ui () {
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-         //   content.vexpand = true;
             content.margin = 12;
             content.spacing = 12;
 
             title = new Gtk.Label ("");
+            //title.ellipsize = Pango.EllipsizeMode.END;
 
             image = new Gtk.Image ();
 

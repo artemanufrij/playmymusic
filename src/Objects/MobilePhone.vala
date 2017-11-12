@@ -36,15 +36,16 @@ namespace PlayMyMusic.Objects {
 
         public MobilePhone (Volume volume) {
             this.volume = volume;
-            this.volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res)=>{
-                var info = volume.get_activation_root ().query_filesystem_info ("filesystem::*");
-
-                free = info.get_attribute_uint64 ("filesystem::free");
-                size = info.get_attribute_uint64 ("filesystem::size");
-
-                storage_calculated ();
+            this.volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res) => {
+                try {
+                    var info = volume.get_activation_root ().query_filesystem_info ("filesystem::*");
+                    free = info.get_attribute_uint64 ("filesystem::free");
+                    size = info.get_attribute_uint64 ("filesystem::size");
+                    storage_calculated ();
+                } catch (Error err) {
+                    warning (err.message);
+                }
             });
         }
-
     }
 }
