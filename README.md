@@ -18,6 +18,9 @@
 ![screenshot](Screenshot_Playlists.png)
 ![screenshot](Screenshot_Audio_CD.png)
 
+## Donations
+If you liked _Play My Music_, and would like to support it's development of this app and more, consider [buying me a coffee](https://www.paypal.me/ArtemAnufrij) :) 
+
 ## Install from Github.
 
 As first you need elementary SDK
