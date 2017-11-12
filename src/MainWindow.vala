@@ -46,6 +46,7 @@ namespace PlayMyMusic {
         Gtk.Widget audio_cd_widget;
         Gtk.Image artist_button;
         Gtk.Image playlist_button;
+        Gtk.Revealer mobile_phone_revealer;
 
         Granite.Widgets.ModeButton view_mode;
 
@@ -54,6 +55,7 @@ namespace PlayMyMusic {
         Widgets.Views.RadiosView radios_view;
         Widgets.Views.PlaylistsView playlists_view;
         Widgets.Views.AudioCDView audio_cd_view;
+        Widgets.Views.MobilePhone mobile_phone_view;
 
         Widgets.TrackTimeLine timeline;
 
@@ -143,6 +145,16 @@ namespace PlayMyMusic {
                 }
             });
 
+            library_manager.mobile_phone_connected.connect ((mobile_phone) => {
+                mobile_phone_view.show_mobile_phone (mobile_phone);
+                mobile_phone_revealer.set_reveal_child (true);
+            });
+            library_manager.mobile_phone_disconnected.connect ((volume) => {
+                if (mobile_phone_view.current_mobile_phone.volume == volume) {
+                    mobile_phone_revealer.set_reveal_child (false);
+                }
+            });
+
             Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.LINK);
 
             drag_motion.connect ((context, x, y, time) => {
@@ -153,16 +165,20 @@ namespace PlayMyMusic {
             drag_data_received.connect ((drag_context, x, y, data, info, time) => {
                 foreach (var uri in data.get_uris ()) {
                     var file = File.new_for_uri (uri);
-                    var file_info = file.query_info ("standard::*", GLib.FileQueryInfoFlags.NONE);
+                    try {
+                        var file_info = file.query_info ("standard::*", GLib.FileQueryInfoFlags.NONE);
 
-                    if (file_info.get_file_type () == FileType.DIRECTORY) {
-                        library_manager.scan_local_library (file.get_path ());
-                        continue;
-                    }
+                        if (file_info.get_file_type () == FileType.DIRECTORY) {
+                            library_manager.scan_local_library (file.get_path ());
+                            continue;
+                        }
 
-                    string mime_type = file_info.get_content_type ();
-                    if (Utils.is_audio_file (mime_type)) {
-                        library_manager.found_local_music_file (file.get_path ());
+                        string mime_type = file_info.get_content_type ();
+                        if (Utils.is_audio_file (mime_type)) {
+                            library_manager.found_local_music_file (file.get_path ());
+                        }
+                    } catch (Error err) {
+                        warning (err.message);
                     }
                 }
             });
@@ -270,6 +286,12 @@ namespace PlayMyMusic {
             headerbar.pack_start (next_button);
 
             build_mode_buttons ();
+
+            mobile_phone_view = new Widgets.Views.MobilePhone ();
+
+            mobile_phone_revealer = new Gtk.Revealer ();
+            mobile_phone_revealer.add (mobile_phone_view);
+            mobile_phone_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_RIGHT;
 
             // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
@@ -403,10 +425,15 @@ namespace PlayMyMusic {
             content.add_named (radios_view, "radios");
             content.add_named (audio_cd_view, "audiocd");
 
-            this.add (content);
+            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            box.pack_start (mobile_phone_revealer, false, false, 0);
+            box.pack_end (content, true, true, 0);
+
+            this.add (box);
             this.show_all ();
 
             audio_cd_widget.hide ();
+            mobile_phone_revealer.set_reveal_child (false);
 
             library_manager.device_manager.init ();
 

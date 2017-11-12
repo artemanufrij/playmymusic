@@ -66,7 +66,7 @@ namespace PlayMyMusic.Objects {
             this.volume = volume;
             this.title = _("Unknown");
             this.artist = _("Unknown");
-            volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res)=>{
+            this.volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res)=>{
                 create_track_list ();
                 calculate_disc_id ();
             });

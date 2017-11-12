@@ -11,6 +11,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Objects/Track.vala
     Objects/Radio.vala
     Objects/AudioCD.vala
+    Objects/MobilePhone.vala
     Services/DataBaseManager.vala
     Services/LocalFilesManager.vala
     Services/TagManager.vala
@@ -34,6 +35,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Widgets/Views/ArtistsView.vala
     Widgets/Views/PlaylistsView.vala
     Widgets/Views/AudioCDView.vala
+    Widgets/Views/MobilePhone.vala
     Dialogs/Preferences.vala
     Settings.vala
     MainWindow.vala

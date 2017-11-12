@@ -39,8 +39,10 @@ namespace PlayMyMusic.Services {
 
         private DeviceManager () {}
 
-        public signal void volume_added (Volume volume);
-        public signal void volume_removed (Volume volume);
+        public signal void audio_cd_added (Volume volume);
+        public signal void mtp_added (Volume volume);
+        public signal void audio_cd_removed (Volume volume);
+        public signal void mtp_removed (Volume volume);
 
         private GLib.VolumeMonitor monitor;
 
@@ -49,21 +51,28 @@ namespace PlayMyMusic.Services {
 
             monitor.volume_added.connect ((volume) => {
                 if (check_for_audio_cd_volume (volume)) {
-                    volume_added (volume);
+                    audio_cd_added (volume);
+                } else if (check_for_mtp_volume (volume)) {
+                    mtp_added (volume);
                 }
             });
 
             monitor.volume_removed.connect ((volume) => {
-                volume_removed (volume);
+                if (check_for_audio_cd_volume (volume)) {
+                    audio_cd_removed (volume);
+                } else if (check_for_mtp_volume (volume)) {
+                    mtp_removed (volume);
+                }
             });
-
         }
 
         public void init () {
             var volumes = monitor.get_volumes ();
             foreach (var volume in volumes) {
                 if (check_for_audio_cd_volume (volume)) {
-                    volume_added (volume);
+                    audio_cd_added (volume);
+                } else if (check_for_mtp_volume (volume)) {
+                    mtp_added (volume);
                 }
             }
         }
@@ -71,6 +80,11 @@ namespace PlayMyMusic.Services {
         private bool check_for_audio_cd_volume (Volume volume) {
             File file = volume.get_activation_root ();
             return (file != null && file.get_uri ().has_prefix ("cdda://"));
+        }
+
+         private bool check_for_mtp_volume (Volume volume) {
+            File file = volume.get_activation_root ();
+            return (file != null && file.get_uri ().has_prefix ("mtp://"));
         }
     }
 }

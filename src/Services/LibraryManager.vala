@@ -48,6 +48,8 @@ namespace PlayMyMusic.Services {
         public signal void player_state_changed (Gst.State state);
         public signal void audio_cd_connected (PlayMyMusic.Objects.AudioCD ausdio_cd);
         public signal void audio_cd_disconnected (Volume volume);
+        public signal void mobile_phone_connected (PlayMyMusic.Objects.MobilePhone mobile_phone);
+        public signal void mobile_phone_disconnected (Volume volume);
 
         public PlayMyMusic.Services.TagManager tg_manager { get; construct set; }
         public PlayMyMusic.Services.DataBaseManager db_manager { get; construct set; }
@@ -103,15 +105,22 @@ namespace PlayMyMusic.Services {
             player.state_changed.connect ((state) => { player_state_changed (state); });
 
             device_manager = PlayMyMusic.Services.DeviceManager.instance;
-            device_manager.volume_added.connect ((volume) => {
+            device_manager.audio_cd_added.connect ((volume) => {
                 var audio_cd = new PlayMyMusic.Objects.AudioCD (volume);
                 audio_cd.mb_disc_id_calculated.connect (() => {
                     mb_disc_id_calculated (audio_cd);
                 });
                 audio_cd_connected (audio_cd);
             });
-            device_manager.volume_removed.connect ((volume) => {
+            device_manager.audio_cd_removed.connect ((volume) => {
                 audio_cd_disconnected (volume);
+            });
+            device_manager.mtp_added.connect ((volume) => {
+                var mobile_phone = new PlayMyMusic.Objects.MobilePhone (volume);
+                mobile_phone_connected (mobile_phone);
+            });
+            device_manager.mtp_removed.connect ((volume) => {
+                mobile_phone_disconnected (volume);
             });
         }
 
