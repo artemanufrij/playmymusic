@@ -26,6 +26,20 @@
  */
 
 namespace PlayMyMusic.Widgets {
+
+    enum Target {
+        INT32,
+        STRING,
+        ROOTWIN
+    }
+
+    const Gtk.TargetEntry[] targets = {
+        { "INTEGER",    0, Target.INT32 },
+        { "STRING",     0, Target.STRING },
+        { "text/plain", 0, Target.STRING },
+        { "application/x-rootwindow-drop", 0, Target.ROOTWIN }
+    };
+
     public class Album : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
 
@@ -46,12 +60,19 @@ namespace PlayMyMusic.Widgets {
 
             build_ui ();
 
+            Gtk.drag_source_set (this, Gdk.ModifierType.BUTTON1_MASK, targets, Gdk.DragAction.COPY);
+
             this.album.cover_changed.connect (() => {
                 Idle.add (() => {
                     cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
                     return false;
                 });
             });
+
+            this.drag_begin.connect (on_drag_begin);
+            this.drag_data_get.connect (on_drag_data_get);
+            this.drag_data_delete.connect (on_drag_data_delete);
+            this.drag_end.connect (on_drag_end);
         }
 
         private void build_ui () {
@@ -120,6 +141,25 @@ namespace PlayMyMusic.Widgets {
             this.show_all ();
         }
 
+        private void on_drag_begin (Gdk.DragContext context) {
+            stdout.printf ("%s: on_drag_begin\n", this.album.title);
+        }
+
+        private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
+            uchar [] buf;
+            convert_long_to_bytes (this.album.ID, out buf);
+            selection_data.set (selection_data.get_target(), 16, buf);
+            stdout.printf ("%s: on_drag_data_get\n", this.album.title);
+        }
+
+        private void on_drag_data_delete (Gdk.DragContext context) {
+            stdout.printf ("%s: on_drag_data_delete\n", this.album.title);
+        }
+
+        private void on_drag_end (Gdk.DragContext context) {
+            stdout.printf ("%s: on_drag_end\n", this.album.title);
+        }
+
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
                 foreach (var child in playlists.get_children ()) {
@@ -151,6 +191,14 @@ namespace PlayMyMusic.Widgets {
                 return true;
             }
             return false;
+        }
+
+        private void convert_long_to_bytes(long number, out uchar [] buffer) {
+            buffer = new uchar[sizeof(long)];
+            for (int i=0; i<sizeof(long); i++) {
+                buffer[i] = (uchar) (number & 0xFF);
+                number = number >> 8;
+            }
         }
     }
 }

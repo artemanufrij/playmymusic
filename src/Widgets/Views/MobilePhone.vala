@@ -33,6 +33,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Label title;
         Gtk.Image image;
         Gtk.ProgressBar storage;
+        Granite.Widgets.SourceList folders;
 
         public MobilePhone () {
             build_ui ();
@@ -54,8 +55,10 @@ namespace PlayMyMusic.Widgets.Views {
             content.pack_start (image);
             content.pack_start (storage);
 
-            var folders = new Gtk.ListBox ();
-            folders.vexpand = true;
+            folders = new Granite.Widgets.SourceList ();
+            folders.hexpand = false;
+
+
 
             this.attach (content, 0, 0);
             this.attach (folders, 0, 1);
@@ -70,17 +73,41 @@ namespace PlayMyMusic.Widgets.Views {
 
             if (current_mobile_phone != null) {
                 current_mobile_phone.storage_calculated.disconnect (storage_calculated);
+                current_mobile_phone.music_folder_found.disconnect (music_folder_found);
             }
+            folders.root.clear ();
             current_mobile_phone = mobile_phone;
 
             title.label = current_mobile_phone.volume.get_name ();
-            image.set_from_gicon (mobile_phone.volume.get_icon (), Gtk.IconSize.DIALOG);
+            image.set_from_gicon (current_mobile_phone.volume.get_icon (), Gtk.IconSize.DIALOG);
 
             current_mobile_phone.storage_calculated.connect (storage_calculated);
+            current_mobile_phone.music_folder_found.connect (music_folder_found);
         }
 
-        public void storage_calculated () {
+        private void storage_calculated () {
             storage.fraction = 1 - (double)1 / current_mobile_phone.size * current_mobile_phone.free;
+        }
+
+        private void music_folder_found (string uri) {
+            Idle.add (() => {
+                var file = File.new_for_uri (uri);
+                var folder = new Granite.Widgets.SourceList.ExpandableItem (file.get_parent ().get_basename ());
+                folder.expand_all ();
+
+                foreach (var item in current_mobile_phone.get_subfolders (uri)) {
+                    var subfolder = new Granite.Widgets.SourceList.Item (item.get_basename ());
+                    folder.add (subfolder);
+                }
+
+                if (folder.children.size == 0) {
+                    var subfolder = new Granite.Widgets.SourceList.Item ("NO ITEMS");
+                    folder.add (subfolder);
+                }
+
+                folders.root.add (folder);
+                return false;
+            });
         }
     }
 }

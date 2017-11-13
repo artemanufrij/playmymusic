@@ -29,6 +29,7 @@ namespace PlayMyMusic.Objects {
     public class MobilePhone : GLib.Object {
         public Volume volume { get; private set; }
 
+        public signal void music_folder_found (string uri);
         public signal void storage_calculated ();
 
         public uint64 size { get; private set; }
@@ -42,10 +43,47 @@ namespace PlayMyMusic.Objects {
                     free = info.get_attribute_uint64 ("filesystem::free");
                     size = info.get_attribute_uint64 ("filesystem::size");
                     storage_calculated ();
+                    found_music_folder (volume.get_activation_root ().get_uri ());
+
                 } catch (Error err) {
                     warning (err.message);
                 }
             });
+        }
+
+        public void found_music_folder (string uri) {
+            new Thread <void*> (null, () => {
+                var file = File.new_for_uri (uri);
+                var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
+                FileInfo file_info = null;
+
+                while ((file_info = children.next_file ()) != null) {
+                    if (file_info.get_file_type () == FileType.DIRECTORY) {
+                        if (file_info.get_name ().down () == "music") {
+                            music_folder_found (uri + file_info.get_name () + "/");
+                        } else {
+                            found_music_folder (uri + file_info.get_name () + "/");
+                        }
+                    }
+                }
+                return null;
+            });
+        }
+
+        public GLib.List<File> get_subfolders (string uri) {
+            GLib.List<File> return_value = new GLib.List<File> ();
+
+            var file = File.new_for_uri (uri);
+            var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
+            FileInfo file_info = null;
+
+            while ((file_info = children.next_file ()) != null) {
+                if (file_info.get_file_type () == FileType.DIRECTORY) {
+                    return_value.append (File.new_for_uri (uri + file_info.get_name () + "/"));
+                }
+            }
+
+            return return_value;
         }
     }
 }

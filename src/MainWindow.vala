@@ -65,7 +65,7 @@ namespace PlayMyMusic {
         uint adjust_timer = 0;
 
         const Gtk.TargetEntry[] targets = {
-            {"text/uri-list",0,0}
+            {"text/uri-list", 0, 0}
         };
 
         construct {
