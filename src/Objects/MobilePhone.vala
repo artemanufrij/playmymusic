@@ -54,17 +54,20 @@ namespace PlayMyMusic.Objects {
         public void found_music_folder (string uri) {
             new Thread <void*> (null, () => {
                 var file = File.new_for_uri (uri);
-                var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
-                FileInfo file_info = null;
-
-                while ((file_info = children.next_file ()) != null) {
-                    if (file_info.get_file_type () == FileType.DIRECTORY) {
-                        if (file_info.get_name ().down () == "music") {
-                            music_folder_found (uri + file_info.get_name () + "/");
-                        } else {
-                            found_music_folder (uri + file_info.get_name () + "/");
+                try {
+                    var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
+                    FileInfo file_info = null;
+                    while ((file_info = children.next_file ()) != null) {
+                        if (file_info.get_file_type () == FileType.DIRECTORY) {
+                            if (file_info.get_name ().down () == "music") {
+                                music_folder_found (uri + file_info.get_name () + "/");
+                            } else {
+                                found_music_folder (uri + file_info.get_name () + "/");
+                            }
                         }
                     }
+                } catch (Error err) {
+                    warning (err.message);
                 }
                 return null;
             });
@@ -74,13 +77,16 @@ namespace PlayMyMusic.Objects {
             GLib.List<File> return_value = new GLib.List<File> ();
 
             var file = File.new_for_uri (uri);
-            var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
-            FileInfo file_info = null;
-
-            while ((file_info = children.next_file ()) != null) {
-                if (file_info.get_file_type () == FileType.DIRECTORY) {
-                    return_value.append (File.new_for_uri (uri + file_info.get_name () + "/"));
+            try {
+                var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
+                FileInfo file_info = null;
+                while ((file_info = children.next_file ()) != null) {
+                    if (file_info.get_file_type () == FileType.DIRECTORY) {
+                        return_value.append (File.new_for_uri (uri + file_info.get_name () + "/"));
+                    }
                 }
+            } catch (Error err) {
+                warning (err.message);
             }
 
             return return_value;

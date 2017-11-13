@@ -60,8 +60,6 @@ namespace PlayMyMusic.Widgets {
 
             build_ui ();
 
-            Gtk.drag_source_set (this, Gdk.ModifierType.BUTTON1_MASK, targets, Gdk.DragAction.COPY);
-
             this.album.cover_changed.connect (() => {
                 Idle.add (() => {
                     cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
@@ -69,6 +67,7 @@ namespace PlayMyMusic.Widgets {
                 });
             });
 
+            Gtk.drag_source_set (this, Gdk.ModifierType.BUTTON1_MASK, targets, Gdk.DragAction.COPY);
             this.drag_begin.connect (on_drag_begin);
             this.drag_data_get.connect (on_drag_data_get);
             this.drag_data_delete.connect (on_drag_data_delete);
