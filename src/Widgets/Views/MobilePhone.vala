@@ -45,7 +45,7 @@ namespace PlayMyMusic.Widgets.Views {
             content.spacing = 12;
 
             title = new Gtk.Label ("");
-            //title.ellipsize = Pango.EllipsizeMode.END;
+            title.ellipsize = Pango.EllipsizeMode.END;
 
             image = new Gtk.Image ();
 
@@ -57,8 +57,6 @@ namespace PlayMyMusic.Widgets.Views {
 
             folders = new Granite.Widgets.SourceList ();
             folders.hexpand = false;
-
-
 
             this.attach (content, 0, 0);
             this.attach (folders, 0, 1);
@@ -89,13 +87,12 @@ namespace PlayMyMusic.Widgets.Views {
             storage.fraction = 1 - (double)1 / current_mobile_phone.size * current_mobile_phone.free;
         }
 
-        private void music_folder_found (string uri) {
+        private void music_folder_found (Objects.MobilePhoneMusicFolder music_folder) {
             Idle.add (() => {
-                var file = File.new_for_uri (uri);
-                var folder = new Granite.Widgets.SourceList.ExpandableItem (file.get_parent ().get_basename ());
+                var folder = new Granite.Widgets.SourceList.ExpandableItem (music_folder.parent);
                 folder.expand_all ();
 
-                foreach (var item in current_mobile_phone.get_subfolders (uri)) {
+                foreach (var item in music_folder.get_subfolders ()) {
                     var subfolder = new Granite.Widgets.SourceList.Item (item.get_basename ());
                     folder.add (subfolder);
                 }

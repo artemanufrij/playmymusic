@@ -50,6 +50,8 @@ namespace PlayMyMusic.Widgets {
         Gtk.Image cover;
         Gtk.Menu menu;
         Gtk.Menu playlists;
+        Gtk.Menu send_to;
+
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -106,6 +108,11 @@ namespace PlayMyMusic.Widgets {
             playlists = new Gtk.Menu ();
             menu_add_into_playlist.set_submenu (playlists);
 
+            var menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
+            menu.add (menu_send_to);
+            send_to = new Gtk.Menu ();
+            menu_send_to.set_submenu (send_to);
+
             menu.show_all ();
 
             cover = new Gtk.Image ();
@@ -145,10 +152,10 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
+            stdout.printf ("%s: on_drag_data_get\n", this.album.title);
             uchar [] buf;
             convert_long_to_bytes (this.album.ID, out buf);
             selection_data.set (selection_data.get_target(), 16, buf);
-            stdout.printf ("%s: on_drag_data_get\n", this.album.title);
         }
 
         private void on_drag_data_delete (Gdk.DragContext context) {
@@ -161,6 +168,7 @@ namespace PlayMyMusic.Widgets {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                // PLAYLISTS
                 foreach (var child in playlists.get_children ()) {
                     child.destroy ();
                 }
@@ -186,6 +194,23 @@ namespace PlayMyMusic.Widgets {
                 }
                 playlists.show_all ();
 
+                // SEND TO
+                foreach (var child in send_to.get_children ()) {
+                    child.destroy ();
+                }
+
+                var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
+                if (current_mobile_phone != null) {
+                    foreach (var music_folder in current_mobile_phone.music_folders) {
+                        item = new Gtk.MenuItem.with_label (music_folder.parent);
+                        item.activate.connect (() => {
+                            current_mobile_phone.add_album (album, music_folder);
+                        });
+                        send_to.add (item);
+                    }
+                }
+                send_to.show_all ();
+
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
             }
@@ -193,8 +218,8 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void convert_long_to_bytes(long number, out uchar [] buffer) {
-            buffer = new uchar[sizeof(long)];
-            for (int i=0; i<sizeof(long); i++) {
+            buffer = new uchar [sizeof (long)];
+            for (int i = 0; i < sizeof (long); i++) {
                 buffer[i] = (uchar) (number & 0xFF);
                 number = number >> 8;
             }

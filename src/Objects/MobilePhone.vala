@@ -29,11 +29,17 @@ namespace PlayMyMusic.Objects {
     public class MobilePhone : GLib.Object {
         public Volume volume { get; private set; }
 
-        public signal void music_folder_found (string uri);
+        public signal void music_folder_found (MobilePhoneMusicFolder music_folder);
         public signal void storage_calculated ();
 
         public uint64 size { get; private set; }
         public uint64 free { get; private set; }
+
+        public GLib.List<MobilePhoneMusicFolder> music_folders;
+
+        construct {
+            music_folders = new GLib.List<MobilePhoneMusicFolder> ();
+        }
 
         public MobilePhone (Volume volume) {
             this.volume = volume;
@@ -60,7 +66,9 @@ namespace PlayMyMusic.Objects {
                     while ((file_info = children.next_file ()) != null) {
                         if (file_info.get_file_type () == FileType.DIRECTORY) {
                             if (file_info.get_name ().down () == "music") {
-                                music_folder_found (uri + file_info.get_name () + "/");
+                                var music_folder = new MobilePhoneMusicFolder (uri + file_info.get_name () + "/");
+                                music_folders.append (music_folder);
+                                music_folder_found (music_folder);
                             } else {
                                 found_music_folder (uri + file_info.get_name () + "/");
                             }
@@ -73,23 +81,18 @@ namespace PlayMyMusic.Objects {
             });
         }
 
-        public GLib.List<File> get_subfolders (string uri) {
-            GLib.List<File> return_value = new GLib.List<File> ();
+        public void add_album (Album album, MobilePhoneMusicFolder target_folder) {
+            stdout.printf ("COPY %s to %s\n", album.title, target_folder.file.get_uri ());
 
-            var file = File.new_for_uri (uri);
-            try {
-                var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
-                FileInfo file_info = null;
-                while ((file_info = children.next_file ()) != null) {
-                    if (file_info.get_file_type () == FileType.DIRECTORY) {
-                        return_value.append (File.new_for_uri (uri + file_info.get_name () + "/"));
-                    }
-                }
-            } catch (Error err) {
-                warning (err.message);
+            var artist_folder = File.new_for_uri (target_folder.file.get_uri () + "/" + album.artist.name);
+            if (!artist_folder.query_exists ()) {
+                artist_folder.make_directory ();
             }
 
-            return return_value;
+        }
+
+        public void add_artist (Artist album, MobilePhoneMusicFolder target_folder) {
+
         }
     }
 }
