@@ -434,6 +434,7 @@ namespace PlayMyMusic {
 
             audio_cd_widget.hide ();
             mobile_phone_revealer.set_reveal_child (false);
+            mobile_phone_view.hide_spinner ();
 
             library_manager.device_manager.init ();
 

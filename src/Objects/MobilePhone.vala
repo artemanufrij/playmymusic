@@ -31,6 +31,9 @@ namespace PlayMyMusic.Objects {
 
         public signal void music_folder_found (MobilePhoneMusicFolder music_folder);
         public signal void storage_calculated ();
+        public signal void copy_started ();
+        public signal void copy_finished ();
+        public signal void copy_progress (string title, uint count, uint sum);
 
         public uint64 size { get; private set; }
         public uint64 free { get; private set; }
@@ -44,17 +47,20 @@ namespace PlayMyMusic.Objects {
         public MobilePhone (Volume volume) {
             this.volume = volume;
             this.volume.mount.begin (MountMountFlags.NONE, null, null, (obj, res) => {
-                try {
-                    var info = volume.get_activation_root ().query_filesystem_info ("filesystem::*");
-                    free = info.get_attribute_uint64 ("filesystem::free");
-                    size = info.get_attribute_uint64 ("filesystem::size");
-                    storage_calculated ();
-                    found_music_folder (volume.get_activation_root ().get_uri ());
-
-                } catch (Error err) {
-                    warning (err.message);
-                }
+                calculate_storage ();
+                found_music_folder (volume.get_activation_root ().get_uri ());
             });
+        }
+
+        private void calculate_storage () {
+            try {
+                var info = volume.get_activation_root ().query_filesystem_info ("filesystem::*");
+                free = info.get_attribute_uint64 ("filesystem::free");
+                size = info.get_attribute_uint64 ("filesystem::size");
+                storage_calculated ();
+            } catch (Error err) {
+                warning (err.message);
+            }
         }
 
         public void found_music_folder (string uri) {
@@ -82,13 +88,69 @@ namespace PlayMyMusic.Objects {
         }
 
         public void add_album (Album album, MobilePhoneMusicFolder target_folder) {
-            stdout.printf ("COPY %s to %s\n", album.title, target_folder.file.get_uri ());
+            copy_started ();
 
-            var artist_folder = File.new_for_uri (target_folder.file.get_uri () + "/" + album.artist.name);
-            if (!artist_folder.query_exists ()) {
-                artist_folder.make_directory ();
-            }
+            new Thread<void*> (null, () => {
+                var artist_folder = File.new_for_uri (target_folder.file.get_uri () + "/" + album.artist.name);
+                if (!artist_folder.query_exists ()) {
+                    try {
+                        artist_folder.make_directory ();
+                    } catch (Error err) {
+                        warning (err.message);
+                        Idle.add (() => {
+                            copy_finished ();
+                            return false;
+                        });
+                        return null;
+                    }
+                    target_folder.subfolder_created (artist_folder);
+                }
 
+                var album_folder = File.new_for_uri (artist_folder.get_uri () + "/" + album.title);
+                if (!album_folder.query_exists ()) {
+                    try {
+                        album_folder.make_directory ();
+                    } catch (Error err) {
+                        warning (err.message);
+                        Idle.add (() => {
+                            copy_finished ();
+                            return false;
+                        });
+                        return null;
+                    }
+                }
+                int progress = 0;
+                foreach (var track in album.tracks) {
+                    var target = File.new_for_uri (album_folder.get_uri () + "/" + Path.get_basename (track.path));
+
+                    Idle.add (() => {
+                        copy_progress (track.title, progress++, album.tracks.length ());
+                        return false;
+                    });
+
+                    if (target.query_exists ()) {
+                        target.dispose ();
+                        continue;
+                    }
+
+                    var source = File.new_for_uri (track.uri);
+                    try {
+                        source.copy (target, FileCopyFlags.NONE);
+                        calculate_storage ();
+                    } catch (Error err) {
+                        warning (err.message);
+                        continue;
+                    }
+
+                    target.dispose ();
+                    source.dispose ();
+                }
+                Idle.add (() => {
+                    copy_finished ();
+                    return false;
+                });
+                return null;
+            });
         }
 
         public void add_artist (Artist album, MobilePhoneMusicFolder target_folder) {

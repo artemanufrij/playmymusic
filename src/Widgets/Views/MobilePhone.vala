@@ -32,8 +32,11 @@ namespace PlayMyMusic.Widgets.Views {
 
         Gtk.Label title;
         Gtk.Image image;
-        Gtk.ProgressBar storage;
+        Gtk.ProgressBar progress;
+        Gtk.Spinner spinner;
         Granite.Widgets.SourceList folders;
+
+        string no_items = _("No Music Files");
 
         public MobilePhone () {
             build_ui ();
@@ -49,11 +52,15 @@ namespace PlayMyMusic.Widgets.Views {
 
             image = new Gtk.Image ();
 
-            storage = new Gtk.ProgressBar ();
+            spinner = new Gtk.Spinner ();
+            spinner.height_request = 48;
+
+            progress = new Gtk.ProgressBar ();
 
             content.pack_start (title, false, false, 0);
             content.pack_start (image);
-            content.pack_start (storage);
+            content.pack_start (spinner);
+            content.pack_start (progress);
 
             folders = new Granite.Widgets.SourceList ();
             folders.hexpand = false;
@@ -64,6 +71,10 @@ namespace PlayMyMusic.Widgets.Views {
             this.show_all ();
         }
 
+        public void hide_spinner () {
+            spinner.hide ();
+        }
+
         public void show_mobile_phone (PlayMyMusic.Objects.MobilePhone mobile_phone) {
             if (current_mobile_phone == mobile_phone) {
                 return;
@@ -72,6 +83,9 @@ namespace PlayMyMusic.Widgets.Views {
             if (current_mobile_phone != null) {
                 current_mobile_phone.storage_calculated.disconnect (storage_calculated);
                 current_mobile_phone.music_folder_found.disconnect (music_folder_found);
+                current_mobile_phone.copy_progress.disconnect (copy_progress);
+                current_mobile_phone.copy_finished.disconnect (copy_finished);
+                current_mobile_phone.copy_started.disconnect (copy_started);
             }
             folders.root.clear ();
             current_mobile_phone = mobile_phone;
@@ -81,27 +95,60 @@ namespace PlayMyMusic.Widgets.Views {
 
             current_mobile_phone.storage_calculated.connect (storage_calculated);
             current_mobile_phone.music_folder_found.connect (music_folder_found);
+            current_mobile_phone.copy_progress.connect (copy_progress);
+            current_mobile_phone.copy_finished.connect (copy_finished);
+            current_mobile_phone.copy_started.connect (copy_started);
         }
 
         private void storage_calculated () {
-            storage.fraction = 1 - (double)1 / current_mobile_phone.size * current_mobile_phone.free;
+            progress.fraction = 1 - (double)1 / current_mobile_phone.size * current_mobile_phone.free;
+        }
+
+        private void copy_progress (string title, uint count, uint sum) {
+            progress.fraction = (double)1 / sum * count;
+        }
+
+        private void copy_finished () {
+            image.show ();
+            spinner.hide ();
+            spinner.active = false;
+            storage_calculated ();
+        }
+
+        private void copy_started () {
+            image.hide ();
+            spinner.show ();
+            spinner.active = true;
         }
 
         private void music_folder_found (Objects.MobilePhoneMusicFolder music_folder) {
+
+            var folder = new Granite.Widgets.SourceList.ExpandableItem (music_folder.parent);
+            folder.expand_all ();
+
+            foreach (var item in music_folder.get_subfolders ()) {
+                var subfolder = new Granite.Widgets.SourceList.Item (item.get_basename ());
+                folder.add (subfolder);
+            }
+            music_folder.subfolder_created.connect ((file) => {
+                Idle.add (() => {
+                    var subfolder = new Granite.Widgets.SourceList.Item (file.get_basename ());
+                    folder.add (subfolder);
+                    foreach (var child in folder.children){
+                        if (child.name == no_items) {
+                            folder.remove (child);
+                            break;
+                        }
+                    }
+                    return false;
+                });
+            });
+
+            if (folder.children.size == 0) {
+                folder.add (new Granite.Widgets.SourceList.Item (no_items));
+            }
+
             Idle.add (() => {
-                var folder = new Granite.Widgets.SourceList.ExpandableItem (music_folder.parent);
-                folder.expand_all ();
-
-                foreach (var item in music_folder.get_subfolders ()) {
-                    var subfolder = new Granite.Widgets.SourceList.Item (item.get_basename ());
-                    folder.add (subfolder);
-                }
-
-                if (folder.children.size == 0) {
-                    var subfolder = new Granite.Widgets.SourceList.Item ("NO ITEMS");
-                    folder.add (subfolder);
-                }
-
                 folders.root.add (folder);
                 return false;
             });

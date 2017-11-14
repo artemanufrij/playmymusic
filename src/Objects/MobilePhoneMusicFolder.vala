@@ -27,6 +27,7 @@
 
 namespace PlayMyMusic.Objects {
     public class MobilePhoneMusicFolder : GLib.Object {
+        public signal void subfolder_created (File file);
 
         public string parent { get; private set; }
         public string title { get; private set; }
@@ -46,7 +47,7 @@ namespace PlayMyMusic.Objects {
                 FileInfo file_info = null;
                 while ((file_info = children.next_file ()) != null) {
                     if (file_info.get_file_type () == FileType.DIRECTORY) {
-                        return_value.append (File.new_for_uri (file.get_uri () + file_info.get_name () + "/"));
+                        return_value.append (File.new_for_uri (file.get_uri () + "/" + file_info.get_name ()));
                     }
                 }
             } catch (Error err) {
