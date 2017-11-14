@@ -64,6 +64,13 @@ namespace PlayMyMusic.Widgets.Views {
 
             folders = new Granite.Widgets.SourceList ();
             folders.hexpand = false;
+            folders.events |= Gdk.EventMask.KEY_RELEASE_MASK;
+            folders.key_release_event.connect ((key) => {
+                if (key.keyval == Gdk.Key.Delete) {
+                     stdout.printf ("DELETE - %s\n", folders.selected.name);
+                }
+                return true;
+            });
 
             this.attach (content, 0, 0);
             this.attach (folders, 0, 1);
@@ -124,15 +131,16 @@ namespace PlayMyMusic.Widgets.Views {
         private void music_folder_found (Objects.MobilePhoneMusicFolder music_folder) {
 
             var folder = new Granite.Widgets.SourceList.ExpandableItem (music_folder.parent);
+            folder.collapsible = false;
             folder.expand_all ();
 
             foreach (var item in music_folder.get_subfolders ()) {
-                var subfolder = new Granite.Widgets.SourceList.Item (item.get_basename ());
+                var subfolder = new Granite.Widgets.SourceList.ExpandableItem (item.get_basename ());
                 folder.add (subfolder);
             }
             music_folder.subfolder_created.connect ((file) => {
                 Idle.add (() => {
-                    var subfolder = new Granite.Widgets.SourceList.Item (file.get_basename ());
+                    var subfolder = new Granite.Widgets.SourceList.ExpandableItem (file.get_basename ());
                     folder.add (subfolder);
                     foreach (var child in folder.children){
                         if (child.name == no_items) {
