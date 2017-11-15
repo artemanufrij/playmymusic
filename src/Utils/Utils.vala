@@ -44,4 +44,23 @@ namespace PlayMyMusic.Utils {
     public static bool is_audio_file (string mime_type) {
         return mime_type.has_prefix ("audio/") && !mime_type.contains ("x-mpegurl") && !mime_type.contains ("x-scpls");
     }
+
+    public static void delete_uri_recursive (string uri) {
+        try {
+            var directory = File.new_for_uri (uri);
+            var children = directory.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
+            FileInfo file_info = null;
+            while ((file_info = children.next_file ()) != null) {
+                if (file_info.get_file_type () == FileType.DIRECTORY) {
+                    delete_uri_recursive (directory.get_uri () + "/" + file_info.get_name ());
+                } else {
+                    var usb = File.new_for_uri (directory.get_uri () + "/" + file_info.get_name ());
+                    usb.delete ();
+                }
+            }
+            directory.delete ();
+        } catch (Error err) {
+            warning (err.message);
+        }
+    }
 }

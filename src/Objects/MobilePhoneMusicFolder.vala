@@ -26,35 +26,67 @@
  */
 
 namespace PlayMyMusic.Objects {
-    public class MobilePhoneMusicFolder : GLib.Object {
+    public class MobilePhoneMusicFolder : Granite.Widgets.SourceList.ExpandableItem {
         public signal void subfolder_created (File file);
+        public signal void subfolder_deleted ();
 
-        public string parent { get; private set; }
-        public string title { get; private set; }
         public File file { get; private set; }
 
         public MobilePhoneMusicFolder (string uri) {
-            this.file = File.new_for_uri (uri);
-            this.title = file.get_basename ();
-            this.parent = file.get_parent ().get_basename ();
+            file = File.new_for_uri (uri);
+            this.name = file.get_basename ();
+
+            get_subfolders ();
         }
 
-        public GLib.List<File> get_subfolders () {
-            GLib.List<File> return_value = new GLib.List<File> ();
-
+        private void get_subfolders () {
             try {
                 var children = file.enumerate_children ("standard::*", GLib.FileQueryInfoFlags.NONE);
                 FileInfo file_info = null;
                 while ((file_info = children.next_file ()) != null) {
                     if (file_info.get_file_type () == FileType.DIRECTORY) {
-                        return_value.append (File.new_for_uri (file.get_uri () + "/" + file_info.get_name ()));
+                        create_album_folder (file.get_uri () + "/" + file_info.get_name ());
                     }
                 }
             } catch (Error err) {
                 warning (err.message);
             }
+        }
 
-            return return_value;
+        public MobilePhoneMusicFolder? get_sub_folder (string sub) {
+            foreach (var child in this.children) {
+                if ((child is MobilePhoneMusicFolder) && child.name == sub) {
+                    return child as MobilePhoneMusicFolder;
+                }
+            }
+
+            var sub_folder = File.new_for_uri (file.get_uri () + "/" + sub);
+            try {
+                sub_folder.make_directory ();
+                return create_album_folder (sub_folder.get_uri ());
+            } catch (Error err) {
+                warning (err.message);
+            }
+            return null;
+        }
+
+        private MobilePhoneMusicFolder create_album_folder (string uri) {
+            var sub = new MobilePhoneMusicFolder (uri);
+            sub.subfolder_deleted.connect (() => subfolder_deleted ());
+            this.add (sub);
+            return sub;
+        }
+
+        public void delete () {
+            new Thread<void*> (null, () => {
+                PlayMyMusic.Utils.delete_uri_recursive (file.get_uri ());
+                this.parent.remove (this);
+                Idle.add (() => {
+                    subfolder_deleted ();
+                    return false;
+                });
+                return null;
+            });
         }
     }
 }

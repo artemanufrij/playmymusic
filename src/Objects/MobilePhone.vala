@@ -40,6 +40,8 @@ namespace PlayMyMusic.Objects {
 
         public GLib.List<MobilePhoneMusicFolder> music_folders;
 
+        string no_items = _("Empty Music Folder");
+
         construct {
             music_folders = new GLib.List<MobilePhoneMusicFolder> ();
         }
@@ -72,9 +74,7 @@ namespace PlayMyMusic.Objects {
                     while ((file_info = children.next_file ()) != null) {
                         if (file_info.get_file_type () == FileType.DIRECTORY) {
                             if (file_info.get_name ().down () == "music") {
-                                var music_folder = new MobilePhoneMusicFolder (uri + file_info.get_name () + "/");
-                                music_folders.append (music_folder);
-                                music_folder_found (music_folder);
+                                create_music_folder (uri + file_info.get_name () + "/");
                             } else {
                                 found_music_folder (uri + file_info.get_name () + "/");
                             }
@@ -89,40 +89,31 @@ namespace PlayMyMusic.Objects {
 
         public void add_album (Album album, MobilePhoneMusicFolder target_folder) {
             copy_started ();
+            copy_progress ("", 0, album.tracks.length ());
 
             new Thread<void*> (null, () => {
-                var artist_folder = File.new_for_uri (target_folder.file.get_uri () + "/" + album.artist.name);
-                if (!artist_folder.query_exists ()) {
-                    try {
-                        artist_folder.make_directory ();
-                    } catch (Error err) {
-                        warning (err.message);
-                        Idle.add (() => {
-                            copy_finished ();
-                            return false;
-                        });
-                        return null;
-                    }
-                    target_folder.subfolder_created (artist_folder);
+                var artist_folder = target_folder.get_sub_folder (album.artist.name);
+                if (artist_folder == null) {
+                    Idle.add (() => {
+                        copy_finished ();
+                        return false;
+                    });
+                    return null;
                 }
 
-                var album_folder = File.new_for_uri (artist_folder.get_uri () + "/" + album.title);
-                if (!album_folder.query_exists ()) {
-                    try {
-                        album_folder.make_directory ();
-                    } catch (Error err) {
-                        warning (err.message);
-                        Idle.add (() => {
-                            copy_finished ();
-                            return false;
-                        });
-                        return null;
-                    }
+                var album_folder = artist_folder.get_sub_folder (album.title);
+                if (album_folder == null) {
+                    Idle.add (() => {
+                        copy_finished ();
+                        return false;
+                    });
+                    return null;
                 }
                 int progress = 0;
                 foreach (var track in album.tracks) {
-                    var target = File.new_for_uri (album_folder.get_uri () + "/" + Path.get_basename (track.path));
 
+                stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                    var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
                     Idle.add (() => {
                         copy_progress (track.title, progress++, album.tracks.length ());
                         return false;
@@ -155,6 +146,27 @@ namespace PlayMyMusic.Objects {
 
         public void add_artist (Artist album, MobilePhoneMusicFolder target_folder) {
 
+        }
+
+        private void create_music_folder (string uri) {
+            var music_folder = new MobilePhoneMusicFolder (uri);
+            music_folder.name = music_folder.file.get_parent ().get_basename ();
+
+            var empty_folder = new Granite.Widgets.SourceList.Item (no_items);
+            music_folder.add (empty_folder);
+            empty_folder.visible = music_folder.n_children < 2;
+
+            music_folder.subfolder_deleted.connect (() => {
+                empty_folder.visible = music_folder.n_children < 2;
+                calculate_storage ();
+            });
+
+            music_folder.child_added.connect ((item) => {
+                empty_folder.visible = music_folder.n_children < 2;
+            });
+
+            music_folders.append (music_folder);
+            music_folder_found (music_folder);
         }
     }
 }

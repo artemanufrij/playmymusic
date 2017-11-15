@@ -202,7 +202,7 @@ namespace PlayMyMusic.Widgets {
                 var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
                 if (current_mobile_phone != null) {
                     foreach (var music_folder in current_mobile_phone.music_folders) {
-                        item = new Gtk.MenuItem.with_label (music_folder.parent);
+                        item = new Gtk.MenuItem.with_label (music_folder.name);
                         item.activate.connect (() => {
                             current_mobile_phone.add_album (album, music_folder);
                         });
