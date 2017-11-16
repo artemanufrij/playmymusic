@@ -42,7 +42,7 @@ namespace PlayMyMusic.Objects {
 
         public GLib.List<MobilePhoneMusicFolder> music_folders;
 
-        string no_items = _("Empty Music Folder");
+        string no_items = _("No Music Files found");
 
         construct {
             music_folders = new GLib.List<MobilePhoneMusicFolder> ();
