@@ -33,6 +33,8 @@ namespace PlayMyMusic.Widgets {
         public new string name { get { return artist.name; } }
 
         Gtk.Menu menu;
+        Gtk.Menu send_to;
+        Gtk.MenuItem menu_send_to;
         Gtk.Image cover;
 
         construct {
@@ -92,6 +94,12 @@ namespace PlayMyMusic.Widgets {
                 }
             });
             menu.append (menu_new_cover);
+
+            menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
+            menu.add (menu_send_to);
+            send_to = new Gtk.Menu ();
+            menu_send_to.set_submenu (send_to);
+
             menu.show_all ();
 
             content.attach (cover, 0, 0);
@@ -105,6 +113,28 @@ namespace PlayMyMusic.Widgets {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+
+                // SEND TO
+                foreach (var child in send_to.get_children ()) {
+                    child.destroy ();
+                }
+
+                var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
+                if (current_mobile_phone != null) {
+                    foreach (var music_folder in current_mobile_phone.music_folders) {
+                        var item = new Gtk.MenuItem.with_label (music_folder.name);
+                        item.activate.connect (() => {
+                            current_mobile_phone.add_artist (artist, music_folder);
+                        });
+                        send_to.add (item);
+                    }
+                }
+                if (send_to.get_children ().length () == 0) {
+                    menu_send_to.hide ();
+                } else {
+                    menu_send_to.show_all ();
+                }
+
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
             }

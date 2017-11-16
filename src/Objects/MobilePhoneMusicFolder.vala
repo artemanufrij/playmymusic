@@ -78,6 +78,7 @@ namespace PlayMyMusic.Objects {
         }
 
         public void delete () {
+            this.name = _("deleting…");
             new Thread<void*> (null, () => {
                 PlayMyMusic.Utils.delete_uri_recursive (file.get_uri ());
                 this.parent.remove (this);

@@ -42,6 +42,8 @@ namespace PlayMyMusic.Widgets {
         Gtk.Image warning;
         Gtk.Menu menu;
         Gtk.Menu playlists;
+        Gtk.Menu send_to;
+        Gtk.MenuItem menu_send_to;
         Gtk.Label track_title;
 
         TrackStyle track_style;
@@ -109,6 +111,11 @@ namespace PlayMyMusic.Widgets {
                 playlists = new Gtk.Menu ();
                 menu_add_into_playlist.set_submenu (playlists);
 
+                menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
+                menu.add (menu_send_to);
+                send_to = new Gtk.Menu ();
+                menu_send_to.set_submenu (send_to);
+
                 menu.show_all ();
             }
 
@@ -167,6 +174,27 @@ namespace PlayMyMusic.Widgets {
                     playlists.add (item);
                 }
                 playlists.show_all ();
+
+                // SEND TO
+                foreach (var child in send_to.get_children ()) {
+                    child.destroy ();
+                }
+
+                var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
+                if (current_mobile_phone != null) {
+                    foreach (var music_folder in current_mobile_phone.music_folders) {
+                        item = new Gtk.MenuItem.with_label (music_folder.name);
+                        item.activate.connect (() => {
+                            current_mobile_phone.add_track (track, music_folder);
+                        });
+                        send_to.add (item);
+                    }
+                }
+                if (send_to.get_children ().length () == 0) {
+                    menu_send_to.hide ();
+                } else {
+                    menu_send_to.show_all ();
+                }
 
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;

@@ -38,12 +38,20 @@ namespace PlayMyMusic.Objects {
         public uint64 size { get; private set; }
         public uint64 free { get; private set; }
 
+        public bool is_copying { get; private set; }
+
         public GLib.List<MobilePhoneMusicFolder> music_folders;
 
         string no_items = _("Empty Music Folder");
 
         construct {
             music_folders = new GLib.List<MobilePhoneMusicFolder> ();
+            copy_started.connect (() => {
+                is_copying = true;
+            });
+            copy_finished.connect (() => {
+                is_copying = false;
+            });
         }
 
         public MobilePhone (Volume volume) {
@@ -88,8 +96,11 @@ namespace PlayMyMusic.Objects {
         }
 
         public void add_album (Album album, MobilePhoneMusicFolder target_folder) {
+            if (is_copying) {
+                return;
+            }
             copy_started ();
-            copy_progress ("", 0, album.tracks.length ());
+            copy_progress ("", 0, 1);
 
             new Thread<void*> (null, () => {
                 var artist_folder = target_folder.get_sub_folder (album.artist.name);
@@ -101,6 +112,8 @@ namespace PlayMyMusic.Objects {
                     return null;
                 }
 
+                copy_cover (artist_folder.file.get_uri () + "/artist.jpg", album.artist.cover_path);
+
                 var album_folder = artist_folder.get_sub_folder (album.title);
                 if (album_folder == null) {
                     Idle.add (() => {
@@ -109,10 +122,11 @@ namespace PlayMyMusic.Objects {
                     });
                     return null;
                 }
+
+                copy_cover (album_folder.file.get_uri () + "/cover.jpg", album.cover_path);
                 int progress = 0;
                 foreach (var track in album.tracks) {
-
-                stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                    stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
                     var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
                     Idle.add (() => {
                         copy_progress (track.title, progress++, album.tracks.length ());
@@ -144,8 +158,120 @@ namespace PlayMyMusic.Objects {
             });
         }
 
-        public void add_artist (Artist album, MobilePhoneMusicFolder target_folder) {
+        public void add_artist (Artist artist, MobilePhoneMusicFolder target_folder) {
+            if (is_copying) {
+                return;
+            }
+            copy_started ();
+            copy_progress ("", 0, 1);
 
+            new Thread<void*> (null, () => {
+                var artist_folder = target_folder.get_sub_folder (artist.name);
+                if (artist_folder == null) {
+                    Idle.add (() => {
+                        copy_finished ();
+                        return false;
+                    });
+                    return null;
+                }
+
+                int progress = 0;
+                foreach (var album in artist.albums) {
+                    var album_folder = artist_folder.get_sub_folder (album.title);
+                    if (album_folder == null) {
+                        Idle.add (() => {
+                            copy_finished ();
+                            return false;
+                        });
+                        return null;
+                    }
+
+                    foreach (var track in album.tracks) {
+                        stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                        var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                        Idle.add (() => {
+                            copy_progress (track.title, progress++, artist.tracks.length ());
+                            return false;
+                        });
+
+                        if (target.query_exists ()) {
+                            target.dispose ();
+                            continue;
+                        }
+
+                        var source = File.new_for_uri (track.uri);
+                        try {
+                            source.copy (target, FileCopyFlags.NONE);
+                            calculate_storage ();
+                        } catch (Error err) {
+                            warning (err.message);
+                            continue;
+                        }
+                        target.dispose ();
+                        source.dispose ();
+                    }
+                }
+                Idle.add (() => {
+                    copy_finished ();
+                    return false;
+                });
+                return null;
+            });
+        }
+
+        public void add_track (Track track, MobilePhoneMusicFolder target_folder) {
+            if (is_copying) {
+                return;
+            }
+            copy_started ();
+            copy_progress ("", 0, 1);
+            new Thread<void*> (null, () => {
+                var artist_folder = target_folder.get_sub_folder (track.album.artist.name);
+                if (artist_folder == null) {
+                    Idle.add (() => {
+                        copy_finished ();
+                        return false;
+                    });
+                    return null;
+                }
+
+                var album_folder = artist_folder.get_sub_folder (track.album.title);
+                if (album_folder == null) {
+                    Idle.add (() => {
+                        copy_finished ();
+                        return false;
+                    });
+                    return null;
+                }
+
+                stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+
+                if (target.query_exists ()) {
+                    Idle.add (() => {
+                        copy_finished ();
+                        return false;
+                    });
+                    return null;
+                }
+
+                var source = File.new_for_uri (track.uri);
+                try {
+                    source.copy (target, FileCopyFlags.NONE);
+                    calculate_storage ();
+                } catch (Error err) {
+                    warning (err.message);
+                }
+
+                target.dispose ();
+                source.dispose ();
+
+                Idle.add (() => {
+                    copy_finished ();
+                    return false;
+                });
+                return null;
+            });
         }
 
         private void create_music_folder (string uri) {
@@ -167,6 +293,22 @@ namespace PlayMyMusic.Objects {
 
             music_folders.append (music_folder);
             music_folder_found (music_folder);
+        }
+
+        private void copy_cover (string folder, string cover) {
+            var source = File.new_for_path (cover);
+            if (source.query_exists ()) {
+                var target = File.new_for_uri (folder);
+                if (!target.query_exists ()) {
+                    try {
+                        source.copy (target, FileCopyFlags.NONE);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+                target.dispose ();
+            }
+            source.dispose ();
         }
     }
 }

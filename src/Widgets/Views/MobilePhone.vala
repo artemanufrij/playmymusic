@@ -26,24 +26,40 @@
  */
 
 namespace PlayMyMusic.Widgets.Views {
-    public class MobilePhone : Gtk.Grid {
+    public class MobilePhone : Gtk.Revealer {
+        PlayMyMusic.Services.LibraryManager library_manager;
 
         public PlayMyMusic.Objects.MobilePhone? current_mobile_phone { get; private set; default = null;}
 
         Gtk.Label title;
         Gtk.Image image;
         Gtk.ProgressBar progress;
+        Gtk.Label message;
         Gtk.Spinner spinner;
         Granite.Widgets.SourceList folders;
+
+        construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager.mobile_phone_connected.connect ((mobile_phone) => {
+                show_mobile_phone (mobile_phone);
+                set_reveal_child (true);
+            });
+            library_manager.mobile_phone_disconnected.connect ((volume) => {
+                if (current_mobile_phone.volume == volume) {
+                    set_reveal_child (false);
+                    reset ();
+                }
+            });
+        }
 
         public MobilePhone () {
             build_ui ();
         }
 
         private void build_ui () {
-            var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            content.margin = 12;
-            content.spacing = 12;
+            var header = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            header.margin = 12;
+            header.spacing = 12;
 
             title = new Gtk.Label ("");
             title.ellipsize = Pango.EllipsizeMode.END;
@@ -55,10 +71,18 @@ namespace PlayMyMusic.Widgets.Views {
 
             progress = new Gtk.ProgressBar ();
 
-            content.pack_start (title, false, false, 0);
-            content.pack_start (image);
-            content.pack_start (spinner);
-            content.pack_start (progress);
+            message = new Gtk.Label ("Enable MTP on your mobile phone");
+            message.wrap = true;
+            message.max_width_chars = 0;
+            message.justify = Gtk.Justification.CENTER;
+            message.margin_top = 12;
+            message.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+
+            header.pack_start (title, false, false, 0);
+            header.pack_start (image);
+            header.pack_start (spinner);
+            header.pack_start (progress);
+            header.pack_start (message);
 
             folders = new Granite.Widgets.SourceList ();
             folders.hexpand = false;
@@ -70,9 +94,14 @@ namespace PlayMyMusic.Widgets.Views {
                 return true;
             });
 
-            this.attach (content, 0, 0);
-            this.attach (folders, 0, 1);
-            this.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 1, 0, 1, 2);
+            var content = new Gtk.Grid ();
+            content.attach (header, 0, 0);
+            content.attach (folders, 0, 1);
+            content.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 1, 0, 1, 2);
+
+            this.transition_type = Gtk.RevealerTransitionType.SLIDE_RIGHT;
+
+            this.add (content);
             this.show_all ();
         }
 
@@ -93,7 +122,8 @@ namespace PlayMyMusic.Widgets.Views {
                 current_mobile_phone.copy_started.disconnect (copy_started);
             }
 
-            folders.root.clear ();
+            reset ();
+
             current_mobile_phone = mobile_phone;
 
             title.label = current_mobile_phone.volume.get_name ();
@@ -104,6 +134,12 @@ namespace PlayMyMusic.Widgets.Views {
             current_mobile_phone.copy_progress.connect (copy_progress);
             current_mobile_phone.copy_finished.connect (copy_finished);
             current_mobile_phone.copy_started.connect (copy_started);
+        }
+
+        public void reset () {
+            current_mobile_phone = null;
+            folders.root.clear ();
+            message.show ();
         }
 
         private void storage_calculated () {
@@ -128,6 +164,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void music_folder_found (Objects.MobilePhoneMusicFolder music_folder) {
+            message.hide ();
             music_folder.collapsible = false;
             music_folder.expand_all ();
 

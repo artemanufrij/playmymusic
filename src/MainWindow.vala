@@ -46,7 +46,6 @@ namespace PlayMyMusic {
         Gtk.Widget audio_cd_widget;
         Gtk.Image artist_button;
         Gtk.Image playlist_button;
-        Gtk.Revealer mobile_phone_revealer;
 
         Granite.Widgets.ModeButton view_mode;
 
@@ -145,14 +144,12 @@ namespace PlayMyMusic {
                 }
             });
 
-            library_manager.mobile_phone_connected.connect ((mobile_phone) => {
-                mobile_phone_view.show_mobile_phone (mobile_phone);
-                mobile_phone_revealer.set_reveal_child (true);
+            library_manager.mobile_phone_connected.connect ((volume) => {
+                adjust_background_images ();
             });
+
             library_manager.mobile_phone_disconnected.connect ((volume) => {
-                if (mobile_phone_view.current_mobile_phone.volume == volume) {
-                    mobile_phone_revealer.set_reveal_child (false);
-                }
+                adjust_background_images ();
             });
 
             Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.LINK);
@@ -289,10 +286,6 @@ namespace PlayMyMusic {
 
             mobile_phone_view = new Widgets.Views.MobilePhone ();
 
-            mobile_phone_revealer = new Gtk.Revealer ();
-            mobile_phone_revealer.add (mobile_phone_view);
-            mobile_phone_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_RIGHT;
-
             // TIMELINE
             timeline = new Widgets.TrackTimeLine ();
             timeline.goto_current_track.connect ((track) => {
@@ -426,14 +419,14 @@ namespace PlayMyMusic {
             content.add_named (audio_cd_view, "audiocd");
 
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            box.pack_start (mobile_phone_revealer, false, false, 0);
+            box.pack_start (mobile_phone_view, false, false, 0);
             box.pack_end (content, true, true, 0);
 
             this.add (box);
             this.show_all ();
 
             audio_cd_widget.hide ();
-            mobile_phone_revealer.set_reveal_child (false);
+            mobile_phone_view.set_reveal_child (false);
             mobile_phone_view.hide_spinner ();
 
             library_manager.device_manager.init ();

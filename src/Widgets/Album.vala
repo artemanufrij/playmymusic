@@ -51,7 +51,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Menu menu;
         Gtk.Menu playlists;
         Gtk.Menu send_to;
-
+        Gtk.MenuItem menu_send_to;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -108,7 +108,7 @@ namespace PlayMyMusic.Widgets {
             playlists = new Gtk.Menu ();
             menu_add_into_playlist.set_submenu (playlists);
 
-            var menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
+            menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
             menu.add (menu_send_to);
             send_to = new Gtk.Menu ();
             menu_send_to.set_submenu (send_to);
@@ -209,7 +209,11 @@ namespace PlayMyMusic.Widgets {
                         send_to.add (item);
                     }
                 }
-                send_to.show_all ();
+                if (send_to.get_children ().length () == 0) {
+                    menu_send_to.hide ();
+                } else {
+                    menu_send_to.show_all ();
+                }
 
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
