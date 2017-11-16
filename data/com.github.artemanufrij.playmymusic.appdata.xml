@@ -48,6 +48,14 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.3.0" date="2017-11-18">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>MTP-Support</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.2.2" date="2017-11-12">
             <description>
                 <p>New:</p>
