@@ -42,6 +42,7 @@ namespace PlayMyMusic {
         Gtk.Image icon_play;
         Gtk.Image icon_pause;
         Gtk.Stack content;
+        Gtk.MenuButton app_menu;
 
         Gtk.Widget audio_cd_widget;
         Gtk.Image artist_button;
@@ -71,6 +72,11 @@ namespace PlayMyMusic {
             settings = PlayMyMusic.Settings.get_default ();
             settings.notify["use-dark-theme"].connect (() => {
                 Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
+                if (settings.use_dark_theme) {
+                    app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+                } else {
+                    app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR));
+                }
             });
 
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -318,8 +324,12 @@ namespace PlayMyMusic {
             });
 
             // SETTINGS MENU
-            var app_menu = new Gtk.MenuButton ();
-            app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR));
+            app_menu = new Gtk.MenuButton ();
+            if (settings.use_dark_theme) {
+                app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+            } else {
+                app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR));
+            }
 
             var settings_menu = new Gtk.Menu ();
 

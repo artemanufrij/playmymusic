@@ -37,7 +37,7 @@ namespace PlayMyMusic.Widgets {
         { "INTEGER",    0, Target.INT32 },
         { "STRING",     0, Target.STRING },
         { "text/plain", 0, Target.STRING },
-        { "application/x-rootwindow-drop", 0, Target.ROOTWIN }
+        { "*", 0, Target.ROOTWIN }
     };
 
     public class Album : Gtk.FlowBoxChild {
