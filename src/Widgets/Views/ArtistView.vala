@@ -74,6 +74,16 @@ namespace PlayMyMusic.Widgets.Views {
                 }
                 repeat_button.show_all ();
             });
+
+            settings.notify["use-dark-theme"].connect (() => {
+                if (settings.use_dark_theme) {
+                    tracks.get_style_context ().add_class ("artist-tracks-dark");
+                    tracks.get_style_context ().remove_class ("artist-tracks");
+                } else {
+                    tracks.get_style_context ().add_class ("artist-tracks");
+                    tracks.get_style_context ().remove_class ("artist-tracks-dark");
+                }
+            });
         }
 
         public ArtistView () {
@@ -110,7 +120,11 @@ namespace PlayMyMusic.Widgets.Views {
             tracks = new Gtk.ListBox ();
             tracks.set_sort_func (tracks_sort_func);
             tracks.selected_rows_changed.connect (play_track);
-            tracks.get_style_context ().add_class ("artist-tracks");
+            if (settings.use_dark_theme) {
+                tracks.get_style_context ().add_class ("artist-tracks-dark");
+            } else {
+                tracks.get_style_context ().add_class ("artist-tracks");
+            }
             tracks_scroll.add (tracks);
 
             var action_toolbar = new Gtk.ActionBar ();

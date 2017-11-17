@@ -57,7 +57,16 @@ namespace PlayMyMusic.Dialogs {
             grid.row_spacing = 12;
             grid.margin = 12;
 
+            var use_dark_theme_label = new Gtk.Label (_("Use Dark Theme"));
+            use_dark_theme_label.halign = Gtk.Align.START;
+            var use_dark_theme = new Gtk.Switch ();
+            use_dark_theme.active = settings.use_dark_theme;
+            use_dark_theme.notify["active"].connect (() => {
+                settings.use_dark_theme = use_dark_theme.active;
+            });
+
             var play_in_background_label = new Gtk.Label (_("Play in background if closed"));
+            play_in_background_label.halign = Gtk.Align.START;
             var play_in_background = new Gtk.Switch ();
             play_in_background.active = settings.play_in_background;
             play_in_background.notify["active"].connect (() => {
@@ -65,6 +74,7 @@ namespace PlayMyMusic.Dialogs {
             });
 
             var look_for_new_files_label = new Gtk.Label (_("Look for new files on start up"));
+            look_for_new_files_label.halign = Gtk.Align.START;
             var look_for_new_files = new Gtk.Switch ();
             look_for_new_files.active = settings.look_for_new_files;
             look_for_new_files.notify["active"].connect (() => {
@@ -72,19 +82,23 @@ namespace PlayMyMusic.Dialogs {
             });
 
             var load_artist_data_label = new Gtk.Label (_("Load Artist data from MusicBrainz"));
+            load_artist_data_label.halign = Gtk.Align.START;
             var load_artist_data = new Gtk.Switch ();
             load_artist_data.active = settings.load_artist_from_musicbrainz;
             load_artist_data.notify["active"].connect (() => {
                 settings.load_artist_from_musicbrainz = load_artist_data.active;
             });
 
-            grid.attach (play_in_background_label, 0, 0);
-            grid.attach (play_in_background, 1, 0);
-            grid.attach (look_for_new_files_label, 0, 1);
-            grid.attach (look_for_new_files, 1, 1);
-            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 2, 2, 1);
-            grid.attach (load_artist_data_label, 0, 3);
-            grid.attach (load_artist_data, 1, 3);
+            grid.attach (use_dark_theme_label, 0, 0);
+            grid.attach (use_dark_theme, 1, 0);
+            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1, 2, 1);
+            grid.attach (play_in_background_label, 0, 2);
+            grid.attach (play_in_background, 1, 2);
+            grid.attach (look_for_new_files_label, 0, 3);
+            grid.attach (look_for_new_files, 1, 3);
+            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 4, 2, 1);
+            grid.attach (load_artist_data_label, 0, 5);
+            grid.attach (load_artist_data, 1, 5);
 
             content.pack_start (grid, false, false, 0);
 

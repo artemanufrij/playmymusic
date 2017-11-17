@@ -69,6 +69,9 @@ namespace PlayMyMusic {
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
+            settings.notify["use-dark-theme"].connect (() => {
+                Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
+            });
 
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.tag_discover_started.connect (() => {
@@ -184,6 +187,7 @@ namespace PlayMyMusic {
         public MainWindow () {
             load_settings ();
             this.window_position = Gtk.WindowPosition.CENTER;
+            Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
             build_ui ();
 
             load_content_from_database.begin ((obj, res) => {
@@ -237,6 +241,9 @@ namespace PlayMyMusic {
                     }
                     .artist-tracks {
                         background: rgba (255, 255, 255, 0.75);
+                    }
+                    .artist-tracks-dark {
+                        background: rgba (0, 0, 0, 0.75);
                     }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
