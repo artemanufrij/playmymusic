@@ -106,7 +106,7 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
-            var title = new Gtk.Label (("<span color='#666666'><b>%s</b></span>").printf (this.title.replace ("&", "&amp;")));
+            var title = new Gtk.Label (("<span color='#808080'><b>%s</b></span>").printf (this.title.replace ("&", "&amp;")));
             title.use_markup = true;
             title.halign = Gtk.Align.FILL;
             title.ellipsize = Pango.EllipsizeMode.END;
