@@ -246,10 +246,10 @@ namespace PlayMyMusic {
                         border-left-width: 1px;
                     }
                     .artist-tracks {
-                        background: rgba (255, 255, 255, 0.75);
+                        background: rgba (245, 245, 245, 0.75);
                     }
                     .artist-tracks-dark {
-                        background: rgba (0, 0, 0, 0.75);
+                        background: rgba (54, 59, 62, 0.75);
                     }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
