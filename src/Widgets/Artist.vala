@@ -76,7 +76,8 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.artist.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
-            var name = new Gtk.Label (("<span color='#666666'><b>%s</b></span>").printf(this.name.replace ("&", "&amp;")));
+            var name = new Gtk.Label (("<b>%s</b>").printf(this.name.replace ("&", "&amp;")));
+            name.opacity = 0.5;
             name.ellipsize = Pango.EllipsizeMode.END;
             name.use_markup = true;
 

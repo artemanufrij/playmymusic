@@ -26,6 +26,12 @@
  */
 
 namespace PlayMyMusic {
+    public enum RepeatMode {
+        OFF = 0,
+        ALL = 1,
+        ONE = 2
+    }
+
     public class Settings : Granite.Services.Settings {
         private static Settings settings;
         public static Settings get_default () {
@@ -38,7 +44,7 @@ namespace PlayMyMusic {
         public int window_height { get; set; }
         public bool window_maximized { get; set; }
         public bool shuffle_mode { get; set; }
-        public bool repeat_mode { get; set; }
+        public RepeatMode repeat_mode { get; set; }
         public int last_artist_id { get; set; }
         public int last_album_id { get; set; }
         public int last_playlist_id { get; set; }
@@ -56,6 +62,20 @@ namespace PlayMyMusic {
 
         private Settings () {
             base ("com.github.artemanufrij.playmymusic");
+        }
+
+        public void switch_repeat_mode () {
+            switch (settings.repeat_mode) {
+                case RepeatMode.ALL:
+                    settings.repeat_mode = RepeatMode.ONE;
+                    break;
+                case RepeatMode.ONE:
+                    settings.repeat_mode = RepeatMode.OFF;
+                    break;
+                default:
+                    settings.repeat_mode = RepeatMode.ALL;
+                    break;
+            }
         }
     }
 }

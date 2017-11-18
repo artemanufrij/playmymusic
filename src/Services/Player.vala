@@ -212,60 +212,65 @@ namespace PlayMyMusic.Services {
 
             PlayMyMusic.Objects.Track? next_track = null;
 
-            if (play_mode == PlayMode.ALBUM) {
-                if (settings.shuffle_mode) {
-                    next_track = current_track.album.get_shuffle_track (current_track);
-                } else {
-                    next_track = current_track.album.get_next_track (current_track);
-                }
-
-                if (next_track == null && settings.repeat_mode && current_track.album.has_available_tracks ()) {
+            if (settings.repeat_mode == RepeatMode.ONE) {
+                next_track = current_track;
+                current_track = null;
+            } else {
+                if (play_mode == PlayMode.ALBUM) {
                     if (settings.shuffle_mode) {
-                        next_track = current_track.album.get_shuffle_track (null);
+                        next_track = current_track.album.get_shuffle_track (current_track);
                     } else {
-                        next_track = current_track.album.get_first_track ();
+                        next_track = current_track.album.get_next_track (current_track);
                     }
-                }
-            } else if (play_mode == PlayMode.ARTIST) {
-                if (settings.shuffle_mode) {
-                    next_track = current_track.album.artist.get_shuffle_track (current_track);
-                } else {
-                    next_track = current_track.album.artist.get_next_track (current_track);
-                }
 
-                if (next_track == null && settings.repeat_mode && current_track.album.artist.has_available_tracks ()) {
-                    if (settings.shuffle_mode) {
-                        next_track = current_track.album.artist.get_shuffle_track (null);
-                    } else {
-                        next_track = current_track.album.artist.get_first_track ();
+                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF && current_track.album.has_available_tracks ()) {
+                        if (settings.shuffle_mode) {
+                            next_track = current_track.album.get_shuffle_track (null);
+                        } else {
+                            next_track = current_track.album.get_first_track ();
+                        }
                     }
-                }
-            } else if (play_mode == PlayMode.PLAYLIST) {
-                if (settings.shuffle_mode) {
-                    next_track = current_track.playlist.get_shuffle_track (current_track);
-                } else {
-                    next_track = current_track.playlist.get_next_track (current_track);
-                }
-
-                if (next_track == null && settings.repeat_mode && current_track.playlist.has_available_tracks ()) {
+                } else if (play_mode == PlayMode.ARTIST) {
                     if (settings.shuffle_mode) {
-                        next_track = current_track.playlist.get_shuffle_track (null);
+                        next_track = current_track.album.artist.get_shuffle_track (current_track);
                     } else {
-                        next_track = current_track.playlist.get_first_track ();
+                        next_track = current_track.album.artist.get_next_track (current_track);
                     }
-                }
-            } else if (play_mode == PlayMode.AUDIO_CD) {
-                if (settings.shuffle_mode) {
-                    next_track = current_track.audio_cd.get_shuffle_track (current_track);
-                } else {
-                    next_track = current_track.audio_cd.get_next_track (current_track);
-                }
 
-                if (next_track == null && settings.repeat_mode) {
+                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF && current_track.album.artist.has_available_tracks ()) {
+                        if (settings.shuffle_mode) {
+                            next_track = current_track.album.artist.get_shuffle_track (null);
+                        } else {
+                            next_track = current_track.album.artist.get_first_track ();
+                        }
+                    }
+                } else if (play_mode == PlayMode.PLAYLIST) {
                     if (settings.shuffle_mode) {
-                        next_track = current_track.audio_cd.get_shuffle_track (null);
+                        next_track = current_track.playlist.get_shuffle_track (current_track);
                     } else {
-                        next_track = current_track.audio_cd.get_first_track ();
+                        next_track = current_track.playlist.get_next_track (current_track);
+                    }
+
+                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF && current_track.playlist.has_available_tracks ()) {
+                        if (settings.shuffle_mode) {
+                            next_track = current_track.playlist.get_shuffle_track (null);
+                        } else {
+                            next_track = current_track.playlist.get_first_track ();
+                        }
+                    }
+                } else if (play_mode == PlayMode.AUDIO_CD) {
+                    if (settings.shuffle_mode) {
+                        next_track = current_track.audio_cd.get_shuffle_track (current_track);
+                    } else {
+                        next_track = current_track.audio_cd.get_next_track (current_track);
+                    }
+
+                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
+                        if (settings.shuffle_mode) {
+                            next_track = current_track.audio_cd.get_shuffle_track (null);
+                        } else {
+                            next_track = current_track.audio_cd.get_first_track ();
+                        }
                     }
                 }
             }

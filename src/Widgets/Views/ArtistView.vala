@@ -34,7 +34,8 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.ListBox tracks;
 
         Gtk.Box content;
-        Gtk.Image icon_repeat_on;
+        Gtk.Image icon_repeat_one;
+        Gtk.Image icon_repeat_all;
         Gtk.Image icon_repeat_off;
         Gtk.Image icon_shuffle_on;
         Gtk.Image icon_shuffle_off;
@@ -58,12 +59,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
 
             settings.notify["repeat-mode"].connect (() => {
-                if (settings.repeat_mode) {
-                    repeat_button.set_image (icon_repeat_on);
-                } else {
-                    repeat_button.set_image (icon_repeat_off);
-                }
-                repeat_button.show_all ();
+                set_repeat_symbol ();
             });
 
             settings.notify["shuffle-mode"].connect (() => {
@@ -145,19 +141,16 @@ namespace PlayMyMusic.Widgets.Views {
                 settings.shuffle_mode = !settings.shuffle_mode;
             });
 
-            icon_repeat_on = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_one = new Gtk.Image.from_icon_name ("media-playlist-repeat-one-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_all = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
             icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
 
             repeat_button = new Gtk.Button ();
-            if (settings.repeat_mode) {
-                repeat_button.set_image (icon_repeat_on);
-            } else {
-                repeat_button.set_image (icon_repeat_off);
-            }
+            set_repeat_symbol ();
             repeat_button.tooltip_text = _("Repeat");
             repeat_button.can_focus = false;
             repeat_button.clicked.connect (() => {
-                settings.repeat_mode = !settings.repeat_mode;
+                settings.switch_repeat_mode ();
             });
 
             action_toolbar.pack_end (repeat_button);
@@ -295,6 +288,21 @@ namespace PlayMyMusic.Widgets.Views {
                 return item1.title.collate (item2.title);
             }
             return 0;
+        }
+
+        private void set_repeat_symbol () {
+            switch (settings.repeat_mode) {
+                case RepeatMode.ALL:
+                    repeat_button.set_image (icon_repeat_all);
+                    break;
+                case RepeatMode.ONE:
+                    repeat_button.set_image (icon_repeat_one);
+                    break;
+                default:
+                    repeat_button.set_image (icon_repeat_off);
+                    break;
+            }
+            repeat_button.show_all ();
         }
     }
 }
