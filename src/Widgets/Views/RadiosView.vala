@@ -174,7 +174,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
 // NEW STATION POPOVER END
 
-            var welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add radio stations to your library.");
+            var welcome = new Granite.Widgets.Welcome ("No Radio Stations", "Add radio stations to your library.");
             welcome.append ("insert-link", _("Add Radio Station"), _("Add a Stream URL like .pls or .m3u."));
             welcome.activated.connect ((index) => {
                 switch (index) {
@@ -229,7 +229,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
 
             if (radio.cover == null) {
-                new_station_cover.set_from_icon_name ("network-cellular-connected-symbolic", Gtk.IconSize.DIALOG);
+                new_station_cover.set_from_icon_name ("artemanufrij-internet-radio-symbolic", Gtk.IconSize.DIALOG);
             } else {
                 new_station_cover.pixbuf = radio.cover;
             }

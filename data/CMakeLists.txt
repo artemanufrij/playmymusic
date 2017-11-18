@@ -7,4 +7,4 @@ install (FILES icons/32/artemanufrij.playmymusic.svg DESTINATION ${CMAKE_INSTALL
 install (FILES icons/48/artemanufrij.playmymusic.svg DESTINATION ${CMAKE_INSTALL_FULL_DATAROOTDIR}/icons/hicolor/48x48/apps/)
 install (FILES icons/artemanufrij.playmymusic.svg DESTINATION ${CMAKE_INSTALL_FULL_DATAROOTDIR}/icons/hicolor/64x64/apps/)
 install (FILES icons/artemanufrij.playmymusic.svg DESTINATION ${CMAKE_INSTALL_FULL_DATAROOTDIR}/icons/hicolor/128x128/apps/)
-install (FILES icons/symbolic/internet-radio-symbolic.svg DESTINATION ${CMAKE_INSTALL_FULL_DATAROOTDIR}/icons/hicolor/symbolic/apps/)
+install (FILES icons/symbolic/artemanufrij-internet-radio-symbolic.svg DESTINATION ${CMAKE_INSTALL_FULL_DATAROOTDIR}/icons/hicolor/symbolic/apps/)
