@@ -41,6 +41,34 @@ namespace PlayMyMusic.Widgets {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+
+            Gtk.TargetEntry te = { "STRING",        0, 0 };
+            Gtk.TargetEntry ue = { "text/plain",    0, 0 };
+            Gtk.TargetEntry ve = { "text/uri-list", 0, 1 };
+
+            Gtk.TargetEntry targetentries[] = { te, ue, ve };
+
+            Gtk.drag_source_set (this, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.COPY);
+            this.drag_begin.connect (on_drag_begin);
+            this.drag_data_get.connect (on_drag_data_get);
+            this.drag_data_delete.connect (on_drag_data_delete);
+            this.drag_end.connect (on_drag_end);
+        }
+
+        private void on_drag_begin (Gdk.DragContext context) {
+            stdout.printf ("%s: on_drag_begin\n", this.album.title);
+        }
+
+        private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
+            stdout.printf ("%s: on_drag_data_get\n", this.album.title);
+        }
+
+        private void on_drag_data_delete (Gdk.DragContext context) {
+            stdout.printf ("%s: on_drag_data_delete\n", this.album.title);
+        }
+
+        private void on_drag_end (Gdk.DragContext context) {
+            stdout.printf ("%s: on_drag_end\n", this.album.title);
         }
 
         public Album (PlayMyMusic.Objects.Album album) {
