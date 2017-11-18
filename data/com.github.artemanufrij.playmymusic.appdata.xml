@@ -55,7 +55,7 @@
                     <li>Option for Dark Theme</li>
                     <li>Repeat function for one song</li>
                     <li>Online Radio Icon (by Alexey Varfolomeev)</li>
-                    <li>Moved from 'path' to 'uri' for gvfs support</li>
+                    <li>Moved from 'path' to 'uri' for gvfs:// support</li>
                 </ul>
                 <p>Fix:</p>
                 <ul>

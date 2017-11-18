@@ -51,7 +51,7 @@ namespace PlayMyMusic.Services {
             new Thread<void*> (null, () => {
                 File directory = File.new_for_uri (uri);
                 try {
-                    var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN + "," + FileAttribute.STANDARD_IS_SYMLINK + "," + FileAttribute.STANDARD_SYMLINK_TARGET, GLib.FileQueryInfoFlags.NONE);
+                    var children = directory.enumerate_children ("standard::*," + FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN + "," + FileAttribute.STANDARD_IS_SYMLINK + "," + FileAttribute.STANDARD_SYMLINK_TARGET, GLib.FileQueryInfoFlags.NONE);
                     FileInfo file_info = null;
 
                     while ((file_info = children.next_file ()) != null) {
@@ -67,6 +67,12 @@ namespace PlayMyMusic.Services {
                                 scan_local_files (target);
                             }
                         } else if (file_info.get_file_type () == FileType.DIRECTORY) {
+                            // Without usleep it crashes on smb:// protocol
+                            if (uri.has_prefix ("file://")) {
+                                Thread.usleep (500000);
+                            } else {
+                                Thread.usleep (2000000);
+                            }
                             scan_local_files (uri + "/" + file_info.get_name ());
                         } else {
                             string mime_type = file_info.get_content_type ();

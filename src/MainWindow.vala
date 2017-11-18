@@ -473,7 +473,7 @@ namespace PlayMyMusic {
             view_mode.append (playlist_button);
             playlist_button.sensitive = library_manager.artists.length () > 0;
 
-            var radio_button = new Gtk.Image.from_icon_name ("artemanufrij-internet-radio-symbolic", Gtk.IconSize.BUTTON);
+            var radio_button = new Gtk.Image.from_icon_name ("com.github.artemanufrij.playmymusic-symbolic", Gtk.IconSize.BUTTON);
             radio_button.tooltip_text = _("Radio Stations");
             view_mode.append (radio_button);
             var wid = view_mode.get_children ().last ().data;
