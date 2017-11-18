@@ -566,7 +566,7 @@ namespace PlayMyMusic.Services {
             return_value.duration = (uint64)stmt.column_int64 (5);
             return_value.uri = stmt.column_text (6);
             if (return_value.uri.has_prefix ("/")) {
-                return_value.uri += "file://";
+                return_value.uri =  "file://" + return_value.uri;
             }
             return return_value;
         }
