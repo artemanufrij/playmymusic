@@ -653,7 +653,7 @@ namespace PlayMyMusic {
         public void open_file (File file) {
             if (file.get_uri ().has_prefix ("cdda://")) {
                 audio_cd_view.open_file (file);
-            } else if (!albums_view.open_file (file.get_path ())) {
+            } else if (!albums_view.open_file (Uri.unescape_string (file.get_uri ()))) {
                 library_manager.player.set_file (file);
             }
         }

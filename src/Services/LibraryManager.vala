@@ -127,14 +127,14 @@ namespace PlayMyMusic.Services {
         private LibraryManager () { }
 
         // LOCAL FILES REGION
-        public void scan_local_library (string path) {
-            lf_manager.scan (path);
+        public void scan_local_library (string uri) {
+            lf_manager.scan (uri);
         }
 
-        public void found_local_music_file (string path) {
+        public void found_local_music_file (string uri) {
             new Thread<void*> (null, () => {
-                if (!db_manager.music_file_exists (path)) {
-                    tg_manager.add_discover_path (path);
+                if (!db_manager.music_file_exists (uri)) {
+                    tg_manager.add_discover_uri (uri);
                 }
                 return null;
             });
@@ -276,7 +276,7 @@ namespace PlayMyMusic.Services {
             chooser.add_filter (filter);
 
             if (chooser.run () == Gtk.ResponseType.ACCEPT) {
-                return_value = chooser.get_file ().get_path ();
+                return_value = chooser.get_file ().get_uri ();
             }
 
             chooser.destroy ();

@@ -119,13 +119,13 @@ namespace PlayMyMusic.Objects {
                 string[] cover_files = PlayMyMusic.Settings.get_default ().covers;
 
                 foreach (var track in tracks) {
-                    var dir_name = GLib.Path.get_dirname (track.path);
+                    var dir_name = GLib.Path.get_dirname (track.uri);
                     foreach (var cover_file in cover_files) {
-                        var cover_path = GLib.Path.build_filename (dir_name, cover_file);
-                        cover_full_path = File.new_for_path (cover_path);
+                        var cover_path = dir_name + "/" + cover_file;
+                        cover_full_path = File.new_for_uri (cover_path);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_full_path.get_path ()), 256);
                                 cover_full_path.dispose ();
                                 Idle.add ((owned) callback);
                                 return null;
@@ -147,11 +147,9 @@ namespace PlayMyMusic.Objects {
                 }
 
                 foreach (var track in tracks) {
-                    var file = File.new_for_path (track.path);
                     Gst.PbUtils.DiscovererInfo info;
                     try {
-                        info = discoverer.discover_uri (file.get_uri ());
-                        file.dispose ();
+                        info = discoverer.discover_uri (track.uri);
                     } catch (Error err) {
                         continue;
                     }

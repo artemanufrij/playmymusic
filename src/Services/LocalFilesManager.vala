@@ -47,9 +47,9 @@ namespace PlayMyMusic.Services {
             scan_local_files (path);
         }
 
-        private void scan_local_files (string path) {
+        private void scan_local_files (string uri) {
             new Thread<void*> (null, () => {
-                File directory = File.new_for_path (path);
+                File directory = File.new_for_uri (uri);
                 try {
                     var children = directory.enumerate_children (FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN + "," + FileAttribute.STANDARD_IS_SYMLINK + "," + FileAttribute.STANDARD_SYMLINK_TARGET, GLib.FileQueryInfoFlags.NONE);
                     FileInfo file_info = null;
@@ -67,17 +67,13 @@ namespace PlayMyMusic.Services {
                                 scan_local_files (target);
                             }
                         } else if (file_info.get_file_type () == FileType.DIRECTORY) {
-                            scan_local_files (GLib.Path.build_filename (path, file_info.get_name ()));
+                            scan_local_files (uri + "/" + file_info.get_name ());
                         } else {
                             string mime_type = file_info.get_content_type ();
                             if (Utils.is_audio_file (mime_type)) {
-                                string found_path = GLib.Path.build_filename (path, file_info.get_name ());
-                                found_music_file (found_path);
+                                found_music_file (uri + "/" + file_info.get_name ());
                             }
                         }
-                    }
-                    if (file_info != null) {
-                        //file_info.dispose ();
                     }
                     children.close ();
                     children.dispose ();

@@ -58,7 +58,7 @@ namespace PlayMyMusic.Widgets {
             this.track.path_not_found.connect (() => {
                 if (warning == null) {
                     warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
-                    warning.tooltip_text = _("File couldn't be found\n%s").printf (track.path);
+                    warning.tooltip_text = _("File couldn't be found\n%s").printf (track.uri);
                     warning.halign = Gtk.Align.END;
                     content.pack_end (warning);
                     warning.show_all ();

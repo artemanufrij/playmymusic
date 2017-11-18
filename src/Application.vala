@@ -70,9 +70,10 @@ namespace PlayMyMusic {
         }
 
         public void create_cache_folders () {
-            var library_path = File.new_for_path (settings.library_location);
+            var library_path = File.new_for_uri (settings.library_location);
             if (settings.library_location == "" || !library_path.query_exists ()) {
-                settings.library_location = GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC);
+                var music_folder = File.new_for_path (GLib.Environment.get_user_special_dir (GLib.UserDirectory.MUSIC));
+                settings.library_location = music_folder.get_uri ();
             }
             CACHE_FOLDER = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), application_id);
             try {

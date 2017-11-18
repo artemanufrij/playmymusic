@@ -564,7 +564,7 @@ namespace PlayMyMusic.Services {
             return_value.track = stmt.column_int (3);
             return_value.disc = stmt.column_int (4);
             return_value.duration = (uint64)stmt.column_int64 (5);
-            return_value.path = stmt.column_text (6);
+            return_value.uri = stmt.column_text (6);
             return return_value;
         }
 
@@ -572,7 +572,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, disc, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DISC, $DURATION, $PATH);
+                INSERT OR IGNORE INTO tracks (album_id, title, genre, track, disc, duration, path) VALUES ($ALBUM_ID, $TITLE, $GENRE, $TRACK, $DISC, $DURATION, $URI);
             """;
             db.prepare_v2 (sql, sql.length, out stmt);
             set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
@@ -581,7 +581,7 @@ namespace PlayMyMusic.Services {
             set_parameter_int (stmt, sql, "$TRACK", track.track);
             set_parameter_int (stmt, sql, "$DISC", track.disc);
             set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
-            set_parameter_str (stmt, sql, "$PATH", track.path);
+            set_parameter_str (stmt, sql, "$URI", track.uri);
 
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
@@ -589,11 +589,11 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
 
             sql = """
-                SELECT id FROM tracks WHERE path=$PATH;
+                SELECT id FROM tracks WHERE path=$URI;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_str (stmt, sql, "$PATH", track.path);
+            set_parameter_str (stmt, sql, "$URI", track.uri);
 
             if (stmt.step () == Sqlite.ROW) {
                 track.ID = stmt.column_int (0);

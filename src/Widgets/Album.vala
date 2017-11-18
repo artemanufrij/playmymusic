@@ -41,18 +41,6 @@ namespace PlayMyMusic.Widgets {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-
-            Gtk.TargetEntry te = { "STRING",        0, 0 };
-            Gtk.TargetEntry ue = { "text/plain",    0, 0 };
-            Gtk.TargetEntry ve = { "text/uri-list", 0, 1 };
-
-            Gtk.TargetEntry targetentries[] = { te, ue, ve };
-
-            Gtk.drag_source_set (this, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.COPY);
-            this.drag_begin.connect (on_drag_begin);
-            this.drag_data_get.connect (on_drag_data_get);
-            this.drag_data_delete.connect (on_drag_data_delete);
-            this.drag_end.connect (on_drag_end);
         }
 
         private void on_drag_begin (Gdk.DragContext context) {
@@ -89,6 +77,18 @@ namespace PlayMyMusic.Widgets {
 
             var event_box = new Gtk.EventBox ();
             event_box.button_press_event.connect (show_context_menu);
+
+            Gtk.TargetEntry te = { "STRING",        0, 0 };
+            Gtk.TargetEntry ue = { "text/plain",    0, 0 };
+            Gtk.TargetEntry ve = { "text/uri-list", 0, 1 };
+
+            Gtk.TargetEntry targetentries[] = { te, ue, ve };
+
+            Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.COPY);
+            event_box.drag_begin.connect (on_drag_begin);
+            event_box.drag_data_get.connect (on_drag_data_get);
+            event_box.drag_data_delete.connect (on_drag_data_delete);
+            event_box.drag_end.connect (on_drag_end);
 
             var content = new Gtk.Grid ();
             content.margin = 12;

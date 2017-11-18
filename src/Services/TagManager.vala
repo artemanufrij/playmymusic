@@ -68,7 +68,6 @@ namespace PlayMyMusic.Services {
                         string uri = info.get_uri ();
                         uint64 duration = info.get_duration ();
                         File f = File.new_for_uri (uri);
-                        string path = f.get_path ();
 
                         string o;
                         GLib.Date? d;
@@ -79,12 +78,12 @@ namespace PlayMyMusic.Services {
                         // TRACK REGION
                         var track = new PlayMyMusic.Objects.Track ();
                         track.duration = duration;
-                        track.path = path;
+                        track.uri = uri;
                         if (tags.get_string (Gst.Tags.TITLE, out o)) {
                             track.title = o;
                         }
                         if (track.title.strip () == "") {
-                            track.title = f.get_basename ();;
+                            track.title = f.get_basename ();
                         }
 
                         if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
@@ -153,15 +152,6 @@ namespace PlayMyMusic.Services {
                 info.dispose ();
                 return null;
             });
-        }
-
-        public void add_discover_path (string path) {
-            if (discover_counter == 0) {
-                discover_started ();
-            }
-            discover_counter++;
-            File f = File.new_for_path (path);
-            discoverer.discover_uri_async (f.get_uri ());
         }
 
         public void add_discover_uri (string uri) {

@@ -178,13 +178,13 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        public bool open_file (string path) {
+        public bool open_file (string uri) {
             foreach (var child in albums.get_children ()) {
                 var album = child as PlayMyMusic.Widgets.Album;
                 foreach (var track in album.album.tracks) {
-                    if (track.path == path) {
+                    if (track.uri == uri) {
                         album.activate ();
-                        library_manager.play_track (track , Services.PlayMode.ALBUM);
+                        library_manager.play_track (track, Services.PlayMode.ALBUM);
                         return true;
                     }
                 }

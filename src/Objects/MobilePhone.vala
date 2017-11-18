@@ -126,8 +126,8 @@ namespace PlayMyMusic.Objects {
                 copy_cover (album_folder.file.get_uri () + "/cover.jpg", album.cover_path);
                 int progress = 0;
                 foreach (var track in album.tracks) {
-                    stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
-                    var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                    stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
+                    var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
                     Idle.add (() => {
                         copy_progress (track.title, progress++, album.tracks.length ());
                         return false;
@@ -187,8 +187,8 @@ namespace PlayMyMusic.Objects {
                     }
 
                     foreach (var track in album.tracks) {
-                        stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
-                        var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                        stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
+                        var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
                         Idle.add (() => {
                             copy_progress (track.title, progress++, artist.tracks.length ());
                             return false;
@@ -244,8 +244,8 @@ namespace PlayMyMusic.Objects {
                     return null;
                 }
 
-                stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
-                var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.path));
+                stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
+                var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
 
                 if (target.query_exists ()) {
                     Idle.add (() => {

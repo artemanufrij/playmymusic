@@ -143,6 +143,7 @@ namespace PlayMyMusic.Objects {
                     try {
                         return_value = new Gdk.Pixbuf.from_file (cover_path);
                         Idle.add ((owned) callback);
+                        cover_full_path.dispose ();
                         return null;
                     } catch (Error err) {
                         warning (err.message);
@@ -151,14 +152,15 @@ namespace PlayMyMusic.Objects {
 
                 string[] cover_files = PlayMyMusic.Settings.get_default ().artists;
                 foreach (var track in tracks) {
-                    var dir_name = GLib.Path.get_dirname (track.path);
+                    var dir_name = GLib.Path.get_dirname (track.uri);
                     foreach (var cover_file in cover_files) {
-                        var cover_path = GLib.Path.build_filename (dir_name, cover_file);
-                        cover_full_path = File.new_for_path (cover_path);
+                        var cover_uri = dir_name + "/" + cover_file;
+                        cover_full_path = File.new_for_uri (cover_uri);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_full_path.get_path ()), 256);
                                 Idle.add ((owned) callback);
+                                cover_full_path.dispose ();
                                 return null;
                             } catch (Error err) {
                                 warning (err.message);
@@ -166,12 +168,13 @@ namespace PlayMyMusic.Objects {
                         }
                         // SUB FOLDER IF LOCATION LIKE: Artist/Album
                         var sub_dir_name = GLib.Path.get_dirname (dir_name);
-                        cover_path = GLib.Path.build_filename (sub_dir_name, cover_file);
-                        cover_full_path = File.new_for_path (cover_path);
+                        cover_uri = sub_dir_name + "/" + cover_file;
+                        cover_full_path = File.new_for_uri (cover_uri);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_full_path.get_path ()), 256);
                                 Idle.add ((owned) callback);
+                                cover_full_path.dispose ();
                                 return null;
                             } catch (Error err) {
                                 warning (err.message);
@@ -180,12 +183,13 @@ namespace PlayMyMusic.Objects {
 
                         // SUB SUB FOLDER IF LOCATION LIKE: Artist/Album/CD1
                         sub_dir_name = GLib.Path.get_dirname (sub_dir_name);
-                        cover_path = GLib.Path.build_filename (sub_dir_name, cover_file);
-                        cover_full_path = File.new_for_path (cover_path);
+                        cover_uri = sub_dir_name + "/" + cover_file;
+                        cover_full_path = File.new_for_uri (cover_uri);
                         if (cover_full_path.query_exists ()) {
                             try {
-                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_path), 256);
+                                return_value = save_cover (new Gdk.Pixbuf.from_file (cover_full_path.get_path ()), 256);
                                 Idle.add ((owned) callback);
+                                cover_full_path.dispose ();
                                 return null;
                             } catch (Error err) {
                                 warning (err.message);
@@ -194,6 +198,7 @@ namespace PlayMyMusic.Objects {
                     }
                 }
                 Idle.add ((owned) callback);
+                cover_full_path.dispose ();
                 return null;
             });
             yield;
