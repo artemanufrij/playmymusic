@@ -409,6 +409,9 @@ namespace PlayMyMusic.Services {
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             } else {
+                _playlists.sort ((a, b) => {
+                    return a.title.collate (b.title);
+                });
                 playlist.property_changed ("title");
             }
             stmt.reset ();
