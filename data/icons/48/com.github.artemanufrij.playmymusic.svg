@@ -24,8 +24,8 @@
   </linearGradient>
   <linearGradient id="linearGradient6647" x1="25.058" x2="25.058" y1="47.028" y2="39.999" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient3702-501-757"/>
   <linearGradient id="linearGradient4256">
-   <stop offset="0" style="stop-color:#278acc;stop-opacity:1"/>
-   <stop offset="1" style="stop-color:#72cce5;stop-opacity:1"/>
+   <stop offset="0" style="stop-color:#1777ba;stop-opacity:1"/>
+   <stop offset="1" style="stop-color:#5cb7f6;stop-opacity:1"/>
   </linearGradient>
   <linearGradient id="linearGradient4254" x1="24" x2="24" y1="44" y2="5.972" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient4256"/>
  </defs>
