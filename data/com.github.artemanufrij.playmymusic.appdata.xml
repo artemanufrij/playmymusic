@@ -48,6 +48,14 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.3.2" date="2017-11-25">
+            <description>
+                <p>Fix:</p>
+                <ul>
+                    <li>Enable screensaver again after playing finished</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.3.1" date="2017-11-20">
             <description>
                 <p>New:</p>

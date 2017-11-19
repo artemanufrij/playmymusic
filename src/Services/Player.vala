@@ -103,6 +103,7 @@ namespace PlayMyMusic.Services {
                     playbin.set_state (state);
                 } else {
                     stop_progress_signal ();
+                    Interfaces.Inhibitor.instance.uninhibit ();
                 }
                 switch (state) {
                     case Gst.State.PLAYING:
