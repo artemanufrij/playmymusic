@@ -362,7 +362,7 @@ namespace PlayMyMusic.Services {
             if (stmt.step () == Sqlite.ROW) {
                 album.ID = stmt.column_int (0);
                 added_new_album (album);
-                stdout.printf ("Album ID: %d\n", album.ID);
+                stdout.printf ("Album ID: %d - %s\n", album.ID, album.title);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
@@ -739,6 +739,8 @@ namespace PlayMyMusic.Services {
             if (stmt.step () == Sqlite.ROW) {
                 file_exists = stmt.column_int (0) > 0;
             }
+
+            // [0.3.1] JUST NEEDED IF DATABASE CONTAINS /path/to/file LOCATIONS
             if (!file_exists && uri.has_prefix ("file://")) {
                 stmt.reset ();
                 db.prepare_v2 (sql, sql.length, out stmt);
