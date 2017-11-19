@@ -118,9 +118,7 @@ namespace PlayMyMusic.Objects {
                     return false;
                 }
                 foreach (var t in _tracks) {
-                    if (this is Album && t.title == track.title) {
-                        return true;
-                    } else if (t.uri == track.uri) {
+                    if (t.uri == track.uri) {
                         return true;
                     }
                 }
