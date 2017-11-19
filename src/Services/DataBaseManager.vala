@@ -725,19 +725,27 @@ namespace PlayMyMusic.Services {
         }
 
 // UTILITIES REGION
-        public bool music_file_exists (string path) {
+        public bool music_file_exists (string uri) {
             bool file_exists = false;
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT COUNT (*) FROM tracks WHERE path=$PATH;
+                SELECT COUNT (*) FROM tracks WHERE path=$URI;
             """;
 
             db.prepare_v2 (sql, sql.length, out stmt);
-            set_parameter_str (stmt, sql, "$PATH", path);
+            set_parameter_str (stmt, sql, "$URI", uri);
 
             if (stmt.step () == Sqlite.ROW) {
                 file_exists = stmt.column_int (0) > 0;
+            }
+            if (!file_exists && uri.has_prefix ("file://")) {
+                stmt.reset ();
+                db.prepare_v2 (sql, sql.length, out stmt);
+                set_parameter_str (stmt, sql, "$URI", uri.substring (7));
+                if (stmt.step () == Sqlite.ROW) {
+                    file_exists = stmt.column_int (0) > 0;
+                }
             }
             stmt.reset ();
             return file_exists;
