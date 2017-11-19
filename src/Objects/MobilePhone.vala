@@ -83,6 +83,7 @@ namespace PlayMyMusic.Objects {
                         if (file_info.get_file_type () == FileType.DIRECTORY) {
                             if (file_info.get_name ().down () == "music") {
                                 create_music_folder (uri + file_info.get_name () + "/");
+                                break;
                             } else {
                                 found_music_folder (uri + file_info.get_name () + "/");
                             }
@@ -188,7 +189,7 @@ namespace PlayMyMusic.Objects {
 
                     foreach (var track in album.tracks) {
                         stdout.printf ("%s\n", album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
-                        var target = File.new_for_uri (album_folder.file.get_uri () + "/" + Path.get_basename (track.uri));
+                        var target = File.new_for_uri (GLib.Uri.unescape_string (album_folder.file.get_uri () + "/" + Path.get_basename (track.uri)));
                         Idle.add (() => {
                             copy_progress (track.title, progress++, artist.tracks.length ());
                             return false;
@@ -278,6 +279,10 @@ namespace PlayMyMusic.Objects {
             var music_folder = new MobilePhoneMusicFolder (uri);
             music_folder.name = music_folder.file.get_parent ().get_basename ();
 
+            if (has_folder (music_folder.name)) {
+                return;
+            }
+
             var empty_folder = new Granite.Widgets.SourceList.Item (no_items);
             music_folder.add (empty_folder);
             empty_folder.visible = music_folder.n_children < 2;
@@ -293,6 +298,16 @@ namespace PlayMyMusic.Objects {
 
             music_folders.append (music_folder);
             music_folder_found (music_folder);
+        }
+
+        private bool has_folder (string name) {
+            foreach (var music_folder in music_folders) {
+                if (music_folder.name == name) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void copy_cover (string folder, string cover) {

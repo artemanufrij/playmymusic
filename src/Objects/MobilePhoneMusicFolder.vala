@@ -35,6 +35,7 @@ namespace PlayMyMusic.Objects {
         public MobilePhoneMusicFolder (string uri) {
             file = File.new_for_uri (uri);
             this.name = file.get_basename ();
+            this.collapse_with_parents ();
 
             get_subfolders ();
         }
