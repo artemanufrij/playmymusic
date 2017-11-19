@@ -53,6 +53,7 @@
                 <p>Fix:</p>
                 <ul>
                     <li>Enable screensaver again after playing finished</li>
+                    <li>Improved MTP for UbuntuPhone</li>
                 </ul>
             </description>
         </release>
