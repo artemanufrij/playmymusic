@@ -3,9 +3,6 @@
   <h3 align="center">A music player for listening to local music files, online radios, and Audio CD's</h3>
   <p align="center">Designed for <a href="https://elementary.io"> elementary OS</p>
 </div>
-
-<br/>
-
 <p align="center">
   <a href="https://appcenter.elementary.io/com.github.artemanufrij.playmymusic">
     <img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter">
