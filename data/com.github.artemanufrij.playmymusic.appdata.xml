@@ -50,6 +50,10 @@
     <releases>
         <release version="0.3.2" date="2017-11-25">
             <description>
+                <p>Changes:</p>
+                <ul>
+                    <li>Icon (by Alexey Varfolomeev)</li>
+                </ul>
                 <p>Fix:</p>
                 <ul>
                     <li>Enable screensaver again after playing finished</li>
