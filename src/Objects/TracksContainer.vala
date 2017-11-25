@@ -155,6 +155,7 @@ namespace PlayMyMusic.Objects {
             }
 
             if (shuffle_index.length () >= _tracks.length ()) {
+                shuffle_index = null;
                 return null;
             }
 
