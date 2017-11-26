@@ -66,6 +66,51 @@ namespace PlayMyMusic {
                 }
             });
 
+            var action_show_albums = new SimpleAction ("show-albums", null);
+            add_action (action_show_albums);
+            add_accelerator ("<Alt>1", "app.show-albums", null);
+            action_show_albums.activate.connect (() => {
+                if (mainwindow != null) {
+                    mainwindow.show_view_index (0);
+                }
+            });
+
+            var action_show_artists = new SimpleAction ("show-artists", null);
+            add_action (action_show_artists);
+            add_accelerator ("<Alt>2", "app.show-artists", null);
+            action_show_artists.activate.connect (() => {
+                if (mainwindow != null) {
+                    mainwindow.show_view_index (1);
+                }
+            });
+
+            var action_show_playlists = new SimpleAction ("show-playlists", null);
+            add_action (action_show_playlists);
+            add_accelerator ("<Alt>3", "app.show-playlists", null);
+            action_show_playlists.activate.connect (() => {
+                if (mainwindow != null) {
+                    mainwindow.show_view_index (2);
+                }
+            });
+
+            var action_show_radiostations = new SimpleAction ("show-radiostations", null);
+            add_action (action_show_radiostations);
+            add_accelerator ("<Alt>4", "app.show-radiostations", null);
+            action_show_radiostations.activate.connect (() => {
+                if (mainwindow != null) {
+                    mainwindow.show_view_index (3);
+                }
+            });
+
+            var action_show_audiocd = new SimpleAction ("show-audiocd", null);
+            add_action (action_show_audiocd);
+            add_accelerator ("<Alt>5", "app.show-audiocd", null);
+            action_show_audiocd.activate.connect (() => {
+                if (mainwindow != null) {
+                    mainwindow.show_view_index (4);
+                }
+            });
+
             create_cache_folders ();
         }
 

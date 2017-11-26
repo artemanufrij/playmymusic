@@ -50,6 +50,10 @@
     <releases>
         <release version="0.3.3" date="2017-11-30">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Hotkeys for switching between views: Alt+1,2,3,4,5</li>
+                </ul>
                 <p>Fix:</p>
                 <ul>
                     <li>Shuffle Mode and Repeat behavior</li>

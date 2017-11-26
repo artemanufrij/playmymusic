@@ -488,50 +488,78 @@ namespace PlayMyMusic {
             view_mode.mode_changed.connect (() => {
                 switch (view_mode.selected) {
                     case 1:
-                        if (artist_button.sensitive) {
-                            content.set_visible_child_name ("artists");
-                            search_entry.text = artists_view.filter;
-                            adjust_background_images ();
-                        } else {
-                            view_mode.set_active (0);
-                        }
+                        show_artists ();
                         break;
                     case 2:
-                        if (playlist_button.sensitive) {
-                            if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || playlists_view.filter != "") {
-                                search_entry.grab_focus ();
-                            }
-                            content.set_visible_child_name ("playlists");
-                            search_entry.text = playlists_view.filter;
-                        } else {
-                            view_mode.set_active (0);
-                        }
+                        show_playlists ();
                         break;
                     case 3:
-                        if (library_manager.player.current_radio == null || radios_view.filter != "") {
-                            search_entry.grab_focus ();
-                        }
-                        content.set_visible_child_name ("radios");
-                        search_entry.text = radios_view.filter;
+                        show_radiostations ();
                         break;
                     case 4:
-                        if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.AUDIO_CD || audio_cd_view.filter != "") {
-                            search_entry.grab_focus ();
-                        }
-                        previous_button.sensitive = true;
-                        play_button.sensitive = true;
-                        next_button.sensitive = true;
-                        content.set_visible_child_name ("audiocd");
-                        search_entry.text = audio_cd_view.filter;
-                        adjust_background_images ();
+                        show_audio_cd ();
                         break;
                     default:
-                        content.set_visible_child_name ("albums");
-                        search_entry.text = albums_view.filter;
+                        show_albums ();
                         break;
                 }
             });
             headerbar.pack_start (view_mode);
+        }
+
+        public void show_view_index (int index) {
+            // AUDIO CD VIEW
+            if (index == 4 && !audio_cd_widget.visible) {
+                return;
+            }
+            view_mode.selected = index;
+        }
+
+        private void show_albums () {
+            content.set_visible_child_name ("albums");
+            search_entry.text = albums_view.filter;
+        }
+
+        private void show_artists () {
+            if (artist_button.sensitive) {
+                content.set_visible_child_name ("artists");
+                search_entry.text = artists_view.filter;
+                adjust_background_images ();
+            } else {
+                view_mode.set_active (0);
+            }
+        }
+
+        private void show_playlists () {
+            if (playlist_button.sensitive) {
+                if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || playlists_view.filter != "") {
+                    search_entry.grab_focus ();
+                }
+                content.set_visible_child_name ("playlists");
+                search_entry.text = playlists_view.filter;
+            } else {
+                view_mode.set_active (0);
+            }
+        }
+
+        private void show_radiostations () {
+            if (library_manager.player.current_radio == null || radios_view.filter != "") {
+                search_entry.grab_focus ();
+            }
+            content.set_visible_child_name ("radios");
+            search_entry.text = radios_view.filter;
+        }
+
+        private void show_audio_cd () {
+            if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.AUDIO_CD || audio_cd_view.filter != "") {
+                search_entry.grab_focus ();
+            }
+            previous_button.sensitive = true;
+            play_button.sensitive = true;
+            next_button.sensitive = true;
+            content.set_visible_child_name ("audiocd");
+            search_entry.text = audio_cd_view.filter;
+            adjust_background_images ();
         }
 
         private void send_notification (Objects.Track track) {
