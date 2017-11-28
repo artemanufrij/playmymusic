@@ -26,7 +26,7 @@
  */
 
 namespace PlayMyMusic.Objects {
-    public class MobilePhoneMusicFolder : Granite.Widgets.SourceList.ExpandableItem {
+    public class MobilePhoneMusicFolder : Granite.Widgets.SourceList.ExpandableItem, Granite.Widgets.SourceListSortable {
         public signal void subfolder_created (File file);
         public signal void subfolder_deleted ();
 
@@ -35,8 +35,6 @@ namespace PlayMyMusic.Objects {
         public MobilePhoneMusicFolder (string uri) {
             file = File.new_for_uri (uri);
             this.name = file.get_basename ();
-            this.collapse_with_parents ();
-
             get_subfolders ();
         }
 
@@ -89,6 +87,17 @@ namespace PlayMyMusic.Objects {
                 });
                 return null;
             });
+        }
+
+        public int compare (Granite.Widgets.SourceList.Item a, Granite.Widgets.SourceList.Item b) {
+            if (a is MobilePhoneMusicFolder && b is MobilePhoneMusicFolder) {
+                return (a as MobilePhoneMusicFolder).name.collate ((b as MobilePhoneMusicFolder).name);
+            }
+            return 0;
+        }
+
+        public bool allow_dnd_sorting () {
+            return false;
         }
     }
 }

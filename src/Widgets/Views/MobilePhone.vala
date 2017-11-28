@@ -166,7 +166,6 @@ namespace PlayMyMusic.Widgets.Views {
         private void music_folder_found (Objects.MobilePhoneMusicFolder music_folder) {
             message.hide ();
             music_folder.collapsible = false;
-            music_folder.expand_all ();
 
             Idle.add (() => {
                 folders.root.add (music_folder);
