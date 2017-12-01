@@ -48,7 +48,7 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.3.3" date="2017-11-30">
+        <release version="0.3.3" date="2017-12-03">
             <description>
                 <p>New:</p>
                 <ul>
@@ -59,6 +59,11 @@
                 <p>Fix:</p>
                 <ul>
                     <li>Shuffle Mode and Repeat behavior</li>
+                    <li>URI includes # inside location path</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Spanish (by Adolfo Jayme-Barrientos)</li>
                 </ul>
             </description>
         </release>
