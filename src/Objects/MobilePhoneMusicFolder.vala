@@ -26,11 +26,17 @@
  */
 
 namespace PlayMyMusic.Objects {
-    public class MobilePhoneMusicFolder : Granite.Widgets.SourceList.ExpandableItem, Granite.Widgets.SourceListSortable {
+    public class MobilePhoneMusicFolder : Granite.Widgets.SourceList.ExpandableItem, Granite.Widgets.SourceListSortable, Granite.Widgets.SourceListDragDest {
+        PlayMyMusic.Services.LibraryManager library_manager;
+
         public signal void subfolder_created (File file);
         public signal void subfolder_deleted ();
 
         public File file { get; private set; }
+
+        construct {
+            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+        }
 
         public MobilePhoneMusicFolder (string uri) {
             file = File.new_for_uri (uri);
@@ -87,6 +93,54 @@ namespace PlayMyMusic.Objects {
                 });
                 return null;
             });
+        }
+        private bool data_drop_possible (Gdk.DragContext context, Gtk.SelectionData data) {
+            var received = data.get_text ();
+
+            if (!received.has_prefix ("Album:") && !received.has_prefix ("Artist:")) {
+                return false;
+            }
+
+            var targets = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.folders.root.children;
+            foreach (var target in targets) {
+                if (target == this) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        private Gdk.DragAction data_received (Gdk.DragContext context, Gtk.SelectionData data) {
+            var received = data.get_text ();
+            if (received.has_prefix ("Album:")) {
+                var str_id = received.substring (6);
+
+                int id = int.parse (str_id);
+                if (id > 0) {
+                    var album = library_manager.get_album_by_id (id);
+                    if (album != null) {
+                        var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
+                        if (current_mobile_phone != null) {
+                            current_mobile_phone.add_album (album, this);
+                        }
+                    }
+                }
+            } else if (received.has_prefix ("Artist:")) {
+                var str_id = received.substring (7);
+                int id = int.parse (str_id);
+                if (id > 0) {
+                    var artist = library_manager.get_artist_by_id (id);
+                    if (artist != null) {
+                        var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
+                        if (current_mobile_phone != null) {
+                            current_mobile_phone.add_artist (artist, this);
+                        }
+                    }
+                }
+            }
+
+            return Gdk.DragAction.COPY;
         }
 
         public int compare (Granite.Widgets.SourceList.Item a, Granite.Widgets.SourceList.Item b) {

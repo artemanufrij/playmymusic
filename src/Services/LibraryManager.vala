@@ -126,6 +126,26 @@ namespace PlayMyMusic.Services {
 
         private LibraryManager () { }
 
+        public Objects.Artist? get_artist_by_id (int id) {
+            foreach (var artist in artists) {
+                if (artist.ID == id) {
+                    return artist;
+                }
+            }
+            return null;
+        }
+
+        public Objects.Album? get_album_by_id (int id) {
+            foreach (var artist in artists) {
+                foreach (var album in artist.albums) {
+                    if (album.ID == id) {
+                        return album;
+                    }
+                }
+            }
+            return null;
+        }
+
         // LOCAL FILES REGION
         public void scan_local_library (string uri) {
             lf_manager.scan (uri);

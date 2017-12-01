@@ -57,8 +57,12 @@ namespace PlayMyMusic.Widgets {
         private void build_ui () {
             this.tooltip_text = this.artist.name;
 
+            const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
             var event_box = new Gtk.EventBox ();
+            Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.COPY);
             event_box.button_press_event.connect (show_context_menu);
+            event_box.drag_data_get.connect (on_drag_data_get);
+            event_box.drag_begin.connect (on_drag_begin);
 
             var content = new Gtk.Grid ();
             content.margin = 12;
@@ -112,9 +116,21 @@ namespace PlayMyMusic.Widgets {
             this.show_all ();
         }
 
+        private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
+            selection_data.set_text ("Artist:%d".printf (this.artist.ID), -1);
+        }
+
+        private void on_drag_begin (Gdk.DragContext context) {
+            if (this.artist.cover_32 != null) {
+                var surface = new Granite.Drawing.BufferSurface (32, 32);
+                Gdk.cairo_set_source_pixbuf (surface.context, this.artist.cover_32, 0, 0);
+                surface.context.paint ();
+                Gtk.drag_set_icon_surface (context, surface.surface);
+            }
+        }
+
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
-
                 // SEND TO
                 foreach (var child in send_to.get_children ()) {
                     child.destroy ();
@@ -137,6 +153,9 @@ namespace PlayMyMusic.Widgets {
                 }
 
                 menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                this.activate ();
                 return true;
             }
             return false;

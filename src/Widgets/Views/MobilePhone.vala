@@ -30,13 +30,14 @@ namespace PlayMyMusic.Widgets.Views {
         PlayMyMusic.Services.LibraryManager library_manager;
 
         public PlayMyMusic.Objects.MobilePhone? current_mobile_phone { get; private set; default = null;}
+        public Granite.Widgets.SourceList folders { get; private set; }
 
         Gtk.Label title;
         Gtk.Image image;
         Gtk.ProgressBar progress;
         Gtk.Label message;
         Gtk.Spinner spinner;
-        Granite.Widgets.SourceList folders;
+
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -57,9 +58,7 @@ namespace PlayMyMusic.Widgets.Views {
 
             const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
 
-            Gtk.drag_dest_set (folders, Gtk.DestDefaults.ALL, targetentries, Gdk.DragAction.COPY);
-
-            folders.drag_data_received.connect(this.on_drag_data_received);
+            folders.enable_drag_dest (targetentries, Gdk.DragAction.COPY);
         }
 
         private void build_ui () {
@@ -109,12 +108,6 @@ namespace PlayMyMusic.Widgets.Views {
 
             this.add (content);
             this.show_all ();
-        }
-
-        private void on_drag_data_received (Gtk.Widget widget, Gdk.DragContext context, int x, int y, Gtk.SelectionData selection_data, uint target_type, uint time)
-        {
-            print ("%s: on_drag_data_received\n", selection_data.get_text ());
-
         }
 
         public void hide_spinner () {

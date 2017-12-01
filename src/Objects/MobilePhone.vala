@@ -112,7 +112,6 @@ namespace PlayMyMusic.Objects {
                     });
                     return null;
                 }
-
                 copy_cover (artist_folder.file.get_uri () + "/artist.jpg", album.artist.cover_path);
 
                 var album_folder = artist_folder.get_sub_folder (album.title);
