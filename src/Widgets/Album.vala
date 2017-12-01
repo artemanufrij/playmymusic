@@ -43,22 +43,6 @@ namespace PlayMyMusic.Widgets {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
         }
 
-        private void on_drag_begin (Gdk.DragContext context) {
-            stdout.printf ("%s: on_drag_begin\n", this.album.title);
-        }
-
-        private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
-            stdout.printf ("%s: on_drag_data_get\n", this.album.title);
-        }
-
-        private void on_drag_data_delete (Gdk.DragContext context) {
-            stdout.printf ("%s: on_drag_data_delete\n", this.album.title);
-        }
-
-        private void on_drag_end (Gdk.DragContext context) {
-            stdout.printf ("%s: on_drag_end\n", this.album.title);
-        }
-
         public Album (PlayMyMusic.Objects.Album album) {
             this.album = album;
 
@@ -75,20 +59,12 @@ namespace PlayMyMusic.Widgets {
         private void build_ui () {
             this.tooltip_markup = ("<b>%s</b>\n%s").printf (album.title.replace ("&", "&amp;"), album.artist.name.replace ("&", "&amp;"));
 
+            const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
+
             var event_box = new Gtk.EventBox ();
-            event_box.button_press_event.connect (show_context_menu);
-
-            Gtk.TargetEntry te = { "STRING",        0, 0 };
-            Gtk.TargetEntry ue = { "text/plain",    0, 0 };
-            Gtk.TargetEntry ve = { "text/uri-list", 0, 1 };
-
-            Gtk.TargetEntry targetentries[] = { te, ue, ve };
-
             Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.COPY);
-            event_box.drag_begin.connect (on_drag_begin);
+            event_box.button_press_event.connect (show_context_menu);
             event_box.drag_data_get.connect (on_drag_data_get);
-            event_box.drag_data_delete.connect (on_drag_data_delete);
-            event_box.drag_end.connect (on_drag_end);
 
             var content = new Gtk.Grid ();
             content.margin = 12;
@@ -156,6 +132,12 @@ namespace PlayMyMusic.Widgets {
             this.show_all ();
         }
 
+
+        private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
+            stdout.printf ("%s: on_drag_data_get\n", this.album.title);
+            selection_data.set_text ("TEST", -1);
+        }
+
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
                 // PLAYLISTS
@@ -206,6 +188,9 @@ namespace PlayMyMusic.Widgets {
                 }
 
                 menu.popup (null, null, null, evt.button, evt.time);
+                return true;
+            } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                this.activate ();
                 return true;
             }
             return false;

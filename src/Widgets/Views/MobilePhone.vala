@@ -54,6 +54,12 @@ namespace PlayMyMusic.Widgets.Views {
 
         public MobilePhone () {
             build_ui ();
+
+            const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
+
+            Gtk.drag_dest_set (folders, Gtk.DestDefaults.ALL, targetentries, Gdk.DragAction.COPY);
+
+            folders.drag_data_received.connect(this.on_drag_data_received);
         }
 
         private void build_ui () {
@@ -103,6 +109,12 @@ namespace PlayMyMusic.Widgets.Views {
 
             this.add (content);
             this.show_all ();
+        }
+
+        private void on_drag_data_received (Gtk.Widget widget, Gdk.DragContext context, int x, int y, Gtk.SelectionData selection_data, uint target_type, uint time)
+        {
+            print ("%s: on_drag_data_received\n", selection_data.get_text ());
+
         }
 
         public void hide_spinner () {

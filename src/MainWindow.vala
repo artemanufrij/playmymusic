@@ -175,17 +175,18 @@ namespace PlayMyMusic {
                         var file_info = file.query_info ("standard::*", GLib.FileQueryInfoFlags.NONE);
 
                         if (file_info.get_file_type () == FileType.DIRECTORY) {
-                            library_manager.scan_local_library (file.get_path ());
+                            library_manager.scan_local_library (file.get_uri ());
                             continue;
                         }
 
                         string mime_type = file_info.get_content_type ();
                         if (Utils.is_audio_file (mime_type)) {
-                            library_manager.found_local_music_file (file.get_path ());
+                            library_manager.found_local_music_file (file.get_uri ());
                         }
                     } catch (Error err) {
                         warning (err.message);
                     }
+                    file.dispose ();
                 }
             });
         }

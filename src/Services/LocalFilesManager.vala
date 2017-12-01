@@ -49,7 +49,7 @@ namespace PlayMyMusic.Services {
 
         private void scan_local_files (string uri) {
             new Thread<void*> (null, () => {
-                File directory = File.new_for_uri (uri);
+                File directory = File.new_for_uri (uri.replace ("#", "%23"));
                 try {
                     var children = directory.enumerate_children ("standard::*," + FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN + "," + FileAttribute.STANDARD_IS_SYMLINK + "," + FileAttribute.STANDARD_SYMLINK_TARGET, GLib.FileQueryInfoFlags.NONE);
                     FileInfo file_info = null;
