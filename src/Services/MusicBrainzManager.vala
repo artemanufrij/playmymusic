@@ -85,7 +85,7 @@ namespace PlayMyMusic.Services {
                         var albums = first.albums_title.copy ();
                         foreach (var album in albums) {
                             Thread.usleep (1000000);
-                            string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.replace ("&", "%26"), first.name.replace ("&", "%26"));
+                            string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.replace ("&", "%26").replace("/", "_"), first.name.replace ("&", "%26").replace("/", "_"));
                             var body = get_body_from_url (url);
                             if (body != null) {
                                 var artist_id = Utils.MusicBrainz.get_artist_id_from_artist_ws_2 (body);
