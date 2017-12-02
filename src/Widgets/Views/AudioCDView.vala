@@ -42,11 +42,6 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             }
         }
-        Gtk.Image icon_repeat_one;
-        Gtk.Image icon_repeat_all;
-        Gtk.Image icon_repeat_off;
-        Gtk.Image icon_shuffle_on;
-        Gtk.Image icon_shuffle_off;
 
         Gtk.Grid content;
         Gtk.Overlay overlay;
@@ -55,8 +50,6 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Image background;
         Gtk.Label title;
         Gtk.Label artist;
-        Gtk.Button shuffle_button;
-        Gtk.Button repeat_button;
         Gtk.Menu menu;
 
         bool only_mark = false;
@@ -68,19 +61,6 @@ namespace PlayMyMusic.Widgets.Views {
             var player = library_manager.player;
             player.state_changed.connect ((state) => {
                 mark_playing_track (player.current_track);
-            });
-
-            settings.notify["repeat-mode"].connect (() => {
-                set_repeat_symbol ();
-            });
-
-            settings.notify["shuffle-mode"].connect (() => {
-                if (settings.shuffle_mode) {
-                    shuffle_button.set_image (icon_shuffle_on);
-                } else {
-                    shuffle_button.set_image (icon_shuffle_off);
-                }
-                repeat_button.show_all ();
             });
         }
 
@@ -161,36 +141,7 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             });
 
-            icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
-            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
-
-            shuffle_button = new Gtk.Button ();
-            if (settings.shuffle_mode) {
-                shuffle_button.set_image (icon_shuffle_on);
-            } else {
-                shuffle_button.set_image (icon_shuffle_off);
-            }
-            shuffle_button.tooltip_text = _("Shuffle");
-            shuffle_button.can_focus = false;
-            shuffle_button.clicked.connect (() => {
-                settings.shuffle_mode = !settings.shuffle_mode;
-            });
-
-            icon_repeat_one = new Gtk.Image.from_icon_name ("media-playlist-repeat-one-symbolic", Gtk.IconSize.BUTTON);
-            icon_repeat_all = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
-            icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
-
-            repeat_button = new Gtk.Button ();
-            set_repeat_symbol ();
-            repeat_button.tooltip_text = _("Repeat");
-            repeat_button.can_focus = false;
-            repeat_button.clicked.connect (() => {
-                settings.switch_repeat_mode ();
-            });
-
             action_toolbar.pack_start (eject_button);
-            action_toolbar.pack_end (repeat_button);
-            action_toolbar.pack_end (shuffle_button);
 
             content.attach (event_box, 1, 0, 1, 3);
             content.attach (title, 0, 0);
@@ -347,21 +298,6 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             }
             return true;
-        }
-
-        private void set_repeat_symbol () {
-            switch (settings.repeat_mode) {
-                case RepeatMode.ALL:
-                    repeat_button.set_image (icon_repeat_all);
-                    break;
-                case RepeatMode.ONE:
-                    repeat_button.set_image (icon_repeat_one);
-                    break;
-                default:
-                    repeat_button.set_image (icon_repeat_off);
-                    break;
-            }
-            repeat_button.show_all ();
         }
     }
 }

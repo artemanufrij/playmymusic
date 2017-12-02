@@ -54,6 +54,10 @@
     <releases>
         <release version="0.3.4" date="2017-12-10">
             <description>
+                <p>Changes:</p>
+                <ul>
+                    <li>Moved 'Shuffle' and 'Repeat' buttons into header bar</li>
+                </ul>
                 <p>Fix:</p>
                 <ul>
                     <li>[MusicBrainz] fetch artist cover if name or artist contains '/' (like AC/DC)</li>

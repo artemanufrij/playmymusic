@@ -48,6 +48,15 @@ namespace PlayMyMusic {
         Gtk.Image artist_button;
         Gtk.Image playlist_button;
 
+        Gtk.Image icon_repeat_one;
+        Gtk.Image icon_repeat_all;
+        Gtk.Image icon_repeat_off;
+        Gtk.Image icon_shuffle_on;
+        Gtk.Image icon_shuffle_off;
+        Gtk.Button repeat_button;
+        Gtk.Button shuffle_button;
+        Gtk.Box mode_buttons;
+
         Granite.Widgets.ModeButton view_mode;
 
         Widgets.Views.AlbumsView albums_view;
@@ -77,6 +86,19 @@ namespace PlayMyMusic {
                 } else {
                     app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR));
                 }
+            });
+
+            settings.notify["repeat-mode"].connect (() => {
+                set_repeat_symbol ();
+            });
+
+            settings.notify["shuffle-mode"].connect (() => {
+                if (settings.shuffle_mode) {
+                    shuffle_button.set_image (icon_shuffle_on);
+                } else {
+                    shuffle_button.set_image (icon_shuffle_off);
+                }
+                repeat_button.show_all ();
             });
 
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -271,6 +293,7 @@ namespace PlayMyMusic {
             icon_pause = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
 
             previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            previous_button.valign = Gtk.Align.CENTER;
             previous_button.tooltip_text = _("Previous");
             previous_button.sensitive = false;
             previous_button.clicked.connect (() => {
@@ -278,6 +301,7 @@ namespace PlayMyMusic {
             });
 
             play_button = new Gtk.Button ();
+            play_button.valign = Gtk.Align.CENTER;
             play_button.image = icon_play;
             play_button.tooltip_text = _("Play");
             play_button.sensitive = false;
@@ -286,6 +310,7 @@ namespace PlayMyMusic {
             });
 
             next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            next_button.valign = Gtk.Align.CENTER;
             next_button.tooltip_text = _("Next");
             next_button.sensitive = false;
             next_button.clicked.connect (() => {
@@ -326,6 +351,7 @@ namespace PlayMyMusic {
 
             // SETTINGS MENU
             app_menu = new Gtk.MenuButton ();
+            app_menu.valign = Gtk.Align.CENTER;
             if (settings.use_dark_theme) {
                 app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
             } else {
@@ -410,6 +436,41 @@ namespace PlayMyMusic {
             spinner = new Gtk.Spinner ();
             headerbar.pack_end (spinner);
 
+            // MODE BUTTONS
+            icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
+
+            shuffle_button = new Gtk.Button ();
+            if (settings.shuffle_mode) {
+                shuffle_button.set_image (icon_shuffle_on);
+            } else {
+                shuffle_button.set_image (icon_shuffle_off);
+            }
+            shuffle_button.tooltip_text = _("Shuffle");
+            shuffle_button.can_focus = false;
+            shuffle_button.clicked.connect (() => {
+                settings.shuffle_mode = !settings.shuffle_mode;
+            });
+
+            icon_repeat_one = new Gtk.Image.from_icon_name ("media-playlist-repeat-one-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_all = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
+
+            repeat_button = new Gtk.Button ();
+            set_repeat_symbol ();
+            repeat_button.tooltip_text = _("Repeat");
+            repeat_button.can_focus = false;
+            repeat_button.clicked.connect (() => {
+                settings.switch_repeat_mode ();
+            });
+
+            mode_buttons = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            mode_buttons.pack_start (shuffle_button);
+            mode_buttons.pack_start (repeat_button);
+
+            headerbar.pack_end (mode_buttons);
+
+            // VIEWES
             albums_view = new Widgets.Views.AlbumsView ();
             albums_view.album_selected.connect (() => {
                 previous_button.sensitive = true;
@@ -519,6 +580,8 @@ namespace PlayMyMusic {
         private void show_albums () {
             content.set_visible_child_name ("albums");
             search_entry.text = albums_view.filter;
+            mode_buttons.opacity = 1;
+            mode_buttons.sensitive = true;
         }
 
         private void show_artists () {
@@ -529,6 +592,8 @@ namespace PlayMyMusic {
             } else {
                 view_mode.set_active (0);
             }
+            mode_buttons.opacity = 1;
+            mode_buttons.sensitive = true;
         }
 
         private void show_playlists () {
@@ -541,6 +606,8 @@ namespace PlayMyMusic {
             } else {
                 view_mode.set_active (0);
             }
+            mode_buttons.opacity = 1;
+            mode_buttons.sensitive = true;
         }
 
         private void show_radiostations () {
@@ -549,6 +616,8 @@ namespace PlayMyMusic {
             }
             content.set_visible_child_name ("radios");
             search_entry.text = radios_view.filter;
+            mode_buttons.opacity = 0.1;
+            mode_buttons.sensitive = false;
         }
 
         private void show_audio_cd () {
@@ -561,6 +630,8 @@ namespace PlayMyMusic {
             content.set_visible_child_name ("audiocd");
             search_entry.text = audio_cd_view.filter;
             adjust_background_images ();
+            mode_buttons.opacity = 1;
+            mode_buttons.sensitive = true;
         }
 
         private void send_notification (Objects.Track track) {
@@ -740,6 +811,21 @@ namespace PlayMyMusic {
             } else if (view_mode.selected == 0) {
                 albums_view.unselect_all ();
             }
+        }
+
+        private void set_repeat_symbol () {
+            switch (settings.repeat_mode) {
+                case RepeatMode.ALL:
+                    repeat_button.set_image (icon_repeat_all);
+                    break;
+                case RepeatMode.ONE:
+                    repeat_button.set_image (icon_repeat_one);
+                    break;
+                default:
+                    repeat_button.set_image (icon_repeat_off);
+                    break;
+            }
+            repeat_button.show_all ();
         }
 
         private void load_settings () {
