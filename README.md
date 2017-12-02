@@ -11,10 +11,10 @@
 
 <br/>
 
-![screenshot](Screenshot.png)
-![screenshot](Screenshot_Artists.png)
-![screenshot](Screenshot_Playlists.png)
-![screenshot](Screenshot_Audio_CD.png)
+![screenshot](screenshots/Screenshot.png)
+![screenshot](screenshots/Screenshot_Artists.png)
+![screenshot](screenshots/Screenshot_Playlists.png)
+![screenshot](screenshots/Screenshot_Audio_CD.png)
 
 ## Donations
 If you liked _Play My Music_, and would like to support it's development of this app and more, consider [buying me a coffee](https://www.paypal.me/ArtemAnufrij) :) 
