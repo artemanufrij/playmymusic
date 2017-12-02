@@ -52,6 +52,14 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.3.4" date="2017-12-10">
+            <description>
+                <p>Fix:</p>
+                <ul>
+                    <li>[MusicBrainz] fetch artist cover if name or artist contains '/' (like AC/DC)</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.3.3" date="2017-12-03">
             <description>
                 <p>New:</p>
