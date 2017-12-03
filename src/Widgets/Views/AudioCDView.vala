@@ -128,10 +128,12 @@ namespace PlayMyMusic.Widgets.Views {
             tracks.expand = true;
             tracks_scroll.add (tracks);
 
-            var action_toolbar = new Gtk.ActionBar ();
-            action_toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR);
-
             var eject_button = new Gtk.Button.from_icon_name ("media-eject-symbolic", Gtk.IconSize.BUTTON);
+            eject_button.can_focus = false;
+            eject_button.margin = 4;
+            eject_button.halign = Gtk.Align.END;
+            eject_button.valign = Gtk.Align.END;
+            eject_button.get_style_context ().remove_class ("button");
             eject_button.clicked.connect (() => {
                 if (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
                     library_manager.player.stop ();
@@ -140,8 +142,6 @@ namespace PlayMyMusic.Widgets.Views {
                     current_audio_cd.volume.get_drive ().eject_with_operation.begin (MountUnmountFlags.NONE, null);
                 }
             });
-
-            action_toolbar.pack_start (eject_button);
 
             content.attach (event_box, 1, 0, 1, 3);
             content.attach (title, 0, 0);
@@ -153,9 +153,10 @@ namespace PlayMyMusic.Widgets.Views {
 
             overlay.add_overlay (background);
             overlay.add_overlay (content);
+            overlay.add_overlay (eject_button);
 
             this.attach (overlay, 0, 0);
-            this.attach (action_toolbar, 0, 1);
+
             this.show_all ();
         }
 

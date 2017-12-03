@@ -585,7 +585,6 @@ namespace PlayMyMusic {
             content.set_visible_child_name ("albums");
             search_entry.text = albums_view.filter;
             mode_buttons.opacity = 1;
-            mode_buttons.sensitive = true;
         }
 
         private void show_artists () {
@@ -597,7 +596,6 @@ namespace PlayMyMusic {
                 view_mode.set_active (0);
             }
             mode_buttons.opacity = 1;
-            mode_buttons.sensitive = true;
         }
 
         private void show_playlists () {
@@ -611,7 +609,6 @@ namespace PlayMyMusic {
                 view_mode.set_active (0);
             }
             mode_buttons.opacity = 1;
-            mode_buttons.sensitive = true;
         }
 
         private void show_radiostations () {
@@ -620,8 +617,7 @@ namespace PlayMyMusic {
             }
             content.set_visible_child_name ("radios");
             search_entry.text = radios_view.filter;
-            mode_buttons.opacity = 0.1;
-            mode_buttons.sensitive = false;
+            mode_buttons.opacity = 0;
         }
 
         private void show_audio_cd () {
@@ -635,7 +631,6 @@ namespace PlayMyMusic {
             search_entry.text = audio_cd_view.filter;
             adjust_background_images ();
             mode_buttons.opacity = 1;
-            mode_buttons.sensitive = true;
         }
 
         private void send_notification (Objects.Track track) {
