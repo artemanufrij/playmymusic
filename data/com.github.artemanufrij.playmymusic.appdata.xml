@@ -61,7 +61,7 @@
                 </ul>
                 <p>Fix:</p>
                 <ul>
-                    <li>[MusicBrainz] fetch artist cover if name or artist contains '/' (like AC/DC)</li>
+                    <li>[MusicBrainz] fetch artist cover if name of artist contains '/' (like AC/DC)</li>
                 </ul>
                 <p>Translation:</p>
                 <ul>
