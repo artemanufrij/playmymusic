@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-03 09:38+0400\n"
-"PO-Revision-Date: 2017-12-03 10:15+0400\n"
+"PO-Revision-Date: 2017-12-03 11:10+0400\n"
 "Last-Translator: Andrey Kultyapov <camellan@yandex.ru>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -75,7 +75,7 @@ msgstr "Сбросить все виды"
 
 #: ../src/MainWindow.vala:386
 msgid "Rescan Library"
-msgstr "Пересканировать библиотеку"
+msgstr "Пересканировать медиатеку"
 
 #: ../src/MainWindow.vala:392
 msgid "Preferences"
@@ -213,7 +213,7 @@ msgstr "Нет музыки"
 
 #: ../src/Widgets/Views/AlbumsView.vala:106
 msgid "Add music to your library."
-msgstr "Добавьте музыку в свою библиотеку."
+msgstr "Добавьте музыку в свою медиатеку."
 
 #: ../src/Widgets/Views/AlbumsView.vala:107
 msgid "Change Music Folder"
@@ -229,7 +229,7 @@ msgstr "Импортировать музыку"
 
 #: ../src/Widgets/Views/AlbumsView.vala:108
 msgid "Import music from a source into your library."
-msgstr "Импортируйте музыку из источника в вашу библиотеку."
+msgstr "Импортируйте музыку из источника в свою медиатеку."
 
 #: ../src/Widgets/Views/ArtistView.vala:160
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
@@ -262,7 +262,7 @@ msgstr "Нет плейлистов"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:127
 msgid "Add playlist to your library."
-msgstr "Добавьте плейлисты в свою библиотеку."
+msgstr "Добавьте плейлисты в свою медиатеку."
 
 #: ../src/Widgets/Views/PlaylistsView.vala:128
 msgid "Add Playlist"
@@ -270,7 +270,7 @@ msgstr "Добавить плейлист"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:128
 msgid "Add a playlist for manage your favorite songs."
-msgstr "Добавьте плейлист для управления вашими любимыми композициями."
+msgstr "Добавьте плейлист для управления своими любимыми композициями."
 
 #: ../src/Widgets/Views/RadiosView.vala:108
 msgid "Add a radio station"
@@ -294,7 +294,7 @@ msgstr "Нет радиостанций"
 
 #: ../src/Widgets/Views/RadiosView.vala:177
 msgid "Add radio stations to your library."
-msgstr "Добавьте радиостанции в вашу библиотеку."
+msgstr "Добавьте радиостанции в свою медиатеку."
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
