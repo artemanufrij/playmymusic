@@ -115,14 +115,14 @@ namespace PlayMyMusic.Widgets.Views {
             new_station.margin = 12;
 
             new_station_title = new Gtk.Entry ();
-            new_station_title.placeholder_text = "Station Name";
+            new_station_title.placeholder_text = _("Station Name");
             new_station_title.changed.connect (() => {
                 new_station_save.sensitive = valid_new_station ();
             });
             new_station.attach (new_station_title, 1, 0);
 
             new_station_url = new Gtk.Entry ();
-            new_station_url.placeholder_text = "URL";
+            new_station_url.placeholder_text = _("URL");
             new_station_url.changed.connect (() => {
                 new_station_save.sensitive = valid_new_station ();
             });
@@ -174,7 +174,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
 // NEW STATION POPOVER END
 
-            var welcome = new Granite.Widgets.Welcome ("No Radio Stations", "Add radio stations to your library.");
+            var welcome = new Granite.Widgets.Welcome (_("No Radio Stations"), _("Add radio stations to your library."));
             welcome.append ("insert-link", _("Add Radio Station"), _("Add a Stream URL like .pls or .m3u."));
             welcome.activated.connect ((index) => {
                 switch (index) {

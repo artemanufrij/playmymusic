@@ -124,7 +124,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
             new_playlist.attach (new_playlist_save, 0, 1);
 
-            var welcome = new Granite.Widgets.Welcome ("No Playlists", "Add playlist to your library.");
+            var welcome = new Granite.Widgets.Welcome (_("No Playlists"), _("Add playlist to your library."));
             welcome.append ("document-new", _("Add Playlist"), _("Add a playlist for manage your favorite songs."));
             welcome.activated.connect ((index) => {
                 switch (index) {
