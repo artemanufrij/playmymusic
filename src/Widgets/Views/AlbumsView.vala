@@ -103,7 +103,7 @@ namespace PlayMyMusic.Widgets.Views {
             content.pack_start (albums_scroll, true, true, 0);
             content.pack_start (album_revealer, false, false, 0);
 
-            var welcome = new Granite.Widgets.Welcome ("Get Some Tunes", "Add music to your library.");
+            var welcome = new Granite.Widgets.Welcome (_("Get Some Tunes"), _("Add music to your library."));
             welcome.append ("folder-music", _("Change Music Folder"), _("Load music from a folder, a network or an external disk."));
             welcome.append ("document-import", _("Import Music"), _("Import music from a source into your library."));
             welcome.activated.connect ((index) => {
