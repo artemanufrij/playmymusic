@@ -87,11 +87,9 @@ namespace PlayMyMusic {
                     app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR));
                 }
             });
-
             settings.notify["repeat-mode"].connect (() => {
                 set_repeat_symbol ();
             });
-
             settings.notify["shuffle-mode"].connect (() => {
                 if (settings.shuffle_mode) {
                     shuffle_button.set_image (icon_shuffle_on);
@@ -124,7 +122,6 @@ namespace PlayMyMusic {
                     playlist_button.sensitive = true;
                 }
             });
-
             library_manager.player_state_changed.connect ((state) => {
                 play_button.sensitive = true;
                 if (state == Gst.State.PLAYING) {
@@ -155,13 +152,11 @@ namespace PlayMyMusic {
                     play_button.tooltip_text = _("Play");
                 }
             });
-
             library_manager.audio_cd_connected.connect ((audio_cd) => {
                 audio_cd_view.show_audio_cd (audio_cd);
                 audio_cd_widget.show ();
                 view_mode.set_active (4);
             });
-
             library_manager.audio_cd_disconnected.connect ((volume) => {
                 if (audio_cd_view.current_audio_cd != null && audio_cd_view.current_audio_cd.volume == volume) {
                     if (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
@@ -174,11 +169,9 @@ namespace PlayMyMusic {
                     }
                 }
             });
-
             library_manager.mobile_phone_connected.connect ((volume) => {
                 adjust_background_images ();
             });
-
             library_manager.mobile_phone_disconnected.connect ((volume) => {
                 adjust_background_images ();
             });
@@ -582,12 +575,19 @@ namespace PlayMyMusic {
         }
 
         private void show_albums () {
+            mode_buttons.opacity = 1;
+            if (mobile_phone_view.current_mobile_phone != null) {
+                mobile_phone_view.set_reveal_child (true);
+            }
             content.set_visible_child_name ("albums");
             search_entry.text = albums_view.filter;
-            mode_buttons.opacity = 1;
         }
 
         private void show_artists () {
+            mode_buttons.opacity = 1;
+            if (mobile_phone_view.current_mobile_phone != null) {
+                mobile_phone_view.set_reveal_child (true);
+            }
             if (artist_button.sensitive) {
                 content.set_visible_child_name ("artists");
                 search_entry.text = artists_view.filter;
@@ -595,10 +595,11 @@ namespace PlayMyMusic {
             } else {
                 view_mode.set_active (0);
             }
-            mode_buttons.opacity = 1;
         }
 
         private void show_playlists () {
+            mode_buttons.opacity = 1;
+            mobile_phone_view.set_reveal_child (false);
             if (playlist_button.sensitive) {
                 if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || playlists_view.filter != "") {
                     search_entry.grab_focus ();
@@ -608,19 +609,21 @@ namespace PlayMyMusic {
             } else {
                 view_mode.set_active (0);
             }
-            mode_buttons.opacity = 1;
         }
 
         private void show_radiostations () {
+            mode_buttons.opacity = 0;
+            mobile_phone_view.set_reveal_child (false);
             if (library_manager.player.current_radio == null || radios_view.filter != "") {
                 search_entry.grab_focus ();
             }
             content.set_visible_child_name ("radios");
             search_entry.text = radios_view.filter;
-            mode_buttons.opacity = 0;
         }
 
         private void show_audio_cd () {
+            mode_buttons.opacity = 1;
+            mobile_phone_view.set_reveal_child (false);
             if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.AUDIO_CD || audio_cd_view.filter != "") {
                 search_entry.grab_focus ();
             }
@@ -630,7 +633,6 @@ namespace PlayMyMusic {
             content.set_visible_child_name ("audiocd");
             search_entry.text = audio_cd_view.filter;
             adjust_background_images ();
-            mode_buttons.opacity = 1;
         }
 
         private void send_notification (Objects.Track track) {
@@ -665,7 +667,7 @@ namespace PlayMyMusic {
                 Source.remove (adjust_timer);
                 adjust_timer = 0;
             }
-            adjust_timer = GLib.Timeout.add (100, () => {
+            adjust_timer = GLib.Timeout.add (250, () => {
                 artists_view.load_background ();
                 audio_cd_view.load_background ();
                 Source.remove (adjust_timer);
