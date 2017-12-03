@@ -274,6 +274,10 @@ namespace PlayMyMusic {
                     .artist-tracks-dark {
                         background: rgba (54, 59, 62, 0.75);
                     }
+                    .titlebar {
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                    }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
