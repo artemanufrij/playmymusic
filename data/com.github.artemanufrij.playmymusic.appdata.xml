@@ -58,7 +58,7 @@
                 <ul>
                     <li>Moved 'Shuffle' and 'Repeat' buttons into header bar</li>
                     <li>Hide MTP-View if playlists, radios or audio cd is choosed</li>
-                    <li>Switch from 'search for new files' to 'resync library'</li>
+                    <li>Switched from 'search for new files' to 'resync library'</li>
                 </ul>
                 <p>Fix:</p>
                 <ul>
