@@ -75,7 +75,7 @@ namespace PlayMyMusic.Services {
                         } else {
                             string mime_type = file_info.get_content_type ();
                             if (Utils.is_audio_file (mime_type)) {
-                                found_music_file (uri + "/" + file_info.get_name ());
+                                found_music_file (uri + "/" + file_info.get_name ().replace ("#", "%23"));
                             }
                         }
                     }

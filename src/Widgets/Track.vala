@@ -55,6 +55,12 @@ namespace PlayMyMusic.Widgets {
         public Track (PlayMyMusic.Objects.Track track, TrackStyle track_style = TrackStyle.ALBUM) {
             this.track_style = track_style;
             this.track = track;
+            this.track.removed.connect (() => {
+                Idle.add (() => {
+                    this.destroy ();
+                    return false;
+                });
+            });
             this.track.path_not_found.connect (() => {
                 if (warning == null) {
                     warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
@@ -64,12 +70,7 @@ namespace PlayMyMusic.Widgets {
                     warning.show_all ();
                 }
             });
-
-            this.track.removed.connect (() => {
-                this.destroy ();
-            });
-
-            track.notify ["title"].connect (() => {
+            this.track.notify ["title"].connect (() => {
                 track_title.label = track.title;
             });
 

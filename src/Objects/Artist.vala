@@ -29,6 +29,8 @@ namespace PlayMyMusic.Objects {
     public class Artist : TracksContainer {
         PlayMyMusic.Settings settings;
 
+        public signal void album_removed (Album album);
+
         public new int ID {
             get {
                 return _ID;
@@ -81,6 +83,15 @@ namespace PlayMyMusic.Objects {
 
             this.track_added.connect (() => {
                 load_cover_async.begin ();
+            });
+            this.album_removed.connect ((album) => {
+                this._albums.remove (album);
+                if (this.albums.length () == 0) {
+                    db_manager.remove_artist (this);
+                }
+            });
+            this.removed.connect (() => {
+                db_manager.artist_removed (this);
             });
         }
 

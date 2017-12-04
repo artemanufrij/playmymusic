@@ -73,12 +73,12 @@ namespace PlayMyMusic.Dialogs {
                 settings.play_in_background = play_in_background.active;
             });
 
-            var look_for_new_files_label = new Gtk.Label (_("Look for new files on start up"));
-            look_for_new_files_label.halign = Gtk.Align.START;
-            var look_for_new_files = new Gtk.Switch ();
-            look_for_new_files.active = settings.look_for_new_files;
-            look_for_new_files.notify["active"].connect (() => {
-                settings.look_for_new_files = look_for_new_files.active;
+            var sync_files_label = new Gtk.Label (_("Sync files on start up"));
+            sync_files_label.halign = Gtk.Align.START;
+            var sync_files = new Gtk.Switch ();
+            sync_files.active = settings.sync_files;
+            sync_files.notify["active"].connect (() => {
+                settings.sync_files = sync_files.active;
             });
 
             var load_artist_data_label = new Gtk.Label (_("Load Artist data from MusicBrainz"));
@@ -94,8 +94,8 @@ namespace PlayMyMusic.Dialogs {
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1, 2, 1);
             grid.attach (play_in_background_label, 0, 2);
             grid.attach (play_in_background, 1, 2);
-            grid.attach (look_for_new_files_label, 0, 3);
-            grid.attach (look_for_new_files, 1, 3);
+            grid.attach (sync_files_label, 0, 3);
+            grid.attach (sync_files, 1, 3);
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 4, 2, 1);
             grid.attach (load_artist_data_label, 0, 5);
             grid.attach (load_artist_data, 1, 5);

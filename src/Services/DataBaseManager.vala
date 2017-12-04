@@ -40,6 +40,7 @@ namespace PlayMyMusic.Services {
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
         public signal void removed_playlist (PlayMyMusic.Objects.Playlist playlist);
+        public signal void artist_removed (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
 
@@ -77,6 +78,9 @@ namespace PlayMyMusic.Services {
         string errormsg;
 
         construct {
+            artist_removed.connect ((artist) => {
+                _artists.remove (artist);
+            });
         }
 
         private DataBaseManager () {
@@ -287,6 +291,25 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public void remove_artist (PlayMyMusic.Objects.Artist artist) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                DELETE FROM artists WHERE id=$ID;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", artist.ID);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                stdout.printf ("Artist Removed: %d\n", artist.ID);
+                artist.removed ();
+            }
+            stmt.reset ();
+        }
+
 // ALBUM REGION
         public GLib.List<PlayMyMusic.Objects.Album> get_album_collection (PlayMyMusic.Objects.Artist artist) {
             GLib.List<PlayMyMusic.Objects.Album> return_value = new GLib.List<PlayMyMusic.Objects.Album> ();
@@ -365,6 +388,25 @@ namespace PlayMyMusic.Services {
                 stdout.printf ("Album ID: %d - %s\n", album.ID, album.title);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
+        public void remove_album (PlayMyMusic.Objects.Album album) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                DELETE FROM albums WHERE id=$ID;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", album.ID);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                stdout.printf ("Album Removed: %d\n", album.ID);
+                album.removed ();
             }
             stmt.reset ();
         }
@@ -606,6 +648,25 @@ namespace PlayMyMusic.Services {
                 stdout.printf ("Track ID: %d - %s\n", track.ID, track.title);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
+        public void remove_track (PlayMyMusic.Objects.Track track) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                DELETE FROM tracks WHERE id=$ID;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", track.ID);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                stdout.printf ("Track Removed: %d\n", track.ID);
+                track.removed ();
             }
             stmt.reset ();
         }

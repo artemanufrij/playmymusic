@@ -52,7 +52,7 @@ namespace PlayMyMusic {
         public double track_progress { get; set; }
         public string track_source { get; set; }
         public bool play_in_background { get; set; }
-        public bool look_for_new_files { get; set; }
+        public bool sync_files { get; set; }
         public string [] artists { get; set; }
         public string [] covers { get; set; }
         public string library_location { get; set; }

@@ -62,6 +62,15 @@ namespace PlayMyMusic.Objects {
 
         construct {
             year = -1;
+            track_removed.connect ((track) => {
+                this._tracks.remove (track);
+                if (this.tracks.length () == 0) {
+                    db_manager.remove_album (this);
+                }
+            });
+            removed.connect (() => {
+                artist.album_removed (this);
+            });
         }
 
         public Album (Artist? artist = null) {

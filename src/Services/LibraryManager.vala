@@ -42,6 +42,7 @@ namespace PlayMyMusic.Services {
         public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
+        public signal void artist_removed (PlayMyMusic.Objects.Artist artist);
         public signal void removed_playlist (PlayMyMusic.Objects.Playlist playlist);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
@@ -86,12 +87,13 @@ namespace PlayMyMusic.Services {
             tg_manager.discover_finished.connect ( () => { tag_discover_finished (); });
 
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
-            db_manager.added_new_artist.connect ( (artist) => { added_new_artist (artist); });
-            db_manager.added_new_album.connect ( (album) => { added_new_album (album); });
-            db_manager.added_new_playlist.connect ( (playlist) => { added_new_playlist (playlist); });
-            db_manager.removed_playlist.connect ( (playlist) => { removed_playlist (playlist); });
-            db_manager.added_new_radio.connect ( (radio) => { added_new_radio (radio); });
-            db_manager.removed_radio.connect ( (radio) => {
+            db_manager.added_new_artist.connect ((artist) => { added_new_artist (artist); });
+            db_manager.added_new_album.connect ((album) => { added_new_album (album); });
+            db_manager.added_new_playlist.connect ((playlist) => { added_new_playlist (playlist); });
+            db_manager.artist_removed.connect ((artist) =>  { artist_removed (artist); });
+            db_manager.removed_playlist.connect ((playlist) => { removed_playlist (playlist); });
+            db_manager.added_new_radio.connect ((radio) => { added_new_radio (radio); });
+            db_manager.removed_radio.connect ((radio) => {
                 if (player.current_radio == radio) {
                     player.reset_playing ();
                 }
@@ -147,7 +149,30 @@ namespace PlayMyMusic.Services {
         }
 
         // LOCAL FILES REGION
-        public void scan_local_library (string uri) {
+        public async void sync_library_content () {
+            new Thread <void*> (null, () => {
+                remove_non_existent_items ();
+                scan_local_library_for_new_files (settings.library_location);
+                return null;
+            });
+        }
+
+        public void remove_non_existent_items () {
+            var artists_copy = artists.copy ();
+            foreach (var artist in artists_copy) {
+                var albums = artist.albums.copy ();
+                foreach (var album in albums) {
+                    var tracks = album.tracks.copy ();
+                    foreach (var track in tracks) {
+                        if (!track.file_exists ()) {
+                            db_manager.remove_track (track);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void scan_local_library_for_new_files (string uri) {
             lf_manager.scan (uri);
         }
 
@@ -196,7 +221,7 @@ namespace PlayMyMusic.Services {
 
         public void rescan_library () {
             reset_library ();
-            scan_local_library (settings.library_location);
+            scan_local_library_for_new_files (settings.library_location);
         }
 
         public bool radio_station_exists (string url) {

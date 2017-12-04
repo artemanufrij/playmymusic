@@ -54,6 +54,13 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
+
+            this.album.removed.connect (() => {
+                Idle.add (() => {
+                    this.destroy ();
+                    return false;
+                });
+            });
         }
 
         private void build_ui () {

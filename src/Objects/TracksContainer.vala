@@ -36,6 +36,7 @@ namespace PlayMyMusic.Objects {
         public signal void background_changed ();
         public signal void background_found ();
         public signal void property_changed (string property);
+        public signal void removed ();
 
         public string title { get; set; default = ""; }
         public string name { get; set; default = ""; }
@@ -169,11 +170,6 @@ namespace PlayMyMusic.Objects {
 
         public Track? get_first_track () {
             return _tracks.nth_data (0);
-        }
-
-        public void remove_track (Track track) {
-            this._tracks.remove (track);
-            track_removed (track);
         }
 
         protected void add_track (Track track) {

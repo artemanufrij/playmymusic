@@ -78,6 +78,11 @@ namespace PlayMyMusic.Objects {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            removed.connect (() => {
+                if (album != null) {
+                    album.track_removed (this);
+                }
+            });
         }
 
         public Track (TracksContainer? container = null) {
