@@ -32,7 +32,7 @@ msgstr "Pridėti į grojaraštį"
 #: ../src/Widgets/Album.vala:119 ../src/Widgets/Artist.vala:99
 #: ../src/Widgets/Track.vala:114
 msgid "Send to"
-msgstr ""
+msgstr "Siųsti į"
 
 #: ../src/Widgets/Album.vala:165 ../src/Widgets/Track.vala:160
 msgid "Create New Playlist"
@@ -182,15 +182,15 @@ msgstr "Nežinoma"
 
 #: ../src/Objects/MobilePhoneMusicFolder.vala:82
 msgid "deleting…"
-msgstr ""
+msgstr "ištrinama…"
 
 #: ../src/Objects/AudioCD.vala:100
 msgid "Track %d"
-msgstr ""
+msgstr "Takelis %d"
 
 #: ../src/Objects/MobilePhone.vala:45
 msgid "No Music Files found"
-msgstr ""
+msgstr "Nerasta jokių muzikos failų"
 
 #: ../src/MainWindow.vala:110
 msgid "Pause"
@@ -222,7 +222,7 @@ msgstr "Importuoti muziką…"
 
 #: ../src/MainWindow.vala:353
 msgid "Reset all views"
-msgstr ""
+msgstr "Atstatyti visus rodinius"
 
 #: ../src/MainWindow.vala:359
 msgid "Rescan Library"
@@ -254,7 +254,7 @@ msgstr "Radijo stotys"
 
 #: ../src/MainWindow.vala:484
 msgid "Audio CD"
-msgstr ""
+msgstr "Garso CD"
 
 #: ../src/MainWindow.vala:544 ../src/MainWindow.vala:552
 msgid "<b>%s</b> by <b>%s</b>"
@@ -262,7 +262,7 @@ msgstr "<b>%s</b>, atlieka<b>%s</b>"
 
 #: ../src/Dialogs/Preferences.vala:60
 msgid "Use Dark Theme"
-msgstr ""
+msgstr "Naudoti tamsią temą"
 
 #: ../src/Dialogs/Preferences.vala:68
 msgid "Play in background if closed"
@@ -270,8 +270,8 @@ msgstr "Užvėrus, groti fone"
 
 #: ../src/Dialogs/Preferences.vala:76
 msgid "Look for new files on start up"
-msgstr ""
+msgstr "Paleidus programą, ieškoti naujų failų"
 
 #: ../src/Dialogs/Preferences.vala:84
 msgid "Load Artist data from MusicBrainz"
-msgstr ""
+msgstr "Įkelti atlikėjo duomenis iš MusicBrainz"
