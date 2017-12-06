@@ -81,6 +81,10 @@ namespace PlayMyMusic.Objects {
             removed.connect (() => {
                 if (album != null) {
                     album.track_removed (this);
+                    album.artist.track_removed (this);
+                }
+                if (playlist != null) {
+                    playlist.track_removed (this);
                 }
             });
         }

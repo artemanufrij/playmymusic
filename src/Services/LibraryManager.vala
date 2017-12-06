@@ -160,13 +160,19 @@ namespace PlayMyMusic.Services {
         public void remove_non_existent_items () {
             var artists_copy = artists.copy ();
             foreach (var artist in artists_copy) {
-                var albums = artist.albums.copy ();
-                foreach (var album in albums) {
-                    var tracks = album.tracks.copy ();
-                    foreach (var track in tracks) {
-                        if (!track.file_exists ()) {
-                            db_manager.remove_track (track);
-                        }
+                var tracks = artist.tracks.copy ();
+                foreach (var track in tracks) {
+                    if (!track.file_exists ()) {
+                        db_manager.remove_track (track);
+                    }
+                }
+            }
+            var playlists_copy = playlists.copy ();
+            foreach (var playlist in playlists_copy) {
+                var tracks = playlist.tracks.copy ();
+                foreach (var track in tracks) {
+                    if (!track.file_exists ()) {
+                        db_manager.remove_track (track);
                     }
                 }
             }

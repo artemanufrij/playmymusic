@@ -41,6 +41,15 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        construct {
+            track_removed.connect ((track) => {
+                this._tracks.remove (track);
+                if (this.tracks.length () == 0) {
+                    db_manager.remove_playlist (this);
+                }
+            });
+        }
+
         public new void add_track (Track track) {
             base.add_track (track);
             track.removed.connect (() => {
