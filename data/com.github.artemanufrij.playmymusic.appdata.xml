@@ -33,21 +33,27 @@
     <update_contact>artem.anufrij@live.de</update_contact>
     <screenshots>
         <screenshot type="default">
+            <caption>Albums</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot.png</image>
         </screenshot>
         <screenshot>
+            <caption>Artists</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Artists.png</image>
         </screenshot>
         <screenshot>
+            <caption>Playlists</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Playlists.png</image>
         </screenshot>
         <screenshot>
+            <caption>MTP Support</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_MTP.png</image>
         </screenshot>
         <screenshot>
+            <caption>Manage Online Radio Stations</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Radio_Stations.png</image>
         </screenshot>
         <screenshot>
+            <caption>Audio CD</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Audio_CD.png</image>
         </screenshot>
     </screenshots>
