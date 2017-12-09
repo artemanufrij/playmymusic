@@ -29,6 +29,8 @@ namespace PlayMyMusic.Widgets {
     public class Album : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
 
+        public signal void unselect ();
+
         public PlayMyMusic.Objects.Album album { get; private set; }
         public string title { get { return album.title; } }
         public int year { get { return album.year; } }
@@ -38,6 +40,11 @@ namespace PlayMyMusic.Widgets {
         Gtk.Menu playlists;
         Gtk.Menu send_to;
         Gtk.MenuItem menu_send_to;
+        Gtk.Button multi_select;
+        Gtk.Image add_selection_image;
+        Gtk.Image multi_selected_image;
+
+        public bool multi_selection { get; private set; default = false; }
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -54,12 +61,15 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
-
             this.album.removed.connect (() => {
                 Idle.add (() => {
                     this.destroy ();
                     return false;
                 });
+            });
+            this.selection_request_event.connect ((event) => {
+                stdout.printf ("UNSELECTED %s\n", album.title);
+                return false;
             });
         }
 
@@ -73,6 +83,16 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
             event_box.drag_data_get.connect (on_drag_data_get);
             event_box.drag_begin.connect (on_drag_begin);
+            event_box.enter_notify_event.connect ((event) => {
+                multi_select.opacity = 1;
+                return false;
+            });
+            event_box.leave_notify_event.connect ((event) => {
+                if (!this.is_selected ()) {
+                    multi_select.opacity = 0;
+                }
+                return false;
+            });
 
             var content = new Gtk.Grid ();
             content.margin = 12;
@@ -130,6 +150,34 @@ namespace PlayMyMusic.Widgets {
             artist.ellipsize = Pango.EllipsizeMode.END;
             artist.max_width_chars = 0;
 
+            // MULTISELECTION BUTTON
+            add_selection_image = new Gtk.Image.from_icon_name ("selection-add", Gtk.IconSize.BUTTON);
+            multi_selected_image = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.BUTTON);
+
+            multi_select = new Gtk.Button ();
+            multi_select.valign = Gtk.Align.START;
+            multi_select.halign = Gtk.Align.START;
+            multi_select.get_style_context ().remove_class ("button");
+            multi_select.set_image (add_selection_image);
+            multi_select.can_focus = false;
+            multi_select.opacity = 0;
+            multi_select.clicked.connect (() => {
+                if (!multi_selection) {
+                    multi_selection = true;
+                    this.activate ();
+                    multi_select.set_image (multi_selected_image);
+                } else {
+                    multi_selection = false;
+                    unselect ();
+                    multi_select.set_image (add_selection_image);
+                }
+            });
+            multi_select.enter_notify_event.connect ((event) => {
+                multi_select.opacity = 1;
+                return false;
+            });
+
+            content.attach (multi_select, 0, 0);
             content.attach (cover, 0, 0);
             content.attach (title, 0, 1);
             content.attach (artist, 0, 2);
@@ -138,6 +186,12 @@ namespace PlayMyMusic.Widgets {
             this.valign = Gtk.Align.START;
 
             this.show_all ();
+        }
+
+        public void reset () {
+            multi_select.set_image (add_selection_image);
+            multi_select.opacity = 0;
+            multi_selection = false;
         }
 
 
@@ -156,6 +210,7 @@ namespace PlayMyMusic.Widgets {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                this.activate ();
                 // PLAYLISTS
                 foreach (var child in playlists.get_children ()) {
                     child.destroy ();

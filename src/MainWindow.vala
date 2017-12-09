@@ -187,7 +187,6 @@ namespace PlayMyMusic {
                 Gtk.drag_unhighlight (this);
                 return true;
             });
-
             this.drag_data_received.connect ((drag_context, x, y, data, info, time) => {
                 foreach (var uri in data.get_uris ()) {
                     var file = File.new_for_uri (uri);
@@ -209,6 +208,26 @@ namespace PlayMyMusic {
                     file.dispose ();
                 }
             });
+            this.configure_event.connect ((event) => {
+                settings.window_width = event.width;
+                settings.window_height = event.height;
+                artists_view.load_background ();
+                audio_cd_view.load_background ();
+
+                adjust_background_images ();
+                return false;
+            });
+            this.delete_event.connect (() => {
+                if (settings.play_in_background && library_manager.player.get_state () == Gst.State.PLAYING) {
+                    this.hide_on_delete ();
+                    return true;
+                }
+                return false;
+            });
+            this.destroy.connect (() => {
+                save_settings ();
+                library_manager.player.stop ();
+            });
         }
 
         public MainWindow () {
@@ -224,29 +243,6 @@ namespace PlayMyMusic {
                 albums_view.activate_by_id (settings.last_album_id);
                 load_last_played_track ();
                 content.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
-            });
-
-            this.configure_event.connect ((event) => {
-                settings.window_width = event.width;
-                settings.window_height = event.height;
-                artists_view.load_background ();
-                audio_cd_view.load_background ();
-
-                adjust_background_images ();
-                return false;
-            });
-
-            this.delete_event.connect (() => {
-                if (settings.play_in_background && library_manager.player.get_state () == Gst.State.PLAYING) {
-                    this.hide_on_delete ();
-                    return true;
-                }
-                return false;
-            });
-
-            this.destroy.connect (() => {
-                save_settings ();
-                library_manager.player.stop ();
             });
 
             Granite.Widgets.Utils.set_theming_for_screen (
@@ -388,7 +384,7 @@ namespace PlayMyMusic {
 
             menu_item_resync = new Gtk.MenuItem.with_label (_("Resync Library"));
             menu_item_resync.activate.connect (() => {
-                library_manager.sync_library_content ();
+                library_manager.sync_library_content.begin ();
             });
 
             var menu_item_preferences = new Gtk.MenuItem.with_label (_("Preferences"));

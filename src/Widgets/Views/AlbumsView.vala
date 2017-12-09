@@ -80,6 +80,7 @@ namespace PlayMyMusic.Widgets.Views {
             albums.column_spacing = 24;
             albums.max_children_per_line = 24;
             albums.valign = Gtk.Align.START;
+            albums.selection_mode = Gtk.SelectionMode.MULTIPLE;
             albums.set_sort_func (albums_sort_func);
             albums.set_filter_func (albums_filter_func);
             albums.child_activated.connect (show_album_viewer);
@@ -138,6 +139,9 @@ namespace PlayMyMusic.Widgets.Views {
             lock (albums) {
                 var a = new Widgets.Album (album);
                 albums.add (a);
+                a.unselect.connect (() => {
+                    albums.unselect_child (a);
+                });
             }
         }
 
@@ -165,6 +169,13 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void show_album_viewer (Gtk.FlowBoxChild item) {
+            if (!(item as PlayMyMusic.Widgets.Album).multi_selection) {
+                foreach (var child in albums.get_selected_children ()) {
+                    (child as PlayMyMusic.Widgets.Album).reset ();
+                }
+                albums.unselect_all ();
+            }
+
             album_revealer.set_reveal_child (true);
             var album = (item as PlayMyMusic.Widgets.Album).album;
             settings.last_album_id = album.ID;
