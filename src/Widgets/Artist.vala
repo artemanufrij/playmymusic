@@ -201,6 +201,7 @@ namespace PlayMyMusic.Widgets {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                this.activate ();
                 // SEND TO
                 foreach (var child in send_to.get_children ()) {
                     child.destroy ();

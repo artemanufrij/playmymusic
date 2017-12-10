@@ -217,7 +217,8 @@ namespace PlayMyMusic.Services {
                     continue;
                 }
 
-                foreach (var album in artist.albums) {
+                var albums_copy = artist.albums.copy ();
+                foreach (var album in albums_copy) {
                     var album_exists = target.get_album_by_title (album.title);
                     if (album_exists == null) {
                         album.set_artist (target);

@@ -56,9 +56,14 @@ namespace PlayMyMusic.Dialogs {
                 switch (response_id) {
                     case Gtk.ResponseType.ACCEPT:
                         save ();
-                        destroy ();
                     break;
                 }
+            });
+            this.key_press_event.connect ((event) => {
+                if ((event.keyval == Gdk.Key.Return || event.keyval == Gdk.Key.KP_Enter) && Gdk.ModifierType.CONTROL_MASK in event.state) {
+                    save ();
+                }
+                return false;
             });
         }
 
@@ -142,6 +147,7 @@ namespace PlayMyMusic.Dialogs {
                     }
                 }
             }
+            this.destroy ();
         }
     }
 }
