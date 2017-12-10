@@ -197,6 +197,19 @@ namespace PlayMyMusic.Services {
         }
 
         // DATABASE REGION
+        public void merge_albums (GLib.List<PlayMyMusic.Objects.Album> albums, PlayMyMusic.Objects.Album target) {
+            foreach (var album in albums) {
+                if (album.ID == target.ID) {
+                    continue;
+                }
+
+                foreach (var track in album.tracks) {
+                    target.add_track_if_not_exists (track);
+                }
+                db_manager.remove_album (album);
+            }
+        }
+
         public void discovered_new_local_item (PlayMyMusic.Objects.Artist artist, PlayMyMusic.Objects.Album album, PlayMyMusic.Objects.Track track) {
             new Thread<void*> (null, () => {
                 var db_artist = db_manager.insert_artist_if_not_exists (artist);

@@ -30,6 +30,7 @@ namespace PlayMyMusic.Widgets {
         PlayMyMusic.Services.LibraryManager library_manager;
 
         public signal void unselect ();
+        public signal void merge ();
 
         public PlayMyMusic.Objects.Album album { get; private set; }
         public string title { get { return album.title; } }
@@ -40,6 +41,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Menu playlists;
         Gtk.Menu send_to;
         Gtk.MenuItem menu_send_to;
+        Gtk.MenuItem menu_merge;
         Gtk.Button multi_select;
         Gtk.Image add_selection_image;
         Gtk.Image multi_selected_image;
@@ -100,33 +102,6 @@ namespace PlayMyMusic.Widgets {
             content.row_spacing = 6;
             event_box.add (content);
 
-            menu = new Gtk.Menu ();
-            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
-            menu_new_cover.activate.connect (() => {
-                var new_cover = library_manager.choose_new_cover ();
-                if (new_cover != null) {
-                    try {
-                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                        album.set_new_cover (pixbuf, 256);
-                    } catch (Error err) {
-                        warning (err.message);
-                    }
-                }
-            });
-            menu.add (menu_new_cover);
-
-            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
-            menu.add (menu_add_into_playlist);
-            playlists = new Gtk.Menu ();
-            menu_add_into_playlist.set_submenu (playlists);
-
-            menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
-            menu.add (menu_send_to);
-            send_to = new Gtk.Menu ();
-            menu_send_to.set_submenu (send_to);
-
-            menu.show_all ();
-
             cover = new Gtk.Image ();
             cover.get_style_context ().add_class ("card");
             cover.halign = Gtk.Align.CENTER;
@@ -185,6 +160,8 @@ namespace PlayMyMusic.Widgets {
             this.add (event_box);
             this.valign = Gtk.Align.START;
 
+            build_context_menu ();
+
             this.show_all ();
         }
 
@@ -206,6 +183,41 @@ namespace PlayMyMusic.Widgets {
                 surface.context.paint ();
                 Gtk.drag_set_icon_surface (context, surface.surface);
             }
+        }
+
+        private void build_context_menu () {
+            menu = new Gtk.Menu ();
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            menu_new_cover.activate.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
+                        album.set_new_cover (pixbuf, 256);
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+            });
+            menu.add (menu_new_cover);
+
+            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
+            menu.add (menu_add_into_playlist);
+            playlists = new Gtk.Menu ();
+            menu_add_into_playlist.set_submenu (playlists);
+
+            menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
+            menu.add (menu_send_to);
+            send_to = new Gtk.Menu ();
+            menu_send_to.set_submenu (send_to);
+
+            menu_merge = new Gtk.MenuItem.with_label (_("Merge selected Albums"));
+            menu_merge.activate.connect (() => {
+                merge ();
+            });
+            menu.add (menu_merge);
+
+            menu.show_all ();
         }
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
@@ -256,6 +268,13 @@ namespace PlayMyMusic.Widgets {
                     menu_send_to.hide ();
                 } else {
                     menu_send_to.show_all ();
+                }
+
+                // MERGE
+                if ((this.parent as Gtk.FlowBox).get_selected_children ().length () > 1) {
+                    menu_merge.show_all ();
+                } else {
+                    menu_merge.hide ();
                 }
 
                 menu.popup (null, null, null, evt.button, evt.time);

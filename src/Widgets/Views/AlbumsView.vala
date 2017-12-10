@@ -142,6 +142,13 @@ namespace PlayMyMusic.Widgets.Views {
                 a.unselect.connect (() => {
                     albums.unselect_child (a);
                 });
+                a.merge.connect (() => {
+                    GLib.List<Objects.Album> selected = new GLib.List<Objects.Album> ();
+                    foreach (var child in albums.get_selected_children ()){
+                        selected.append ((child as Widgets.Album).album);
+                    }
+                    library_manager.merge_albums (selected, album);
+                });
             }
         }
 
