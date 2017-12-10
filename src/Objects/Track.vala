@@ -30,6 +30,7 @@ namespace PlayMyMusic.Objects {
         PlayMyMusic.Services.LibraryManager library_manager;
 
         public signal void removed ();
+        public signal void album_changed (Album album);
 
         Album? _album = null;
         public Album album {
@@ -101,6 +102,7 @@ namespace PlayMyMusic.Objects {
 
         public void set_album (Album album) {
             this._album = album;
+            album_changed (this.album);
         }
 
         public void set_playlist (Playlist playlist) {

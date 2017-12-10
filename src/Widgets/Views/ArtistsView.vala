@@ -78,6 +78,7 @@ namespace PlayMyMusic.Widgets.Views {
             artists.row_spacing = 12;
             artists.valign = Gtk.Align.START;
             artists.max_children_per_line = 1;
+            artists.selection_mode = Gtk.SelectionMode.MULTIPLE;
             artists.set_sort_func (artists_sort_func);
             artists.set_filter_func (artists_filter_func);
             artists.child_activated.connect (show_artist_viewer);
@@ -102,6 +103,16 @@ namespace PlayMyMusic.Widgets.Views {
             lock (artists) {
                 var a = new Widgets.Artist (artist);
                 artists.add (a);
+                a.unselect.connect (() => {
+                    artists.unselect_child (a);
+                });
+                a.merge.connect (() => {
+                    GLib.List<Objects.Artist> selected = new GLib.List<Objects.Artist> ();
+                    foreach (var child in artists.get_selected_children ()){
+                        selected.append ((child as Widgets.Artist).artist);
+                    }
+                    library_manager.merge_artists (selected, artist);
+                });
             }
         }
 
@@ -138,6 +149,12 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void show_artist_viewer (Gtk.FlowBoxChild item) {
+            if (!(item as PlayMyMusic.Widgets.Artist).multi_selection) {
+                foreach (var child in artists.get_selected_children ()) {
+                    (child as PlayMyMusic.Widgets.Artist).reset ();
+                }
+                artists.unselect_all ();
+            }
             var artist = (item as PlayMyMusic.Widgets.Artist).artist;
             settings.last_artist_id = artist.ID;
             artist_view.show_artist_viewer (artist);

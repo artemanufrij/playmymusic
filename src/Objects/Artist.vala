@@ -112,7 +112,7 @@ namespace PlayMyMusic.Objects {
             return return_value;
         }
 
-        private void add_album (Album album) {
+        public void add_album (Album album) {
             this._albums.append (album);
             if (album.artist_track_added_signal_id == 0) {
                album.artist_track_added_signal_id = album.track_added.connect (add_track);

@@ -173,8 +173,11 @@ namespace PlayMyMusic.Objects {
         }
 
         protected void add_track (Track track) {
+            if (has_track (track)) {
+                return;
+            }
             lock (_tracks) {
-               if (this is Playlist) {
+                if (this is Playlist) {
                     this._tracks.insert_sorted_with_data (track, (a, b) => {
                         return a.track - b.track;
                     });

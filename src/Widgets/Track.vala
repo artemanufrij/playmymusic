@@ -136,6 +136,9 @@ namespace PlayMyMusic.Widgets {
                         return false;
                     });
                 });
+                track.album_changed.connect ((album) => {
+                    cover.tooltip_text = album.title;
+                });
             }
 
             track_title = new Gtk.Label (this.track.title);

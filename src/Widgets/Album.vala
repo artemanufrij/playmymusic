@@ -186,7 +186,6 @@ namespace PlayMyMusic.Widgets {
             multi_selection = false;
         }
 
-
         private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
             selection_data.set_text ("Album:%d".printf (this.album.ID), -1);
         }

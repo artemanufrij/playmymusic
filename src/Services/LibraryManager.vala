@@ -197,7 +197,7 @@ namespace PlayMyMusic.Services {
         }
 
         // DATABASE REGION
-        public void merge_albums (GLib.List<PlayMyMusic.Objects.Album> albums, PlayMyMusic.Objects.Album target) {
+        public void merge_albums (GLib.List<Objects.Album> albums, Objects.Album target) {
             foreach (var album in albums) {
                 if (album.ID == target.ID) {
                     continue;
@@ -208,6 +208,31 @@ namespace PlayMyMusic.Services {
                     db_manager.update_track (track);
                 }
                 db_manager.remove_album (album);
+            }
+        }
+
+        public void merge_artists (GLib.List<Objects.Artist> artists, Objects.Artist target) {
+            foreach (var artist in artists) {
+                if (artist.ID == target.ID) {
+                    continue;
+                }
+
+                foreach (var album in artist.albums) {
+                    var album_exists = target.get_album_by_title (album.title);
+                    if (album_exists == null) {
+                        album.removed ();
+                        album.set_artist (target);
+                        db_manager.update_album (album);
+                        target.add_album (album);
+                        added_new_album (album);
+                    } else {
+                        GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
+                        albums.append (album);
+                        merge_albums (albums, album);
+                    }
+
+                }
+                db_manager.remove_artist (artist);
             }
         }
 

@@ -80,6 +80,10 @@ namespace PlayMyMusic.Objects {
         }
 
         public void set_artist (Artist artist) {
+            if (artist_track_added_signal_id > 0) {
+                disconnect (artist_track_added_signal_id);
+                artist_track_added_signal_id = 0;
+            }
             this._artist = artist;
         }
 
