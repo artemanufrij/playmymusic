@@ -31,8 +31,11 @@ namespace PlayMyMusic.Dialogs {
         PlayMyMusic.Services.DataBaseManager db_manager;
         Objects.Album album;
 
+        Gtk.Image cover;
         Gtk.Entry title_entry;
         Gtk.Entry year_entry;
+
+        bool cover_changed = false;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
@@ -49,18 +52,7 @@ namespace PlayMyMusic.Dialogs {
             this.response.connect ((source, response_id) => {
                 switch (response_id) {
                     case Gtk.ResponseType.ACCEPT:
-                        var new_title = title_entry.text.strip ();
-                        var new_year = int.parse (year_entry.text);
-                        var album_exists = album.artist.get_album_by_title (new_title);
-                        if (album_exists == null || album_exists.ID == album.ID) {
-                            album.title = new_title;
-                            album.year = new_year;
-                            db_manager.update_album (album);
-                        } else {
-                            GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
-                            albums.append (album);
-                            library_manager.merge_albums (albums, album_exists);
-                        }
+                        save ();
                         destroy ();
                     break;
                 }
@@ -76,7 +68,22 @@ namespace PlayMyMusic.Dialogs {
             grid.row_spacing = 12;
             grid.margin = 12;
 
-            var cover = new Gtk.Image ();
+            var event_box = new Gtk.EventBox ();
+
+            cover = new Gtk.Image ();
+            cover.tooltip_text = _("Click to choose a new cover…");
+            event_box.button_press_event.connect ((event) => {
+                var new_cover_path = library_manager.choose_new_cover ();
+                if (new_cover_path != null) {
+                    try {
+                        cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover_path), 256);
+                        cover_changed = true;
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+                return false;
+            });
             if (album.cover == null) {
                 cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
                 cover.height_request = 256;
@@ -85,7 +92,10 @@ namespace PlayMyMusic.Dialogs {
                 cover.pixbuf = album.cover;
             }
 
+            event_box.add (cover);
+
             title_entry = new Gtk.Entry ();
+            title_entry.get_style_context ().add_class("h3");
             title_entry.text = album.title;
 
             var year_label = new Gtk.Label (_("Year"));
@@ -93,7 +103,7 @@ namespace PlayMyMusic.Dialogs {
             year_entry = new Gtk.Entry ();
             year_entry.text = album.year.to_string ();
 
-            grid.attach (cover, 0, 0, 2, 1);
+            grid.attach (event_box, 0, 0, 2, 1);
             grid.attach (title_entry, 0, 1, 2, 1);
             grid.attach (year_label, 0, 2);
             grid.attach (year_entry, 1, 2);
@@ -102,6 +112,27 @@ namespace PlayMyMusic.Dialogs {
             var save_button = this.add_button (_("Save"), Gtk.ResponseType.ACCEPT) as Gtk.Button;
             save_button.get_style_context ().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             this.show_all ();
+        }
+
+        private void save () {
+            var new_title = title_entry.text.strip ();
+            var new_year = int.parse (year_entry.text);
+            var album_exists = album.artist.get_album_by_title (new_title);
+            if (album_exists == null || album_exists.ID == album.ID) {
+                album.title = new_title;
+                album.year = new_year;
+                db_manager.update_album (album);
+                if (cover_changed) {
+                    album.set_new_cover (cover.pixbuf, 256);
+                }
+            } else {
+                GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
+                albums.append (album);
+                library_manager.merge_albums (albums, album_exists);
+                if (cover_changed) {
+                    album_exists.set_new_cover (cover.pixbuf, 256);
+                }
+            }
         }
     }
 }

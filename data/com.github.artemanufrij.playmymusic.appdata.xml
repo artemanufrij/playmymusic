@@ -58,6 +58,15 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.4.0" date="2017-12-15">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Merge Albums</li>
+                    <li>Album Editor</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.3.4" date="2017-12-08">
             <description>
                 <p>Changes:</p>

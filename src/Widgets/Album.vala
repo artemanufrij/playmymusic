@@ -71,11 +71,7 @@ namespace PlayMyMusic.Widgets {
                 });
             });
             this.album.notify["title"].connect (() => {
-                void_set_values ();
-            });
-            this.selection_request_event.connect ((event) => {
-                stdout.printf ("UNSELECTED %s\n", album.title);
-                return false;
+                set_values ();
             });
         }
 
@@ -171,14 +167,15 @@ namespace PlayMyMusic.Widgets {
 
             build_context_menu ();
 
-            void_set_values ();
+            set_values ();
 
             this.show_all ();
         }
 
-        private void void_set_values () {
+        private void set_values () {
             this.tooltip_markup = ("<b>%s</b>\n%s").printf (album.title.replace ("&", "&amp;"), album.artist.name.replace ("&", "&amp;"));
             title_label.label = ("<b>%s</b>").printf (this.title.replace ("&", "&amp;"));
+            this.changed ();
         }
 
         public void reset () {
