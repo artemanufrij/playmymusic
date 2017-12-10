@@ -69,6 +69,9 @@ namespace PlayMyMusic.Widgets.Views {
                     try {
                         var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
                         current_album.set_new_cover (pixbuf, 256);
+                        if (settings.save_custom_covers) {
+                            current_album.set_custom_cover_file (new_cover);
+                        }
                     } catch (Error err) {
                         warning (err.message);
                     }

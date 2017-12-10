@@ -136,6 +136,21 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public void set_custom_cover_file (string uri) {
+            var first_track = this.tracks.first ().data;
+            if (first_track != null) {
+                var destination = File.new_for_uri (GLib.Path.get_dirname(GLib.Path.get_dirname (first_track.uri)) + "/artist.jpg");
+                var source = File.new_for_path (uri);
+                try {
+                    source.copy (destination, GLib.FileCopyFlags.OVERWRITE);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                destination.dispose ();
+                source.dispose ();
+            }
+        }
+
         public async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0) {
                 return;

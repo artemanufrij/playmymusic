@@ -29,6 +29,7 @@ namespace PlayMyMusic.Dialogs {
     public class AlbumEditor : Gtk.Dialog {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Services.DataBaseManager db_manager;
+        PlayMyMusic.Settings settings;
         Objects.Album album;
 
         Gtk.Image cover;
@@ -36,10 +37,12 @@ namespace PlayMyMusic.Dialogs {
         Gtk.Entry year_entry;
 
         bool cover_changed = false;
+        string? new_cover_path = null;
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
+            settings = PlayMyMusic.Settings.get_default ();
         }
 
         public AlbumEditor (Gtk.Window parent, Objects.Album album) {
@@ -73,7 +76,7 @@ namespace PlayMyMusic.Dialogs {
             cover = new Gtk.Image ();
             cover.tooltip_text = _("Click to choose a new cover…");
             event_box.button_press_event.connect ((event) => {
-                var new_cover_path = library_manager.choose_new_cover ();
+                new_cover_path = library_manager.choose_new_cover ();
                 if (new_cover_path != null) {
                     try {
                         cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover_path), 256);
@@ -124,6 +127,9 @@ namespace PlayMyMusic.Dialogs {
                 db_manager.update_album (album);
                 if (cover_changed) {
                     album.set_new_cover (cover.pixbuf, 256);
+                    if (settings.save_custom_covers) {
+                        album.set_custom_cover_file (new_cover_path);
+                    }
                 }
             } else {
                 GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
@@ -131,6 +137,9 @@ namespace PlayMyMusic.Dialogs {
                 library_manager.merge_albums (albums, album_exists);
                 if (cover_changed) {
                     album_exists.set_new_cover (cover.pixbuf, 256);
+                    if (settings.save_custom_covers) {
+                        album_exists.set_custom_cover_file (new_cover_path);
+                    }
                 }
             }
         }

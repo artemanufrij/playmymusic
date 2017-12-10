@@ -62,6 +62,7 @@
             <description>
                 <p>New:</p>
                 <ul>
+                    <li>Option for saving custom covers into library</li>
                     <li>Merge Albums</li>
                     <li>Album Editor</li>
                 </ul>

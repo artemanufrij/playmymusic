@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Widgets {
     public class Album : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
 
         public signal void unselect ();
         public signal void merge ();
@@ -51,6 +52,7 @@ namespace PlayMyMusic.Widgets {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = PlayMyMusic.Settings.get_default ();
         }
 
         public Album (PlayMyMusic.Objects.Album album) {
@@ -214,6 +216,9 @@ namespace PlayMyMusic.Widgets {
                     try {
                         var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
                         album.set_new_cover (pixbuf, 256);
+                        if (settings.save_custom_covers) {
+                            album.set_custom_cover_file (new_cover);
+                        }
                     } catch (Error err) {
                         warning (err.message);
                     }

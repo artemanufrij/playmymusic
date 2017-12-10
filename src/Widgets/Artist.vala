@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Widgets {
     public class Artist : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
 
         public PlayMyMusic.Objects.Artist artist { get; private set; }
         public new string name { get { return artist.name; } }
@@ -39,6 +40,7 @@ namespace PlayMyMusic.Widgets {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = PlayMyMusic.Settings.get_default ();
         }
 
         public Artist (PlayMyMusic.Objects.Artist artist) {
@@ -98,7 +100,10 @@ namespace PlayMyMusic.Widgets {
                 if (new_cover != null) {
                     try {
                         var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                        this.artist.set_new_cover (pixbuf, 128);
+                        artist.set_new_cover (pixbuf, 128);
+                        if (settings.save_custom_covers) {
+                            artist.set_custom_cover_file (new_cover);
+                        }
                     } catch (Error err) {
                         warning (err.message);
                     }

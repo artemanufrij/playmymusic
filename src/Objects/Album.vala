@@ -93,6 +93,21 @@ namespace PlayMyMusic.Objects {
             load_cover_async.begin ();
         }
 
+        public void set_custom_cover_file (string uri) {
+            var first_track = this.tracks.first ().data;
+            if (first_track != null) {
+                var destination = File.new_for_uri (GLib.Path.get_dirname (first_track.uri) + "/cover.jpg");
+                var source = File.new_for_path (uri);
+                try {
+                    source.copy (destination, GLib.FileCopyFlags.OVERWRITE);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                destination.dispose ();
+                source.dispose ();
+            }
+        }
+
 // COVER REGION
         private async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0 || this.tracks.length () == 0) {

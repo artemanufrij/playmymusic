@@ -100,5 +100,10 @@
 			<summary>Use Dark Theme.</summary>
 			<description>Use Dark Theme.</description>
 		</key>
+		<key name="save-custom-covers" type="b">
+			<default>false</default>
+			<summary>Save custom Cover in Music folder.</summary>
+			<description>Save custom Cover in Music folder.</description>
+		</key>
 	</schema>
 </schemalist>
