@@ -135,7 +135,7 @@ namespace PlayMyMusic.Widgets {
             send_to = new Gtk.Menu ();
             menu_send_to.set_submenu (send_to);
 
-            menu_merge = new Gtk.MenuItem.with_label (_("Merge selected Albums"));
+            menu_merge = new Gtk.MenuItem.with_label (_("Merge selected Artists"));
             menu_merge.activate.connect (() => {
                 merge ();
             });

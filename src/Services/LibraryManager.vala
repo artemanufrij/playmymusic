@@ -220,7 +220,6 @@ namespace PlayMyMusic.Services {
                 foreach (var album in artist.albums) {
                     var album_exists = target.get_album_by_title (album.title);
                     if (album_exists == null) {
-                        album.removed ();
                         album.set_artist (target);
                         db_manager.update_album (album);
                         target.add_album (album);
@@ -228,9 +227,11 @@ namespace PlayMyMusic.Services {
                     } else {
                         GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
                         albums.append (album);
-                        merge_albums (albums, album);
+                        merge_albums (albums, album_exists);
                     }
-
+                }
+                foreach (var album in artist.albums) {
+                    album.removed ();
                 }
                 db_manager.remove_artist (artist);
             }
