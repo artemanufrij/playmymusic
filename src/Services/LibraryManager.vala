@@ -203,10 +203,10 @@ namespace PlayMyMusic.Services {
                     continue;
                 }
 
+                db_manager.remove_album (album);
                 foreach (var track in album.tracks) {
                     target.add_track_if_not_exists (track);
                 }
-                db_manager.remove_album (album);
             }
         }
 
