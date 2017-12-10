@@ -392,6 +392,24 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
+        public void update_album (PlayMyMusic.Objects.Album album) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                UPDATE albums SET artist_id=$ARTIST_ID, title=$TITLE, year=$YEAR WHERE id=$ID;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", album.ID);
+            set_parameter_int (stmt, sql, "$ARTIST_ID", album.artist.ID);
+            set_parameter_str (stmt, sql, "$TITLE", album.title);
+            set_parameter_int (stmt, sql, "$YEAR", album.year);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
         public void remove_album (PlayMyMusic.Objects.Album album) {
             Sqlite.Statement stmt;
 
@@ -647,6 +665,28 @@ namespace PlayMyMusic.Services {
                 track.ID = stmt.column_int (0);
                 stdout.printf ("Track ID: %d - %s\n", track.ID, track.title);
             } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
+        public void update_track (PlayMyMusic.Objects.Track track) {
+            Sqlite.Statement stmt;
+
+            string sql = """
+                UPDATE tracks SET album_id=$ALBUM_ID, title=$TITLE, genre=$GENRE, track=$TRACK, disc=$DISC, duration=$DURATION, path=$URI WHERE id=$ID;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", track.ID);
+            set_parameter_int (stmt, sql, "$ALBUM_ID", track.album.ID);
+            set_parameter_str (stmt, sql, "$TITLE", track.title);
+            set_parameter_str (stmt, sql, "$GENRE", track.genre);
+            set_parameter_int (stmt, sql, "$TRACK", track.track);
+            set_parameter_int (stmt, sql, "$DISC", track.disc);
+            set_parameter_int64 (stmt, sql, "$DURATION", (int64)track.duration);
+            set_parameter_str (stmt, sql, "$URI", track.uri);
+
+            if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
             stmt.reset ();

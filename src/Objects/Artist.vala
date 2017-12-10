@@ -99,6 +99,19 @@ namespace PlayMyMusic.Objects {
             _albums = new GLib.List<Album> ();
         }
 
+        public Album? get_album_by_title (string title) {
+            Album? return_value = null;
+            lock (_albums) {
+                foreach (var album in albums) {
+                    if (album.title == title) {
+                        return_value = album;
+                        break;
+                    }
+                }
+            }
+            return return_value;
+        }
+
         private void add_album (Album album) {
             this._albums.append (album);
             if (album.artist_track_added_signal_id == 0) {
@@ -112,12 +125,7 @@ namespace PlayMyMusic.Objects {
         public Album add_album_if_not_exists (Album new_album) {
             Album? return_value = null;
             lock (_albums) {
-                foreach (var album in albums) {
-                    if (album.title == new_album.title) {
-                        return_value = album;
-                        break;
-                    }
-                }
+                return_value = get_album_by_title (new_album.title);
                 if (return_value == null) {
                     new_album.set_artist (this);
                     add_album (new_album);

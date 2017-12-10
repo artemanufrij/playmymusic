@@ -37,6 +37,7 @@ namespace PlayMyMusic.Widgets {
         public int year { get { return album.year; } }
 
         Gtk.Image cover;
+        Gtk.Label title_label;
         Gtk.Menu menu;
         Gtk.Menu playlists;
         Gtk.Menu send_to;
@@ -69,6 +70,9 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
+            this.album.notify["title"].connect (() => {
+                void_set_values ();
+            });
             this.selection_request_event.connect ((event) => {
                 stdout.printf ("UNSELECTED %s\n", album.title);
                 return false;
@@ -76,8 +80,6 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void build_ui () {
-            this.tooltip_markup = ("<b>%s</b>\n%s").printf (album.title.replace ("&", "&amp;"), album.artist.name.replace ("&", "&amp;"));
-
             const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
 
             var event_box = new Gtk.EventBox ();
@@ -92,6 +94,13 @@ namespace PlayMyMusic.Widgets {
             event_box.leave_notify_event.connect ((event) => {
                 if (!this.is_selected ()) {
                     multi_select.opacity = 0;
+                }
+                return false;
+            });
+            this.key_press_event.connect ((event) => {
+                if (event.keyval == Gdk.Key.F2) {
+                    edit_album ();
+                    return true;
                 }
                 return false;
             });
@@ -113,12 +122,12 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
-            var title = new Gtk.Label (("<b>%s</b>").printf (this.title.replace ("&", "&amp;")));
-            title.opacity = 0.5;
-            title.use_markup = true;
-            title.halign = Gtk.Align.FILL;
-            title.ellipsize = Pango.EllipsizeMode.END;
-            title.max_width_chars = 0;
+            title_label = new Gtk.Label ("");
+            title_label.opacity = 0.5;
+            title_label.use_markup = true;
+            title_label.halign = Gtk.Align.FILL;
+            title_label.ellipsize = Pango.EllipsizeMode.END;
+            title_label.max_width_chars = 0;
 
             var artist = new Gtk.Label (this.album.artist.name);
             artist.halign = Gtk.Align.FILL;
@@ -154,7 +163,7 @@ namespace PlayMyMusic.Widgets {
 
             content.attach (multi_select, 0, 0);
             content.attach (cover, 0, 0);
-            content.attach (title, 0, 1);
+            content.attach (title_label, 0, 1);
             content.attach (artist, 0, 2);
 
             this.add (event_box);
@@ -162,7 +171,14 @@ namespace PlayMyMusic.Widgets {
 
             build_context_menu ();
 
+            void_set_values ();
+
             this.show_all ();
+        }
+
+        private void void_set_values () {
+            this.tooltip_markup = ("<b>%s</b>\n%s").printf (album.title.replace ("&", "&amp;"), album.artist.name.replace ("&", "&amp;"));
+            title_label.label = ("<b>%s</b>").printf (this.title.replace ("&", "&amp;"));
         }
 
         public void reset () {
@@ -185,6 +201,13 @@ namespace PlayMyMusic.Widgets {
             }
         }
 
+        private void edit_album () {
+            var editor = new Dialogs.AlbumEditor (PlayMyMusicApp.instance.mainwindow, this.album);
+            if (editor.run () == Gtk.ResponseType.ACCEPT) {
+                editor.destroy ();
+            }
+        }
+
         private void build_context_menu () {
             menu = new Gtk.Menu ();
             var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
@@ -200,6 +223,13 @@ namespace PlayMyMusic.Widgets {
                 }
             });
             menu.add (menu_new_cover);
+
+            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Album properties…"));
+            menu_edit_album.activate.connect (() => {
+                edit_album ();
+            });
+            menu.add (menu_edit_album);
+            menu.add (new Gtk.SeparatorMenuItem ());
 
             var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
             menu.add (menu_add_into_playlist);
