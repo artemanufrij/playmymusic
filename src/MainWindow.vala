@@ -30,6 +30,9 @@ namespace PlayMyMusic {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Settings settings;
 
+        public signal void ctrl_press ();
+        public signal void ctrl_release ();
+
         //CONTROLS
         Gtk.HeaderBar headerbar;
         Gtk.SearchEntry search_entry;
@@ -72,6 +75,8 @@ namespace PlayMyMusic {
 
         bool send_desktop_notification = true;
         uint adjust_timer = 0;
+
+        public bool ctrl_pressed { get; private set; default = false; }
 
         const Gtk.TargetEntry[] targets = {
             {"text/uri-list", 0, 0}
@@ -227,6 +232,22 @@ namespace PlayMyMusic {
             this.destroy.connect (() => {
                 save_settings ();
                 library_manager.player.stop ();
+            });
+
+            this.key_press_event.connect ((event) => {
+                if (event.keyval == 65507) {
+                    ctrl_pressed = true;
+                    ctrl_press ();
+                }
+                return false;
+            });
+
+            this.key_release_event.connect ((event) => {
+                if (event.keyval == 65507) {
+                    ctrl_pressed = false;
+                    ctrl_release ();
+                }
+                return true;
             });
         }
 
@@ -469,14 +490,14 @@ namespace PlayMyMusic {
             headerbar.pack_end (mode_buttons);
 
             // VIEWES
-            albums_view = new Widgets.Views.AlbumsView ();
+            albums_view = new Widgets.Views.AlbumsView (this);
             albums_view.album_selected.connect (() => {
                 previous_button.sensitive = true;
                 play_button.sensitive = true;
                 next_button.sensitive = true;
             });
 
-            artists_view = new Widgets.Views.ArtistsView ();
+            artists_view = new Widgets.Views.ArtistsView (this);
             artists_view.artist_selected.connect (() => {
                 previous_button.sensitive = true;
                 play_button.sensitive = true;

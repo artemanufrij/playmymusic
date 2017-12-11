@@ -155,15 +155,7 @@ namespace PlayMyMusic.Widgets {
             multi_select.can_focus = false;
             multi_select.opacity = 0;
             multi_select.clicked.connect (() => {
-                if (!multi_selection) {
-                    multi_selection = true;
-                    this.activate ();
-                    multi_select.set_image (multi_selected_image);
-                } else {
-                    multi_selection = false;
-                    unselect ();
-                    multi_select.set_image (add_selection_image);
-                }
+                toggle_multi_selection ();
             });
             multi_select.enter_notify_event.connect ((event) => {
                 multi_select.opacity = 1;
@@ -178,6 +170,21 @@ namespace PlayMyMusic.Widgets {
             this.valign = Gtk.Align.START;
 
             this.show_all ();
+        }
+
+        public void toggle_multi_selection (bool activate = true) {
+            if (!multi_selection) {
+                multi_selection = true;
+                if (activate) {
+                    this.activate ();
+                }
+                multi_select.opacity = 1;
+                multi_select.set_image (multi_selected_image);
+            } else {
+                multi_selection = false;
+                unselect ();
+                multi_select.set_image (add_selection_image);
+            }
         }
 
         public void reset () {
