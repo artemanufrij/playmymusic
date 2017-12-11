@@ -210,6 +210,19 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
+        public PlayMyMusic.Objects.Artist? get_artist_by_name (string name) {
+            PlayMyMusic.Objects.Artist? return_value = null;
+            lock (_artists) {
+                foreach (var artist in artists) {
+                    if (artist.name == name) {
+                        return_value = artist;
+                        break;
+                    }
+                }
+            }
+            return return_value;
+        }
+
         public PlayMyMusic.Objects.Artist? get_artist_by_album_id (int id) {
             PlayMyMusic.Objects.Artist? return_value = null;
             Sqlite.Statement stmt;
@@ -269,6 +282,22 @@ namespace PlayMyMusic.Services {
                 _artists.append (artist);
                 added_new_artist (artist);
             } else {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+        }
+
+        public void update_artist (PlayMyMusic.Objects.Artist artist) {
+            Sqlite.Statement stmt;
+            string sql = """
+                UPDATE artists SET name=$NAME WHERE id=$ID;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$ID", artist.ID);
+            set_parameter_str (stmt, sql, "$NAME", artist.name);
+
+            if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
             stmt.reset ();

@@ -44,6 +44,7 @@ namespace PlayMyMusic.Widgets {
         Gtk.Button multi_select;
         Gtk.Image add_selection_image;
         Gtk.Image multi_selected_image;
+        Gtk.Label name_label;
 
         public bool multi_selection { get; private set; default = false; }
 
@@ -68,6 +69,9 @@ namespace PlayMyMusic.Widgets {
                     this.destroy ();
                     return false;
                 });
+            });
+            this.artist.notify["name"].connect (() => {
+                set_values ();
             });
             this.key_press_event.connect ((event) => {
                 if (event.keyval == Gdk.Key.F2) {
@@ -114,10 +118,11 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.artist.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
-            var name = new Gtk.Label (("<b>%s</b>").printf(this.name.replace ("&", "&amp;")));
-            name.opacity = 0.5;
-            name.ellipsize = Pango.EllipsizeMode.END;
-            name.use_markup = true;
+            name_label = new Gtk.Label ("");
+            name_label.opacity = 0.5;
+            name_label.ellipsize = Pango.EllipsizeMode.END;
+            name_label.use_markup = true;
+            set_values ();
 
             menu = new Gtk.Menu ();
             var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
@@ -177,7 +182,7 @@ namespace PlayMyMusic.Widgets {
 
             content.attach (multi_select, 0, 0);
             content.attach (cover, 0, 0);
-            content.attach (name, 0, 1);
+            content.attach (name_label, 0, 1);
 
             this.add (event_box);
             this.valign = Gtk.Align.START;
@@ -198,6 +203,10 @@ namespace PlayMyMusic.Widgets {
                 unselect ();
                 multi_select.set_image (add_selection_image);
             }
+        }
+
+        private void set_values () {
+            name_label.label = ("<b>%s</b>").printf(this.name.replace ("&", "&amp;"));
         }
 
         public void reset () {

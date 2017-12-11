@@ -117,28 +117,27 @@ namespace PlayMyMusic.Dialogs {
 
         private void save () {
             var new_name = name_entry.text.strip ();
-           /* var album_exists = album.artist.get_album_by_title (new_title);
-            if (album_exists == null || album_exists.ID == album.ID) {
-                album.title = new_title;
-                album.year = new_year;
-                db_manager.update_album (album);
+            var artist_exists = db_manager.get_artist_by_name (new_name);
+            if (artist_exists == null || artist_exists.ID == artist.ID) {
+                artist.name = new_name;
+                db_manager.update_artist (artist);
                 if (cover_changed) {
-                    album.set_new_cover (cover.pixbuf, 256);
+                    artist.set_new_cover (cover.pixbuf, 256);
                     if (settings.save_custom_covers) {
-                        album.set_custom_cover_file (new_cover_path);
+                        artist.set_custom_cover_file (new_cover_path);
                     }
                 }
             } else {
-                GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
-                albums.append (album);
-                library_manager.merge_albums (albums, album_exists);
+                GLib.List<Objects.Artist> artists = new GLib.List<Objects.Artist> ();
+                artists.append (artist);
+                library_manager.merge_artists (artists, artist_exists);
                 if (cover_changed) {
-                    album_exists.set_new_cover (cover.pixbuf, 256);
+                    artist_exists.set_new_cover (cover.pixbuf, 256);
                     if (settings.save_custom_covers) {
-                        album_exists.set_custom_cover_file (new_cover_path);
+                        artist_exists.set_custom_cover_file (new_cover_path);
                     }
                 }
-            }*/
+            }
             this.destroy ();
         }
     }
