@@ -83,8 +83,6 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void build_ui () {
-            this.tooltip_text = this.artist.name;
-
             const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
             var event_box = new Gtk.EventBox ();
             Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.COPY);
@@ -122,7 +120,6 @@ namespace PlayMyMusic.Widgets {
             name_label.opacity = 0.5;
             name_label.ellipsize = Pango.EllipsizeMode.END;
             name_label.use_markup = true;
-            set_values ();
 
             menu = new Gtk.Menu ();
             var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
@@ -142,7 +139,7 @@ namespace PlayMyMusic.Widgets {
             });
             menu.add (menu_new_cover);
 
-            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Album properties…"));
+            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Artist properties…"));
             menu_edit_album.activate.connect (() => {
                 edit_artist ();
             });
@@ -187,6 +184,8 @@ namespace PlayMyMusic.Widgets {
             this.add (event_box);
             this.valign = Gtk.Align.START;
 
+            set_values ();
+
             this.show_all ();
         }
 
@@ -206,6 +205,7 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void set_values () {
+            this.tooltip_text = this.artist.name;
             name_label.label = ("<b>%s</b>").printf(this.name.replace ("&", "&amp;"));
             this.changed ();
         }
