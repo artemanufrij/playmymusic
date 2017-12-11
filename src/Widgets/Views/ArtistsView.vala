@@ -214,5 +214,12 @@ namespace PlayMyMusic.Widgets.Views {
             }
             return 0;
         }
+
+        public void unselect_all () {
+            foreach (var child in artists.get_selected_children ()) {
+                (child as PlayMyMusic.Widgets.Artist).reset ();
+            }
+            artists.unselect_all ();
+        }
     }
 }

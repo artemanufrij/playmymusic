@@ -832,6 +832,8 @@ namespace PlayMyMusic {
                 this.search_entry.text = "";
             } else if (view_mode.selected == 0) {
                 albums_view.unselect_all ();
+            } else if (view_mode.selected == 1) {
+                artists_view.unselect_all ();
             }
         }
 
