@@ -75,6 +75,13 @@ namespace PlayMyMusic.Widgets {
             this.album.notify["title"].connect (() => {
                 set_values ();
             });
+            this.key_press_event.connect ((event) => {
+                if (event.keyval == Gdk.Key.F2) {
+                    edit_album ();
+                    return true;
+                }
+                return false;
+            });
         }
 
         private void build_ui () {
@@ -92,13 +99,6 @@ namespace PlayMyMusic.Widgets {
             event_box.leave_notify_event.connect ((event) => {
                 if (!this.is_selected ()) {
                     multi_select.opacity = 0;
-                }
-                return false;
-            });
-            this.key_press_event.connect ((event) => {
-                if (event.keyval == Gdk.Key.F2) {
-                    edit_album ();
-                    return true;
                 }
                 return false;
             });

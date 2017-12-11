@@ -69,6 +69,13 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
+            this.key_press_event.connect ((event) => {
+                if (event.keyval == Gdk.Key.F2) {
+                    edit_artist ();
+                    return true;
+                }
+                return false;
+            });
         }
 
         private void build_ui () {
@@ -128,7 +135,13 @@ namespace PlayMyMusic.Widgets {
                     }
                 }
             });
-            menu.append (menu_new_cover);
+            menu.add (menu_new_cover);
+
+            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Album properties…"));
+            menu_edit_album.activate.connect (() => {
+                edit_artist ();
+            });
+            menu.add (menu_edit_album);
 
             menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
             menu.add (menu_send_to);
@@ -203,6 +216,13 @@ namespace PlayMyMusic.Widgets {
                 Gdk.cairo_set_source_pixbuf (surface.context, this.artist.cover_32, 0, 0);
                 surface.context.paint ();
                 Gtk.drag_set_icon_surface (context, surface.surface);
+            }
+        }
+
+        private void edit_artist () {
+            var editor = new Dialogs.ArtistEditor (PlayMyMusicApp.instance.mainwindow, this.artist);
+            if (editor.run () == Gtk.ResponseType.ACCEPT) {
+                editor.destroy ();
             }
         }
 
