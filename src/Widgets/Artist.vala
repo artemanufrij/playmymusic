@@ -207,6 +207,7 @@ namespace PlayMyMusic.Widgets {
 
         private void set_values () {
             name_label.label = ("<b>%s</b>").printf(this.name.replace ("&", "&amp;"));
+            this.changed ();
         }
 
         public void reset () {
