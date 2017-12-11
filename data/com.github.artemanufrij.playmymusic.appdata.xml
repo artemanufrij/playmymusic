@@ -64,7 +64,10 @@
                 <ul>
                     <li>Option for saving custom covers into library</li>
                     <li>Merge Albums</li>
-                    <li>Album Editor</li>
+                    <li>Album Editor [F2]</li>
+                    <li>Merge Artists</li>
+                    <li>Artist Editor [F2]</li>
+                    <li>Multiple selection [CTRL]</li>
                 </ul>
             </description>
         </release>
