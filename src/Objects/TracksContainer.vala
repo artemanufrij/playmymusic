@@ -213,10 +213,12 @@ namespace PlayMyMusic.Objects {
         public void set_new_cover (Gdk.Pixbuf cover, int size) {
             if (background_path != "") {
                 File f = File.new_for_path (background_path);
-                try {
-                    f.delete ();
-                } catch (Error err) {
-                    warning (err.message);
+                if (f.query_exists ()) {
+                    try {
+                        f.delete ();
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
                 }
             }
             this.background = null;
