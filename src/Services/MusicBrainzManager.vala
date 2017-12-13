@@ -95,6 +95,9 @@ namespace PlayMyMusic.Services {
                                     pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
                                     try {
                                         if (pixbuf.save (first.cover_path, "jpeg", "quality", "100")) {
+                                            if (Settings.get_default ().save_custom_covers) {
+                                                first.set_custom_cover_file (first.cover_path);
+                                            }
                                             first.load_cover_async.begin ();
                                             break;
                                         }
