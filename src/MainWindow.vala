@@ -293,6 +293,9 @@ namespace PlayMyMusic {
                         padding-top: 0px;
                         padding-bottom: 0px;
                     }
+                    .track-drag-begin {
+                        border-top: 1px solid black;
+                    }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );

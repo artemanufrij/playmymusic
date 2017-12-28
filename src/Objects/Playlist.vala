@@ -55,6 +55,11 @@ namespace PlayMyMusic.Objects {
             track.removed.connect (() => {
                 _tracks.remove (track);
             });
+
+            // NECESSERY FOR NEW PLAYLIST
+            if (tracks.length () == 1) {
+                track_added (track);
+            }
         }
 
         public new bool has_track (int track_id) {

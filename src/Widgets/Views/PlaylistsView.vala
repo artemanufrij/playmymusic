@@ -157,6 +157,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
             p.show_all ();
             playlists.min_children_per_line = library_manager.playlists.length ();
+            playlists.max_children_per_line = playlists.min_children_per_line;
             playlists.add (p);
         }
 
@@ -166,6 +167,7 @@ namespace PlayMyMusic.Widgets.Views {
                     playlists.remove (child);
                     child.destroy ();
                     playlists.min_children_per_line = library_manager.playlists.length ();
+                    playlists.max_children_per_line = playlists.min_children_per_line;
                 }
             }
 

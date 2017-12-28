@@ -94,6 +94,7 @@ namespace PlayMyMusic.Objects {
                 return null;
             });
         }
+
         private bool data_drop_possible (Gdk.DragContext context, Gtk.SelectionData data) {
             var received = data.get_text ();
 
@@ -109,7 +110,6 @@ namespace PlayMyMusic.Objects {
             }
             return false;
         }
-
 
         private Gdk.DragAction data_received (Gdk.DragContext context, Gtk.SelectionData data) {
             var received = data.get_text ();

@@ -549,7 +549,6 @@ namespace PlayMyMusic.Services {
                 });
                 added_new_playlist (playlist);
                 stdout.printf ("Playlist ID: %d\n", playlist.ID);
-
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }

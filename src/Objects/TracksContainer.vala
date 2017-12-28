@@ -114,17 +114,18 @@ namespace PlayMyMusic.Objects {
         }
 
         protected bool has_track (Track track) {
+            bool return_value = false;
             lock (_tracks) {
-                if (_tracks == null) {
-                    return false;
-                }
-                foreach (var t in _tracks) {
-                    if (t.uri == track.uri) {
-                        return true;
+                if (_tracks != null) {
+                    foreach (var t in _tracks) {
+                        if (t.uri == track.uri) {
+                            return_value = true;
+                            break;
+                        }
                     }
                 }
             }
-            return false;
+            return return_value;
         }
 
         public Track? get_next_track (Track current) {

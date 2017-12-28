@@ -128,6 +128,7 @@ namespace PlayMyMusic.Widgets.Views {
             menu.add (menu_remove_playlist);
             menu.show_all ();
 
+// TRACKS REGION
             tracks = new Gtk.ListBox ();
             tracks.get_style_context ().add_class ("playlist-tracks");
             tracks.selected_rows_changed.connect (play_track);
@@ -146,14 +147,14 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void show_tracks () {
             tracks.unselect_all ();
-            foreach (var track in this.playlist.tracks) {
+            foreach (var track in playlist.tracks) {
                 add_track (track);
             }
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
             var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.PLAYLIST);
-            this.tracks.add (item);
+            tracks.add (item);
             item.show_all ();
         }
 

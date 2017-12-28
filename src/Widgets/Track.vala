@@ -96,7 +96,30 @@ namespace PlayMyMusic.Widgets {
             event_box.add (content);
 
             if (this.track_style != TrackStyle.AUDIO_CD) {
+                if (this.track_style == TrackStyle.PLAYLIST) {
+                    const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
+
+                    Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.MOVE);
+                    event_box.drag_data_get.connect (on_drag_data_get);
+                    event_box.drag_begin.connect (on_drag_begin);
+
+                    Gtk.drag_dest_set (event_box, Gtk.DestDefaults.ALL, targetentries, Gdk.DragAction.MOVE);
+                    event_box.drag_leave.connect ((context, time) => {
+                        content.margin_top = 6;
+                        this.get_style_context ().remove_class ("track-drag-begin");
+                    });
+                    event_box.drag_motion.connect ((context, x, y, time) => {
+                        content.margin_top = 5;
+                        Gtk.drag_unhighlight (event_box);
+                        this.get_style_context ().add_class ("track-drag-begin");
+                        return false;
+                    });
+                    event_box.drag_data_received.connect ((drag_context, x, y, data, info, time) => {
+                        stdout.printf ("%s\n", data.get_text ());
+                    });
+                }
                 event_box.button_press_event.connect (show_context_menu);
+
                 menu = new Gtk.Menu ();
                 var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
                 menu.add (menu_add_into_playlist);
@@ -202,8 +225,24 @@ namespace PlayMyMusic.Widgets {
 
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
+            } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                this.activate ();
+                return true;
             }
             return false;
+        }
+
+        private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
+            selection_data.set_text ("Playlist %d; Track:%d".printf (this.track.playlist.ID, this.track.ID), -1);
+        }
+
+        private void on_drag_begin (Gdk.DragContext context) {
+            if (this.track.album.cover_32 != null) {
+                var surface = new Granite.Drawing.BufferSurface (32, 32);
+                Gdk.cairo_set_source_pixbuf (surface.context, this.track.album.cover_32, 0, 0);
+                surface.context.paint ();
+                Gtk.drag_set_icon_surface (context, surface.surface);
+            }
         }
     }
 }
