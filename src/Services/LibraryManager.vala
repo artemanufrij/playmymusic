@@ -322,6 +322,10 @@ namespace PlayMyMusic.Services {
             db_manager.remove_track_from_playlist (track);
         }
 
+        public void resort_track_in_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track, int new_sort_value) {
+            db_manager.resort_track_in_playlist (playlist, track, new_sort_value);
+        }
+
         //PLAYER REGION
         public void play_track (PlayMyMusic.Objects.Track track, PlayMode play_mode) {
             player.set_track (track, play_mode);

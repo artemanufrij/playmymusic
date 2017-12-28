@@ -27,6 +27,7 @@
 
 namespace PlayMyMusic.Objects {
     public class Playlist : TracksContainer {
+        public signal void tracks_resorted ();
         public new GLib.List<Track> tracks {
             get {
                 if (_tracks == null) {
@@ -55,11 +56,6 @@ namespace PlayMyMusic.Objects {
             track.removed.connect (() => {
                 _tracks.remove (track);
             });
-
-            // NECESSERY FOR NEW PLAYLIST
-            if (tracks.length () == 1) {
-                track_added (track);
-            }
         }
 
         public new bool has_track (int track_id) {
@@ -69,6 +65,38 @@ namespace PlayMyMusic.Objects {
                 }
             }
             return false;
+        }
+
+        public void resort_track (Track track, int new_sort_value) {
+            if (track.track > new_sort_value) {
+                foreach (var t in tracks) {
+                    if (t.track < track.track && t.track >= new_sort_value) {
+                        t.track ++;
+                    }
+                }
+                track.track = new_sort_value;
+            } else {
+                foreach (var t in tracks) {
+                    if (t.track > track.track && t.track < new_sort_value) {
+                        t.track --;
+                    }
+                }
+                track.track = new_sort_value - 1;
+            }
+            _tracks.sort ((a, b) => {
+                return a.track - b.track;
+            });
+            tracks_resorted ();
+        }
+
+        public int get_next_sort_item () {
+            int return_value = 0;
+            foreach (var track in tracks) {
+                if (return_value < track.track) {
+                    return_value = track.track;
+                }
+            }
+            return return_value + 1;
         }
     }
 }

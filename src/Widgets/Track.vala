@@ -115,7 +115,7 @@ namespace PlayMyMusic.Widgets {
                         return false;
                     });
                     event_box.drag_data_received.connect ((drag_context, x, y, data, info, time) => {
-                        stdout.printf ("%s\n", data.get_text ());
+                        on_drag_data_received (data.get_text ());
                     });
                 }
                 event_box.button_press_event.connect (show_context_menu);
@@ -233,7 +233,7 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
-            selection_data.set_text ("Playlist %d; Track:%d".printf (this.track.playlist.ID, this.track.ID), -1);
+            selection_data.set_text ("Playlist:%d; Track:%d".printf (this.track.playlist.ID, this.track.ID), -1);
         }
 
         private void on_drag_begin (Gdk.DragContext context) {
@@ -242,6 +242,50 @@ namespace PlayMyMusic.Widgets {
                 Gdk.cairo_set_source_pixbuf (surface.context, this.track.album.cover_32, 0, 0);
                 surface.context.paint ();
                 Gtk.drag_set_icon_surface (context, surface.surface);
+            }
+        }
+
+        private void on_drag_data_received (string received) {
+            Regex reg_playlist_id;
+            Regex reg_track_id;
+            try {
+                reg_playlist_id = new Regex ("(?<=Playlist:)\\d*");
+                reg_track_id = new Regex ("(?<=Track:)\\d*");
+            } catch (Error err) {
+                return;
+            }
+
+            int source_playlist_id = track.playlist.ID;
+            int source_track_id = track.ID;
+
+            MatchInfo match;
+
+            if (reg_playlist_id.match (received, 0, out match)){
+                source_playlist_id = int.parse (match.fetch (0));
+            }
+
+            if (reg_track_id.match (received, 0, out match)) {
+                source_track_id = int.parse (match.fetch (0));
+            }
+
+            if (source_playlist_id == track.playlist.ID) {
+                var source_track = track.playlist.get_track_by_id (source_track_id);
+                if (source_track != null) {
+                    if (source_track.track != track.track && source_track.track != track.track - 1) {
+                        library_manager.resort_track_in_playlist (track.playlist, source_track, track.track);
+                    }
+                }
+            } else {
+                var source_playlist = library_manager.db_manager.get_playlist_by_id (source_playlist_id);
+                if (source_playlist != null) {
+                    var source_track = source_playlist.get_track_by_id (source_track_id);
+                    if (source_track != null) {
+                        library_manager.add_track_into_playlist (track.playlist, source_track.ID);
+                        library_manager.remove_track_from_playlist (source_track);
+                        source_track = track.playlist.get_track_by_id (source_track_id);
+                        library_manager.resort_track_in_playlist (track.playlist, source_track, track.track);
+                    }
+                }
             }
         }
     }

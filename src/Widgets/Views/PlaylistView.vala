@@ -60,6 +60,9 @@ namespace PlayMyMusic.Widgets.Views {
                 playlist_title.label = this.playlist.title;
                 playlist_title.tooltip_text = this.playlist.title;
             });
+            this.playlist.tracks_resorted.connect (() => {
+                tracks.invalidate_sort ();
+            });
 
             build_ui ();
             show_tracks ();
@@ -132,6 +135,7 @@ namespace PlayMyMusic.Widgets.Views {
             tracks = new Gtk.ListBox ();
             tracks.get_style_context ().add_class ("playlist-tracks");
             tracks.selected_rows_changed.connect (play_track);
+            tracks.set_sort_func (tracks_sort_func);
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
             tracks_scroll.expand = true;
@@ -191,6 +195,15 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             }
             return false;
+        }
+
+        private int tracks_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
+            var item1 = (Widgets.Track)child1;
+            var item2 = (Widgets.Track)child2;
+            if (item1 != null && item2 != null) {
+                return item1.track.track - item2.track.track;
+            }
+            return 0;
         }
     }
 }

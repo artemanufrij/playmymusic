@@ -487,6 +487,15 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
+        public PlayMyMusic.Objects.Playlist? get_playlist_by_id (int id) {
+            foreach (var playlist in playlists) {
+                if (playlist.ID == id) {
+                    return playlist;
+                }
+            }
+            return null;
+        }
+
         public void update_playlist (PlayMyMusic.Objects.Playlist playlist) {
             Sqlite.Statement stmt;
             string sql = """
@@ -556,6 +565,8 @@ namespace PlayMyMusic.Services {
         }
 
         public void insert_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, int track_id) {
+            int next_sort_item = playlist.get_next_sort_item ();
+
             Sqlite.Statement stmt;
             string sql = """
                 INSERT INTO playlist_tracks (playlist_id, track_id, sort) VALUES ($PLAYLIST_ID, $TRACK_ID, $SORT);
@@ -563,15 +574,60 @@ namespace PlayMyMusic.Services {
             db.prepare_v2 (sql, sql.length, out stmt);
             set_parameter_int (stmt, sql, "$PLAYLIST_ID", playlist.ID);
             set_parameter_int (stmt, sql, "$TRACK_ID", track_id);
-            set_parameter_int (stmt, sql, "$SORT", (int)playlist.tracks.length ());
+            set_parameter_int (stmt, sql, "$SORT", next_sort_item);
 
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             } else {
                 var track = get_track_by_id (track_id);
-                track.track = (int)playlist.tracks.length ();
+                track.track = next_sort_item;
                 track.set_playlist (playlist);
                 playlist.add_track (track);
+            }
+            stmt.reset ();
+        }
+
+        public void resort_track_in_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track, int new_sort_value) {
+            Sqlite.Statement stmt;
+            string sql ="";
+
+            if (track.track > new_sort_value) {
+                sql = """
+                    UPDATE playlist_tracks SET sort=(sort+1) WHERE playlist_id=$PLAYLIST_ID AND sort<$SORT_BEFORE AND sort>=$SORT_NEW;
+                """;
+            } else {
+                sql = """
+                    UPDATE playlist_tracks SET sort=(sort-1) WHERE playlist_id=$PLAYLIST_ID AND sort>$SORT_BEFORE AND sort<$SORT_NEW;
+                """;
+            }
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$PLAYLIST_ID", playlist.ID);
+            set_parameter_int (stmt, sql, "$SORT_BEFORE", track.track);
+            set_parameter_int (stmt, sql, "$SORT_NEW", new_sort_value);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
+            stmt.reset ();
+
+            if (track.track > new_sort_value) {
+                sql = """
+                    UPDATE playlist_tracks SET sort=$SORT WHERE playlist_id=$PLAYLIST_ID AND track_id=$TRACK_ID;
+                """;
+            } else {
+                sql = """
+                    UPDATE playlist_tracks SET sort=$SORT-1 WHERE playlist_id=$PLAYLIST_ID AND track_id=$TRACK_ID;
+                """;
+            }
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_int (stmt, sql, "$PLAYLIST_ID", playlist.ID);
+            set_parameter_int (stmt, sql, "$TRACK_ID", track.ID);
+            set_parameter_int (stmt, sql, "$SORT", new_sort_value);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                playlist.resort_track (track, new_sort_value);
             }
             stmt.reset ();
         }
