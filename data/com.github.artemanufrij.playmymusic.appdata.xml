@@ -58,6 +58,18 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.4.1" date="2017-12-30">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Reorder Playlist items by Drag an Drop</li>
+                </ul>
+                <p>Fix:</p>
+                <ul>
+                    <li>Playlist behavior</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.4.0" date="2017-12-15">
             <description>
                 <p>New:</p>
