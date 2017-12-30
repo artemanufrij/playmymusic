@@ -591,6 +591,13 @@ namespace PlayMyMusic {
             headerbar.pack_start (view_mode);
         }
 
+        public override bool key_press_event (Gdk.EventKey e) {
+            if (!search_entry.is_focus && e.str.strip ().length > 0) {
+                search_entry.grab_focus ();
+            }
+            return base.key_press_event (e);
+        }
+
         public void show_view_index (int index) {
             // AUDIO CD VIEW
             if (index == 4 && !audio_cd_widget.visible) {
@@ -824,10 +831,6 @@ namespace PlayMyMusic {
                     }
                     break;
             }
-        }
-
-        public void search () {
-            this.search_entry.grab_focus ();
         }
 
         public void search_reset () {
