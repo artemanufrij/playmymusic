@@ -63,6 +63,7 @@
                 <p>Improved:</p>
                 <ul>
                     <li>Start searching instand on key press</li>
+                    <li>Playlist Editor: Accept changes on press CTRL+Enter</li>
                 </ul>
             </description>
         </release>
