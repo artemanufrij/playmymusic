@@ -36,6 +36,7 @@ namespace PlayMyMusic.Objects {
         public signal void background_changed ();
         public signal void background_found ();
         public signal void property_changed (string property);
+        public signal void removed ();
 
         public string title { get; set; default = ""; }
         public string name { get; set; default = ""; }
@@ -113,17 +114,18 @@ namespace PlayMyMusic.Objects {
         }
 
         protected bool has_track (Track track) {
+            bool return_value = false;
             lock (_tracks) {
-                if (_tracks == null) {
-                    return false;
-                }
-                foreach (var t in _tracks) {
-                    if (t.uri == track.uri) {
-                        return true;
+                if (_tracks != null) {
+                    foreach (var t in _tracks) {
+                        if (t.uri == track.uri) {
+                            return_value = true;
+                            break;
+                        }
                     }
                 }
             }
-            return false;
+            return return_value;
         }
 
         public Track? get_next_track (Track current) {
@@ -171,14 +173,12 @@ namespace PlayMyMusic.Objects {
             return _tracks.nth_data (0);
         }
 
-        public void remove_track (Track track) {
-            this._tracks.remove (track);
-            track_removed (track);
-        }
-
         protected void add_track (Track track) {
+            if (has_track (track)) {
+                return;
+            }
             lock (_tracks) {
-               if (this is Playlist) {
+                if (this is Playlist) {
                     this._tracks.insert_sorted_with_data (track, (a, b) => {
                         return a.track - b.track;
                     });
@@ -214,10 +214,12 @@ namespace PlayMyMusic.Objects {
         public void set_new_cover (Gdk.Pixbuf cover, int size) {
             if (background_path != "") {
                 File f = File.new_for_path (background_path);
-                try {
-                    f.delete ();
-                } catch (Error err) {
-                    warning (err.message);
+                if (f.query_exists ()) {
+                    try {
+                        f.delete ();
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
                 }
             }
             this.background = null;

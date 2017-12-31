@@ -29,6 +29,7 @@ namespace PlayMyMusic.Widgets.Views {
     public class AlbumsView : Gtk.Grid {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Settings settings;
+        PlayMyMusic.MainWindow mainwindow;
 
         private string _filter = "";
         public string filter {
@@ -68,7 +69,16 @@ namespace PlayMyMusic.Widgets.Views {
             });
         }
 
-        public AlbumsView () {
+        public AlbumsView (PlayMyMusic.MainWindow mainwindow) {
+            this.mainwindow = mainwindow;
+            this.mainwindow.ctrl_press.connect (() => {
+                foreach (var child in albums.get_selected_children ()) {
+                    var album = child as PlayMyMusic.Widgets.Album;
+                    if (!album.multi_selection) {
+                        album.toggle_multi_selection (false);
+                    }
+                }
+            });
             build_ui ();
         }
 
@@ -80,6 +90,7 @@ namespace PlayMyMusic.Widgets.Views {
             albums.column_spacing = 24;
             albums.max_children_per_line = 24;
             albums.valign = Gtk.Align.START;
+            albums.selection_mode = Gtk.SelectionMode.MULTIPLE;
             albums.set_sort_func (albums_sort_func);
             albums.set_filter_func (albums_filter_func);
             albums.child_activated.connect (show_album_viewer);
@@ -112,13 +123,13 @@ namespace PlayMyMusic.Widgets.Views {
                         var folder = library_manager.choose_folder ();
                         if(folder != null) {
                             settings.library_location = folder;
-                            library_manager.scan_local_library (folder);
+                            library_manager.scan_local_library_for_new_files (folder);
                         }
                         break;
                     case 1:
                         var folder = library_manager.choose_folder ();
                         if(folder != null) {
-                            library_manager.scan_local_library (folder);
+                            library_manager.scan_local_library_for_new_files (folder);
                         }
                         break;
                 }
@@ -138,6 +149,16 @@ namespace PlayMyMusic.Widgets.Views {
             lock (albums) {
                 var a = new Widgets.Album (album);
                 albums.add (a);
+                a.unselect.connect (() => {
+                    albums.unselect_child (a);
+                });
+                a.merge.connect (() => {
+                    GLib.List<Objects.Album> selected = new GLib.List<Objects.Album> ();
+                    foreach (var child in albums.get_selected_children ()){
+                        selected.append ((child as Widgets.Album).album);
+                    }
+                    library_manager.merge_albums (selected, album);
+                });
             }
         }
 
@@ -165,6 +186,23 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void show_album_viewer (Gtk.FlowBoxChild item) {
+            if (mainwindow.ctrl_pressed) {
+                if ((item as PlayMyMusic.Widgets.Album).multi_selection) {
+                    albums.unselect_child (item);
+                    (item as PlayMyMusic.Widgets.Album).reset ();
+                    return;
+                } else {
+                    (item as PlayMyMusic.Widgets.Album).toggle_multi_selection (false);
+                }
+            }
+            if (!(item as PlayMyMusic.Widgets.Album).multi_selection) {
+                foreach (var child in albums.get_selected_children ()) {
+                    (child as PlayMyMusic.Widgets.Album).reset ();
+                }
+                albums.unselect_all ();
+                albums.select_child (item);
+            }
+
             album_revealer.set_reveal_child (true);
             var album = (item as PlayMyMusic.Widgets.Album).album;
             settings.last_album_id = album.ID;
@@ -193,10 +231,12 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void unselect_all () {
-            albums.unselect_all ();
             album_revealer.set_reveal_child (false);
+            foreach (var child in albums.get_selected_children ()) {
+                (child as PlayMyMusic.Widgets.Album).reset ();
+            }
+            albums.unselect_all ();
         }
-
 
         private bool albums_filter_func (Gtk.FlowBoxChild child) {
             if (filter.strip ().length == 0) {

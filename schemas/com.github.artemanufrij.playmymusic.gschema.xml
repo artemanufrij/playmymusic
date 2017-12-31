@@ -65,7 +65,7 @@
 			<summary>Play in background if closed.</summary>
 			<description>Play in background if closed.</description>
 		</key>
-		<key name="look-for-new-files" type="b">
+		<key name="sync-files" type="b">
 			<default>true</default>
 			<summary>Look for new music files on start up.</summary>
 			<description>Look for new music files on start up.</description>
@@ -99,6 +99,11 @@
 			<default>false</default>
 			<summary>Use Dark Theme.</summary>
 			<description>Use Dark Theme.</description>
+		</key>
+		<key name="save-custom-covers" type="b">
+			<default>false</default>
+			<summary>Save custom Cover in Music folder.</summary>
+			<description>Save custom Cover in Music folder.</description>
 		</key>
 	</schema>
 </schemalist>

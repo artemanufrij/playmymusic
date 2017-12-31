@@ -36,6 +36,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.ListBox tracks;
         Gtk.Menu menu;
         Gtk.Popover rename_playlist_popover;
+        Gtk.Entry rename_playlist_entry;
 
         bool only_mark = false;
 
@@ -59,6 +60,9 @@ namespace PlayMyMusic.Widgets.Views {
             this.playlist.property_changed.connect (() => {
                 playlist_title.label = this.playlist.title;
                 playlist_title.tooltip_text = this.playlist.title;
+            });
+            this.playlist.tracks_resorted.connect (() => {
+                tracks.invalidate_sort ();
             });
 
             build_ui ();
@@ -93,20 +97,23 @@ namespace PlayMyMusic.Widgets.Views {
             rename_playlist.margin = 12;
             rename_playlist_popover.add (rename_playlist);
 
-            var rename_playlist_entry = new Gtk.Entry ();
+            rename_playlist_entry = new Gtk.Entry ();
             var rename_playlist_save = new Gtk.Button.with_label (_("Rename"));
             rename_playlist_save.get_style_context ().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION);
 
             rename_playlist_entry.changed.connect (() => {
-                string new_title = rename_playlist_entry.text.strip ();
-                rename_playlist_save.sensitive = new_title != "" && library_manager.db_manager.get_playlist_by_title (new_title) == null;
+                rename_playlist_save.sensitive = valid_new_playlist ();
+            });
+            rename_playlist_entry.key_press_event.connect ((key) => {
+                if ((key.keyval == Gdk.Key.Return || key.keyval == Gdk.Key.KP_Enter) && Gdk.ModifierType.CONTROL_MASK in key.state && valid_new_playlist ()) {
+                    save_new_playlist ();
+                }
+                return false;
             });
             rename_playlist.attach (rename_playlist_entry, 0, 0);
 
             rename_playlist_save.clicked.connect (() => {
-                this.playlist.title = rename_playlist_entry.text.strip ();
-                library_manager.db_manager.update_playlist (this.playlist);
-                rename_playlist_popover.hide ();
+                save_new_playlist ();
             });
             rename_playlist.attach (rename_playlist_save, 0, 1);
 
@@ -116,6 +123,7 @@ namespace PlayMyMusic.Widgets.Views {
             menu_rename_playlist.activate.connect (() => {
                 rename_playlist_entry.text = playlist.title;
                 rename_playlist_popover.show_all ();
+                rename_playlist_save.sensitive = false;
             });
             menu.add (menu_rename_playlist);
 
@@ -128,9 +136,11 @@ namespace PlayMyMusic.Widgets.Views {
             menu.add (menu_remove_playlist);
             menu.show_all ();
 
+// TRACKS REGION
             tracks = new Gtk.ListBox ();
             tracks.get_style_context ().add_class ("playlist-tracks");
             tracks.selected_rows_changed.connect (play_track);
+            tracks.set_sort_func (tracks_sort_func);
 
             var tracks_scroll = new Gtk.ScrolledWindow (null, null);
             tracks_scroll.expand = true;
@@ -144,16 +154,27 @@ namespace PlayMyMusic.Widgets.Views {
             this.add (content);
         }
 
+        private void save_new_playlist () {
+            this.playlist.title = rename_playlist_entry.text.strip ();
+            library_manager.db_manager.update_playlist (this.playlist);
+            rename_playlist_popover.hide ();
+        }
+
+        private bool valid_new_playlist () {
+            string new_title = rename_playlist_entry.text.strip ();
+            return new_title != "" && library_manager.db_manager.get_playlist_by_title (new_title) == null;
+        }
+
         private void show_tracks () {
             tracks.unselect_all ();
-            foreach (var track in this.playlist.tracks) {
+            foreach (var track in playlist.tracks) {
                 add_track (track);
             }
         }
 
         private void add_track (PlayMyMusic.Objects.Track track) {
             var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.PLAYLIST);
-            this.tracks.add (item);
+            tracks.add (item);
             item.show_all ();
         }
 
@@ -190,6 +211,15 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             }
             return false;
+        }
+
+        private int tracks_sort_func (Gtk.ListBoxRow child1, Gtk.ListBoxRow child2) {
+            var item1 = (Widgets.Track)child1;
+            var item2 = (Widgets.Track)child2;
+            if (item1 != null && item2 != null) {
+                return item1.track.track - item2.track.track;
+            }
+            return 0;
         }
     }
 }

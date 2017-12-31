@@ -42,6 +42,7 @@ namespace PlayMyMusic.Services {
         public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
+        public signal void artist_removed (PlayMyMusic.Objects.Artist artist);
         public signal void removed_playlist (PlayMyMusic.Objects.Playlist playlist);
         public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
@@ -86,12 +87,13 @@ namespace PlayMyMusic.Services {
             tg_manager.discover_finished.connect ( () => { tag_discover_finished (); });
 
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
-            db_manager.added_new_artist.connect ( (artist) => { added_new_artist (artist); });
-            db_manager.added_new_album.connect ( (album) => { added_new_album (album); });
-            db_manager.added_new_playlist.connect ( (playlist) => { added_new_playlist (playlist); });
-            db_manager.removed_playlist.connect ( (playlist) => { removed_playlist (playlist); });
-            db_manager.added_new_radio.connect ( (radio) => { added_new_radio (radio); });
-            db_manager.removed_radio.connect ( (radio) => {
+            db_manager.added_new_artist.connect ((artist) => { added_new_artist (artist); });
+            db_manager.added_new_album.connect ((album) => { added_new_album (album); });
+            db_manager.added_new_playlist.connect ((playlist) => { added_new_playlist (playlist); });
+            db_manager.artist_removed.connect ((artist) =>  { artist_removed (artist); });
+            db_manager.removed_playlist.connect ((playlist) => { removed_playlist (playlist); });
+            db_manager.added_new_radio.connect ((radio) => { added_new_radio (radio); });
+            db_manager.removed_radio.connect ((radio) => {
                 if (player.current_radio == radio) {
                     player.reset_playing ();
                 }
@@ -147,7 +149,36 @@ namespace PlayMyMusic.Services {
         }
 
         // LOCAL FILES REGION
-        public void scan_local_library (string uri) {
+        public async void sync_library_content () {
+            new Thread <void*> (null, () => {
+                remove_non_existent_items ();
+                scan_local_library_for_new_files (settings.library_location);
+                return null;
+            });
+        }
+
+        public void remove_non_existent_items () {
+            var artists_copy = artists.copy ();
+            foreach (var artist in artists_copy) {
+                var tracks = artist.tracks.copy ();
+                foreach (var track in tracks) {
+                    if (!track.file_exists ()) {
+                        db_manager.remove_track (track);
+                    }
+                }
+            }
+            var playlists_copy = playlists.copy ();
+            foreach (var playlist in playlists_copy) {
+                var tracks = playlist.tracks.copy ();
+                foreach (var track in tracks) {
+                    if (!track.file_exists ()) {
+                        db_manager.remove_track (track);
+                    }
+                }
+            }
+        }
+
+        public void scan_local_library_for_new_files (string uri) {
             lf_manager.scan (uri);
         }
 
@@ -166,6 +197,47 @@ namespace PlayMyMusic.Services {
         }
 
         // DATABASE REGION
+        public void merge_albums (GLib.List<Objects.Album> albums, Objects.Album target) {
+            foreach (var album in albums) {
+                if (album.ID == target.ID) {
+                    continue;
+                }
+
+                foreach (var track in album.tracks) {
+                    target.add_track_if_not_exists (track);
+                    db_manager.update_track (track);
+                }
+                db_manager.remove_album (album);
+            }
+        }
+
+        public void merge_artists (GLib.List<Objects.Artist> artists, Objects.Artist target) {
+            foreach (var artist in artists) {
+                if (artist.ID == target.ID) {
+                    continue;
+                }
+
+                var albums_copy = artist.albums.copy ();
+                foreach (var album in albums_copy) {
+                    var album_exists = target.get_album_by_title (album.title);
+                    if (album_exists == null) {
+                        album.set_artist (target);
+                        db_manager.update_album (album);
+                        target.add_album (album);
+                        added_new_album (album);
+                    } else {
+                        GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
+                        albums.append (album);
+                        merge_albums (albums, album_exists);
+                    }
+                }
+                foreach (var album in artist.albums) {
+                    album.removed ();
+                }
+                db_manager.remove_artist (artist);
+            }
+        }
+
         public void discovered_new_local_item (PlayMyMusic.Objects.Artist artist, PlayMyMusic.Objects.Album album, PlayMyMusic.Objects.Track track) {
             new Thread<void*> (null, () => {
                 var db_artist = db_manager.insert_artist_if_not_exists (artist);
@@ -196,7 +268,7 @@ namespace PlayMyMusic.Services {
 
         public void rescan_library () {
             reset_library ();
-            scan_local_library (settings.library_location);
+            scan_local_library_for_new_files (settings.library_location);
         }
 
         public bool radio_station_exists (string url) {
@@ -248,6 +320,10 @@ namespace PlayMyMusic.Services {
 
         public void remove_track_from_playlist (PlayMyMusic.Objects.Track track) {
             db_manager.remove_track_from_playlist (track);
+        }
+
+        public void resort_track_in_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track, int new_sort_value) {
+            db_manager.resort_track_in_playlist (playlist, track, new_sort_value);
         }
 
         //PLAYER REGION

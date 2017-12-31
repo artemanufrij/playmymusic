@@ -28,6 +28,10 @@
 namespace PlayMyMusic.Widgets {
     public class Artist : Gtk.FlowBoxChild {
         PlayMyMusic.Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
+
+        public signal void unselect ();
+        public signal void merge ();
 
         public PlayMyMusic.Objects.Artist artist { get; private set; }
         public new string name { get { return artist.name; } }
@@ -35,10 +39,18 @@ namespace PlayMyMusic.Widgets {
         Gtk.Menu menu;
         Gtk.Menu send_to;
         Gtk.MenuItem menu_send_to;
+        Gtk.MenuItem menu_merge;
         Gtk.Image cover;
+        Gtk.Button multi_select;
+        Gtk.Image add_selection_image;
+        Gtk.Image multi_selected_image;
+        Gtk.Label name_label;
+
+        public bool multi_selection { get; private set; default = false; }
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = PlayMyMusic.Settings.get_default ();
         }
 
         public Artist (PlayMyMusic.Objects.Artist artist) {
@@ -52,17 +64,41 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
+            this.artist.removed.connect (() => {
+                Idle.add (() => {
+                    this.destroy ();
+                    return false;
+                });
+            });
+            this.artist.notify["name"].connect (() => {
+                set_values ();
+            });
+            this.key_press_event.connect ((event) => {
+                if (event.keyval == Gdk.Key.F2) {
+                    edit_artist ();
+                    return true;
+                }
+                return false;
+            });
         }
 
         private void build_ui () {
-            this.tooltip_text = this.artist.name;
-
             const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
             var event_box = new Gtk.EventBox ();
             Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.COPY);
             event_box.button_press_event.connect (show_context_menu);
             event_box.drag_data_get.connect (on_drag_data_get);
             event_box.drag_begin.connect (on_drag_begin);
+            event_box.enter_notify_event.connect ((event) => {
+                multi_select.opacity = 1;
+                return false;
+            });
+            event_box.leave_notify_event.connect ((event) => {
+                if (!this.is_selected ()) {
+                    multi_select.opacity = 0;
+                }
+                return false;
+            });
 
             var content = new Gtk.Grid ();
             content.margin = 12;
@@ -80,10 +116,10 @@ namespace PlayMyMusic.Widgets {
                 cover.pixbuf = this.artist.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             }
 
-            var name = new Gtk.Label (("<b>%s</b>").printf(this.name.replace ("&", "&amp;")));
-            name.opacity = 0.5;
-            name.ellipsize = Pango.EllipsizeMode.END;
-            name.use_markup = true;
+            name_label = new Gtk.Label ("");
+            name_label.opacity = 0.5;
+            name_label.ellipsize = Pango.EllipsizeMode.END;
+            name_label.use_markup = true;
 
             menu = new Gtk.Menu ();
             var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
@@ -92,28 +128,92 @@ namespace PlayMyMusic.Widgets {
                 if (new_cover != null) {
                     try {
                         var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                        this.artist.set_new_cover (pixbuf, 128);
+                        artist.set_new_cover (pixbuf, 128);
+                        if (settings.save_custom_covers) {
+                            artist.set_custom_cover_file (new_cover);
+                        }
                     } catch (Error err) {
                         warning (err.message);
                     }
                 }
             });
-            menu.append (menu_new_cover);
+            menu.add (menu_new_cover);
+
+            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Artist properties…"));
+            menu_edit_album.activate.connect (() => {
+                edit_artist ();
+            });
+            menu.add (menu_edit_album);
 
             menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
             menu.add (menu_send_to);
             send_to = new Gtk.Menu ();
             menu_send_to.set_submenu (send_to);
 
+            menu_merge = new Gtk.MenuItem.with_label (_("Merge selected Artists"));
+            menu_merge.activate.connect (() => {
+                merge ();
+            });
+            menu.add (menu_merge);
+
             menu.show_all ();
 
+            // MULTISELECTION BUTTON
+            add_selection_image = new Gtk.Image.from_icon_name ("selection-add", Gtk.IconSize.BUTTON);
+            multi_selected_image = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.BUTTON);
+
+            multi_select = new Gtk.Button ();
+            multi_select.valign = Gtk.Align.START;
+            multi_select.halign = Gtk.Align.START;
+            multi_select.get_style_context ().remove_class ("button");
+            multi_select.set_image (add_selection_image);
+            multi_select.can_focus = false;
+            multi_select.opacity = 0;
+            multi_select.clicked.connect (() => {
+                toggle_multi_selection ();
+            });
+            multi_select.enter_notify_event.connect ((event) => {
+                multi_select.opacity = 1;
+                return false;
+            });
+
+            content.attach (multi_select, 0, 0);
             content.attach (cover, 0, 0);
-            content.attach (name, 0, 1);
+            content.attach (name_label, 0, 1);
 
             this.add (event_box);
             this.valign = Gtk.Align.START;
 
+            set_values ();
+
             this.show_all ();
+        }
+
+        public void toggle_multi_selection (bool activate = true) {
+            if (!multi_selection) {
+                multi_selection = true;
+                if (activate) {
+                    this.activate ();
+                }
+                multi_select.opacity = 1;
+                multi_select.set_image (multi_selected_image);
+            } else {
+                multi_selection = false;
+                unselect ();
+                multi_select.set_image (add_selection_image);
+            }
+        }
+
+        private void set_values () {
+            this.tooltip_text = this.artist.name;
+            name_label.label = ("<b>%s</b>").printf(this.name.replace ("&", "&amp;"));
+            this.changed ();
+        }
+
+        public void reset () {
+            multi_select.set_image (add_selection_image);
+            multi_select.opacity = 0;
+            multi_selection = false;
         }
 
         private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
@@ -129,8 +229,16 @@ namespace PlayMyMusic.Widgets {
             }
         }
 
+        private void edit_artist () {
+            var editor = new Dialogs.ArtistEditor (PlayMyMusicApp.instance.mainwindow, this.artist);
+            if (editor.run () == Gtk.ResponseType.ACCEPT) {
+                editor.destroy ();
+            }
+        }
+
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                this.activate ();
                 // SEND TO
                 foreach (var child in send_to.get_children ()) {
                     child.destroy ();
@@ -150,6 +258,13 @@ namespace PlayMyMusic.Widgets {
                     menu_send_to.hide ();
                 } else {
                     menu_send_to.show_all ();
+                }
+
+                // MERGE
+                if ((this.parent as Gtk.FlowBox).get_selected_children ().length () > 1) {
+                    menu_merge.show_all ();
+                } else {
+                    menu_merge.hide ();
                 }
 
                 menu.popup (null, null, null, evt.button, evt.time);

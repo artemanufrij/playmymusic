@@ -110,17 +110,18 @@ namespace PlayMyMusic.Widgets.Views {
             new_playlist_save.sensitive = false;
 
             new_playlist_entry.changed.connect (() => {
-                string new_title = new_playlist_entry.text.strip ();
-                new_playlist_save.sensitive = new_title != "" && library_manager.db_manager.get_playlist_by_title (new_title) == null;
+                new_playlist_save.sensitive = valid_new_playlist ();
+            });
+            new_playlist_entry.key_press_event.connect ((key) => {
+                if ((key.keyval == Gdk.Key.Return || key.keyval == Gdk.Key.KP_Enter) && Gdk.ModifierType.CONTROL_MASK in key.state && valid_new_playlist ()) {
+                    save_new_playlist ();
+                }
+                return false;
             });
             new_playlist.attach (new_playlist_entry, 0, 0);
 
-
             new_playlist_save.clicked.connect (() => {
-                var playlist = new PlayMyMusic.Objects.Playlist ();
-                playlist.title = new_playlist_entry.text.strip ();
-                library_manager.db_manager.insert_playlist (playlist);
-                new_playlist_popover.hide ();
+                save_new_playlist ();
             });
             new_playlist.attach (new_playlist_save, 0, 1);
 
@@ -150,6 +151,18 @@ namespace PlayMyMusic.Widgets.Views {
             show_playlists_from_database.begin ();
         }
 
+        private void save_new_playlist () {
+            var playlist = new PlayMyMusic.Objects.Playlist ();
+            playlist.title = new_playlist_entry.text.strip ();
+            library_manager.db_manager.insert_playlist (playlist);
+            new_playlist_popover.hide ();
+        }
+
+        private bool valid_new_playlist () {
+            string new_title = new_playlist_entry.text.strip ();
+            return new_title != "" && library_manager.db_manager.get_playlist_by_title (new_title) == null;
+        }
+
         private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
             var p = new Widgets.Views.PlaylistView (playlist);
             playlist.property_changed.connect (() => {
@@ -157,6 +170,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
             p.show_all ();
             playlists.min_children_per_line = library_manager.playlists.length ();
+            playlists.max_children_per_line = playlists.min_children_per_line;
             playlists.add (p);
         }
 
@@ -166,6 +180,7 @@ namespace PlayMyMusic.Widgets.Views {
                     playlists.remove (child);
                     child.destroy ();
                     playlists.min_children_per_line = library_manager.playlists.length ();
+                    playlists.max_children_per_line = playlists.min_children_per_line;
                 }
             }
 

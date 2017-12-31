@@ -29,6 +29,8 @@ namespace PlayMyMusic.Objects {
     public class Artist : TracksContainer {
         PlayMyMusic.Settings settings;
 
+        public signal void album_removed (Album album);
+
         public new int ID {
             get {
                 return _ID;
@@ -82,13 +84,35 @@ namespace PlayMyMusic.Objects {
             this.track_added.connect (() => {
                 load_cover_async.begin ();
             });
+            this.album_removed.connect ((album) => {
+                this._albums.remove (album);
+                if (this.albums.length () == 0) {
+                    db_manager.remove_artist (this);
+                }
+            });
+            this.removed.connect (() => {
+                db_manager.artist_removed (this);
+            });
         }
 
         public void clear_albums () {
             _albums = new GLib.List<Album> ();
         }
 
-        private void add_album (Album album) {
+        public Album? get_album_by_title (string title) {
+            Album? return_value = null;
+            lock (_albums) {
+                foreach (var album in albums) {
+                    if (album.title == title) {
+                        return_value = album;
+                        break;
+                    }
+                }
+            }
+            return return_value;
+        }
+
+        public void add_album (Album album) {
             this._albums.append (album);
             if (album.artist_track_added_signal_id == 0) {
                album.artist_track_added_signal_id = album.track_added.connect (add_track);
@@ -101,12 +125,7 @@ namespace PlayMyMusic.Objects {
         public Album add_album_if_not_exists (Album new_album) {
             Album? return_value = null;
             lock (_albums) {
-                foreach (var album in albums) {
-                    if (album.title == new_album.title) {
-                        return_value = album;
-                        break;
-                    }
-                }
+                return_value = get_album_by_title (new_album.title);
                 if (return_value == null) {
                     new_album.set_artist (this);
                     add_album (new_album);
@@ -114,6 +133,21 @@ namespace PlayMyMusic.Objects {
                     return_value = new_album;
                 }
                 return return_value;
+            }
+        }
+
+        public void set_custom_cover_file (string uri) {
+            var first_track = this.tracks.first ().data;
+            if (first_track != null) {
+                var destination = File.new_for_uri (GLib.Path.get_dirname(GLib.Path.get_dirname (first_track.uri)) + "/artist.jpg");
+                var source = File.new_for_path (uri);
+                try {
+                    source.copy (destination, GLib.FileCopyFlags.OVERWRITE);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                destination.dispose ();
+                source.dispose ();
             }
         }
 

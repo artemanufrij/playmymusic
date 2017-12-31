@@ -62,6 +62,15 @@ namespace PlayMyMusic.Objects {
 
         construct {
             year = -1;
+            track_removed.connect ((track) => {
+                this._tracks.remove (track);
+                if (this.tracks.length () == 0) {
+                    db_manager.remove_album (this);
+                }
+            });
+            removed.connect (() => {
+                artist.album_removed (this);
+            });
         }
 
         public Album (Artist? artist = null) {
@@ -71,6 +80,10 @@ namespace PlayMyMusic.Objects {
         }
 
         public void set_artist (Artist artist) {
+            if (artist_track_added_signal_id > 0) {
+                disconnect (artist_track_added_signal_id);
+                artist_track_added_signal_id = 0;
+            }
             this._artist = artist;
         }
 
@@ -82,6 +95,21 @@ namespace PlayMyMusic.Objects {
             db_manager.insert_track (new_track);
             add_track (new_track);
             load_cover_async.begin ();
+        }
+
+        public void set_custom_cover_file (string uri) {
+            var first_track = this.tracks.first ().data;
+            if (first_track != null) {
+                var destination = File.new_for_uri (GLib.Path.get_dirname (first_track.uri) + "/cover.jpg");
+                var source = File.new_for_path (uri);
+                try {
+                    source.copy (destination, GLib.FileCopyFlags.OVERWRITE);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+                destination.dispose ();
+                source.dispose ();
+            }
         }
 
 // COVER REGION

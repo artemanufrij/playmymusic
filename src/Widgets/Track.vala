@@ -55,6 +55,12 @@ namespace PlayMyMusic.Widgets {
         public Track (PlayMyMusic.Objects.Track track, TrackStyle track_style = TrackStyle.ALBUM) {
             this.track_style = track_style;
             this.track = track;
+            this.track.removed.connect (() => {
+                Idle.add (() => {
+                    this.destroy ();
+                    return false;
+                });
+            });
             this.track.path_not_found.connect (() => {
                 if (warning == null) {
                     warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
@@ -64,12 +70,7 @@ namespace PlayMyMusic.Widgets {
                     warning.show_all ();
                 }
             });
-
-            this.track.removed.connect (() => {
-                this.destroy ();
-            });
-
-            track.notify ["title"].connect (() => {
+            this.track.notify ["title"].connect (() => {
                 track_title.label = track.title;
             });
 
@@ -95,7 +96,30 @@ namespace PlayMyMusic.Widgets {
             event_box.add (content);
 
             if (this.track_style != TrackStyle.AUDIO_CD) {
+                if (this.track_style == TrackStyle.PLAYLIST) {
+                    const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
+
+                    Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.MOVE);
+                    event_box.drag_data_get.connect (on_drag_data_get);
+                    event_box.drag_begin.connect (on_drag_begin);
+
+                    Gtk.drag_dest_set (event_box, Gtk.DestDefaults.ALL, targetentries, Gdk.DragAction.MOVE);
+                    event_box.drag_leave.connect ((context, time) => {
+                        content.margin_top = 6;
+                        this.get_style_context ().remove_class ("track-drag-begin");
+                    });
+                    event_box.drag_motion.connect ((context, x, y, time) => {
+                        content.margin_top = 5;
+                        Gtk.drag_unhighlight (event_box);
+                        this.get_style_context ().add_class ("track-drag-begin");
+                        return false;
+                    });
+                    event_box.drag_data_received.connect ((drag_context, x, y, data, info, time) => {
+                        on_drag_data_received (data.get_text ());
+                    });
+                }
                 event_box.button_press_event.connect (show_context_menu);
+
                 menu = new Gtk.Menu ();
                 var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
                 menu.add (menu_add_into_playlist);
@@ -134,6 +158,9 @@ namespace PlayMyMusic.Widgets {
                         cover.pixbuf = this.track.album.cover_32;
                         return false;
                     });
+                });
+                track.album_changed.connect ((album) => {
+                    cover.tooltip_text = album.title;
                 });
             }
 
@@ -198,8 +225,68 @@ namespace PlayMyMusic.Widgets {
 
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
+            } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                this.activate ();
+                return true;
             }
             return false;
+        }
+
+        private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
+            selection_data.set_text ("Playlist:%d; Track:%d".printf (this.track.playlist.ID, this.track.ID), -1);
+        }
+
+        private void on_drag_begin (Gdk.DragContext context) {
+            if (this.track.album.cover_32 != null) {
+                var surface = new Granite.Drawing.BufferSurface (32, 32);
+                Gdk.cairo_set_source_pixbuf (surface.context, this.track.album.cover_32, 0, 0);
+                surface.context.paint ();
+                Gtk.drag_set_icon_surface (context, surface.surface);
+            }
+        }
+
+        private void on_drag_data_received (string received) {
+            Regex reg_playlist_id;
+            Regex reg_track_id;
+            try {
+                reg_playlist_id = new Regex ("(?<=Playlist:)\\d*");
+                reg_track_id = new Regex ("(?<=Track:)\\d*");
+            } catch (Error err) {
+                return;
+            }
+
+            int source_playlist_id = track.playlist.ID;
+            int source_track_id = track.ID;
+
+            MatchInfo match;
+
+            if (reg_playlist_id.match (received, 0, out match)){
+                source_playlist_id = int.parse (match.fetch (0));
+            }
+
+            if (reg_track_id.match (received, 0, out match)) {
+                source_track_id = int.parse (match.fetch (0));
+            }
+
+            if (source_playlist_id == track.playlist.ID) {
+                var source_track = track.playlist.get_track_by_id (source_track_id);
+                if (source_track != null) {
+                    if (source_track.track != track.track && source_track.track != track.track - 1) {
+                        library_manager.resort_track_in_playlist (track.playlist, source_track, track.track);
+                    }
+                }
+            } else {
+                var source_playlist = library_manager.db_manager.get_playlist_by_id (source_playlist_id);
+                if (source_playlist != null) {
+                    var source_track = source_playlist.get_track_by_id (source_track_id);
+                    if (source_track != null) {
+                        library_manager.add_track_into_playlist (track.playlist, source_track.ID);
+                        library_manager.remove_track_from_playlist (source_track);
+                        source_track = track.playlist.get_track_by_id (source_track_id);
+                        library_manager.resort_track_in_playlist (track.playlist, source_track, track.track);
+                    }
+                }
+            }
         }
     }
 }

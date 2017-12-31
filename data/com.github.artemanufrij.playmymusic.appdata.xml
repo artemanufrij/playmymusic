@@ -33,34 +33,81 @@
     <update_contact>artem.anufrij@live.de</update_contact>
     <screenshots>
         <screenshot type="default">
+            <caption>Albums</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot.png</image>
         </screenshot>
         <screenshot>
+            <caption>Artists</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Artists.png</image>
         </screenshot>
         <screenshot>
+            <caption>Playlists</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Playlists.png</image>
         </screenshot>
         <screenshot>
+            <caption>MTP Support</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_MTP.png</image>
         </screenshot>
         <screenshot>
+            <caption>Manage Online Radio Stations</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Radio_Stations.png</image>
         </screenshot>
         <screenshot>
+            <caption>Audio CD</caption>
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Audio_CD.png</image>
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.3.4" date="2017-12-10">
+        <release version="0.4.2" date="2018-01-02">
+            <description>
+                <p>Improved:</p>
+                <ul>
+                    <li>Start searching instand on key press</li>
+                    <li>Playlist Editor: Accept changes on press CTRL+Enter</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.4.1" date="2017-12-30">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Reorder Playlist items by Drag an Drop</li>
+                </ul>
+                <p>Fix:</p>
+                <ul>
+                    <li>Playlist behavior</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.4.0" date="2017-12-15">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Option for saving custom covers into library</li>
+                    <li>Merge Albums</li>
+                    <li>Album Editor [F2]</li>
+                    <li>Merge Artists</li>
+                    <li>Artist Editor [F2]</li>
+                    <li>Multiple selection [CTRL]</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.3.4" date="2017-12-08">
             <description>
                 <p>Changes:</p>
                 <ul>
                     <li>Moved 'Shuffle' and 'Repeat' buttons into header bar</li>
+                    <li>Hide MTP-View if playlists, radios or audio cd is choosed</li>
+                    <li>Switched from 'search for new files' to 'resync library'</li>
                 </ul>
                 <p>Fix:</p>
                 <ul>
-                    <li>[MusicBrainz] fetch artist cover if name or artist contains '/' (like AC/DC)</li>
+                    <li>[MusicBrainz] fetch artist cover if name of artist contains '/' (like AC/DC)</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Russian (by Camellan)</li>
+                    <li>Lithuanian (by welaq)</li>
                 </ul>
             </description>
         </release>

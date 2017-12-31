@@ -30,6 +30,7 @@ namespace PlayMyMusic.Objects {
         PlayMyMusic.Services.LibraryManager library_manager;
 
         public signal void removed ();
+        public signal void album_changed (Album album);
 
         Album? _album = null;
         public Album album {
@@ -78,6 +79,15 @@ namespace PlayMyMusic.Objects {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            removed.connect (() => {
+                if (album != null) {
+                    album.track_removed (this);
+                    album.artist.track_removed (this);
+                }
+                if (playlist != null) {
+                    playlist.track_removed (this);
+                }
+            });
         }
 
         public Track (TracksContainer? container = null) {
@@ -92,6 +102,7 @@ namespace PlayMyMusic.Objects {
 
         public void set_album (Album album) {
             this._album = album;
+            album_changed (this.album);
         }
 
         public void set_playlist (Playlist playlist) {
