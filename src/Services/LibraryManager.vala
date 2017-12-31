@@ -37,8 +37,8 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public signal void tag_discover_started ();
-        public signal void tag_discover_finished ();
+        public signal void sync_started ();
+        public signal void sync_finished ();
         public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
@@ -83,8 +83,7 @@ namespace PlayMyMusic.Services {
 
             tg_manager = PlayMyMusic.Services.TagManager.instance;
             tg_manager.discovered_new_item.connect (discovered_new_local_item);
-            tg_manager.discover_started.connect ( () => { tag_discover_started (); });
-            tg_manager.discover_finished.connect ( () => { tag_discover_finished (); });
+            tg_manager.discover_finished.connect (() => { sync_finished (); });
 
             db_manager = PlayMyMusic.Services.DataBaseManager.instance;
             db_manager.added_new_artist.connect ((artist) => { added_new_artist (artist); });
@@ -151,6 +150,7 @@ namespace PlayMyMusic.Services {
         // LOCAL FILES REGION
         public async void sync_library_content () {
             new Thread <void*> (null, () => {
+                sync_started ();
                 remove_non_existent_items ();
                 scan_local_library_for_new_files (settings.library_location);
                 return null;

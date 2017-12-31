@@ -105,7 +105,7 @@ namespace PlayMyMusic {
             });
 
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            library_manager.tag_discover_started.connect (() => {
+            library_manager.sync_started.connect (() => {
                 Idle.add (() => {
                     spinner.active = true;
                     menu_item_resync.sensitive = false;
@@ -113,7 +113,7 @@ namespace PlayMyMusic {
                     return false;
                 });
             });
-            library_manager.tag_discover_finished.connect (() => {
+            library_manager.sync_started.connect (() => {
                 Idle.add (() => {
                     spinner.active = false;
                     menu_item_resync.sensitive = true;
@@ -144,6 +144,7 @@ namespace PlayMyMusic {
                         previous_button.sensitive = false;
                         next_button.sensitive = false;
                     } else if (library_manager.player.current_radio != null) {
+
                         headerbar.title = library_manager.player.current_radio.title;
                         previous_button.sensitive = false;
                         next_button.sensitive = false;

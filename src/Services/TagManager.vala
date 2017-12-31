@@ -38,6 +38,7 @@ namespace PlayMyMusic.Services {
         }
 
         public signal void discovered_new_item (PlayMyMusic.Objects.Artist artist, PlayMyMusic.Objects.Album album, PlayMyMusic.Objects.Track track);
+        public signal void discovered_new_radio_content (string radio_uri, string content);
         public signal void discover_started ();
         public signal void discover_finished ();
 
@@ -59,16 +60,38 @@ namespace PlayMyMusic.Services {
 
         private void discovered (Gst.PbUtils.DiscovererInfo info, Error err) {
             new Thread<void*> (null, () => {
+                string uri = info.get_uri ();
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                     warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), info.get_uri ());
 
+                } else if (uri.has_prefix ("http")) {
+                    var tags = info.get_tags ();
+                    string o;
+                    if (tags.get_string (Gst.Tags.TITLE, out o)) {
+                        discovered_new_radio_content (uri, o);
+                        return null;
+                    }
+
+                    if (tags.get_string (Gst.Tags.ARTIST, out o)) {
+                        discovered_new_radio_content (uri, o);
+                        return null;
+                    }
+
+                    if (tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
+                        discovered_new_radio_content (uri, o);
+                        return null;
+                    }
+
+                    if (tags.get_string (Gst.Tags.ALBUM, out o)) {
+                        discovered_new_radio_content (uri, o);
+                        return null;
+                    }
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
-                        string uri = info.get_uri ();
+
                         uint64 duration = info.get_duration ();
                         File f = File.new_for_uri (uri);
-
                         string o;
                         GLib.Date? d;
                         Gst.DateTime? dt;
@@ -85,7 +108,6 @@ namespace PlayMyMusic.Services {
                         if (track.title.strip () == "") {
                             track.title = f.get_basename ();
                         }
-
                         if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
                             track.track = (int)u;
                         }
@@ -155,10 +177,12 @@ namespace PlayMyMusic.Services {
         }
 
         public void add_discover_uri (string uri) {
-            if (discover_counter == 0) {
-                discover_started ();
+            if (!uri.has_prefix ("http")) {
+                if (discover_counter == 0) {
+                    discover_started ();
+                }
+                discover_counter++;
             }
-            discover_counter++;
             discoverer.discover_uri_async (uri);
         }
     }
