@@ -77,6 +77,10 @@
                 <ul>
                     <li>Playlist behavior</li>
                 </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Russian (by Camellan)</li>
+                </ul>
             </description>
         </release>
         <release version="0.4.0" date="2017-12-15">
