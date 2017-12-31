@@ -60,6 +60,10 @@
     <releases>
         <release version="0.4.2" date="2018-01-02">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Show song title from online radio in audio indicator</li>
+                </ul>
                 <p>Improved:</p>
                 <ul>
                     <li>Start searching instand on key press</li>
