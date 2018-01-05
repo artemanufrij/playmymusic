@@ -865,7 +865,7 @@ namespace PlayMyMusic {
                 this.set_default_size (settings.window_width, settings.window_height);
             }
 
-            if (settings.window_x < 0 && settings.window_y < 0 ) {
+            if (settings.window_x < 0 || settings.window_y < 0 ) {
                 this.window_position = Gtk.WindowPosition.CENTER;
             } else {
                 this.move (settings.window_x, settings.window_y);
