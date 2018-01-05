@@ -42,6 +42,8 @@ namespace PlayMyMusic {
         }
         public int window_width { get; set; }
         public int window_height { get; set; }
+        public int window_x { get; set; }
+        public int window_y { get; set; }
         public bool window_maximized { get; set; }
         public bool shuffle_mode { get; set; }
         public RepeatMode repeat_mode { get; set; }

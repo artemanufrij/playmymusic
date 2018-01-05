@@ -224,6 +224,7 @@ namespace PlayMyMusic {
                 return false;
             });
             this.delete_event.connect (() => {
+                save_settings ();
                 if (settings.play_in_background && library_manager.player.get_state () == Gst.State.PLAYING) {
                     this.hide_on_delete ();
                     return true;
@@ -231,7 +232,6 @@ namespace PlayMyMusic {
                 return false;
             });
             this.destroy.connect (() => {
-                save_settings ();
                 library_manager.player.stop ();
             });
 
@@ -254,8 +254,6 @@ namespace PlayMyMusic {
 
         public MainWindow () {
             load_settings ();
-            this.window_position = Gtk.WindowPosition.CENTER;
-            Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
             build_ui ();
 
             load_content_from_database.begin ((obj, res) => {
@@ -866,6 +864,14 @@ namespace PlayMyMusic {
             } else {
                 this.set_default_size (settings.window_width, settings.window_height);
             }
+
+            if (settings.window_x < 0 && settings.window_y < 0 ) {
+                this.window_position = Gtk.WindowPosition.CENTER;
+            } else {
+                this.move (settings.window_x, settings.window_y);
+            }
+
+            Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
         }
 
         private void save_settings () {
@@ -897,6 +903,13 @@ namespace PlayMyMusic {
                 settings.last_track_id = 0;
                 settings.track_progress = 0;
                 settings.track_source = "";
+            }
+
+            if (!settings.window_maximized) {
+                int x, y;
+                this.get_position (out x, out y);
+                settings.window_x = x;
+                settings.window_y = y;
             }
         }
     }

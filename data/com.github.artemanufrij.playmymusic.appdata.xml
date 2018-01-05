@@ -58,11 +58,12 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.4.2" date="2018-01-02">
+        <release version="0.4.2" date="2018-01-07">
             <description>
                 <p>New:</p>
                 <ul>
                     <li>Show song title from online radio in audio indicator</li>
+                    <li>Save/restore window position</li>
                 </ul>
                 <p>Improved:</p>
                 <ul>
