@@ -39,9 +39,9 @@ namespace PlayMyMusic.Services {
         public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
         public signal void added_new_album (PlayMyMusic.Objects.Album album);
         public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
+        public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_playlist (PlayMyMusic.Objects.Playlist playlist);
         public signal void artist_removed (PlayMyMusic.Objects.Artist artist);
-        public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
         public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
 
         GLib.List<PlayMyMusic.Objects.Artist> _artists = null;

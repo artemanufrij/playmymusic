@@ -156,7 +156,7 @@ namespace PlayMyMusic.Services {
 
         public void start_radio_grabber () {
             PlayMyMusic.Services.LibraryManager.instance.tg_manager.add_discover_uri (current_radio.file);
-            radio_tag_grabber_timer = GLib.Timeout.add (3000, () => {
+            radio_tag_grabber_timer = GLib.Timeout.add (6000, () => {
                 if (current_radio == null) {
                     stop_radio_grabber ();
                     return false;
