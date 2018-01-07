@@ -62,7 +62,7 @@ namespace PlayMyMusic.Services {
             new Thread<void*> (null, () => {
                 string uri = info.get_uri ();
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
-                    warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), info.get_uri ());
+                    warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), uri);
                 } else if (uri.has_prefix ("http")) {
                     var tags = info.get_tags ();
                     string? o;
