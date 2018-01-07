@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,9 +27,9 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class AlbumsView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Settings settings;
-        PlayMyMusic.MainWindow mainwindow;
+        Services.LibraryManager library_manager;
+        Settings settings;
+        MainWindow mainwindow;
 
         private string _filter = "";
         public string filter {
@@ -58,9 +58,11 @@ namespace PlayMyMusic.Widgets.Views {
 
         public signal void album_selected ();
 
+        uint timer_sort = 0;
+
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
             library_manager.added_new_album.connect ((album) => {
                 Idle.add (() => {
                     add_album (album);
@@ -69,7 +71,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
         }
 
-        public AlbumsView (PlayMyMusic.MainWindow mainwindow) {
+        public AlbumsView (MainWindow mainwindow) {
             this.mainwindow = mainwindow;
             this.mainwindow.ctrl_press.connect (() => {
                 foreach (var child in albums.get_selected_children ()) {
@@ -91,7 +93,6 @@ namespace PlayMyMusic.Widgets.Views {
             albums.max_children_per_line = 24;
             albums.valign = Gtk.Align.START;
             albums.selection_mode = Gtk.SelectionMode.MULTIPLE;
-            albums.set_sort_func (albums_sort_func);
             albums.set_filter_func (albums_filter_func);
             albums.child_activated.connect (show_album_viewer);
             albums.add.connect (() => {
@@ -146,20 +147,36 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void add_album (Objects.Album album) {
+            var a = new Widgets.Album (album);
             lock (albums) {
-                var a = new Widgets.Album (album);
                 albums.add (a);
-                a.unselect.connect (() => {
-                    albums.unselect_child (a);
-                });
-                a.merge.connect (() => {
-                    GLib.List<Objects.Album> selected = new GLib.List<Objects.Album> ();
-                    foreach (var child in albums.get_selected_children ()){
-                        selected.append ((child as Widgets.Album).album);
-                    }
-                    library_manager.merge_albums (selected, album);
-                });
             }
+            a.unselect.connect (() => {
+                albums.unselect_child (a);
+            });
+            a.merge.connect (() => {
+                GLib.List<Objects.Album> selected = new GLib.List<Objects.Album> ();
+                foreach (var child in albums.get_selected_children ()){
+                    selected.append ((child as Widgets.Album).album);
+                }
+                library_manager.merge_albums (selected, album);
+            });
+            do_sort ();
+        }
+
+        private void do_sort () {
+            if (timer_sort != 0) {
+                Source.remove (timer_sort);
+                timer_sort = 0;
+            }
+
+            timer_sort = Timeout.add (500, () => {
+                albums.set_sort_func (albums_sort_func);
+                albums.set_sort_func (null);
+                Source.remove (timer_sort);
+                timer_sort = 0;
+                return false;
+            });
         }
 
         public void activate_by_track (Objects.Track track) {
@@ -189,15 +206,15 @@ namespace PlayMyMusic.Widgets.Views {
             if (mainwindow.ctrl_pressed) {
                 if ((item as PlayMyMusic.Widgets.Album).multi_selection) {
                     albums.unselect_child (item);
-                    (item as PlayMyMusic.Widgets.Album).reset ();
+                    (item as Widgets.Album).reset ();
                     return;
                 } else {
-                    (item as PlayMyMusic.Widgets.Album).toggle_multi_selection (false);
+                    (item as Widgets.Album).toggle_multi_selection (false);
                 }
             }
-            if (!(item as PlayMyMusic.Widgets.Album).multi_selection) {
+            if (!(item as Widgets.Album).multi_selection) {
                 foreach (var child in albums.get_selected_children ()) {
-                    (child as PlayMyMusic.Widgets.Album).reset ();
+                    (child as Widgets.Album).reset ();
                 }
                 albums.unselect_all ();
                 albums.select_child (item);
@@ -233,7 +250,7 @@ namespace PlayMyMusic.Widgets.Views {
         public void unselect_all () {
             album_revealer.set_reveal_child (false);
             foreach (var child in albums.get_selected_children ()) {
-                (child as PlayMyMusic.Widgets.Album).reset ();
+                (child as Widgets.Album).reset ();
             }
             albums.unselect_all ();
         }
@@ -243,7 +260,7 @@ namespace PlayMyMusic.Widgets.Views {
                 return true;
             }
             string[] filter_elements = filter.strip ().down ().split (" ");
-            var album = (child as PlayMyMusic.Widgets.Album).album;
+            var album = (child as Widgets.Album).album;
             foreach (string filter_element in filter_elements) {
                 if (!album.title.down ().contains (filter_element) && !album.artist.name.down ().contains (filter_element)) {
                     bool track_title = false;
@@ -262,8 +279,8 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private int albums_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
-            var item1 = (PlayMyMusic.Widgets.Album)child1;
-            var item2 = (PlayMyMusic.Widgets.Album)child2;
+            var item1 = (Widgets.Album)child1;
+            var item2 = (Widgets.Album)child2;
             if (item1 != null && item2 != null) {
                 if (item1.album.artist.name == item2.album.artist.name) {
                     if (item1.year != item2.year) {

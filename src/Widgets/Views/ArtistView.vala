@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,9 +27,9 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class ArtistView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Services.Player player;
-        PlayMyMusic.Settings settings;
+        Services.LibraryManager library_manager;
+        Services.Player player;
+        Settings settings;
 
         Gtk.ListBox tracks;
 
@@ -42,12 +42,12 @@ namespace PlayMyMusic.Widgets.Views {
 
         bool only_mark = false;
 
-        public PlayMyMusic.Objects.Artist current_artist { get; private set; }
+        public Objects.Artist current_artist { get; private set; }
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            player = PlayMyMusic.Services.Player.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
+            player = Services.Player.instance;
             player.state_changed.connect ((state) => {
                 mark_playing_track (player.current_track);
             });
@@ -116,7 +116,7 @@ namespace PlayMyMusic.Widgets.Views {
             this.attach (overlay, 1, 0);
         }
 
-        public void show_artist_viewer (PlayMyMusic.Objects.Artist artist) {
+        public void show_artist_viewer (Objects.Artist artist) {
             if (current_artist == artist) {
                 return;
             }
@@ -171,11 +171,10 @@ namespace PlayMyMusic.Widgets.Views {
             artist_sub_title.get_style_context ().remove_class ("artist-sub-title");
         }
 
-        private void add_track (PlayMyMusic.Objects.Track track) {
+        private void add_track (Objects.Track track) {
             Idle.add (() => {
-                var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.ARTIST);
+                var item = new Widgets.Track (track, TrackStyle.ARTIST);
                 this.tracks.add (item);
-                item.show_all ();
                 update_header ();
                 if (player.current_track != null && player.current_track.ID == track.ID) {
                     item.activate ();
