@@ -99,11 +99,11 @@ namespace PlayMyMusic.Services {
             bus.enable_sync_message_emission();
 
             state_changed.connect ((state) => {
+                stop_progress_signal ();
+                stop_radio_grabber ();
                 if (state != Gst.State.NULL) {
                     playbin.set_state (state);
                 } else {
-                    stop_progress_signal ();
-                    stop_radio_grabber ();
                     Interfaces.Inhibitor.instance.uninhibit ();
                 }
                 switch (state) {
@@ -155,13 +155,16 @@ namespace PlayMyMusic.Services {
         }
 
         public void start_radio_grabber () {
-            PlayMyMusic.Services.LibraryManager.instance.tg_manager.add_discover_uri (current_radio.file);
+            Services.LibraryManager.instance.tg_manager.add_discover_uri (current_radio.file);
             radio_tag_grabber_timer = GLib.Timeout.add (6000, () => {
                 if (current_radio == null) {
                     stop_radio_grabber ();
                     return false;
                 }
-                PlayMyMusic.Services.LibraryManager.instance.tg_manager.add_discover_uri (current_radio.file);
+
+                stdout.printf ("%s\n", current_radio.file);
+
+                Services.LibraryManager.instance.tg_manager.add_discover_uri (current_radio.file);
                 return true;
             });
         }

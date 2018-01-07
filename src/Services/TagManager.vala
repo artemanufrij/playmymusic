@@ -66,26 +66,18 @@ namespace PlayMyMusic.Services {
 
                 } else if (uri.has_prefix ("http")) {
                     var tags = info.get_tags ();
-                    string o;
-                    if (tags.get_string (Gst.Tags.TITLE, out o)) {
-                        discovered_new_radio_content (uri, o);
-                        return null;
+                    string? o;
+                    if (!tags.get_string (Gst.Tags.TITLE, out o)) {
+                        if (!tags.get_string (Gst.Tags.ARTIST, out o)) {
+                            if (!tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
+                                tags.get_string (Gst.Tags.ALBUM, out o);
+                            }
+                        }
                     }
-
-                    if (tags.get_string (Gst.Tags.ARTIST, out o)) {
+                    if (o != null && o != "") {
                         discovered_new_radio_content (uri, o);
-                        return null;
                     }
-
-                    if (tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
-                        discovered_new_radio_content (uri, o);
-                        return null;
-                    }
-
-                    if (tags.get_string (Gst.Tags.ALBUM, out o)) {
-                        discovered_new_radio_content (uri, o);
-                        return null;
-                    }
+                    return null;
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
