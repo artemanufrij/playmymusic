@@ -113,7 +113,7 @@ namespace PlayMyMusic {
                     return false;
                 });
             });
-            library_manager.sync_started.connect (() => {
+            library_manager.sync_finished.connect (() => {
                 Idle.add (() => {
                     spinner.active = false;
                     menu_item_resync.sensitive = true;
