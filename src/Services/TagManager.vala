@@ -63,7 +63,6 @@ namespace PlayMyMusic.Services {
                 string uri = info.get_uri ();
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                     warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), info.get_uri ());
-
                 } else if (uri.has_prefix ("http")) {
                     var tags = info.get_tags ();
                     string? o;
@@ -77,11 +76,9 @@ namespace PlayMyMusic.Services {
                     if (o != null && o != "") {
                         discovered_new_radio_content (uri, o);
                     }
-                    return null;
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
-
                         uint64 duration = info.get_duration ();
                         File f = File.new_for_uri (uri);
                         string o;
@@ -159,9 +156,11 @@ namespace PlayMyMusic.Services {
                     }
                 }
 
-                discover_counter--;
-                if (discover_counter == 0) {
-                    discover_finished ();
+                if (!uri.has_prefix ("http")) {
+                    discover_counter--;
+                    if (discover_counter == 0) {
+                        discover_finished ();
+                    }
                 }
                 info.dispose ();
                 return null;
