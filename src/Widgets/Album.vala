@@ -57,6 +57,7 @@ namespace PlayMyMusic.Widgets {
 
         public Album (PlayMyMusic.Objects.Album album) {
             this.album = album;
+            this.draw.connect (first_draw);
 
             build_ui ();
 
@@ -82,6 +83,16 @@ namespace PlayMyMusic.Widgets {
                 }
                 return false;
             });
+        }
+
+        private bool first_draw () {
+            this.draw.disconnect (first_draw);
+            if (this.album.cover == null) {
+                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
+            } else {
+                cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+            }
+            return false;
         }
 
         private void build_ui () {
@@ -112,13 +123,8 @@ namespace PlayMyMusic.Widgets {
             cover = new Gtk.Image ();
             cover.get_style_context ().add_class ("card");
             cover.halign = Gtk.Align.CENTER;
-            if (this.album.cover == null) {
-                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
-                cover.height_request = 128;
-                cover.width_request = 128;
-            } else {
-                cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
-            }
+            cover.height_request = 128;
+            cover.width_request = 128;
 
             title_label = new Gtk.Label ("");
             title_label.opacity = 0.5;

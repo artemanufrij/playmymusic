@@ -58,7 +58,15 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.4.3" date="2018-01-15">
+        <release version="0.4.5" date="2018-01-20">
+            <description>
+                <p>Changes:</p>
+                <ul>
+                    <li>Lazy cover loading -> less memory on startup</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.4.4" date="2018-01-15">
             <description>
                 <p>Fix:</p>
                 <ul>
