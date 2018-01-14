@@ -38,7 +38,6 @@ namespace PlayMyMusic.Services {
         }
 
         public signal void discovered_new_item (PlayMyMusic.Objects.Artist artist, PlayMyMusic.Objects.Album album, PlayMyMusic.Objects.Track track);
-        public signal void discovered_new_radio_content (string radio_uri, string content);
         public signal void discover_started ();
         public signal void discover_finished ();
 
@@ -63,19 +62,6 @@ namespace PlayMyMusic.Services {
                 string uri = info.get_uri ();
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
                     warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), uri);
-                } else if (uri.has_prefix ("http")) {
-                    var tags = info.get_tags ();
-                    string? o;
-                    if (!tags.get_string (Gst.Tags.TITLE, out o)) {
-                        if (!tags.get_string (Gst.Tags.ARTIST, out o)) {
-                            if (!tags.get_string (Gst.Tags.ALBUM_ARTIST, out o)) {
-                                tags.get_string (Gst.Tags.ALBUM, out o);
-                            }
-                        }
-                    }
-                    if (o != null && o != "") {
-                        discovered_new_radio_content (uri, o);
-                    }
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
@@ -156,24 +142,21 @@ namespace PlayMyMusic.Services {
                     }
                 }
 
-                if (!uri.has_prefix ("http")) {
-                    discover_counter--;
-                    if (discover_counter == 0) {
-                        discover_finished ();
-                    }
+                discover_counter--;
+                if (discover_counter == 0) {
+                    discover_finished ();
                 }
+
                 info.dispose ();
                 return null;
             });
         }
 
         public void add_discover_uri (string uri) {
-            if (!uri.has_prefix ("http")) {
-                if (discover_counter == 0) {
-                    discover_started ();
-                }
-                discover_counter++;
+            if (discover_counter == 0) {
+                discover_started ();
             }
+            discover_counter++;
             discoverer.discover_uri_async (uri);
         }
     }

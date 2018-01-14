@@ -44,7 +44,6 @@ namespace PlayMyMusic.Services {
         public signal void current_progress_changed (double percent);
         public signal void current_duration_changed (int64 duration);
         uint progress_timer = 0;
-        uint radio_tag_grabber_timer = 0;
 
         PlayMyMusic.Settings settings;
 
@@ -100,7 +99,6 @@ namespace PlayMyMusic.Services {
 
             state_changed.connect ((state) => {
                 stop_progress_signal ();
-                stop_radio_grabber ();
                 if (state != Gst.State.NULL) {
                     playbin.set_state (state);
                 } else {
@@ -108,11 +106,7 @@ namespace PlayMyMusic.Services {
                 }
                 switch (state) {
                     case Gst.State.PLAYING:
-                        if (play_mode == PlayMode.RADIO) {
-                            start_radio_grabber ();
-                        } else {
-                            start_progress_signal ();
-                        }
+                        start_progress_signal ();
                         Interfaces.Inhibitor.instance.inhibit ();
                         break;
                     case Gst.State.READY:
@@ -143,29 +137,6 @@ namespace PlayMyMusic.Services {
             pause_progress_signal ();
             progress_timer = GLib.Timeout.add (250, () => {
                 current_progress_changed (get_position_progress ());
-                return true;
-            });
-        }
-
-        public void stop_radio_grabber () {
-            if (radio_tag_grabber_timer != 0) {
-                Source.remove (radio_tag_grabber_timer);
-                radio_tag_grabber_timer = 0;
-            }
-        }
-
-        public void start_radio_grabber () {
-        return;
-            Services.LibraryManager.instance.tg_manager.add_discover_uri (current_radio.file);
-            radio_tag_grabber_timer = GLib.Timeout.add (6000, () => {
-                if (current_radio == null) {
-                    stop_radio_grabber ();
-                    return false;
-                }
-
-                stdout.printf ("%s\n", current_radio.file);
-
-                Services.LibraryManager.instance.tg_manager.add_discover_uri (current_radio.file);
                 return true;
             });
         }

@@ -75,10 +75,10 @@ namespace PlayMyMusic.Interfaces {
 
     [DBus(name = "org.mpris.MediaPlayer2")]
     public class SoundIndicatorRoot : GLib.Object {
-        PlayMyMusic.PlayMyMusicApp app;
+        PlayMyMusicApp app;
 
         construct {
-            this.app = PlayMyMusic.PlayMyMusicApp.instance;
+            this.app = PlayMyMusicApp.instance;
         }
 
         public string DesktopEntry {
@@ -90,19 +90,15 @@ namespace PlayMyMusic.Interfaces {
 
     [DBus(name = "org.mpris.MediaPlayer2.Player")]
     public class SoundIndicatorPlayer : GLib.Object {
-        PlayMyMusic.Services.Player player;
-        PlayMyMusic.Services.TagManager tg_manager;
+        Services.Player player;
         DBusConnection connection;
-        PlayMyMusic.PlayMyMusicApp app;
+        PlayMyMusicApp app;
 
         public SoundIndicatorPlayer (DBusConnection connection) {
-            this.app = PlayMyMusic.PlayMyMusicApp.instance;
+            this.app = PlayMyMusicApp.instance;
             this.connection = connection;
-            player = PlayMyMusic.Services.Player.instance;
+            player = Services.Player.instance;
             player.state_changed.connect_after (player_state_changed);
-
-            tg_manager = PlayMyMusic.Services.TagManager.instance;
-            tg_manager.discovered_new_radio_content.connect (radio_content);
         }
 
         private static string[] get_simple_string_array (string text) {
@@ -162,7 +158,7 @@ namespace PlayMyMusic.Interfaces {
                     property = "Playing";
                     var metadata = new HashTable<string, Variant> (null, null);
                     if (player.current_track != null) {
-                        if (player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
+                        if (player.play_mode == Services.PlayMode.AUDIO_CD) {
                             metadata.insert("xesam:title", player.current_track.title);
                             metadata.insert("xesam:artist", get_simple_string_array (player.current_track.audio_cd.title));
                         } else {
@@ -192,17 +188,6 @@ namespace PlayMyMusic.Interfaces {
                     break;
             }
             send_properties ("PlaybackStatus", property);
-        }
-
-        private void radio_content (string uri, string content) {
-            if (player.current_radio != null && player.current_radio.file == uri) {
-                var metadata = new HashTable<string, Variant> (null, null);
-                var file = File.new_for_path (player.current_radio.cover_path);
-                metadata.insert("mpris:artUrl", file.get_uri ());
-                metadata.insert("xesam:title", player.current_radio.title);
-                metadata.insert("xesam:artist", get_simple_string_array (content));
-                send_properties ("Metadata", metadata);
-            }
         }
     }
 }

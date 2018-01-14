@@ -58,11 +58,15 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.4.3" date="2018-01-20">
+        <release version="0.4.3" date="2018-01-15">
             <description>
                 <p>Fix:</p>
                 <ul>
                     <li>Spinner visibility while library is being scanned</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Spanish (by Alain)</li>
                 </ul>
             </description>
         </release>
