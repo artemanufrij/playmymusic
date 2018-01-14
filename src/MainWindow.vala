@@ -144,7 +144,6 @@ namespace PlayMyMusic {
                         previous_button.sensitive = false;
                         next_button.sensitive = false;
                     } else if (library_manager.player.current_radio != null) {
-
                         headerbar.title = library_manager.player.current_radio.title;
                         previous_button.sensitive = false;
                         next_button.sensitive = false;

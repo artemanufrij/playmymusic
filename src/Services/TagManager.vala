@@ -43,7 +43,7 @@ namespace PlayMyMusic.Services {
 
         Gst.PbUtils.Discoverer discoverer;
 
-        int discover_counter = 0;
+        public int discover_counter { get; private set; default = 0; }
 
         string unknown = _("Unknown");
 

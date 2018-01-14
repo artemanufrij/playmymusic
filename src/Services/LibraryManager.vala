@@ -60,6 +60,8 @@ namespace PlayMyMusic.Services {
 
         PlayMyMusic.Settings settings;
 
+        uint finish_timer = 0;
+
         public GLib.List<PlayMyMusic.Objects.Artist> artists {
             get {
                 return db_manager.artists;
@@ -183,12 +185,40 @@ namespace PlayMyMusic.Services {
         }
 
         public void found_local_music_file (string uri) {
-            new Thread<void*> (null, () => {
-                if (!db_manager.music_file_exists (uri)) {
-                    tg_manager.add_discover_uri (uri);
+            cancel_finish_timeout ();
+            new Thread<void*> (
+                "found_local_music_file",
+                () => {
+                    if (!db_manager.music_file_exists (uri)) {
+                        tg_manager.add_discover_uri (uri);
+                    } else if (tg_manager.discover_counter == 0) {
+                        finish_timeout ();
+                    }
+                    return null;
+                });
+        }
+
+        private void finish_timeout () {
+            lock (finish_timer) {
+                cancel_finish_timeout ();
+
+                finish_timer = Timeout.add (
+                    1000,
+                    () => {
+                        sync_finished ();
+                        cancel_finish_timeout ();
+                        return false;
+                    });
                 }
-                return null;
-            });
+        }
+
+        private void cancel_finish_timeout () {
+            lock (finish_timer) {
+                if (finish_timer != 0) {
+                    Source.remove (finish_timer);
+                    finish_timer = 0;
+                }
+            }
         }
 
         // AUDIO CD REGION
