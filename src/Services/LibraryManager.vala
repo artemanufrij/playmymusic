@@ -190,6 +190,9 @@ namespace PlayMyMusic.Services {
                 "found_local_music_file",
                 () => {
                     if (!db_manager.music_file_exists (uri)) {
+                        if (tg_manager.discover_counter == 0) {
+                            sync_started ();
+                        }
                         tg_manager.add_discover_uri (uri);
                     } else if (tg_manager.discover_counter == 0) {
                         finish_timeout ();
