@@ -62,6 +62,14 @@
             <description>
                 <p>Fix:</p>
                 <ul>
+                    <li>Endless spinner</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.4.3" date="2018-01-15">
+            <description>
+                <p>Fix:</p>
+                <ul>
                     <li>Spinner visibility while library is being scanned</li>
                 </ul>
                 <p>Translation:</p>
