@@ -51,6 +51,7 @@ PACKAGES
     json-glib-1.0
     gstreamer-pbutils-1.0
     gstreamer-tag-1.0
+    taglib_c
 OPTIONS
     --vapidir=${CMAKE_SOURCE_DIR}/vapi
     --target-glib=2.32

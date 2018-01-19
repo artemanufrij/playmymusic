@@ -58,8 +58,12 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.4.5" date="2018-01-20">
+        <release version="0.5.0" date="2018-01-25">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Saving changes directly into file (ID3-tags)</li>
+                </ul>
                 <p>Changes:</p>
                 <ul>
                     <li>Lazy cover loading -> less memory on startup</li>

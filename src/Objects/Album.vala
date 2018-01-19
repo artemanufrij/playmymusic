@@ -71,6 +71,13 @@ namespace PlayMyMusic.Objects {
             removed.connect (() => {
                 artist.album_removed (this);
             });
+            updated.connect (() => {
+                if (settings.save_id3_tags) {
+                    foreach (var track in tracks) {
+                        track.save_id3_tags ();
+                    }
+                }
+            });
         }
 
         public Album (Artist? artist = null) {
@@ -109,6 +116,19 @@ namespace PlayMyMusic.Objects {
                 }
                 destination.dispose ();
                 source.dispose ();
+            }
+        }
+
+        public void merge (GLib.List<Objects.Album> albums) {
+            foreach (var album in albums) {
+                if (album.ID == ID) {
+                    continue;
+                }
+                foreach (var track in album.tracks) {
+                    add_track_if_not_exists (track);
+                    db_manager.update_track (track);
+                }
+                db_manager.remove_album (album);
             }
         }
 

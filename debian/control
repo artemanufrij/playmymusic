@@ -10,6 +10,7 @@ Build-Depends: cmake (>= 2.8),
                libsoup2.4-dev,
                libsqlite3-dev,
                libgstreamer-plugins-base1.0-dev,
+               libtag1-dev,
                valac (>= 0.26)
 Standards-Version: 3.9.3
 

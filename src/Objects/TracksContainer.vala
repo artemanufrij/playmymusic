@@ -27,8 +27,9 @@
 
 namespace PlayMyMusic.Objects {
     public class TracksContainer : GLib.Object {
-        protected PlayMyMusic.Services.LibraryManager library_manager;
-        protected PlayMyMusic.Services.DataBaseManager db_manager;
+        protected Services.LibraryManager library_manager;
+        protected Services.DataBaseManager db_manager;
+        protected Settings settings;
 
         public signal void track_added (Track track);
         public signal void track_removed (Track track);
@@ -37,6 +38,7 @@ namespace PlayMyMusic.Objects {
         public signal void background_found ();
         public signal void property_changed (string property);
         public signal void removed ();
+        public signal void updated ();
 
         public string title { get; set; default = ""; }
         public string name { get; set; default = ""; }
@@ -96,7 +98,8 @@ namespace PlayMyMusic.Objects {
         }
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
             db_manager = library_manager.db_manager;
         }
 

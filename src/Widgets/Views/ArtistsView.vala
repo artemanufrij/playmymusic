@@ -123,7 +123,7 @@ namespace PlayMyMusic.Widgets.Views {
                 foreach (var child in artists.get_selected_children ()){
                     selected.append ((child as Widgets.Artist).artist);
                 }
-                library_manager.merge_artists (selected, artist);
+                artist.merge (selected);
             });
             do_sort ();
         }

@@ -159,7 +159,7 @@ namespace PlayMyMusic.Widgets.Views {
                 foreach (var child in albums.get_selected_children ()){
                     selected.append ((child as Widgets.Album).album);
                 }
-                library_manager.merge_albums (selected, album);
+                album.merge (selected);
             });
             do_sort ();
         }

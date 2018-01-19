@@ -97,6 +97,14 @@ namespace PlayMyMusic.Dialogs {
                 settings.save_custom_covers = save_custom_covers.active;
             });
 
+            var save_id3_tags_label = new Gtk.Label (_("Save changes into ID3-Tag"));
+            save_id3_tags_label.halign = Gtk.Align.START;
+            var save_id3_tags = new Gtk.Switch ();
+            save_id3_tags.active = settings.save_id3_tags;
+            save_id3_tags.notify["active"].connect (() => {
+                settings.save_id3_tags = save_id3_tags.active;
+            });
+
             grid.attach (use_dark_theme_label, 0, 0);
             grid.attach (use_dark_theme, 1, 0);
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1, 2, 1);
@@ -109,6 +117,8 @@ namespace PlayMyMusic.Dialogs {
             grid.attach (load_artist_data, 1, 5);
             grid.attach (save_custom_covers_label, 0, 6);
             grid.attach (save_custom_covers, 1, 6);
+            grid.attach (save_id3_tags_label, 0, 7);
+            grid.attach (save_id3_tags, 1, 7);
 
             content.pack_start (grid, false, false, 0);
 

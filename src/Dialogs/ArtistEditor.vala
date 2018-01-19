@@ -130,7 +130,7 @@ namespace PlayMyMusic.Dialogs {
             } else {
                 GLib.List<Objects.Artist> artists = new GLib.List<Objects.Artist> ();
                 artists.append (artist);
-                library_manager.merge_artists (artists, artist_exists);
+                artist_exists.merge (artists);
                 if (cover_changed) {
                     artist_exists.set_new_cover (cover.pixbuf, 256);
                     if (settings.save_custom_covers) {

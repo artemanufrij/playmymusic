@@ -299,6 +299,8 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                artist.updated ();
             }
             stmt.reset ();
         }
@@ -435,6 +437,8 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                album.updated ();
             }
             stmt.reset ();
         }

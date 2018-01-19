@@ -25,6 +25,7 @@ pkg_check_modules (DEPS REQUIRED
     gstreamer-tag-1.0
     gstreamer-pbutils-1.0
     gstreamer-audio-1.0
+    taglib_c
 )
 
 # Comment this out to enable C compiler warnings

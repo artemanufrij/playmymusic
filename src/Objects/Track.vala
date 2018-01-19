@@ -27,10 +27,11 @@
 
 namespace PlayMyMusic.Objects {
     public class Track : GLib.Object {
-        PlayMyMusic.Services.LibraryManager library_manager;
+        Services.LibraryManager library_manager;
 
         public signal void removed ();
         public signal void album_changed (Album album);
+        public signal void tags_saved ();
 
         Album? _album = null;
         public Album album {
@@ -78,7 +79,7 @@ namespace PlayMyMusic.Objects {
         public signal void path_not_found ();
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
             removed.connect (() => {
                 if (album != null) {
                     album.track_removed (this);
@@ -92,36 +93,58 @@ namespace PlayMyMusic.Objects {
 
         public Track (TracksContainer? container = null) {
             if (container != null && container is Album) {
-                this.set_album (container as Album);
+                set_album (container as Album);
             } else if (container != null && container is Playlist) {
-                this.set_playlist (container as Playlist);
+                set_playlist (container as Playlist);
             } else if (container != null && container is AudioCD) {
-                this.set_audio_cd (container as AudioCD);
+                set_audio_cd (container as AudioCD);
             }
         }
 
         public void set_album (Album album) {
-            this._album = album;
-            album_changed (this.album);
+            _album = album;
+            album_changed (album);
         }
 
         public void set_playlist (Playlist playlist) {
-            this._playlist = playlist;
+            _playlist = playlist;
         }
 
         private void set_audio_cd (AudioCD audio_cd) {
-            this._audio_cd = audio_cd;
+            _audio_cd = audio_cd;
         }
 
         public bool file_exists () {
             bool return_value = true;
-            var file = File.new_for_uri (this.uri);
+            var file = File.new_for_uri (uri);
             if (!file.query_exists ()) {
                 path_not_found ();
                 return_value = false;
             }
             file.dispose ();
             return return_value;
+        }
+
+        public void save_id3_tags () {
+
+            var path = File.new_for_uri (uri);
+
+            stdout.printf ("ID3 Start\n");
+            var file = new TagLib.File (path.get_path ());
+            if (file.tag.album == this.album.title && file.tag.artist == this.album.artist.name && file.tag.year == this.album.year && file.tag.genre == genre) {
+                return;
+            }
+
+            file.tag.album = this.album.title;
+            file.tag.artist = this.album.artist.name;
+            file.tag.year = this.album.year;
+            file.tag.genre = genre;
+            if (file.save ()) {
+                tags_saved ();
+
+                stdout.printf ("ID3 SAVED year:%u \n", file.tag.year);
+            }
+            path.dispose ();
         }
     }
 }
