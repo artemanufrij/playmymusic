@@ -165,7 +165,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
             var p = new Widgets.Views.PlaylistView (playlist);
-            playlist.property_changed.connect (() => {
+            playlist.updated.connect (() => {
                 playlists.invalidate_sort ();
             });
             p.show_all ();

@@ -514,7 +514,7 @@ namespace PlayMyMusic.Services {
                 _playlists.sort ((a, b) => {
                     return a.title.collate (b.title);
                 });
-                playlist.property_changed ("title");
+                playlist.updated ();
             }
             stmt.reset ();
         }

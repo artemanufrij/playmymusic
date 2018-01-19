@@ -16,6 +16,7 @@
             <li>Listen to online Radio</li>
             <li>Audio CD support</li>
             <li>Manage your MTP device</li>
+            <li>ID3-Tag support</li>
         </ul>
     </description>
     <categories>
@@ -27,7 +28,7 @@
         <value key="x-appcenter-suggested-price">1</value>
     </custom>
     <developer_name>Artem Anufrij</developer_name>
-    <url type="homepage">https://github.com/artemanufrij/playmymusic</url>
+    <url type="homepage">https://artemanufrij.github.io</url>
     <url type="bugtracker">https://github.com/artemanufrij/playmymusic/issues</url>
     <url type="help">https://github.com/artemanufrij/playmymusic/issues</url>
     <update_contact>artem.anufrij@live.de</update_contact>

@@ -36,7 +36,6 @@ namespace PlayMyMusic.Objects {
         public signal void cover_changed ();
         public signal void background_changed ();
         public signal void background_found ();
-        public signal void property_changed (string property);
         public signal void removed ();
         public signal void updated ();
 

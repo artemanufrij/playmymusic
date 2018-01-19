@@ -73,7 +73,7 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
-            this.album.notify["title"].connect (() => {
+            this.album.updated.connect (() => {
                 set_values ();
             });
             this.key_press_event.connect ((event) => {

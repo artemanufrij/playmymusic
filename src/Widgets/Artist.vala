@@ -71,7 +71,7 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
-            this.artist.notify["name"].connect (() => {
+            this.artist.updated.connect (() => {
                 set_values ();
             });
             this.key_press_event.connect ((event) => {
