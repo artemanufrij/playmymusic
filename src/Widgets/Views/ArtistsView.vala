@@ -67,7 +67,7 @@ namespace PlayMyMusic.Widgets.Views {
             this.mainwindow = mainwindow;
             this.mainwindow.ctrl_press.connect (() => {
                 foreach (var child in artists.get_selected_children ()) {
-                    var artist = child as PlayMyMusic.Widgets.Artist;
+                    var artist = child as Widgets.Artist;
                     if (!artist.multi_selection) {
                         artist.toggle_multi_selection (false);
                     }
