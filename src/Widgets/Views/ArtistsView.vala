@@ -115,9 +115,6 @@ namespace PlayMyMusic.Widgets.Views {
             lock (artists) {
                 artists.add (a);
             }
-            a.unselect.connect (() => {
-                artists.unselect_child (a);
-            });
             a.merge.connect (() => {
                 GLib.List<Objects.Artist> selected = new GLib.List<Objects.Artist> ();
                 foreach (var child in artists.get_selected_children ()){

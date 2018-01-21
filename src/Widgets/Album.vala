@@ -30,7 +30,6 @@ namespace PlayMyMusic.Widgets {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Settings settings;
 
-        public signal void unselect ();
         public signal void merge ();
 
         public PlayMyMusic.Objects.Album album { get; private set; }
@@ -182,7 +181,7 @@ namespace PlayMyMusic.Widgets {
                 multi_select.set_image (multi_selected_image);
             } else {
                 multi_selection = false;
-                unselect ();
+                (this.parent as Gtk.FlowBox).unselect_child (this);
                 multi_select.set_image (add_selection_image);
             }
         }
