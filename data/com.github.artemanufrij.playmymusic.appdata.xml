@@ -59,7 +59,7 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.5.0" date="2018-01-25">
+        <release version="0.5.0" date="2018-01-30">
             <description>
                 <p>New:</p>
                 <ul>
@@ -67,7 +67,12 @@
                 </ul>
                 <p>Changes:</p>
                 <ul>
+                    <li>Generic name "PlayMyMusic" -> "Melody"</li>
                     <li>Lazy cover loading -> less memory on startup</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Simplified Chinese (by trampover)</li>
                 </ul>
             </description>
         </release>

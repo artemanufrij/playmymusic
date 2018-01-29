@@ -4,258 +4,268 @@ msgstr ""
 "POT-Creation-Date: 2017-11-26 17:36+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.4\n"
+"Last-Translator: 金立龙 <trampover@gmail.com>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_CN\n"
 
 #: ../src/Widgets/Album.vala:100 ../src/Widgets/Artist.vala:85
 #: ../src/Widgets/Views/AlbumView.vala:86
 #: ../src/Widgets/Views/AudioCDView.vala:118
 msgid "Set new Cover…"
-msgstr ""
+msgstr "设置新的封面."
 
 #: ../src/Widgets/Album.vala:114 ../src/Widgets/Track.vala:100
 msgid "Add into Playlist"
-msgstr ""
+msgstr "添加到播放列表"
 
 #: ../src/Widgets/Album.vala:119 ../src/Widgets/Artist.vala:99
 #: ../src/Widgets/Track.vala:114
 msgid "Send to"
-msgstr ""
+msgstr "发给"
 
 #: ../src/Widgets/Album.vala:165 ../src/Widgets/Track.vala:160
 msgid "Create New Playlist"
-msgstr ""
+msgstr "建立播放列表"
 
 #: ../src/Widgets/TrackTimeLine.vala:93 ../src/Widgets/TrackTimeLine.vala:97
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "正在播放的是<b>%s</b> - 专辑<b>%s</b> - 艺人<b>%s</b> "
 
 #: ../src/Widgets/Views/AlbumView.vala:120
 #: ../src/Widgets/Views/ArtistView.vala:138
 #: ../src/Widgets/Views/PlaylistsView.vala:128
 #: ../src/Widgets/Views/AudioCDView.vala:173
 msgid "Shuffle"
-msgstr ""
+msgstr "不循环播放"
 
 #: ../src/Widgets/Views/AlbumView.vala:132
 #: ../src/Widgets/Views/ArtistView.vala:150
 #: ../src/Widgets/Views/PlaylistsView.vala:140
 #: ../src/Widgets/Views/AudioCDView.vala:185
 msgid "Repeat"
-msgstr ""
+msgstr "循环播放"
 
 #: ../src/Widgets/Views/AlbumsView.vala:107
 msgid "Change Music Folder"
-msgstr ""
+msgstr "更改乐库位置"
 
 #: ../src/Widgets/Views/AlbumsView.vala:107
 msgid "Load music from a folder, a network or an external disk."
-msgstr ""
+msgstr "从文件夹，网络或外部磁盘导入音乐。"
 
 #: ../src/Widgets/Views/AlbumsView.vala:108
 msgid "Import Music"
-msgstr ""
+msgstr "导入音乐"
 
 #: ../src/Widgets/Views/AlbumsView.vala:108
 msgid "Import music from a source into your library."
-msgstr ""
+msgstr "将音乐导入您的乐库。"
 
 #: ../src/Widgets/Views/RadiosView.vala:108
 msgid "Add a radio station"
-msgstr ""
+msgstr "添加一个电台"
 
 #: ../src/Widgets/Views/RadiosView.vala:143
 msgid "Choose a Cover"
-msgstr ""
+msgstr "选择封面"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
-msgstr ""
+msgstr "添加电台"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
-msgstr ""
+msgstr "添加像.pls或.m3u之类的流式URL."
 
 #: ../src/Widgets/Views/RadiosView.vala:226
 #: ../src/Widgets/Views/PlaylistsView.vala:158
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 #: ../src/Widgets/Views/RadiosView.vala:228
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: ../src/Widgets/Views/PlaylistView.vala:97
 msgid "Rename"
-msgstr ""
+msgstr "更改名字"
 
 #: ../src/Widgets/Views/PlaylistView.vala:115
 msgid "Rename Playlist"
-msgstr ""
+msgstr "更改播放列表名称"
 
 #: ../src/Widgets/Views/PlaylistView.vala:124
 msgid "Remove Playlist"
-msgstr ""
+msgstr "删除播放列表"
 
 #: ../src/Widgets/Views/ArtistView.vala:213
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr ""
+msgstr "<b>%d 首歌曲</b>一共<b>%d </b>张专辑"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:110
 msgid "Add a playlist"
-msgstr ""
+msgstr "添加一个播放列表"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:178
 msgid "Add Playlist"
-msgstr ""
+msgstr "添加播放列表"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:178
 msgid "Add a playlist for manage your favorite songs."
-msgstr ""
+msgstr "添加播放列表来管理您最喜爱的歌曲."
 
 #: ../src/Widgets/Track.vala:61
 msgid ""
 "File couldn't be found\n"
 "%s"
 msgstr ""
+"无法找到文件\n"
+"％S"
 
 #: ../src/Widgets/Track.vala:104
 msgid "Remove from Playlist"
-msgstr ""
+msgstr "从播放列表中删除"
 
 #: ../src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
-msgstr ""
+msgstr "编辑电台..."
 
 #: ../src/Widgets/Radio.vala:103
 msgid "Remove Radio Station"
-msgstr ""
+msgstr "移除电台"
 
 #: ../src/Services/LibraryManager.vala:207
 msgid "New Playlist"
-msgstr ""
+msgstr "新建播放列表"
 
 #: ../src/Services/LibraryManager.vala:246
 msgid "Choose an image…"
-msgstr ""
+msgstr "选择图片"
 
 #: ../src/Services/LibraryManager.vala:248
 #: ../src/Services/LibraryManager.vala:269
 msgid "_Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ../src/Services/LibraryManager.vala:249
 #: ../src/Services/LibraryManager.vala:270
 msgid "_Open"
-msgstr ""
+msgstr "打开"
 
 #: ../src/Services/LibraryManager.vala:252
 msgid "Images"
-msgstr ""
+msgstr "图片"
 
 #: ../src/Services/LibraryManager.vala:268
 msgid "Select a folder."
-msgstr ""
+msgstr "选择文件夹"
 
 #: ../src/Services/LibraryManager.vala:273
 msgid "Folder"
-msgstr ""
+msgstr "文件夹"
 
 #: ../src/Services/TagManager.vala:48 ../src/Objects/AudioCD.vala:67
 #: ../src/Objects/AudioCD.vala:68
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #: ../src/Objects/MobilePhoneMusicFolder.vala:82
 msgid "deleting…"
-msgstr ""
+msgstr "删除..."
 
 #: ../src/Objects/AudioCD.vala:100
 msgid "Track %d"
-msgstr ""
+msgstr "音轨%d"
 
 #: ../src/Objects/MobilePhone.vala:45
 msgid "No Music Files found"
-msgstr ""
+msgstr "找不到音乐文件"
 
 #: ../src/MainWindow.vala:110
 msgid "Pause"
-msgstr ""
+msgstr "暂停"
 
 #: ../src/MainWindow.vala:130 ../src/MainWindow.vala:264
 msgid "Play My Music"
-msgstr ""
+msgstr "播放我的音乐"
 
 #: ../src/MainWindow.vala:133 ../src/MainWindow.vala:281
 msgid "Play"
-msgstr ""
+msgstr "播放"
 
 #: ../src/MainWindow.vala:273
 msgid "Previous"
-msgstr ""
+msgstr "上一首"
 
 #: ../src/MainWindow.vala:288
 msgid "Next"
-msgstr ""
+msgstr "下一首"
 
 #: ../src/MainWindow.vala:336
 msgid "Change Music Folder…"
-msgstr ""
+msgstr "更改乐库位置"
 
 #: ../src/MainWindow.vala:345
 msgid "Import Music…"
-msgstr ""
+msgstr "导入音乐"
 
 #: ../src/MainWindow.vala:353
 msgid "Reset all views"
-msgstr ""
+msgstr "重置所有乐库"
 
 #: ../src/MainWindow.vala:359
 msgid "Rescan Library"
-msgstr ""
+msgstr "重新扫描乐库"
 
 #: ../src/MainWindow.vala:365
 msgid "Preferences"
-msgstr ""
+msgstr "偏好设置"
 
 #: ../src/MainWindow.vala:385
 msgid "Search Music"
-msgstr ""
+msgstr "搜索音乐"
 
 #: ../src/MainWindow.vala:463
 msgid "Albums"
-msgstr ""
+msgstr "专辑"
 
 #: ../src/MainWindow.vala:467
 msgid "Artists"
-msgstr ""
+msgstr "艺人"
 
 #: ../src/MainWindow.vala:472
 msgid "Playlists"
-msgstr ""
+msgstr "播放列表"
 
 #: ../src/MainWindow.vala:477
 msgid "Radio Stations"
-msgstr ""
+msgstr "广播电台"
 
 #: ../src/MainWindow.vala:484
 msgid "Audio CD"
-msgstr ""
+msgstr "音频光盘"
 
 #: ../src/MainWindow.vala:544 ../src/MainWindow.vala:552
 msgid "<b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> 的 <b>%s</b>"
 
 #: ../src/Dialogs/Preferences.vala:60
 msgid "Use Dark Theme"
-msgstr ""
+msgstr "暗色主题"
 
 #: ../src/Dialogs/Preferences.vala:68
 msgid "Play in background if closed"
-msgstr ""
+msgstr "关闭后继续播放"
 
 #: ../src/Dialogs/Preferences.vala:76
 msgid "Look for new files on start up"
-msgstr ""
+msgstr "启动时监视乐库中的新音乐"
 
 #: ../src/Dialogs/Preferences.vala:84
 msgid "Load Artist data from MusicBrainz"
-msgstr ""
+msgstr "从MusicBrainz加载艺人数据"
