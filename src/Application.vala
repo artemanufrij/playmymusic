@@ -45,6 +45,7 @@ namespace PlayMyMusic {
 
         construct {
             this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
+            this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
 
@@ -160,26 +161,77 @@ namespace PlayMyMusic {
                 mainwindow.open_file (files [0]);
             }
         }
+
+        [CCode (array_length = false, array_null_terminated = true)]
+        string[] ? arg_files = null;
+
+        public override int command_line (ApplicationCommandLine cmd) {
+            this.hold ();
+            var return_value = command_line_interpreter (cmd);
+            this.release ();
+            return return_value;
+        }
+
+        private int command_line_interpreter (ApplicationCommandLine cmd) {
+            string[] args_cmd = cmd.get_arguments ();
+            unowned string[] args = args_cmd;
+
+            bool next = false;
+            bool prev = false;
+            bool play = false;
+
+            GLib.OptionEntry [] options = new OptionEntry [5];
+            options [0] = { "next", 0, 0, OptionArg.NONE, ref next, "Play next track", null };
+            options [1] = { "prev", 0, 0, OptionArg.NONE, ref prev, "Play previous track", null };
+            options [2] = { "play", 0, 0, OptionArg.NONE, ref play, "Toggle playing", null };
+            options [3] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_files, null, "[URI...]" };
+            options [4] = { null };
+
+            var opt_context = new OptionContext ("actions");
+            opt_context.set_help_enabled (true);
+            opt_context.add_main_entries (options, null);
+            try {
+                opt_context.parse (ref args);
+            } catch (Error err) {
+                warning (err.message);
+                return 0;
+            }
+
+
+            if (next || prev || play) {
+                activate ();
+                if (next) {
+                    mainwindow.next ();
+                } else if (prev) {
+                    mainwindow.prev ();
+                } else if (play) {
+                    mainwindow.play ();
+                }
+                return 0;
+            }
+
+            File[] files = null;
+            foreach (string arg_file in arg_files) {
+                var file = File.new_for_path (arg_file);
+                if (file.query_exists ()) {
+                    files += (file);
+                }
+            }
+
+            if (files != null && files.length > 0) {
+                open (files, "");
+                return 0;
+            }
+
+            activate ();
+
+            return 0;
+        }
     }
 }
 
 public static int main (string [] args) {
     Gst.init (ref args);
     var app = PlayMyMusic.PlayMyMusicApp.instance;
-    if (args.length > 1) {
-        switch (args[1]) {
-        case "--toggle" :
-        stdout.printf ("GO TOGGLE\n");
-            break;
-        case "--next" :
-            stdout.printf ("GO NEXT\n");
-            break;
-        case "--prev" :
-        stdout.printf ("GO PREV\n");
-            break;
-        default :
-            break;
-        }
-    }
     return app.run (args);
 }

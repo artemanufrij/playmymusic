@@ -16,7 +16,7 @@ Actions=Toggle;Next;Prev;
 
 [Desktop Action Toggle]
 Name=Play/Pause
-Exec=com.github.artemanufrij.playmymusic --toggle
+Exec=com.github.artemanufrij.playmymusic --play
 
 [Desktop Action Next]
 Name=Next
