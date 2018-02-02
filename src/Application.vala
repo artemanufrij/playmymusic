@@ -51,56 +51,62 @@ namespace PlayMyMusic {
             var action_search_reset = new SimpleAction ("search-reset", null);
             add_action (action_search_reset);
             add_accelerator ("Escape", "app.search-reset", null);
-            action_search_reset.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.search_reset ();
-                }
-            });
+            action_search_reset.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.search_reset ();
+                    }
+                });
 
             var action_show_albums = new SimpleAction ("show-albums", null);
             add_action (action_show_albums);
             add_accelerator ("<Alt>1", "app.show-albums", null);
-            action_show_albums.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (0);
-                }
-            });
+            action_show_albums.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (0);
+                    }
+                });
 
             var action_show_artists = new SimpleAction ("show-artists", null);
             add_action (action_show_artists);
             add_accelerator ("<Alt>2", "app.show-artists", null);
-            action_show_artists.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (1);
-                }
-            });
+            action_show_artists.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (1);
+                    }
+                });
 
             var action_show_playlists = new SimpleAction ("show-playlists", null);
             add_action (action_show_playlists);
             add_accelerator ("<Alt>3", "app.show-playlists", null);
-            action_show_playlists.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (2);
-                }
-            });
+            action_show_playlists.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (2);
+                    }
+                });
 
             var action_show_radiostations = new SimpleAction ("show-radiostations", null);
             add_action (action_show_radiostations);
             add_accelerator ("<Alt>4", "app.show-radiostations", null);
-            action_show_radiostations.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (3);
-                }
-            });
+            action_show_radiostations.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (3);
+                    }
+                });
 
             var action_show_audiocd = new SimpleAction ("show-audiocd", null);
             add_action (action_show_audiocd);
             add_accelerator ("<Alt>5", "app.show-audiocd", null);
-            action_show_audiocd.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (4);
-                }
-            });
+            action_show_audiocd.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (4);
+                    }
+                });
 
             create_cache_folders ();
         }
@@ -133,7 +139,8 @@ namespace PlayMyMusic {
             }
         }
 
-        private PlayMyMusicApp () {}
+        private PlayMyMusicApp () {
+        }
 
         public MainWindow mainwindow { get; private set; default = null; }
 
@@ -159,5 +166,20 @@ namespace PlayMyMusic {
 public static int main (string [] args) {
     Gst.init (ref args);
     var app = PlayMyMusic.PlayMyMusicApp.instance;
+    if (args.length > 1) {
+        switch (args[1]) {
+        case "--toggle" :
+        stdout.printf ("GO TOGGLE\n");
+            break;
+        case "--next" :
+            stdout.printf ("GO NEXT\n");
+            break;
+        case "--prev" :
+        stdout.printf ("GO PREV\n");
+            break;
+        default :
+            break;
+        }
+    }
     return app.run (args);
 }
