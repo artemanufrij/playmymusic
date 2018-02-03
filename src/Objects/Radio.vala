@@ -26,7 +26,7 @@
  */
 
 namespace PlayMyMusic.Objects {
-    public class Radio: GLib.Object {
+    public class Radio : GLib.Object {
         PlayMyMusic.Services.LibraryManager library_manager;
         public signal void cover_changed ();
         public signal void removed ();
@@ -37,7 +37,7 @@ namespace PlayMyMusic.Objects {
                 return _ID;
             } set {
                 _ID = value;
-                cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf(this.ID));
+                cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("radio_%d.jpg").printf (this.ID));
                 load_cover ();
             }
         }
@@ -46,8 +46,8 @@ namespace PlayMyMusic.Objects {
 
         public string cover_path { get; private set; default = ""; }
 
-        string? _file = null;
-        public string? file {
+        string ? _file = null;
+        public string ? file {
             get {
                 if (_file == null) {
                     _file = get_stream_file ();
@@ -57,8 +57,8 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        Gdk.Pixbuf? _cover = null;
-        public Gdk.Pixbuf? cover {
+        Gdk.Pixbuf ? _cover = null;
+        public Gdk.Pixbuf ? cover {
             get {
                 return _cover;
             } set {
@@ -69,24 +69,26 @@ namespace PlayMyMusic.Objects {
 
         construct {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            removed.connect (() => {
-                var file = File.new_for_path (cover_path);
-                if (file.query_exists ()) {
-                    file.delete_async.begin ();
-                }
-            });
+            removed.connect (
+                () => {
+                    var file = File.new_for_path (cover_path);
+                    if (file.query_exists ()) {
+                        file.delete_async.begin ();
+                    }
+                });
         }
 
-        public Radio () {}
+        public Radio () {
+        }
 
         public void reset_stream_file () {
             _file = null;
         }
 
-        private string? get_stream_file () {
-            string? return_value = null;
+        private string ? get_stream_file () {
+            string ? return_value = null;
 
-            string? content = get_stream_content ();
+            string ? content = get_stream_content ();
             if (content != null) {
                 return_value = get_file_from_m3u (content);
                 if (return_value == null) {
@@ -99,32 +101,31 @@ namespace PlayMyMusic.Objects {
             return return_value;
         }
 
-        private string? get_stream_content () {
-            string? return_value = null;
-            var session = new Soup.Session();
+        private string ? get_stream_content () {
+            string ? return_value = null;
+            var session = new Soup.Session ();
             var msg = new Soup.Message ("GET", url);
-            var loop = new MainLoop();
+            var loop = new MainLoop ();
 
-            session.send_async.begin (msg, null, (obj, res) => {
-                stdout.printf ("END\n");
-                var content_type = msg.response_headers.get_one ("Content-Type");
-                stdout.printf ("content_type %s\n", content_type);
-                if (content_type != null && content_type != "audio/mpeg" && content_type != "audio/aacp") {
-                    session.send_message (msg);
-                    var data = (string) msg.response_body.data;
-                    if (msg.status_code == 200) {
-                        return_value = data;
+            session.send_async.begin (
+                msg,
+                null,
+                (obj, res) => {
+                    var content_type = msg.response_headers.get_one ("Content-Type");
+                    if (content_type != null && content_type != "audio/mpeg" && content_type != "audio/aacp") {
+                        session.send_message (msg);
+                        var data = (string)msg.response_body.data;
+                        if (msg.status_code == 200) {
+                            return_value = data;
+                        }
                     }
-                }
-                stdout.printf ("loop quit\n");
-                loop.quit ();
-            });
-            stdout.printf ("loop run %s\n", url);
+                    loop.quit ();
+                });
             loop.run ();
             return return_value;
         }
 
-        private string? get_file_from_m3u (string content) {
+        private string ? get_file_from_m3u (string content) {
             string[] lines = content.split ("\n");
             foreach (unowned string line in lines) {
                 if (line.has_prefix ("http") && line.index_of ("#") == -1) {
@@ -134,14 +135,14 @@ namespace PlayMyMusic.Objects {
             return null;
         }
 
-        private string? get_file_from_pls (string content) {
+        private string ? get_file_from_pls (string content) {
             string group = "playlist";
 
             var file = new KeyFile ();
             try {
                 file.load_from_data (content, -1, KeyFileFlags.NONE);
             } catch (Error err) {
-                warning (err.message);
+                        warning (err.message);
             }
 
             if (!file.has_group (group)) {
@@ -151,12 +152,12 @@ namespace PlayMyMusic.Objects {
             try {
                 foreach (unowned string key in file.get_keys (group)) {
                     string val = file.get_value (group, key);
-                        if (key.down ().has_prefix ("file")) {
+                    if (key.down ().has_prefix ("file")) {
                         return val;
                     }
                 }
             } catch (Error err) {
-                warning (err.message);
+                        warning (err.message);
             }
 
             return null;
