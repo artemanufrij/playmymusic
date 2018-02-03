@@ -105,23 +105,22 @@ namespace PlayMyMusic.Objects {
             string ? return_value = null;
             var session = new Soup.Session ();
             var msg = new Soup.Message ("GET", url);
-            var loop = new MainLoop ();
 
-            session.send_async.begin (
-                msg,
-                null,
-                (obj, res) => {
-                    var content_type = msg.response_headers.get_one ("Content-Type");
-                    if (content_type != null && content_type != "audio/mpeg" && content_type != "audio/aacp") {
-                        session.send_message (msg);
-                        var data = (string)msg.response_body.data;
-                        if (msg.status_code == 200) {
-                            return_value = data;
-                        }
-                    }
-                    loop.quit ();
-                });
-            loop.run ();
+            try {
+                session.send (msg, null);
+            }
+            catch (Error err) {
+                warning (err.message);
+                return return_value;
+            }
+            var content_type = msg.response_headers.get_one ("Content-Type");
+            if (content_type != null && !content_type.has_prefix ("audio/mpeg") && !content_type.has_prefix ("audio/aac")) {
+                session.send_message (msg);
+                var data = (string)msg.response_body.data;
+                if (msg.status_code == 200) {
+                    return_value = data;
+                }
+            }
             return return_value;
         }
 
@@ -142,7 +141,7 @@ namespace PlayMyMusic.Objects {
             try {
                 file.load_from_data (content, -1, KeyFileFlags.NONE);
             } catch (Error err) {
-                        warning (err.message);
+                warning (err.message);
             }
 
             if (!file.has_group (group)) {
@@ -157,7 +156,7 @@ namespace PlayMyMusic.Objects {
                     }
                 }
             } catch (Error err) {
-                        warning (err.message);
+                warning (err.message);
             }
 
             return null;
