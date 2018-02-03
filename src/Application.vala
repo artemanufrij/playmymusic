@@ -47,7 +47,7 @@ namespace PlayMyMusic {
         }
 
         construct {
-            //this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
+            this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
             this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
@@ -159,6 +159,7 @@ namespace PlayMyMusic {
         }
 
         public override void open (File[] files, string hint) {
+            stdout.printf ("OPEN FILE\n");
             if (files [0].query_exists ()) {
                 mainwindow.open_file (files [0]);
             }
