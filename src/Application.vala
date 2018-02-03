@@ -158,8 +158,7 @@ namespace PlayMyMusic {
             mainwindow.present ();
         }
 
-        public override void open (File[] files, string hint) {
-            stdout.printf ("OPEN FILE\n");
+        public override void open (File[] files, string hint) {;
             if (files [0].query_exists ()) {
                 mainwindow.open_file (files [0]);
             }
