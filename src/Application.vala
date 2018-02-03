@@ -156,7 +156,6 @@ namespace PlayMyMusic {
         }
 
         public override void open (File[] files, string hint) {
-            activate ();
             if (files [0].query_exists ()) {
                 mainwindow.open_file (files [0]);
             }
@@ -166,6 +165,7 @@ namespace PlayMyMusic {
         string[] ? arg_files = null;
 
         public override int command_line (ApplicationCommandLine cmd) {
+            activate ();
             this.hold ();
             var return_value = command_line_interpreter (cmd);
             this.release ();
@@ -198,7 +198,6 @@ namespace PlayMyMusic {
             }
 
             if (next || prev || play) {
-                activate ();
                 if (next) {
                     mainwindow.next ();
                 } else if (prev) {
@@ -220,8 +219,6 @@ namespace PlayMyMusic {
                 open (files, "");
                 return 0;
             }
-
-            activate ();
 
             return 0;
         }
