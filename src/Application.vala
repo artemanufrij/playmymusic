@@ -197,7 +197,6 @@ namespace PlayMyMusic {
                 return 0;
             }
 
-
             if (next || prev || play) {
                 activate ();
                 if (next) {
