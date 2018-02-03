@@ -93,7 +93,7 @@ namespace PlayMyMusic.Objects {
                     return_value = get_file_from_pls (content);
                 }
             } else {
-                return_value = this.url;
+                return_value = url;
             }
 
             return return_value;
@@ -102,11 +102,13 @@ namespace PlayMyMusic.Objects {
         private string? get_stream_content () {
             string? return_value = null;
             var session = new Soup.Session();
-            var msg = new Soup.Message ("GET", this.url);
+            var msg = new Soup.Message ("GET", url);
             var loop = new MainLoop();
 
             session.send_async.begin (msg, null, (obj, res) => {
+                stdout.printf ("END\n");
                 var content_type = msg.response_headers.get_one ("Content-Type");
+                stdout.printf ("content_type %s\n", content_type);
                 if (content_type != null && content_type != "audio/mpeg" && content_type != "audio/aacp") {
                     session.send_message (msg);
                     var data = (string) msg.response_body.data;
@@ -114,9 +116,10 @@ namespace PlayMyMusic.Objects {
                         return_value = data;
                     }
                 }
+                stdout.printf ("loop quit\n");
                 loop.quit ();
             });
-
+            stdout.printf ("loop run %s\n", url);
             loop.run ();
             return return_value;
         }

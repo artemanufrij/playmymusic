@@ -31,6 +31,9 @@ namespace PlayMyMusic {
         public string COVER_FOLDER { get; private set; }
         public string CACHE_FOLDER { get; private set; }
 
+        [CCode (array_length = false, array_null_terminated = true)]
+        string[] ? arg_files = null;
+
         PlayMyMusic.Settings settings;
 
         static PlayMyMusicApp _instance = null;
@@ -44,7 +47,7 @@ namespace PlayMyMusic {
         }
 
         construct {
-            this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
+            //this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
             this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
@@ -161,18 +164,13 @@ namespace PlayMyMusic {
             }
         }
 
-        [CCode (array_length = false, array_null_terminated = true)]
-        string[] ? arg_files = null;
-
         public override int command_line (ApplicationCommandLine cmd) {
             activate ();
-            this.hold ();
-            var return_value = command_line_interpreter (cmd);
-            this.release ();
-            return return_value;
+            command_line_interpreter (cmd);
+            return 0;
         }
 
-        private int command_line_interpreter (ApplicationCommandLine cmd) {
+        private void command_line_interpreter (ApplicationCommandLine cmd) {
             string[] args_cmd = cmd.get_arguments ();
             unowned string[] args = args_cmd;
 
@@ -194,7 +192,7 @@ namespace PlayMyMusic {
                 opt_context.parse (ref args);
             } catch (Error err) {
                 warning (err.message);
-                return 0;
+                return;
             }
 
             if (next || prev || play) {
@@ -205,7 +203,7 @@ namespace PlayMyMusic {
                 } else if (play) {
                     mainwindow.play ();
                 }
-                return 0;
+                return;
             }
 
             File[] files = null;
@@ -217,10 +215,10 @@ namespace PlayMyMusic {
 
             if (files != null && files.length > 0) {
                 open (files, "");
-                return 0;
+                return;
             }
 
-            return 0;
+            return;
         }
     }
 }
