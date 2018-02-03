@@ -212,9 +212,8 @@ namespace PlayMyMusic {
 
             File[] files = null;
             foreach (string arg_file in arg_files) {
-                var file = File.new_for_path (arg_file);
-                if (file.query_exists ()) {
-                    files += (file);
+                if (GLib.FileUtils.test (arg_file, GLib.FileTest.EXISTS)) {
+                    files += (File.new_for_path (arg_file));
                 }
             }
 
