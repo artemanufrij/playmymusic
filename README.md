@@ -4,7 +4,8 @@
   <p align="center">Designed for <a href="https://elementary.io">elementary OS</a></p>
 </div>
 
-Donate <a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LibrePay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Pareon</a>
+### Donate
+<a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LibrePay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Pareon</a>
 
 <p align="center">
   <a href="https://appcenter.elementary.io/com.github.artemanufrij.playmymusic">
@@ -19,9 +20,6 @@ Donate <a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https:
 ![screenshot](screenshots/Screenshot_Playlists.png)
 ![screenshot](screenshots/Screenshot_MTP.png)
 ![screenshot](screenshots/Screenshot_Audio_CD.png)
-
-## Donations
-If you liked _Play My Music_, and would like to support it's development of this app and more, consider [buying me a coffee](https://www.paypal.me/ArtemAnufrij) :) 
 
 ## Install from Github.
 
