@@ -1,7 +1,7 @@
 <div>
   <h1 align="center">Play My Music</h1>
   <h3 align="center">A music player for listening to local music files, online radios, and Audio CD's</h3>
-  <p align="center">Designed for <a href="https://elementary.io"> elementary OS</p>
+  <p align="center">Designed for <a href="https://elementary.io">elementary OS</p>
 </div>
 
 Donate <a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LibrePay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Pareon</a>
