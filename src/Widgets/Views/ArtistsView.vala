@@ -38,17 +38,18 @@ namespace PlayMyMusic.Widgets.Views {
             } set {
                 if (_filter != value) {
                     _filter = value;
-                    artists.invalidate_filter ();
+                    do_filter ();
                 }
             }
         }
 
         Gtk.FlowBox artists;
-        Gtk.Box content;
+        Gtk.Stack stack;
 
         Widgets.Views.ArtistView artist_view;
 
         uint timer_sort = 0;
+        uint items_found = 0;
 
         construct {
             settings = Settings.get_default ();
@@ -101,12 +102,18 @@ namespace PlayMyMusic.Widgets.Views {
             artist_view = new PlayMyMusic.Widgets.Views.ArtistView ();
             artist_view.expand = true;
 
-            content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            var content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.expand = true;
             content.pack_start (artists_scroll, false, false, 0);
             content.pack_end (artist_view, true, true, 0);
 
-            this.add (content);
+            var alert_view = new Granite.Widgets.AlertView (_("No results"), _("Try another search"), "edit-find-symbolic");
+
+            stack = new Gtk.Stack ();
+            stack.add_named (content, "content");
+            stack.add_named (alert_view, "alert");
+
+            this.add (stack);
             this.show_all ();
         }
 
@@ -139,6 +146,16 @@ namespace PlayMyMusic.Widgets.Views {
                     timer_sort = 0;
                     return false;
                 });
+            }
+        }
+
+        private void do_filter () {
+            items_found = 0;
+            artists.invalidate_filter ();
+            if (items_found == 0) {
+                stack.visible_child_name = "alert";
+            } else {
+                stack.visible_child_name = "content";
             }
         }
 
@@ -199,6 +216,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private bool artists_filter_func (Gtk.FlowBoxChild child) {
             if (filter.strip ().length == 0) {
+                items_found ++;
                 return true;
             }
 
@@ -219,6 +237,7 @@ namespace PlayMyMusic.Widgets.Views {
                     return false;
                 }
             }
+            items_found ++;
             return true;
         }
 

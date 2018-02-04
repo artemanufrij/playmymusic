@@ -38,7 +38,7 @@ namespace PlayMyMusic.Widgets.Views {
             } set {
                 if (_filter != value) {
                     _filter = value;
-                    albums.invalidate_filter ();
+                    do_filter ();
                 }
             }
         }
@@ -59,6 +59,7 @@ namespace PlayMyMusic.Widgets.Views {
         public signal void album_selected ();
 
         uint timer_sort = 0;
+        uint items_found = 0;
 
         construct {
             settings = Settings.get_default ();
@@ -136,14 +137,17 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             });
 
+            var alert_view = new Granite.Widgets.AlertView (_("No results"), _("Try another search"), "edit-find-symbolic");
+
             stack = new Gtk.Stack ();
             stack.add_named (welcome, "welcome");
             stack.add_named (content, "content");
+            stack.add_named (alert_view, "alert");
 
             this.add (stack);
             this.show_all ();
 
-            album_revealer.set_reveal_child (false);
+            album_revealer.reveal_child = false;
         }
 
         public void add_album (Objects.Album album) {
@@ -178,6 +182,20 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        private void do_filter () {
+            if (stack.visible_child_name == "welcome") {
+                return;
+            }
+
+            items_found = 0;
+            albums.invalidate_filter ();
+            if (items_found == 0) {
+                stack.visible_child_name = "alert";
+            } else {
+                stack.visible_child_name = "content";
+            }
+        }
+
         public void activate_by_track (Objects.Track track) {
             activate_by_id (track.album.ID);
         }
@@ -198,12 +216,12 @@ namespace PlayMyMusic.Widgets.Views {
             foreach (var child in albums.get_children ()) {
                 child.destroy ();
             }
-            stack.set_visible_child_name ("welcome");
+            stack.visible_child_name = "welcome";
         }
 
         private void show_album_viewer (Gtk.FlowBoxChild item) {
             if (mainwindow.ctrl_pressed) {
-                if ((item as PlayMyMusic.Widgets.Album).multi_selection) {
+                if ((item as Widgets.Album).multi_selection) {
                     albums.unselect_child (item);
                     (item as Widgets.Album).reset ();
                     return;
@@ -220,7 +238,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
 
             album_revealer.set_reveal_child (true);
-            var album = (item as PlayMyMusic.Widgets.Album).album;
+            var album = (item as Widgets.Album).album;
             settings.last_album_id = album.ID;
             album_view.show_album (album);
             album_selected ();
@@ -234,7 +252,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public bool open_file (string uri) {
             foreach (var child in albums.get_children ()) {
-                var album = child as PlayMyMusic.Widgets.Album;
+                var album = child as Widgets.Album;
                 foreach (var track in album.album.tracks) {
                     if (track.uri == uri) {
                         album.activate ();
@@ -256,6 +274,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private bool albums_filter_func (Gtk.FlowBoxChild child) {
             if (filter.strip ().length == 0) {
+                items_found ++;
                 return true;
             }
             string[] filter_elements = filter.strip ().down ().split (" ");
@@ -274,6 +293,7 @@ namespace PlayMyMusic.Widgets.Views {
                     return false;
                 }
             }
+            items_found ++;
             return true;
         }
 
