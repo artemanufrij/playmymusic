@@ -59,6 +59,14 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.5.2" date="2018-02-15">
+            <description>
+                <p>Improvements:</p>
+                <ul>
+                    <li>Show "No Result" message if search term hasn't any results</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.5.1" date="2018-02-05">
             <description>
                 <p>New:</p>
