@@ -1,9 +1,12 @@
 <div>
   <h1 align="center">Play My Music</h1>
   <h3 align="center">A music player for listening to local music files, online radios, and Audio CD's</h3>
-  <p align="center">Designed for <a href="https://elementary.io"> elementary OS</p>
+  <p align="center">Designed for <a href="https://elementary.io">elementary OS</a></p>
 </div>
-<a href="https://liberapay.com/Artem/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+
+### Donate
+<a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LiberaPay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Patreon</a>
+
 <p align="center">
   <a href="https://appcenter.elementary.io/com.github.artemanufrij.playmymusic">
     <img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter">
@@ -17,9 +20,6 @@
 ![screenshot](screenshots/Screenshot_Playlists.png)
 ![screenshot](screenshots/Screenshot_MTP.png)
 ![screenshot](screenshots/Screenshot_Audio_CD.png)
-
-## Donations
-If you liked _Play My Music_, and would like to support it's development of this app and more, consider [buying me a coffee](https://www.paypal.me/ArtemAnufrij) :) 
 
 ## Install from Github.
 
