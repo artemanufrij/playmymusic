@@ -151,7 +151,7 @@ namespace PlayMyMusic {
                 } else {
                     if (state != Gst.State.PAUSED) {
                         headerbar.set_custom_title (null);
-                        headerbar.title = _("Play My Music");
+                        headerbar.title = _("Melody");
                     }
                     play_button.image = icon_play;
                     play_button.tooltip_text = _("Play");
@@ -304,7 +304,7 @@ namespace PlayMyMusic {
             content = new Gtk.Stack ();
 
             headerbar = new Gtk.HeaderBar ();
-            headerbar.title = _("Play My Music");
+            headerbar.title = _("Melody");
             headerbar.show_close_button = true;
             headerbar.get_style_context ().add_class ("custom_titlebar");
             this.set_titlebar (headerbar);
