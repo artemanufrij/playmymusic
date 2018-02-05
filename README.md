@@ -5,7 +5,7 @@
 </div>
 
 ### Donate
-<a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LibrePay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Pareon</a>
+<a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LiberaPay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Patreon</a>
 
 <p align="center">
   <a href="https://appcenter.elementary.io/com.github.artemanufrij.playmymusic">
