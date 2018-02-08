@@ -63,6 +63,7 @@
             <description>
                 <p>Improvements:</p>
                 <ul>
+                    <li>Mounting MTP-Devices</li>
                     <li>Show "No Result" message if search term hasn't any results</li>
                 </ul>
             </description>
