@@ -58,7 +58,7 @@ namespace PlayMyMusic.Objects {
 
         public MobilePhone (Volume volume) {
             this.volume = volume;
-            if (this.volume.get_mount () == null) {
+            if (this.volume.get_mount () == null || volume.get_activation_root () == null) {
                 this.volume.mount.begin (
                     MountMountFlags.NONE,
                     null,
