@@ -63,7 +63,7 @@
             <description>
                 <p>Fix:</p>
                 <ul>
-                    <li>Spinner on first start</li>
+                    <li>Endless spinner on first start (if no music files exist)</li>
                 </ul>
                 <p>Improvements:</p>
                 <ul>
