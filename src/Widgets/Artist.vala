@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ namespace PlayMyMusic.Widgets {
         public PlayMyMusic.Objects.Artist artist { get; private set; }
         public new string name { get { return artist.name; } }
 
-        Gtk.Menu menu;
+        Gtk.Menu menu = null;
         Gtk.Menu send_to;
         Gtk.MenuItem menu_send_to;
         Gtk.MenuItem menu_merge;
@@ -126,43 +126,6 @@ namespace PlayMyMusic.Widgets {
             name_label.ellipsize = Pango.EllipsizeMode.END;
             name_label.use_markup = true;
 
-            menu = new Gtk.Menu ();
-            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
-            menu_new_cover.activate.connect (() => {
-                var new_cover = library_manager.choose_new_cover ();
-                if (new_cover != null) {
-                    try {
-                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                        artist.set_new_cover (pixbuf, 128);
-                        if (settings.save_custom_covers) {
-                            artist.set_custom_cover_file (new_cover);
-                        }
-                    } catch (Error err) {
-                        warning (err.message);
-                    }
-                }
-            });
-            menu.add (menu_new_cover);
-
-            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Artist properties…"));
-            menu_edit_album.activate.connect (() => {
-                edit_artist ();
-            });
-            menu.add (menu_edit_album);
-
-            menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
-            menu.add (menu_send_to);
-            send_to = new Gtk.Menu ();
-            menu_send_to.set_submenu (send_to);
-
-            menu_merge = new Gtk.MenuItem.with_label (_("Merge selected Artists"));
-            menu_merge.activate.connect (() => {
-                merge ();
-            });
-            menu.add (menu_merge);
-
-            menu.show_all ();
-
             // MULTISELECTION BUTTON
             add_selection_image = new Gtk.Image.from_icon_name ("selection-add", Gtk.IconSize.BUTTON);
             multi_selected_image = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.BUTTON);
@@ -241,8 +204,51 @@ namespace PlayMyMusic.Widgets {
             }
         }
 
+        private void build_context_menu () {
+            menu = new Gtk.Menu ();
+            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
+            menu_new_cover.activate.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
+                        artist.set_new_cover (pixbuf, 128);
+                        if (settings.save_custom_covers) {
+                            artist.set_custom_cover_file (new_cover);
+                        }
+                    } catch (Error err) {
+                        warning (err.message);
+                    }
+                }
+            });
+            menu.add (menu_new_cover);
+
+            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Artist properties…"));
+            menu_edit_album.activate.connect (() => {
+                edit_artist ();
+            });
+            menu.add (menu_edit_album);
+
+            menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
+            menu.add (menu_send_to);
+            send_to = new Gtk.Menu ();
+            menu_send_to.set_submenu (send_to);
+
+            menu_merge = new Gtk.MenuItem.with_label (_("Merge selected Artists"));
+            menu_merge.activate.connect (() => {
+                merge ();
+            });
+            menu.add (menu_merge);
+
+            menu.show_all ();
+        }
+
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                if (menu == null) {
+                    build_context_menu ();
+                }
+
                 this.activate ();
                 // SEND TO
                 foreach (var child in send_to.get_children ()) {

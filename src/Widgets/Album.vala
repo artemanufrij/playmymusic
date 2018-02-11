@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@ namespace PlayMyMusic.Widgets {
 
         Gtk.Image cover;
         Gtk.Label title_label;
-        Gtk.Menu menu;
+        Gtk.Menu menu = null;
         Gtk.Menu playlists;
         Gtk.Menu send_to;
         Gtk.MenuItem menu_send_to;
@@ -164,8 +164,6 @@ namespace PlayMyMusic.Widgets {
             this.add (event_box);
             this.valign = Gtk.Align.START;
 
-            build_context_menu ();
-
             set_values ();
 
             this.show_all ();
@@ -265,6 +263,11 @@ namespace PlayMyMusic.Widgets {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+
+                if (menu == null) {
+                    build_context_menu ();
+                }
+
                 this.activate ();
                 // PLAYLISTS
                 foreach (var child in playlists.get_children ()) {
