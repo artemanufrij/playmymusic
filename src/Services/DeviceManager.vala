@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -31,13 +31,15 @@ namespace PlayMyMusic.Services {
 
         public static DeviceManager instance {
             get {
-                if (_instance == null)
+                if (_instance == null) {
                     _instance = new DeviceManager ();
+                }
                 return _instance;
             }
         }
 
-        private DeviceManager () {}
+        private DeviceManager () {
+        }
 
         public signal void audio_cd_added (Volume volume);
         public signal void mtp_added (Volume volume);
@@ -49,21 +51,23 @@ namespace PlayMyMusic.Services {
         construct {
             monitor = GLib.VolumeMonitor.get ();
 
-            monitor.volume_added.connect ((volume) => {
-                if (check_for_audio_cd_volume (volume)) {
-                    audio_cd_added (volume);
-                } else if (check_for_mtp_volume (volume)) {
-                    mtp_added (volume);
-                }
-            });
+            monitor.volume_added.connect (
+                (volume) => {
+                    if (check_for_audio_cd_volume (volume)) {
+                        audio_cd_added (volume);
+                    } else if (check_for_mtp_volume (volume)) {
+                        mtp_added (volume);
+                    }
+                });
 
-            monitor.volume_removed.connect ((volume) => {
-                if (check_for_audio_cd_volume (volume)) {
-                    audio_cd_removed (volume);
-                } else if (check_for_mtp_volume (volume)) {
-                    mtp_removed (volume);
-                }
-            });
+            monitor.volume_removed.connect (
+                (volume) => {
+                    if (check_for_audio_cd_volume (volume)) {
+                        audio_cd_removed (volume);
+                    } else if (check_for_mtp_volume (volume)) {
+                        mtp_removed (volume);
+                    }
+                });
         }
 
         public void init () {
@@ -82,7 +86,7 @@ namespace PlayMyMusic.Services {
             return (file != null && file.get_uri ().has_prefix ("cdda://"));
         }
 
-         private bool check_for_mtp_volume (Volume volume) {
+        private bool check_for_mtp_volume (Volume volume) {
             File file = volume.get_activation_root ();
             return (file != null && file.get_uri ().has_prefix ("mtp://"));
         }
