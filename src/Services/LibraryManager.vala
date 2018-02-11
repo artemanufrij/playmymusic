@@ -155,6 +155,7 @@ namespace PlayMyMusic.Services {
                 sync_started ();
                 remove_non_existent_items ();
                 scan_local_library_for_new_files (settings.library_location);
+                finish_timeout ();
                 return null;
             });
         }

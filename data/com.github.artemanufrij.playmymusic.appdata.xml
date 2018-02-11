@@ -61,6 +61,10 @@
     <releases>
         <release version="0.5.2" date="2018-02-15">
             <description>
+                <p>Fix:</p>
+                <ul>
+                    <li>Spinner on first start</li>
+                </ul>
                 <p>Improvements:</p>
                 <ul>
                     <li>Mounting MTP-Devices</li>
