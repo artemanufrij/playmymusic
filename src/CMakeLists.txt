@@ -37,6 +37,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Widgets/Views/PlaylistsView.vala
     Widgets/Views/AudioCDView.vala
     Widgets/Views/MobilePhone.vala
+    Widgets/Views/TracksView.vala
     Dialogs/Preferences.vala
     Dialogs/AlbumEditor.vala
     Dialogs/ArtistEditor.vala

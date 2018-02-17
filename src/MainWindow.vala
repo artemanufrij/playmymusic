@@ -67,6 +67,7 @@ namespace PlayMyMusic {
         Widgets.Views.RadiosView radios_view;
         Widgets.Views.PlaylistsView playlists_view;
         Widgets.Views.AudioCDView audio_cd_view;
+        Widgets.Views.TracksView tracks_view;
         public Widgets.Views.MobilePhone mobile_phone_view { get; private set; }
 
         Widgets.TrackTimeLine timeline;
@@ -218,6 +219,7 @@ namespace PlayMyMusic {
                 settings.window_height = event.height;
                 artists_view.load_background ();
                 audio_cd_view.load_background ();
+                tracks_view.load_background ();
 
                 adjust_background_images ();
                 return false;
@@ -511,8 +513,11 @@ namespace PlayMyMusic {
 
             audio_cd_view = new Widgets.Views.AudioCDView ();
 
+            tracks_view = new Widgets.Views.TracksView ();
+
             content.add_named (albums_view, "albums");
             content.add_named (artists_view, "artists");
+            content.add_named (tracks_view, "tracks");
             content.add_named (playlists_view, "playlists");
             content.add_named (radios_view, "radios");
             content.add_named (audio_cd_view, "audiocd");
@@ -550,6 +555,11 @@ namespace PlayMyMusic {
             view_mode.append (artist_button);
             artist_button.sensitive = library_manager.artists.length () > 0;
 
+            var tracks_button = new Gtk.Image.from_icon_name ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
+            tracks_button.tooltip_text = _("Tracks");
+            view_mode.append (tracks_button);
+            tracks_button.sensitive = library_manager.artists.length () > 0;
+
             playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
             playlist_button.tooltip_text = _("Playlists");
             view_mode.append (playlist_button);
@@ -573,12 +583,15 @@ namespace PlayMyMusic {
                         show_artists ();
                         break;
                     case 2:
-                        show_playlists ();
+                        show_tracks ();
                         break;
                     case 3:
-                        show_radiostations ();
+                        show_playlists ();
                         break;
                     case 4:
+                        show_radiostations ();
+                        break;
+                    case 5:
                         show_audio_cd ();
                         break;
                     default:
@@ -625,6 +638,10 @@ namespace PlayMyMusic {
             } else {
                 view_mode.set_active (0);
             }
+        }
+
+        private void show_tracks () {
+            content.visible_child_name = "tracks";
         }
 
         private void show_playlists () {
@@ -711,6 +728,9 @@ namespace PlayMyMusic {
                 artists_view.add_artist (artist);
                 foreach (var album in artist.albums) {
                     albums_view.add_album (album);
+                    foreach (var track in album.tracks) {
+                        tracks_view.add_track (track);
+                    }
                 }
             }
         }
