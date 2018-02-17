@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,9 +27,9 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class MobilePhone : Gtk.Revealer {
-        PlayMyMusic.Services.LibraryManager library_manager;
+        Services.LibraryManager library_manager;
 
-        public PlayMyMusic.Objects.MobilePhone? current_mobile_phone { get; private set; default = null;}
+        public Objects.MobilePhone? current_mobile_phone { get; private set; default = null;}
         public Granite.Widgets.SourceList folders { get; private set; }
 
         Gtk.Label title;
@@ -40,7 +40,7 @@ namespace PlayMyMusic.Widgets.Views {
 
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
             library_manager.mobile_phone_connected.connect ((mobile_phone) => {
                 show_mobile_phone (mobile_phone);
                 set_reveal_child (true);
@@ -114,7 +114,7 @@ namespace PlayMyMusic.Widgets.Views {
             spinner.hide ();
         }
 
-        public void show_mobile_phone (PlayMyMusic.Objects.MobilePhone mobile_phone) {
+        public void show_mobile_phone (Objects.MobilePhone mobile_phone) {
             if (current_mobile_phone == mobile_phone) {
                 return;
             }

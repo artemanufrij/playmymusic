@@ -27,8 +27,8 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class PlaylistsView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Settings settings;
+        Services.LibraryManager library_manager;
+        Settings settings;
 
         private string _filter = "";
         public string filter {
@@ -51,8 +51,8 @@ namespace PlayMyMusic.Widgets.Views {
         uint items_found = 0;
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
             library_manager.added_new_playlist.connect (
                 (playlist) => {
                     add_playlist (playlist);
@@ -64,7 +64,7 @@ namespace PlayMyMusic.Widgets.Views {
                 });
             library_manager.player_state_changed.connect (
                 (state) => {
-                    if (state == Gst.State.PLAYING && library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.PLAYLIST) {
+                    if (state == Gst.State.PLAYING && library_manager.player.play_mode == Services.PlayMode.PLAYLIST) {
                         activate_by_track (library_manager.player.current_track);
                     }
                 });

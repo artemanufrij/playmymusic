@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class RadiosView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
+        Services.LibraryManager library_manager;
 
         private string _filter = "";
         public string filter {
@@ -51,12 +51,12 @@ namespace PlayMyMusic.Widgets.Views {
 
         GLib.Regex protocol_regex;
 
-        PlayMyMusic.Objects.Radio current_edit_station;
+        Objects.Radio current_edit_station;
 
         uint items_found = 0;
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
             library_manager.player_state_changed.connect (
                 (state) => {
                     if (state == Gst.State.PLAYING ) {

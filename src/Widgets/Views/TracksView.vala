@@ -27,8 +27,10 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class TracksView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
+        Services.LibraryManager library_manager;
+        Services.Player player;
 
+        Gtk.TreeView view;
         Gtk.ListStore listmodel;
         Gtk.Image background;
         Gtk.Image album;
@@ -39,19 +41,27 @@ namespace PlayMyMusic.Widgets.Views {
 
         Objects.Track current_track;
 
+        bool only_mark = false;
+
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
+            player = Services.Player.instance;
+            player.state_changed.connect (
+                (state) => {
+                    mark_playing_track (player.current_track);
+                });
         }
 
         public TracksView () {
-            listmodel = new Gtk.ListStore (7,
-                                           typeof (Objects.Track),
-                                           typeof (string),
-                                           typeof (string),
-                                           typeof (string),
-                                           typeof (int),
-                                           typeof (string),
-                                           typeof (uint64));
+            listmodel = new Gtk.ListStore (
+                7,
+                typeof (Objects.Track),
+                typeof (string),
+                typeof (string),
+                typeof (string),
+                typeof (int),
+                typeof (string),
+                typeof (uint64));
 
             build_ui ();
         }
@@ -86,17 +96,12 @@ namespace PlayMyMusic.Widgets.Views {
             overlay.add_overlay (background);
             overlay.add_overlay (header);
 
-            var view = new Gtk.TreeView ();
+            view = new Gtk.TreeView ();
             view.activate_on_single_click = true;
             view.set_model (listmodel);
             view.row_activated.connect (
                 (path, column) => {
-                    Value val;
-                    Gtk.TreeIter iter;
-                    listmodel.get_iter (out iter, path);
-                    listmodel.get_value (iter, 0, out val);
-                    var track = val.get_object () as Objects.Track;
-                    show_track (track);
+                    show_track (get_track_by_path (path));
                 });
 
 
@@ -179,6 +184,35 @@ namespace PlayMyMusic.Widgets.Views {
             album_title.label = track.album.title;
             album.pixbuf = track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             load_background ();
+
+            play_track (track);
+
+            stdout.printf ("FOUND %s\n", track.title);
+        }
+
+        private void play_track (Objects.Track track) {
+            if (!only_mark) {
+                library_manager.play_track (track, Services.PlayMode.ARTIST);
+            }
+        }
+
+        public void mark_playing_track (Objects.Track ? track) {
+            view.unselect_all ();
+            if (track == null) {
+                return;
+            }
+            listmodel.@foreach (
+                (model, path, iter) => {
+                    var item_track = get_track_by_path (path);
+                    if (item_track.ID == track.ID) {
+                        only_mark = true;
+                        view.row_activated (path, view.get_column (1));
+
+                        only_mark = false;
+                        return true;
+                    }
+                    return false;
+                });
         }
 
         public void load_background () {
@@ -203,6 +237,14 @@ namespace PlayMyMusic.Widgets.Views {
             background.pixbuf = null;
             artist_name.get_style_context ().remove_class ("artist-title");
             album_title.get_style_context ().remove_class ("artist-sub-title");
+        }
+
+        private Objects.Track? get_track_by_path (Gtk.TreePath path) {
+            Value val;
+            Gtk.TreeIter iter;
+            listmodel.get_iter (out iter, path);
+            listmodel.get_value (iter, 0, out val);
+            return val.get_object () as Objects.Track;
         }
     }
 }
