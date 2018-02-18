@@ -38,7 +38,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Label artist_name;
         Gtk.Label artist_sub_title;
         Gtk.Image background;
-        Gtk.Grid header;
+        Gtk.Box header;
         Granite.Widgets.AlertView alert_view;
 
         bool only_mark = false;
@@ -72,22 +72,20 @@ namespace PlayMyMusic.Widgets.Views {
             content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
 
-            header = new Gtk.Grid ();
-            header.margin = 92;
-            header.row_spacing = 6;
+            header = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
+            header.height_request = 256;
             header.valign = Gtk.Align.CENTER;
 
             artist_name = new Gtk.Label ("");
             artist_name.valign = Gtk.Align.END;
-            artist_name.hexpand = true;
             artist_name.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
-            header.attach (artist_name, 0, 0);
+            header.pack_start (artist_name, true, true);
 
             artist_sub_title = new Gtk.Label ("");
             artist_sub_title.valign = Gtk.Align.START;
             artist_sub_title.use_markup = true;
             artist_sub_title.opacity = 0.75;
-            header.attach (artist_sub_title, 0, 1);
+            header.pack_start (artist_sub_title, true, true);
 
             background = new Gtk.Image ();
             background.expand = true;
