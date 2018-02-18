@@ -50,6 +50,7 @@ namespace PlayMyMusic {
         Gtk.Widget audio_cd_widget;
         Gtk.Image artist_button;
         Gtk.Image playlist_button;
+        Gtk.Image tracks_button;
 
         Gtk.Image icon_repeat_one;
         Gtk.Image icon_repeat_all;
@@ -126,6 +127,7 @@ namespace PlayMyMusic {
                 if (!artist_button.sensitive) {
                     artist_button.sensitive = true;
                     playlist_button.sensitive = true;
+                    tracks_button.sensitive = true;
                 }
             });
             library_manager.player_state_changed.connect ((state) => {
@@ -439,12 +441,15 @@ namespace PlayMyMusic {
                         artists_view.filter = search_entry.text;
                         break;
                     case 2:
-                        playlists_view.filter = search_entry.text;
+                        tracks_view.filter = search_entry.text;
                         break;
                     case 3:
-                        radios_view.filter = search_entry.text;
+                        playlists_view.filter = search_entry.text;
                         break;
                     case 4:
+                        radios_view.filter = search_entry.text;
+                        break;
+                    case 5:
                         audio_cd_view.filter = search_entry.text;
                         break;
                     default:
@@ -555,7 +560,7 @@ namespace PlayMyMusic {
             view_mode.append (artist_button);
             artist_button.sensitive = library_manager.artists.length () > 0;
 
-            var tracks_button = new Gtk.Image.from_icon_name ("avatar-default-symbolic", Gtk.IconSize.BUTTON);
+            tracks_button = new Gtk.Image.from_icon_name ("view-list-symbolic", Gtk.IconSize.BUTTON);
             tracks_button.tooltip_text = _("Tracks");
             view_mode.append (tracks_button);
             tracks_button.sensitive = library_manager.artists.length () > 0;
@@ -641,7 +646,13 @@ namespace PlayMyMusic {
         }
 
         private void show_tracks () {
-            content.visible_child_name = "tracks";
+            if (tracks_button.sensitive) {
+                content.set_visible_child_name ("tracks");
+                search_entry.text = tracks_view.filter;
+                adjust_background_images ();
+            } else {
+                view_mode.set_active (0);
+            }
         }
 
         private void show_playlists () {
@@ -742,9 +753,11 @@ namespace PlayMyMusic {
             view_mode.set_active (0);
             artist_button.sensitive = false;
             playlist_button.sensitive = false;
+            tracks_button.sensitive = false;
             albums_view.reset ();
             artists_view.reset ();
             radios_view.reset ();
+            tracks_view.reset ();
         }
 
         public void play () {

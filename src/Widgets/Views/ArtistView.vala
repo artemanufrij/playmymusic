@@ -39,6 +39,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Label artist_sub_title;
         Gtk.Image background;
         Gtk.Grid header;
+        Granite.Widgets.AlertView alert_view;
 
         bool only_mark = false;
 
@@ -108,9 +109,12 @@ namespace PlayMyMusic.Widgets.Views {
             content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
+            alert_view = new Granite.Widgets.AlertView ("Choose an Artist", "No Artist selected", "avatar-default-symbolic");
+
             var overlay = new Gtk.Overlay ();
             overlay.add_overlay (background);
             overlay.add_overlay (content);
+            overlay.add_overlay (alert_view);
 
             this.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 0, 0);
             this.attach (overlay, 1, 0);
@@ -127,6 +131,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
             current_artist = artist;
             this.reset ();
+            alert_view.hide ();
 
             load_background ();
             foreach (var track in artist.tracks) {
@@ -169,6 +174,7 @@ namespace PlayMyMusic.Widgets.Views {
             artist_sub_title.label = "";
             artist_name.get_style_context ().remove_class ("artist-title");
             artist_sub_title.get_style_context ().remove_class ("artist-sub-title");
+            alert_view.show ();
         }
 
         private void add_track (Objects.Track track) {
