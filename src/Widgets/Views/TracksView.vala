@@ -174,7 +174,7 @@ namespace PlayMyMusic.Widgets.Views {
             cell.xalign = 1.0f;
             cell.width = 64;
             view.insert_column_with_attributes (-1, _ ("Duration"), cell, "text", 5);
-            view.insert_column_with_attributes (-1, _ ("Duration_SORT"), new Gtk.CellRendererText (), "text", 6);
+            view.insert_column_with_attributes (-1, "Duration_SORT", new Gtk.CellRendererText (), "text", 6);
 
             setup_columns ();
 
