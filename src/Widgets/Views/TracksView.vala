@@ -48,7 +48,17 @@ namespace PlayMyMusic.Widgets.Views {
             player = Services.Player.instance;
             player.state_changed.connect (
                 (state) => {
-                    mark_playing_track (player.current_track);
+                    if (state == Gst.State.PLAYING) {
+                        mark_playing_track (player.current_track);
+                    }
+                });
+            player.next_track_request.connect (
+                (random) => {
+                    return get_next_track ();
+                });
+            player.prev_track_request.connect (
+                () => {
+                    return get_prev_track ();
                 });
         }
 
@@ -103,7 +113,6 @@ namespace PlayMyMusic.Widgets.Views {
                 (path, column) => {
                     show_track (get_track_by_path (path));
                 });
-
 
             var cell = new Gtk.CellRendererText ();
 
@@ -178,26 +187,32 @@ namespace PlayMyMusic.Widgets.Views {
             if (track == current_track) {
                 return;
             }
-            reset ();
+            if (current_track != null) {
+                if (track.album.artist.ID != current_track.album.artist.ID) {
+                    reset ();
+                }
+                if (track.album.ID != current_track.album.ID) {
+                    current_track.album.cover_changed.disconnect (change_cover);
+
+                    artist_name.label = track.album.artist.name;
+                    album_title.label = track.album.title;
+                    album.pixbuf = track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+                }
+            }
             current_track = track;
-            artist_name.label = track.album.artist.name;
-            album_title.label = track.album.title;
-            album.pixbuf = track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
             load_background ();
-
             play_track (track);
-
-            stdout.printf ("FOUND %s\n", track.title);
+            current_track.album.cover_changed.connect (change_cover);
         }
 
         private void play_track (Objects.Track track) {
             if (!only_mark) {
-                library_manager.play_track (track, Services.PlayMode.ARTIST);
+                library_manager.play_track (track, Services.PlayMode.TRACKS);
             }
         }
 
         public void mark_playing_track (Objects.Track ? track) {
-            view.unselect_all ();
+            view.get_selection ().unselect_all ();
             if (track == null) {
                 return;
             }
@@ -206,8 +221,8 @@ namespace PlayMyMusic.Widgets.Views {
                     var item_track = get_track_by_path (path);
                     if (item_track.ID == track.ID) {
                         only_mark = true;
-                        view.row_activated (path, view.get_column (1));
-
+                        view.get_selection ().select_path (path);
+                        show_track (track);
                         only_mark = false;
                         return true;
                     }
@@ -215,10 +230,14 @@ namespace PlayMyMusic.Widgets.Views {
                 });
         }
 
+        private void change_cover () {
+            album.pixbuf = current_track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+        }
+
         public void load_background () {
             int width = header.get_allocated_width ();
             int height = background.height_request;
-            if (current_track.album.artist.background_path == null || current_track.album.artist.background == null || (background.pixbuf != null && background.pixbuf.width == width && background.pixbuf.height == height)) {
+            if (current_track == null || current_track.album.artist.background_path == null || current_track.album.artist.background == null || (background.pixbuf != null && background.pixbuf.width == width && background.pixbuf.height == height)) {
                 return;
             }
             if (height < width) {
@@ -239,12 +258,54 @@ namespace PlayMyMusic.Widgets.Views {
             album_title.get_style_context ().remove_class ("artist-sub-title");
         }
 
-        private Objects.Track? get_track_by_path (Gtk.TreePath path) {
+        private Objects.Track ? get_track_by_path (Gtk.TreePath path) {
             Value val;
             Gtk.TreeIter iter;
             listmodel.get_iter (out iter, path);
             listmodel.get_value (iter, 0, out val);
             return val.get_object () as Objects.Track;
+        }
+
+        public Objects.Track ? get_next_track () {
+            Objects.Track ? return_value = null;
+
+            listmodel.@foreach (
+                (model, path, iter) => {
+                    var item_track = get_track_by_path (path);
+                    if (item_track.ID == current_track.ID) {
+                        Gtk.TreeIter next_iter = iter;
+                        if (listmodel.iter_next (ref next_iter)) {
+                            Value val;
+                            listmodel.get_value (next_iter, 0, out val);
+                            return_value = val.get_object () as Objects.Track;
+                        }
+                        return true;
+                    }
+                    return false;
+                });
+
+            return return_value;
+        }
+
+        public Objects.Track ? get_prev_track () {
+            Objects.Track ? return_value = null;
+
+            listmodel.@foreach (
+                (model, path, iter) => {
+                    var item_track = get_track_by_path (path);
+                    if (item_track.ID == current_track.ID) {
+                        Gtk.TreeIter prev_iter = iter;
+                        if (listmodel.iter_previous (ref prev_iter)) {
+                            Value val;
+                            listmodel.get_value (prev_iter, 0, out val);
+                            return_value = val.get_object () as Objects.Track;
+                        }
+                        return true;
+                    }
+                    return false;
+                });
+
+            return return_value;
         }
     }
 }

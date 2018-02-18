@@ -960,7 +960,6 @@ namespace PlayMyMusic.Services {
             return file_exists;
         }
 
-
 // PARAMENTER REGION
         private void set_parameter_int (Sqlite.Statement? stmt, string sql, string par, int val) {
             int par_position = stmt.bind_parameter_index (par);
