@@ -616,7 +616,7 @@ namespace PlayMyMusic {
 
         public void show_view_index (int index) {
             // AUDIO CD VIEW
-            if (index == 4 && !audio_cd_widget.visible) {
+            if (index == 5 && !audio_cd_widget.visible) {
                 return;
             }
             view_mode.selected = index;

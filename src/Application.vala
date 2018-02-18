@@ -82,33 +82,43 @@ namespace PlayMyMusic {
                     }
                 });
 
-            var action_show_playlists = new SimpleAction ("show-playlists", null);
-            add_action (action_show_playlists);
-            add_accelerator ("<Alt>3", "app.show-playlists", null);
-            action_show_playlists.activate.connect (
+            var action_show_tracks = new SimpleAction ("show-tracks", null);
+            add_action (action_show_tracks);
+            add_accelerator ("<Alt>3", "app.show-tracks", null);
+            action_show_tracks.activate.connect (
                 () => {
                     if (mainwindow != null) {
                         mainwindow.show_view_index (2);
                     }
                 });
 
-            var action_show_radiostations = new SimpleAction ("show-radiostations", null);
-            add_action (action_show_radiostations);
-            add_accelerator ("<Alt>4", "app.show-radiostations", null);
-            action_show_radiostations.activate.connect (
+            var action_show_playlists = new SimpleAction ("show-playlists", null);
+            add_action (action_show_playlists);
+            add_accelerator ("<Alt>4", "app.show-playlists", null);
+            action_show_playlists.activate.connect (
                 () => {
                     if (mainwindow != null) {
                         mainwindow.show_view_index (3);
                     }
                 });
 
-            var action_show_audiocd = new SimpleAction ("show-audiocd", null);
-            add_action (action_show_audiocd);
-            add_accelerator ("<Alt>5", "app.show-audiocd", null);
-            action_show_audiocd.activate.connect (
+            var action_show_radiostations = new SimpleAction ("show-radiostations", null);
+            add_action (action_show_radiostations);
+            add_accelerator ("<Alt>5", "app.show-radiostations", null);
+            action_show_radiostations.activate.connect (
                 () => {
                     if (mainwindow != null) {
                         mainwindow.show_view_index (4);
+                    }
+                });
+
+            var action_show_audiocd = new SimpleAction ("show-audiocd", null);
+            add_action (action_show_audiocd);
+            add_accelerator ("<Alt>6", "app.show-audiocd", null);
+            action_show_audiocd.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (5);
                     }
                 });
 
