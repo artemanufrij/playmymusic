@@ -646,6 +646,8 @@ namespace PlayMyMusic {
         }
 
         private void show_tracks () {
+            mode_buttons.opacity = 0;
+            mobile_phone_view.set_reveal_child (false);
             if (tracks_button.sensitive) {
                 content.set_visible_child_name ("tracks");
                 search_entry.text = tracks_view.filter;
@@ -728,6 +730,7 @@ namespace PlayMyMusic {
             adjust_timer = GLib.Timeout.add (250, () => {
                 artists_view.load_background ();
                 audio_cd_view.load_background ();
+                tracks_view.load_background ();
                 Source.remove (adjust_timer);
                 adjust_timer = 0;
                 return false;
