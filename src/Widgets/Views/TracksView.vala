@@ -113,6 +113,8 @@ namespace PlayMyMusic.Widgets.Views {
             album = new Gtk.Image ();
             album.get_style_context ().add_class ("card");
             album.margin = 64;
+            album.height_request = 128;
+            album.width_request = 128;
             header.attach (album, 0, 0, 1, 2);
 
             artist_name = new Gtk.Label ("");
@@ -234,17 +236,15 @@ namespace PlayMyMusic.Widgets.Views {
                 if (track.album.artist.ID != current_track.album.artist.ID) {
                     clear_background ();
                 }
-                if (track.album.ID != current_track.album.ID) {
-                    current_track.album.cover_changed.disconnect (change_cover);
-
-                    artist_name.label = track.album.artist.name;
-                    album_title.label = track.album.title;
-                    album.pixbuf = track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
-                }
-            } else {
+            }
+            if (current_track == null || track.album.ID != current_track.album.ID) {
                 artist_name.label = track.album.artist.name;
                 album_title.label = track.album.title;
-                album.pixbuf = track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+                if (track.album.cover == null) {
+                    album.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
+                } else {
+                    album.pixbuf = track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+                }
             }
             current_track = track;
             current_track.album.cover_changed.connect (change_cover);
