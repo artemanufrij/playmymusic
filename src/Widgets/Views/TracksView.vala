@@ -186,7 +186,8 @@ namespace PlayMyMusic.Widgets.Views {
             scroll.add (view);
 
             this.attach (overlay, 0, 0);
-            this.attach (scroll, 0, 1);
+            this.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1);
+            this.attach (scroll, 0, 2);
         }
 
         private void setup_columns () {
