@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-18 16:25+0100\n"
+"POT-Creation-Date: 2018-02-19 21:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,27 +136,27 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:151
+#: ../src/Widgets/Views/TracksView.vala:153
 msgid "ID"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:152
+#: ../src/Widgets/Views/TracksView.vala:154
 msgid "Artist"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:159
+#: ../src/Widgets/Views/TracksView.vala:161
 msgid "Album"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:166
+#: ../src/Widgets/Views/TracksView.vala:168
 msgid "Title"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:171
+#: ../src/Widgets/Views/TracksView.vala:173
 msgid "Nr"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:176
+#: ../src/Widgets/Views/TracksView.vala:178
 msgid "Duration"
 msgstr ""
 
@@ -337,7 +337,7 @@ msgstr ""
 msgid "Audio CD"
 msgstr ""
 
-#: ../src/MainWindow.vala:703 ../src/MainWindow.vala:711
+#: ../src/MainWindow.vala:705 ../src/MainWindow.vala:713
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
 
@@ -354,7 +354,7 @@ msgid "Sync files on start up"
 msgstr ""
 
 #: ../src/Dialogs/Preferences.vala:84
-msgid "Load Artist data from MusicBrainz"
+msgid "Load Content from MusicBrainz"
 msgstr ""
 
 #: ../src/Dialogs/Preferences.vala:92
