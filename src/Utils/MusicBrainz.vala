@@ -52,6 +52,27 @@ namespace PlayMyMusic.Utils {
             return "";
         }
 
+        public static string get_release_id_from_artist_ws_2 (string body) {
+            var parser = new Json.Parser ();
+            Json.Node root = null;
+            try {
+                parser.load_from_data (body);
+                root = parser.get_root ();
+            } catch (Error err) {
+                warning (err.message);
+            }
+            if (root != null) {
+                if (root.get_object ().has_member ("releases")) {
+                    var releases = root.get_object ().get_member ("releases").get_array ();
+                    if (releases.get_length () > 0) {
+                        var release = releases.get_element (0).get_object ();
+                        return release.get_string_member ("id");
+                    }
+                }
+            }
+            return "";
+        }
+
         public static string get_large_thumbnail_from_release (string body) {
             var parser = new Json.Parser ();
             Json.Node root = null;

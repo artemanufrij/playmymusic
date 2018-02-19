@@ -133,7 +133,7 @@ namespace PlayMyMusic.Objects {
         }
 
 // COVER REGION
-        private async void load_cover_async () {
+        public async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0 || this.tracks.length () == 0) {
                 return;
             }
@@ -142,6 +142,8 @@ namespace PlayMyMusic.Objects {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
                     this.cover = return_value;
+                } else if (settings.load_content_from_musicbrainz) {
+                    Services.MusicBrainzManager.instance.fill_album_cover_queue (this);
                 }
                 is_cover_loading = false;
             });

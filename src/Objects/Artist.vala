@@ -142,6 +142,16 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public bool has_empty_album_covers () {
+            foreach (var album in albums) {
+                if (album.cover == null) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void merge (GLib.List<Objects.Artist> artists) {
             foreach (var artist in artists) {
                 if (artist.ID == ID) {
@@ -194,7 +204,7 @@ namespace PlayMyMusic.Objects {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
                     this.cover = return_value;
-                } else if (settings.load_artist_from_musicbrainz && !this.name.down ().contains ("various") && !this.name.down ().contains ("artist")) {
+                } else if (settings.load_content_from_musicbrainz && !this.name.down ().contains ("various") && !this.name.down ().contains ("artist")) {
                     Services.MusicBrainzManager.instance.fill_artist_cover_queue (this);
                 }
                 is_cover_loading = false;

@@ -64,6 +64,7 @@
                 <p>New:</p>
                 <ul>
                     <li>List View for all music content</li>
+                    <li>Grab album cover from MusicBrainz</li>
                 </ul>
             </description>
         </release>

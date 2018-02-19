@@ -100,10 +100,10 @@
 			<summary>Last choosed view.</summary>
 			<description>Last choosed view.</description>
 		</key>
-		<key name="load-artist-from-musicbrainz" type="b">
+		<key name="load-content-from-musicbrainz" type="b">
 			<default>true</default>
-			<summary>Load Artist data like Artwork from MusicBrainz.</summary>
-			<description>Load Artist data like Artwork from MusicBrainz.</description>
+			<summary>Load Artwork and Cover from MusicBrainz.</summary>
+			<description>Load Artwork and Cover from MusicBrainz.</description>
 		</key>
 		<key name="use-dark-theme" type="b">
 			<default>false</default>

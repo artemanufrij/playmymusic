@@ -33,7 +33,7 @@ namespace PlayMyMusic.Objects {
         public signal void album_changed (Album album);
         public signal void tags_saved ();
 
-        Album? _album = null;
+        Album ? _album = null;
         public Album album {
             get {
                 if (_album == null) {
@@ -43,8 +43,8 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        Playlist? _playlist = null;
-        public Playlist? playlist {
+        Playlist ? _playlist = null;
+        public Playlist ? playlist {
             get {
                 return _playlist;
             }
@@ -74,24 +74,25 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        public File? original_file { get; set; }
+        public File ? original_file { get; set; }
 
         public signal void path_not_found ();
 
         construct {
             library_manager = Services.LibraryManager.instance;
-            removed.connect (() => {
-                if (album != null) {
-                    album.track_removed (this);
-                    album.artist.track_removed (this);
-                }
-                if (playlist != null) {
-                    playlist.track_removed (this);
-                }
-            });
+            removed.connect (
+                () => {
+                    if (album != null) {
+                        album.track_removed (this);
+                        album.artist.track_removed (this);
+                    }
+                    if (playlist != null) {
+                        playlist.track_removed (this);
+                    }
+                });
         }
 
-        public Track (TracksContainer? container = null) {
+        public Track (TracksContainer ? container = null) {
             if (container != null && container is Album) {
                 set_album (container as Album);
             } else if (container != null && container is Playlist) {
@@ -126,10 +127,8 @@ namespace PlayMyMusic.Objects {
         }
 
         public void save_id3_tags () {
-
             var path = File.new_for_uri (uri);
 
-            stdout.printf ("ID3 Start\n");
             var file = new TagLib.File (path.get_path ());
             if (file.tag.album == this.album.title && file.tag.artist == this.album.artist.name && file.tag.year == this.album.year && file.tag.genre == genre) {
                 return;
@@ -141,8 +140,6 @@ namespace PlayMyMusic.Objects {
             file.tag.genre = genre;
             if (file.save ()) {
                 tags_saved ();
-
-                stdout.printf ("ID3 SAVED year:%u \n", file.tag.year);
             }
             path.dispose ();
         }
