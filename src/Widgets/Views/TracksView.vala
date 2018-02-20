@@ -32,6 +32,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         Gtk.TreeView view;
         Gtk.TreeModelFilter modelfilter;
+        Gtk.TreeModelSort modelsort;
         Gtk.ListStore listmodel;
         Gtk.Image background;
         Gtk.Image album;
@@ -56,6 +57,8 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             }
         }
+
+        enum columns { OBJECT, NR, TRACK, ALBUM, ARTIST, DURATION, DURATION_SORT }
 
         int header_height = 256;
 
@@ -91,10 +94,10 @@ namespace PlayMyMusic.Widgets.Views {
             listmodel = new Gtk.ListStore (
                 7,
                 typeof (Objects.Track),
-                typeof (string),
-                typeof (string),
-                typeof (string),
                 typeof (int),
+                typeof (string),
+                typeof (string),
+                typeof (string),
                 typeof (string),
                 typeof (uint64));
 
@@ -140,7 +143,7 @@ namespace PlayMyMusic.Widgets.Views {
             modelfilter = new Gtk.TreeModelFilter (listmodel, null);
             modelfilter.set_visible_func (tracks_filter_func);
 
-            var modelsort = new Gtk.TreeModelSort.with_model (modelfilter);
+            modelsort = new Gtk.TreeModelSort.with_model (modelfilter);
 
             view = new Gtk.TreeView ();
             view.activate_on_single_click = true;
@@ -150,35 +153,33 @@ namespace PlayMyMusic.Widgets.Views {
                     show_track (get_track_by_path (path));
                 });
 
+            view.insert_column_with_attributes (-1, "object", new Gtk.CellRendererText (), "text", columns.OBJECT);
+
             var cell = new Gtk.CellRendererText ();
-
-            view.insert_column_with_attributes (-1, _ ("ID"), new Gtk.CellRendererText ());
-            view.insert_column_with_attributes (-1, _ ("Artist"), new Gtk.CellRendererText (), "text", 1);
-
-            cell = new Gtk.CellRendererText ();
-            cell.ellipsize = Pango.EllipsizeMode.END;
-            cell.ellipsize_set = true;
-            cell.stretch = Pango.Stretch.EXPANDED;
-            cell.stretch_set = true;
-            view.insert_column_with_attributes (-1, _ ("Album"), cell, "text", 2);
+            cell.xalign = 1.0f;
+            view.insert_column_with_attributes (-1, _ ("Nr"), cell, "text", columns.NR);
 
             cell = new Gtk.CellRendererText ();
             cell.ellipsize = Pango.EllipsizeMode.END;
             cell.ellipsize_set = true;
             cell.stretch = Pango.Stretch.ULTRA_EXPANDED;
             cell.stretch_set = true;
-            view.insert_column_with_attributes (-1, _ ("Title"), cell, "text", 3);
+            view.insert_column_with_attributes (-1, _ ("Title"), cell, "text", columns.TRACK);
+
+            cell = new Gtk.CellRendererText ();
+            cell.ellipsize = Pango.EllipsizeMode.END;
+            cell.ellipsize_set = true;
+            cell.stretch = Pango.Stretch.EXPANDED;
+            cell.stretch_set = true;
+            view.insert_column_with_attributes (-1, _ ("Album"), cell, "text", columns.ALBUM);
+
+            view.insert_column_with_attributes (-1, _ ("Artist"), new Gtk.CellRendererText (), "text", columns.ARTIST);
 
             cell = new Gtk.CellRendererText ();
             cell.xalign = 1.0f;
             cell.width = 64;
-            view.insert_column_with_attributes (-1, _ ("Nr"), new Gtk.CellRendererText (), "text", 4);
-
-            cell = new Gtk.CellRendererText ();
-            cell.xalign = 1.0f;
-            cell.width = 64;
-            view.insert_column_with_attributes (-1, _ ("Duration"), cell, "text", 5);
-            view.insert_column_with_attributes (-1, "Duration_SORT", new Gtk.CellRendererText (), "text", 6);
+            view.insert_column_with_attributes (-1, _ ("Duration"), cell, "text", columns.DURATION);
+            view.insert_column_with_attributes (-1, "Duration_SORT", new Gtk.CellRendererText (), "text", columns.DURATION_SORT);
 
             setup_columns ();
 
@@ -193,40 +194,38 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void setup_columns () {
-            var col = view.get_column (0);
+            var col = view.get_column (columns.OBJECT);
             col.visible = false;
 
-            col = view.get_column (1);
+            col = view.get_column (columns.ARTIST);
             col.resizable = true;
 
-            col = view.get_column (2);
+            col = view.get_column (columns.ALBUM);
             col.resizable = true;
             col.expand = true;
 
-            col = view.get_column (3);
+            col = view.get_column (columns.TRACK);
             col.expand = true;
             col.resizable = true;
 
-            col = view.get_column (5);
-
-            col = view.get_column (6);
+            col = view.get_column (columns.DURATION_SORT);
             col.visible = false;
 
             setup_column_sort ();
         }
 
         private void setup_column_sort () {
-            view.get_column (1).sort_column_id = 1;
-            view.get_column (2).sort_column_id = 2;
-            view.get_column (3).sort_column_id = 3;
-            view.get_column (4).sort_column_id = 4;
-            view.get_column (5).sort_column_id = 6;
+            view.get_column (columns.NR).sort_column_id = columns.NR;
+            view.get_column (columns.TRACK).sort_column_id = columns.TRACK;
+            view.get_column (columns.ALBUM).sort_column_id = columns.ALBUM;
+            view.get_column (columns.ARTIST).sort_column_id = columns.ARTIST;
+            view.get_column (columns.DURATION).sort_column_id = columns.DURATION_SORT;
         }
 
         public void add_track (Objects.Track track) {
             Gtk.TreeIter iter;
             listmodel.append (out iter);
-            listmodel.set (iter, 0, track, 1, track.album.artist.name, 2, track.album.title, 3, track.title, 4, track.track, 5, Utils.get_formated_duration (track.duration), 6, track.duration);
+            listmodel.set (iter, columns.OBJECT, track, columns.NR, track.track, columns.TRACK, track.title, columns.ALBUM, track.album.title, columns.ARTIST, track.album.artist.name, columns.DURATION, Utils.get_formated_duration (track.duration), columns.DURATION_SORT, track.duration);
         }
 
         private void show_track (Objects.Track track) {
@@ -318,22 +317,22 @@ namespace PlayMyMusic.Widgets.Views {
         private Objects.Track ? get_track_by_path (Gtk.TreePath path) {
             Value val;
             Gtk.TreeIter iter;
-            modelfilter.get_iter (out iter, path);
-            modelfilter.get_value (iter, 0, out val);
+            modelsort.get_iter (out iter, path);
+            modelsort.get_value (iter, 0, out val);
             return val.get_object () as Objects.Track;
         }
 
         public Objects.Track ? get_next_track () {
             Objects.Track ? return_value = null;
 
-            modelfilter.@foreach (
+            modelsort.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);
                     if (item_track.ID == current_track.ID) {
                         Gtk.TreeIter next_iter = iter;
-                        if (modelfilter.iter_next (ref next_iter)) {
+                        if (modelsort.iter_next (ref next_iter)) {
                             Value val;
-                            modelfilter.get_value (next_iter, 0, out val);
+                            modelsort.get_value (next_iter, 0, out val);
                             return_value = val.get_object () as Objects.Track;
                         }
                         return true;
@@ -347,14 +346,14 @@ namespace PlayMyMusic.Widgets.Views {
         public Objects.Track ? get_prev_track () {
             Objects.Track ? return_value = null;
 
-            modelfilter.@foreach (
+            modelsort.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);
                     if (item_track.ID == current_track.ID) {
                         Gtk.TreeIter prev_iter = iter;
-                        if (modelfilter.iter_previous (ref prev_iter)) {
+                        if (modelsort.iter_previous (ref prev_iter)) {
                             Value val;
-                            modelfilter.get_value (prev_iter, 0, out val);
+                            modelsort.get_value (prev_iter, 0, out val);
                             return_value = val.get_object () as Objects.Track;
                         }
                         return true;
