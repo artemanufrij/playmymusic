@@ -88,6 +88,7 @@ namespace PlayMyMusic.Widgets.Views {
             tracks_scroll.add (tracks);
 
             content.pack_start (event_box, false, false, 0);
+            content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
             var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
