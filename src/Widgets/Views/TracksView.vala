@@ -115,9 +115,12 @@ namespace PlayMyMusic.Widgets.Views {
 
             album = new Gtk.Image ();
             album.get_style_context ().add_class ("card");
-            album.margin = 64;
-            album.height_request = 128;
-            album.width_request = 128;
+            album.margin_top = 32;
+            album.margin_bottom = 32;
+            album.margin_left = 64;
+            album.margin_right = 64;
+            album.height_request = 192;
+            album.width_request = 192;
             header.attach (album, 0, 0, 1, 2);
 
             artist_name = new Gtk.Label ("");
@@ -153,7 +156,7 @@ namespace PlayMyMusic.Widgets.Views {
                     show_track (get_track_by_path (path));
                 });
 
-            view.insert_column_with_attributes (-1, "object", new Gtk.CellRendererText (), "text", columns.OBJECT);
+            view.insert_column_with_attributes (-1, "object", new Gtk.CellRendererText ());
 
             var cell = new Gtk.CellRendererText ();
             cell.xalign = 1.0f;
@@ -245,7 +248,7 @@ namespace PlayMyMusic.Widgets.Views {
                 if (track.album.cover == null) {
                     album.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
                 } else {
-                    album.pixbuf = track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+                    album.pixbuf = track.album.cover.scale_simple (192, 192, Gdk.InterpType.BILINEAR);
                 }
             }
             current_track = track;
@@ -281,7 +284,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void change_cover () {
-            album.pixbuf = current_track.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+            album.pixbuf = current_track.album.cover.scale_simple (192, 192, Gdk.InterpType.BILINEAR);
         }
 
         public void load_background () {
