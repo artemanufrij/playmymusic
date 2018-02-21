@@ -39,7 +39,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Grid header;
         Granite.Widgets.AlertView alert_view;
 
-        Gtk.Label artist_name;
+        Gtk.Label title_name;
         Gtk.Label album_title;
 
         Objects.Track current_track;
@@ -123,15 +123,18 @@ namespace PlayMyMusic.Widgets.Views {
             album.width_request = 192;
             header.attach (album, 0, 0, 1, 2);
 
-            artist_name = new Gtk.Label ("");
-            artist_name.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
-            artist_name.valign = Gtk.Align.END;
-            artist_name.halign = Gtk.Align.START;
-            header.attach (artist_name, 1, 0);
+            title_name = new Gtk.Label ("");
+            title_name.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
+            title_name.valign = Gtk.Align.END;
+            title_name.halign = Gtk.Align.START;
+            title_name.ellipsize = Pango.EllipsizeMode.END;
+            header.attach (title_name, 1, 0);
 
             album_title = new Gtk.Label ("");
             album_title.valign = Gtk.Align.START;
             album_title.halign = Gtk.Align.START;
+            album_title.ellipsize = Pango.EllipsizeMode.END;
+            album_title.use_markup = true;
             header.attach (album_title, 1, 1);
 
             alert_view = new Granite.Widgets.AlertView ("Choose a Track", "No track selected", "view-list-symbolic");
@@ -243,8 +246,6 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             }
             if (current_track == null || track.album.ID != current_track.album.ID) {
-                artist_name.label = track.album.artist.name;
-                album_title.label = track.album.title;
                 if (track.album.cover == null) {
                     album.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
                 } else {
@@ -252,6 +253,10 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             }
             current_track = track;
+
+            title_name.label = track.title;
+            album_title.label = _ ("<b>%s</b> by <b>%s</b>").printf (track.album.title, track.album.artist.name);
+
             current_track.album.cover_changed.connect (change_cover);
 
             load_background ();
@@ -301,13 +306,13 @@ namespace PlayMyMusic.Widgets.Views {
                 background.pixbuf = new Gdk.Pixbuf.subpixbuf (pix, (int)(pix.width - width) / 2, 0, width, height);
             }
 
-            artist_name.get_style_context ().add_class ("artist-title");
+            title_name.get_style_context ().add_class ("artist-title");
             album_title.get_style_context ().add_class ("artist-sub-title");
         }
 
         private void clear_background () {
             background.pixbuf = null;
-            artist_name.get_style_context ().remove_class ("artist-title");
+            title_name.get_style_context ().remove_class ("artist-title");
             album_title.get_style_context ().remove_class ("artist-sub-title");
         }
 
