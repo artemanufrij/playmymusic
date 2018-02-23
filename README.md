@@ -30,10 +30,7 @@ sudo apt install elementary-sdk
 
 Install dependencies
 ```
-sudo apt install libsoup2.4-dev
-sudo apt install libsqlite3-dev
-sudo apt install libgstreamer-plugins-base1.0-dev
-sudo apt install libtagc0-dev
+sudo apt install libsoup2.4-dev libsqlite3-dev libgstreamer-plugins-base1.0-dev libtagc0-dev
 ```
 
 Clone repository and change directory
