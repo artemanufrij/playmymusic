@@ -59,12 +59,17 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.6.1" date="2018-02-30">
+        <release version="0.6.2" date="2018-02-25">
             <description>
                 <p>Improved:</p>
                 <ul>
                     <li>Speed up start behavior</li>
+                    <li>Small design changes in list view</li>
                 </ul>
+            </description>
+        </release>
+        <release version="0.6.1" date="2018-02-21">
+            <description>
                 <p>Fixed:</p>
                 <ul>
                     <li>List View: sorting and small design changes</li>
