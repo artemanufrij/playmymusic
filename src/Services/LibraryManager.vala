@@ -52,6 +52,7 @@ namespace PlayMyMusic.Services {
         public signal void audio_cd_disconnected (Volume volume);
         public signal void mobile_phone_connected (Objects.MobilePhone mobile_phone);
         public signal void mobile_phone_disconnected (Volume volume);
+        public signal void cache_loaded ();
 
         public Services.TagManager tg_manager { get; construct set; }
         public Services.DataBaseManager db_manager { get; construct set; }
@@ -319,6 +320,21 @@ namespace PlayMyMusic.Services {
 
         public void resort_track_in_playlist (Objects.Playlist playlist, Objects.Track track, int new_sort_value) {
             db_manager.resort_track_in_playlist (playlist, track, new_sort_value);
+        }
+
+        public async void load_database_cache () {
+            new Thread <void*> (
+                "load_database_cache",
+                () => {
+                    uint dummy_counter = 0;
+                    foreach (var artist in artists) {
+                        foreach (var album in artist.albums) {
+                            dummy_counter += album.tracks.length ();
+                        }
+                    }
+                    cache_loaded ();
+                    return null;
+                });
         }
 
         //PLAYER REGION

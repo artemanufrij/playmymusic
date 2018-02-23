@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -62,5 +62,41 @@ namespace PlayMyMusic.Utils {
         } catch (Error err) {
             warning (err.message);
         }
+    }
+
+    public static void set_custom_css_style (Gdk.Screen screen) {
+        Granite.Widgets.Utils.set_theming_for_screen (
+            screen,
+                """
+                    .artist-title {
+                        color: #fff;
+                        text-shadow: 0px 1px 2px alpha (#000, 1);
+                    }
+                    .artist-sub-title {
+                        color: #fff;
+                        text-shadow: 0px 1px 2px alpha (#000, 1);
+                    }
+                    .playlist-tracks {
+                        background: transparent;
+                    }
+                    .mode_button_split {
+                        border-left-width: 1px;
+                    }
+                    .artist-tracks {
+                        background: rgba (245, 245, 245, 0.75);
+                    }
+                    .artist-tracks-dark {
+                        background: rgba (54, 59, 62, 0.75);
+                    }
+                    .custom_titlebar {
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                    }
+                    .track-drag-begin {
+                        border-top: 1px solid black;
+                    }
+                """,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
     }
 }
