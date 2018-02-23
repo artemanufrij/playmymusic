@@ -66,6 +66,10 @@
                     <li>Speed up start behavior</li>
                     <li>Small design changes in list view</li>
                 </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Catalan (by Adolfo Jayme-Barrientos)</li>
+                </ul>
             </description>
         </release>
         <release version="0.6.1" date="2018-02-21">
