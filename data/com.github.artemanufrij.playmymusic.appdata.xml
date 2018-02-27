@@ -59,8 +59,12 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.6.3" date="2018-02-30">
+        <release version="0.6.3" date="2018-02-28">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Hide button for Mobile Panel</li>
+                </ul>
                 <p>Translation:</p>
                 <ul>
                     <li>Catalan (by Adolfo Jayme-Barrientos)</li>

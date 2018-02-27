@@ -549,7 +549,7 @@ namespace PlayMyMusic {
             this.show_all ();
 
             audio_cd_widget.hide ();
-            mobile_phone_view.set_reveal_child (false);
+            mobile_phone_view.reveal_child = false;
             mobile_phone_view.hide_spinner ();
 
             library_manager.device_manager.init ();
@@ -643,7 +643,7 @@ namespace PlayMyMusic {
         private void show_albums () {
             mode_buttons.opacity = 1;
             if (mobile_phone_view.current_mobile_phone != null) {
-                mobile_phone_view.set_reveal_child (true);
+                mobile_phone_view.reveal_child = true;
             }
             content.visible_child_name = "albums";
             search_entry.text = albums_view.filter;
@@ -652,7 +652,7 @@ namespace PlayMyMusic {
         private void show_artists () {
             mode_buttons.opacity = 1;
             if (mobile_phone_view.current_mobile_phone != null) {
-                mobile_phone_view.set_reveal_child (true);
+                mobile_phone_view.reveal_child = true;
             }
             if (artist_button.sensitive) {
                 content.visible_child_name = "artists";
@@ -665,7 +665,7 @@ namespace PlayMyMusic {
 
         private void show_tracks () {
             mode_buttons.opacity = 0;
-            mobile_phone_view.set_reveal_child (false);
+            mobile_phone_view.reveal_child = false;
             if (tracks_button.sensitive) {
                 content.visible_child_name = "tracks";
                 search_entry.text = tracks_view.filter;
@@ -677,7 +677,7 @@ namespace PlayMyMusic {
 
         private void show_playlists () {
             mode_buttons.opacity = 1;
-            mobile_phone_view.set_reveal_child (false);
+            mobile_phone_view.reveal_child = false;
             if (playlist_button.sensitive) {
                 if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || playlists_view.filter != "") {
                     search_entry.grab_focus ();
@@ -691,7 +691,7 @@ namespace PlayMyMusic {
 
         private void show_radiostations () {
             mode_buttons.opacity = 0;
-            mobile_phone_view.set_reveal_child (false);
+            mobile_phone_view.reveal_child = false;
             if (library_manager.player.current_radio == null || radios_view.filter != "") {
                 search_entry.grab_focus ();
             }
@@ -701,7 +701,7 @@ namespace PlayMyMusic {
 
         private void show_audio_cd () {
             mode_buttons.opacity = 1;
-            mobile_phone_view.set_reveal_child (false);
+            mobile_phone_view.reveal_child = false;
             if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.AUDIO_CD || audio_cd_view.filter != "") {
                 search_entry.grab_focus ();
             }

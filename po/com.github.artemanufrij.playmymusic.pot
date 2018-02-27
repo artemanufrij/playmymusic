@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-19 21:43+0100\n"
+"POT-Creation-Date: 2018-02-27 21:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,28 +136,29 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:153
-msgid "ID"
-msgstr ""
-
-#: ../src/Widgets/Views/TracksView.vala:154
-msgid "Artist"
-msgstr ""
-
-#: ../src/Widgets/Views/TracksView.vala:161
-msgid "Album"
-msgstr ""
-
-#: ../src/Widgets/Views/TracksView.vala:168
-msgid "Title"
-msgstr ""
-
-#: ../src/Widgets/Views/TracksView.vala:173
+#: ../src/Widgets/Views/TracksView.vala:166
 msgid "Nr"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:178
+#: ../src/Widgets/Views/TracksView.vala:173
+msgid "Title"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:180
+msgid "Album"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:182
+msgid "Artist"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:187
 msgid "Duration"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:258 ../src/MainWindow.vala:723
+#: ../src/MainWindow.vala:731
+msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
 
 #: ../src/Widgets/Views/PlaylistView.vala:101
@@ -196,6 +197,10 @@ msgstr ""
 msgid "Add a playlist for manage your favorite songs."
 msgstr ""
 
+#: ../src/Widgets/Views/MobilePhone.vala:108
+msgid "Hide Mobile Panel"
+msgstr ""
+
 #: ../src/Widgets/Track.vala:69
 msgid ""
 "File couldn't be found\n"
@@ -214,33 +219,33 @@ msgstr ""
 msgid "Remove Radio Station"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:294
+#: ../src/Services/LibraryManager.vala:295
 msgid "New Playlist"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:337
+#: ../src/Services/LibraryManager.vala:353
 msgid "Choose an image…"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:339
-#: ../src/Services/LibraryManager.vala:360
+#: ../src/Services/LibraryManager.vala:355
+#: ../src/Services/LibraryManager.vala:376
 msgid "_Cancel"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:340
-#: ../src/Services/LibraryManager.vala:361
+#: ../src/Services/LibraryManager.vala:356
+#: ../src/Services/LibraryManager.vala:377
 msgid "_Open"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:343
+#: ../src/Services/LibraryManager.vala:359
 msgid "Images"
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:359
+#: ../src/Services/LibraryManager.vala:375
 msgid "Select a folder."
 msgstr ""
 
-#: ../src/Services/LibraryManager.vala:364
+#: ../src/Services/LibraryManager.vala:380
 msgid "Folder"
 msgstr ""
 
@@ -261,84 +266,88 @@ msgstr ""
 msgid "No Music Files found"
 msgstr ""
 
-#: ../src/MainWindow.vala:137
+#: ../src/MainWindow.vala:146
 msgid "Pause"
 msgstr ""
 
-#: ../src/MainWindow.vala:157 ../src/MainWindow.vala:311
+#: ../src/MainWindow.vala:166 ../src/MainWindow.vala:308
 msgid "Melody"
 msgstr ""
 
-#: ../src/MainWindow.vala:160 ../src/MainWindow.vala:331
+#: ../src/MainWindow.vala:169 ../src/MainWindow.vala:329
 msgid "Play"
 msgstr ""
 
-#: ../src/MainWindow.vala:322
+#: ../src/MainWindow.vala:319
 msgid "Previous"
 msgstr ""
 
-#: ../src/MainWindow.vala:339
+#: ../src/MainWindow.vala:338
 msgid "Next"
 msgstr ""
 
-#: ../src/MainWindow.vala:388
+#: ../src/MainWindow.vala:389
 msgid "Change Music Folder…"
 msgstr ""
 
-#: ../src/MainWindow.vala:397
+#: ../src/MainWindow.vala:399
 msgid "Import Music…"
 msgstr ""
 
-#: ../src/MainWindow.vala:405
+#: ../src/MainWindow.vala:408
 msgid "Reset all views"
 msgstr ""
 
-#: ../src/MainWindow.vala:411
+#: ../src/MainWindow.vala:415
 msgid "Resync Library"
 msgstr ""
 
-#: ../src/MainWindow.vala:416
+#: ../src/MainWindow.vala:421
 msgid "Preferences"
 msgstr ""
 
-#: ../src/MainWindow.vala:436
+#: ../src/MainWindow.vala:442
 msgid "Search Music"
 msgstr ""
 
-#: ../src/MainWindow.vala:476
+#: ../src/MainWindow.vala:483
 msgid "Shuffle"
 msgstr ""
 
-#: ../src/MainWindow.vala:488
+#: ../src/MainWindow.vala:496
 msgid "Repeat"
 msgstr ""
 
-#: ../src/MainWindow.vala:555
+#: ../src/MainWindow.vala:534
+msgid "Loading…"
+msgstr ""
+
+#: ../src/MainWindow.vala:534
+msgid "Reading out database content"
+msgstr ""
+
+#: ../src/MainWindow.vala:572
 msgid "Albums"
 msgstr ""
 
-#: ../src/MainWindow.vala:559
+#: ../src/MainWindow.vala:576
 msgid "Artists"
 msgstr ""
 
-#: ../src/MainWindow.vala:564
+#: ../src/MainWindow.vala:581
 msgid "Tracks"
 msgstr ""
 
-#: ../src/MainWindow.vala:569
+#: ../src/MainWindow.vala:586
 msgid "Playlists"
 msgstr ""
 
-#: ../src/MainWindow.vala:574
+#: ../src/MainWindow.vala:591
 msgid "Radio Stations"
 msgstr ""
 
-#: ../src/MainWindow.vala:581
+#: ../src/MainWindow.vala:598
 msgid "Audio CD"
-msgstr ""
-
-#: ../src/MainWindow.vala:705 ../src/MainWindow.vala:713
-msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
 
 #: ../src/Dialogs/Preferences.vala:60

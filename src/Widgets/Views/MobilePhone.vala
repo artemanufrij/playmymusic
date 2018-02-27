@@ -29,7 +29,7 @@ namespace PlayMyMusic.Widgets.Views {
     public class MobilePhone : Gtk.Revealer {
         Services.LibraryManager library_manager;
 
-        public Objects.MobilePhone? current_mobile_phone { get; private set; default = null;}
+        public Objects.MobilePhone ? current_mobile_phone { get; private set; default = null; }
         public Granite.Widgets.SourceList folders { get; private set; }
 
         Gtk.Label title;
@@ -41,16 +41,18 @@ namespace PlayMyMusic.Widgets.Views {
 
         construct {
             library_manager = Services.LibraryManager.instance;
-            library_manager.mobile_phone_connected.connect ((mobile_phone) => {
-                show_mobile_phone (mobile_phone);
-                set_reveal_child (true);
-            });
-            library_manager.mobile_phone_disconnected.connect ((volume) => {
-                if (current_mobile_phone.volume == volume) {
-                    set_reveal_child (false);
-                    reset ();
-                }
-            });
+            library_manager.mobile_phone_connected.connect (
+                (mobile_phone) => {
+                    show_mobile_phone (mobile_phone);
+                        set_reveal_child (true);
+                });
+            library_manager.mobile_phone_disconnected.connect (
+                (volume) => {
+                    if (current_mobile_phone.volume == volume) {
+                        set_reveal_child (false);
+                        reset ();
+                    }
+                });
         }
 
         public MobilePhone () {
@@ -92,14 +94,27 @@ namespace PlayMyMusic.Widgets.Views {
             folders = new Granite.Widgets.SourceList ();
             folders.hexpand = false;
             folders.events |= Gdk.EventMask.KEY_RELEASE_MASK;
-            folders.key_release_event.connect ((key) => {
-                if (key.keyval == Gdk.Key.Delete && (folders.selected is Objects.MobilePhoneMusicFolder)) {
-                     (folders.selected as Objects.MobilePhoneMusicFolder).delete ();
-                }
-                return true;
-            });
+            folders.key_release_event.connect (
+                (key) => {
+                    if (key.keyval == Gdk.Key.Delete && (folders.selected is Objects.MobilePhoneMusicFolder)) {
+                        (folders.selected as Objects.MobilePhoneMusicFolder).delete ();
+                    }
+                    return true;
+                });
+
+            var close_button = new Gtk.Button.from_icon_name ("pane-hide-symbolic-rtl", Gtk.IconSize.BUTTON);
+            close_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+            close_button.get_style_context ().add_class ("mobile-close-button");
+            close_button.tooltip_text = _("Hide Mobile Panel");
+            close_button.valign = Gtk.Align.START;
+            close_button.halign = Gtk.Align.END;
+            close_button.clicked.connect (
+                () => {
+                    this.reveal_child = false;
+                });
 
             var content = new Gtk.Grid ();
+            content.attach (close_button, 0, 0);
             content.attach (header, 0, 0);
             content.attach (folders, 0, 1);
             content.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 1, 0, 1, 2);
@@ -172,10 +187,11 @@ namespace PlayMyMusic.Widgets.Views {
             message.hide ();
             music_folder.collapsible = false;
 
-            Idle.add (() => {
-                folders.root.add (music_folder);
-                return false;
-            });
+            Idle.add (
+                () => {
+                    folders.root.add (music_folder);
+                    return false;
+                });
         }
     }
 }

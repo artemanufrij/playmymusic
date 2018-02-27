@@ -95,6 +95,10 @@ namespace PlayMyMusic.Utils {
                     .track-drag-begin {
                         border-top: 1px solid black;
                     }
+                    .mobile-close-button {
+                        padding: 3px;
+                        opacity: 0.75;
+                    }
                 """,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
