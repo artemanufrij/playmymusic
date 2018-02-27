@@ -642,7 +642,7 @@ namespace PlayMyMusic {
 
         private void show_albums () {
             mode_buttons.opacity = 1;
-            if (mobile_phone_view.current_mobile_phone != null) {
+            if (mobile_phone_view.current_mobile_phone != null && !mobile_phone_view.stay_closed) {
                 mobile_phone_view.reveal_child = true;
             }
             content.visible_child_name = "albums";
@@ -651,7 +651,7 @@ namespace PlayMyMusic {
 
         private void show_artists () {
             mode_buttons.opacity = 1;
-            if (mobile_phone_view.current_mobile_phone != null) {
+            if (mobile_phone_view.current_mobile_phone != null && !mobile_phone_view.stay_closed) {
                 mobile_phone_view.reveal_child = true;
             }
             if (artist_button.sensitive) {

@@ -37,19 +37,19 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.ProgressBar progress;
         Gtk.Label message;
         Gtk.Spinner spinner;
-
+        public bool stay_closed { get; private set; default = false; }
 
         construct {
             library_manager = Services.LibraryManager.instance;
             library_manager.mobile_phone_connected.connect (
                 (mobile_phone) => {
                     show_mobile_phone (mobile_phone);
-                        set_reveal_child (true);
+                        this.reveal_child = true;
                 });
             library_manager.mobile_phone_disconnected.connect (
                 (volume) => {
                     if (current_mobile_phone.volume == volume) {
-                        set_reveal_child (false);
+                        this.reveal_child = false;
                         reset ();
                     }
                 });
@@ -111,6 +111,7 @@ namespace PlayMyMusic.Widgets.Views {
             close_button.clicked.connect (
                 () => {
                     this.reveal_child = false;
+                    stay_closed = true;
                 });
 
             var content = new Gtk.Grid ();
@@ -158,6 +159,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void reset () {
             current_mobile_phone = null;
+            stay_closed = false;
             folders.root.clear ();
             message.show ();
         }
