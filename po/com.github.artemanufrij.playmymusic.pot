@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-27 21:01+0100\n"
+"POT-Creation-Date: 2018-02-28 18:50+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,253 +17,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/Widgets/Album.vala:221 ../src/Widgets/Artist.vala:209
-#: ../src/Widgets/Views/AlbumView.vala:65
-#: ../src/Widgets/Views/AudioCDView.vala:98
-msgid "Set new Cover…"
+#: ../src/Dialogs/AlbumEditor.vala:82 ../src/Dialogs/ArtistEditor.vala:81
+msgid "Click to choose a new cover…"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:238
-msgid "Edit Album properties…"
+#: ../src/Dialogs/AlbumEditor.vala:109
+msgid "Year"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:245 ../src/Widgets/Track.vala:172
-msgid "Add into Playlist"
-msgstr ""
-
-#: ../src/Widgets/Album.vala:250 ../src/Widgets/Artist.vala:232
-#: ../src/Widgets/Track.vala:187
-msgid "Send to"
-msgstr ""
-
-#: ../src/Widgets/Album.vala:255
-msgid "Merge selected Albums"
-msgstr ""
-
-#: ../src/Widgets/Album.vala:276 ../src/Widgets/Track.vala:204
-msgid "Create New Playlist"
-msgstr ""
-
-#: ../src/Widgets/TrackTimeLine.vala:93 ../src/Widgets/TrackTimeLine.vala:97
-msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr ""
-
-#: ../src/Widgets/Artist.vala:226
-msgid "Edit Artist properties…"
-msgstr ""
-
-#: ../src/Widgets/Artist.vala:237
-msgid "Merge selected Artists"
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:119
-msgid "Get Some Tunes"
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:119
-msgid "Add music to your library."
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:120
-msgid "Change Music Folder"
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:120
-msgid "Load music from a folder, a network or an external disk."
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:121
-msgid "Import Music"
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:121
-msgid "Import music from a source into your library."
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:140
-#: ../src/Widgets/Views/ArtistsView.vala:110
-#: ../src/Widgets/Views/RadiosView.vala:205
-#: ../src/Widgets/Views/PlaylistsView.vala:154
-msgid "No results"
-msgstr ""
-
-#: ../src/Widgets/Views/AlbumsView.vala:140
-#: ../src/Widgets/Views/ArtistsView.vala:110
-#: ../src/Widgets/Views/RadiosView.vala:205
-#: ../src/Widgets/Views/PlaylistsView.vala:154
-msgid "Try another search"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:113
-msgid "Add a radio station"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:123
-msgid "Station Name"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:131
-msgid "URL"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:150
-msgid "Choose a Cover"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:187
-msgid "No Radio Stations"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:187
-msgid "Add radio stations to your library."
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:188
-msgid "Add Radio Station"
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:188
-msgid "Add a Stream URL like .pls or .m3u."
-msgstr ""
-
-#: ../src/Widgets/Views/RadiosView.vala:241
-#: ../src/Widgets/Views/PlaylistsView.vala:114
-msgid "Add"
-msgstr ""
-
+#: ../src/Dialogs/AlbumEditor.vala:120 ../src/Dialogs/ArtistEditor.vala:113
 #: ../src/Widgets/Views/RadiosView.vala:243
-#: ../src/Dialogs/ArtistEditor.vala:113 ../src/Dialogs/AlbumEditor.vala:120
 msgid "Save"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:166
-msgid "Nr"
+#: ../src/Dialogs/Preferences.vala:60
+msgid "Use Dark Theme"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:173
-msgid "Title"
+#: ../src/Dialogs/Preferences.vala:68
+msgid "Play in background if closed"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:180
-msgid "Album"
+#: ../src/Dialogs/Preferences.vala:76
+msgid "Sync files on start up"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:182
-msgid "Artist"
+#: ../src/Dialogs/Preferences.vala:84
+msgid "Load Content from MusicBrainz"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:187
-msgid "Duration"
+#: ../src/Dialogs/Preferences.vala:92
+msgid "Save custom Covers in Library folder"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:258 ../src/MainWindow.vala:723
-#: ../src/MainWindow.vala:731
-msgid "<b>%s</b> by <b>%s</b>"
+#: ../src/Dialogs/Preferences.vala:100
+msgid "Save changes into ID3-Tag"
 msgstr ""
 
-#: ../src/Widgets/Views/PlaylistView.vala:101
-msgid "Rename"
-msgstr ""
-
-#: ../src/Widgets/Views/PlaylistView.vala:122
-msgid "Rename Playlist"
-msgstr ""
-
-#: ../src/Widgets/Views/PlaylistView.vala:132
-msgid "Remove Playlist"
-msgstr ""
-
-#: ../src/Widgets/Views/ArtistView.vala:163
-msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr ""
-
-#: ../src/Widgets/Views/PlaylistsView.vala:95
-msgid "Add a playlist"
-msgstr ""
-
-#: ../src/Widgets/Views/PlaylistsView.vala:137
-msgid "No Playlists"
-msgstr ""
-
-#: ../src/Widgets/Views/PlaylistsView.vala:137
-msgid "Add playlist to your library."
-msgstr ""
-
-#: ../src/Widgets/Views/PlaylistsView.vala:138
-msgid "Add Playlist"
-msgstr ""
-
-#: ../src/Widgets/Views/PlaylistsView.vala:138
-msgid "Add a playlist for manage your favorite songs."
-msgstr ""
-
-#: ../src/Widgets/Views/MobilePhone.vala:108
-msgid "Hide Mobile Panel"
-msgstr ""
-
-#: ../src/Widgets/Track.vala:69
-msgid ""
-"File couldn't be found\n"
-"%s"
-msgstr ""
-
-#: ../src/Widgets/Track.vala:176
-msgid "Remove from Playlist"
-msgstr ""
-
-#: ../src/Widgets/Radio.vala:95
-msgid "Edit Radio Station…"
-msgstr ""
-
-#: ../src/Widgets/Radio.vala:103
-msgid "Remove Radio Station"
-msgstr ""
-
-#: ../src/Services/LibraryManager.vala:295
-msgid "New Playlist"
-msgstr ""
-
-#: ../src/Services/LibraryManager.vala:353
-msgid "Choose an image…"
-msgstr ""
-
-#: ../src/Services/LibraryManager.vala:355
-#: ../src/Services/LibraryManager.vala:376
-msgid "_Cancel"
-msgstr ""
-
-#: ../src/Services/LibraryManager.vala:356
-#: ../src/Services/LibraryManager.vala:377
-msgid "_Open"
-msgstr ""
-
-#: ../src/Services/LibraryManager.vala:359
-msgid "Images"
-msgstr ""
-
-#: ../src/Services/LibraryManager.vala:375
-msgid "Select a folder."
-msgstr ""
-
-#: ../src/Services/LibraryManager.vala:380
-msgid "Folder"
-msgstr ""
-
-#: ../src/Services/TagManager.vala:48 ../src/Objects/AudioCD.vala:67
-#: ../src/Objects/AudioCD.vala:68
-msgid "Unknown"
-msgstr ""
-
-#: ../src/Objects/MobilePhoneMusicFolder.vala:86
-msgid "deleting…"
-msgstr ""
-
-#: ../src/Objects/AudioCD.vala:100
-msgid "Track %d"
-msgstr ""
-
-#: ../src/Objects/MobilePhone.vala:45
-msgid "No Music Files found"
+#: ../src/Dialogs/Preferences.vala:125
+msgid "Close"
 msgstr ""
 
 #: ../src/MainWindow.vala:146
@@ -350,38 +142,254 @@ msgstr ""
 msgid "Audio CD"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:60
-msgid "Use Dark Theme"
+#: ../src/MainWindow.vala:723 ../src/MainWindow.vala:731
+#: ../src/Widgets/Views/TracksView.vala:258
+msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:68
-msgid "Play in background if closed"
+#: ../src/Objects/AudioCD.vala:67 ../src/Objects/AudioCD.vala:68
+#: ../src/Services/TagManager.vala:48
+msgid "Unknown"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:76
-msgid "Sync files on start up"
+#: ../src/Objects/AudioCD.vala:100
+msgid "Track %d"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:84
-msgid "Load Content from MusicBrainz"
+#: ../src/Objects/MobilePhone.vala:45
+msgid "No Music Files found"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:92
-msgid "Save custom Covers in Library folder"
+#: ../src/Objects/MobilePhoneMusicFolder.vala:86
+msgid "deleting…"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:100
-msgid "Save changes into ID3-Tag"
+#: ../src/Services/LibraryManager.vala:295
+msgid "New Playlist"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:125
-msgid "Close"
+#: ../src/Services/LibraryManager.vala:353
+msgid "Choose an image…"
 msgstr ""
 
-#: ../src/Dialogs/ArtistEditor.vala:81 ../src/Dialogs/AlbumEditor.vala:82
-msgid "Click to choose a new cover…"
+#: ../src/Services/LibraryManager.vala:355
+#: ../src/Services/LibraryManager.vala:376
+msgid "_Cancel"
 msgstr ""
 
-#: ../src/Dialogs/AlbumEditor.vala:109
-msgid "Year"
+#: ../src/Services/LibraryManager.vala:356
+#: ../src/Services/LibraryManager.vala:377
+msgid "_Open"
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:359
+msgid "Images"
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:375
+msgid "Select a folder."
+msgstr ""
+
+#: ../src/Services/LibraryManager.vala:380
+msgid "Folder"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:221 ../src/Widgets/Artist.vala:209
+#: ../src/Widgets/Views/AlbumView.vala:65
+#: ../src/Widgets/Views/AudioCDView.vala:98
+msgid "Set new Cover…"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:238
+msgid "Edit Album properties…"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:245 ../src/Widgets/Track.vala:172
+msgid "Add into Playlist"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:250 ../src/Widgets/Artist.vala:232
+#: ../src/Widgets/Track.vala:187
+msgid "Send to"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:255
+msgid "Merge selected Albums"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:276 ../src/Widgets/Track.vala:204
+msgid "Create New Playlist"
+msgstr ""
+
+#: ../src/Widgets/Artist.vala:226
+msgid "Edit Artist properties…"
+msgstr ""
+
+#: ../src/Widgets/Artist.vala:237
+msgid "Merge selected Artists"
+msgstr ""
+
+#: ../src/Widgets/Radio.vala:95
+msgid "Edit Radio Station…"
+msgstr ""
+
+#: ../src/Widgets/Radio.vala:103
+msgid "Remove Radio Station"
+msgstr ""
+
+#: ../src/Widgets/Track.vala:69
+msgid ""
+"File couldn't be found\n"
+"%s"
+msgstr ""
+
+#: ../src/Widgets/Track.vala:176
+msgid "Remove from Playlist"
+msgstr ""
+
+#: ../src/Widgets/TrackTimeLine.vala:93 ../src/Widgets/TrackTimeLine.vala:97
+msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:119
+msgid "Get Some Tunes"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:119
+msgid "Add music to your library."
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:120
+msgid "Change Music Folder"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:120
+msgid "Load music from a folder, a network or an external disk."
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:121
+msgid "Import Music"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:121
+msgid "Import music from a source into your library."
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:140
+#: ../src/Widgets/Views/ArtistsView.vala:110
+#: ../src/Widgets/Views/PlaylistsView.vala:154
+#: ../src/Widgets/Views/RadiosView.vala:205
+msgid "No results"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:140
+#: ../src/Widgets/Views/ArtistsView.vala:110
+#: ../src/Widgets/Views/PlaylistsView.vala:154
+#: ../src/Widgets/Views/RadiosView.vala:205
+msgid "Try another search"
+msgstr ""
+
+#: ../src/Widgets/Views/ArtistView.vala:163
+msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
+msgstr ""
+
+#: ../src/Widgets/Views/MobilePhone.vala:108
+msgid "Hide Mobile Panel"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistView.vala:101
+msgid "Rename"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistView.vala:122
+msgid "Rename Playlist"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistView.vala:132
+msgid "Remove Playlist"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistsView.vala:95
+msgid "Add a playlist"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistsView.vala:114
+#: ../src/Widgets/Views/RadiosView.vala:241
+msgid "Add"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistsView.vala:137
+msgid "No Playlists"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistsView.vala:137
+msgid "Add playlist to your library."
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistsView.vala:138
+msgid "Add Playlist"
+msgstr ""
+
+#: ../src/Widgets/Views/PlaylistsView.vala:138
+msgid "Add a playlist for manage your favorite songs."
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:113
+msgid "Add a radio station"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:123
+msgid "Station Name"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:131
+msgid "URL"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:150
+msgid "Choose a Cover"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:187
+msgid "No Radio Stations"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:187
+msgid "Add radio stations to your library."
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:188
+msgid "Add Radio Station"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:188
+msgid "Add a Stream URL like .pls or .m3u."
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:140
+msgid "Choose a Track"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:140
+msgid "No track selected"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:166
+msgid "Nr"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:173
+msgid "Title"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:180
+msgid "Album"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:182
+msgid "Artist"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:187
+msgid "Duration"
 msgstr ""
