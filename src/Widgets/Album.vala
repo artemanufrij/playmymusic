@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,6 @@ namespace PlayMyMusic.Widgets {
         PlayMyMusic.Services.LibraryManager library_manager;
         PlayMyMusic.Settings settings;
 
-        public signal void unselect ();
         public signal void merge ();
 
         public PlayMyMusic.Objects.Album album { get; private set; }
@@ -39,7 +38,7 @@ namespace PlayMyMusic.Widgets {
 
         Gtk.Image cover;
         Gtk.Label title_label;
-        Gtk.Menu menu;
+        Gtk.Menu menu = null;
         Gtk.Menu playlists;
         Gtk.Menu send_to;
         Gtk.MenuItem menu_send_to;
@@ -57,6 +56,7 @@ namespace PlayMyMusic.Widgets {
 
         public Album (PlayMyMusic.Objects.Album album) {
             this.album = album;
+            this.draw.connect (first_draw);
 
             build_ui ();
 
@@ -72,7 +72,7 @@ namespace PlayMyMusic.Widgets {
                     return false;
                 });
             });
-            this.album.notify["title"].connect (() => {
+            this.album.updated.connect (() => {
                 set_values ();
             });
             this.key_press_event.connect ((event) => {
@@ -82,6 +82,16 @@ namespace PlayMyMusic.Widgets {
                 }
                 return false;
             });
+        }
+
+        private bool first_draw () {
+            this.draw.disconnect (first_draw);
+            if (this.album.cover == null) {
+                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
+            } else {
+                cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+            }
+            return false;
         }
 
         private void build_ui () {
@@ -112,13 +122,8 @@ namespace PlayMyMusic.Widgets {
             cover = new Gtk.Image ();
             cover.get_style_context ().add_class ("card");
             cover.halign = Gtk.Align.CENTER;
-            if (this.album.cover == null) {
-                cover.set_from_icon_name ("audio-x-generic-symbolic", Gtk.IconSize.DIALOG);
-                cover.height_request = 128;
-                cover.width_request = 128;
-            } else {
-                cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
-            }
+            cover.height_request = 128;
+            cover.width_request = 128;
 
             title_label = new Gtk.Label ("");
             title_label.opacity = 0.5;
@@ -159,8 +164,6 @@ namespace PlayMyMusic.Widgets {
             this.add (event_box);
             this.valign = Gtk.Align.START;
 
-            build_context_menu ();
-
             set_values ();
 
             this.show_all ();
@@ -176,7 +179,7 @@ namespace PlayMyMusic.Widgets {
                 multi_select.set_image (multi_selected_image);
             } else {
                 multi_selection = false;
-                unselect ();
+                (this.parent as Gtk.FlowBox).unselect_child (this);
                 multi_select.set_image (add_selection_image);
             }
         }
@@ -260,6 +263,11 @@ namespace PlayMyMusic.Widgets {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+
+                if (menu == null) {
+                    build_context_menu ();
+                }
+
                 this.activate ();
                 // PLAYLISTS
                 foreach (var child in playlists.get_children ()) {

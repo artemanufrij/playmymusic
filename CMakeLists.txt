@@ -18,13 +18,14 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package (PkgConfig)
 pkg_check_modules (DEPS REQUIRED
     gtk+-3.0>=3.11.6
-    granite
+    granite>=0.5
     sqlite3
     libsoup-2.4
     json-glib-1.0
     gstreamer-tag-1.0
     gstreamer-pbutils-1.0
     gstreamer-audio-1.0
+    taglib_c
 )
 
 # Comment this out to enable C compiler warnings

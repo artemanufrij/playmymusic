@@ -4,7 +4,7 @@
     <id>com.github.artemanufrij.playmymusic.desktop</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0+</project_license>
-    <name>Music Player</name>
+    <name>Melody</name>
     <summary>A music player for listening local music files, online radios and Audio CD's.</summary>
     <description>
         <p>A very fast music player designed extra for large local libraries.</p>
@@ -16,6 +16,7 @@
             <li>Listen to online Radio</li>
             <li>Audio CD support</li>
             <li>Manage your MTP device</li>
+            <li>ID3-Tag support</li>
         </ul>
     </description>
     <categories>
@@ -24,10 +25,10 @@
     <custom>
         <value key="x-appcenter-color-primary">#004988</value>
         <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
-        <value key="x-appcenter-suggested-price">1</value>
+        <value key="x-appcenter-suggested-price">2</value>
     </custom>
     <developer_name>Artem Anufrij</developer_name>
-    <url type="homepage">https://github.com/artemanufrij/playmymusic</url>
+    <url type="homepage">https://artemanufrij.github.io</url>
     <url type="bugtracker">https://github.com/artemanufrij/playmymusic/issues</url>
     <url type="help">https://github.com/artemanufrij/playmymusic/issues</url>
     <update_contact>artem.anufrij@live.de</update_contact>
@@ -58,8 +59,114 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.4.2" date="2018-01-02">
+        <release version="0.6.4" date="2018-02-28">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Hide button for Mobile Panel</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Catalan (by Adolfo Jayme-Barrientos)</li>
+                    <li>Spanish (by Adolfo Jayme-Barrientos)</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.6.2" date="2018-02-25">
+            <description>
+                <p>Improved:</p>
+                <ul>
+                    <li>Speed up start behavior</li>
+                    <li>Small design changes in list view</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Catalan (by Adolfo Jayme-Barrientos)</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.6.1" date="2018-02-21">
+            <description>
+                <p>Fixed:</p>
+                <ul>
+                    <li>List View: sorting and small design changes</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.6.0" date="2018-02-20">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>List View for all music content</li>
+                    <li>Grab album cover from MusicBrainz</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.5.3" date="2018-02-12">
+            <description>
+                <p>Fix:</p>
+                <ul>
+                    <li>Endless spinner on first start (if no music files exist)</li>
+                </ul>
+                <p>Improved:</p>
+                <ul>
+                    <li>Mounting MTP-Devices</li>
+                    <li>Show "No Result" message if search term hasn't any results</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.5.1" date="2018-02-05">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Desktop Actions: Next, Previous, Play/Pause</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.5.0" date="2018-01-30">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Saving changes directly into file (ID3-tags)</li>
+                </ul>
+                <p>Changes:</p>
+                <ul>
+                    <li>Generic name "PlayMyMusic" -> "Melody"</li>
+                    <li>Lazy cover loading -> less memory on startup</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Simplified Chinese (by trampover)</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.4.4" date="2018-01-15">
+            <description>
+                <p>Fix:</p>
+                <ul>
+                    <li>Endless spinner</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.4.3" date="2018-01-15">
+            <description>
+                <p>Fix:</p>
+                <ul>
+                    <li>Spinner visibility while library is being scanned</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Spanish (by Alain)</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.4.2" date="2018-01-07">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Show song title from online radio in audio indicator</li>
+                    <li>Save/restore window position</li>
+                </ul>
                 <p>Improved:</p>
                 <ul>
                     <li>Start searching instand on key press</li>
@@ -76,6 +183,10 @@
                 <p>Fix:</p>
                 <ul>
                     <li>Playlist behavior</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Russian (by Camellan)</li>
                 </ul>
             </description>
         </release>

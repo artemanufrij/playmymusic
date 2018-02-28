@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -36,16 +36,17 @@ namespace PlayMyMusic.Services {
                 return _instance;
             }
         }
-        public signal void added_new_artist (PlayMyMusic.Objects.Artist artist);
-        public signal void added_new_album (PlayMyMusic.Objects.Album album);
-        public signal void added_new_playlist (PlayMyMusic.Objects.Playlist playlist);
-        public signal void removed_playlist (PlayMyMusic.Objects.Playlist playlist);
-        public signal void artist_removed (PlayMyMusic.Objects.Artist artist);
-        public signal void added_new_radio (PlayMyMusic.Objects.Radio radio);
-        public signal void removed_radio (PlayMyMusic.Objects.Radio radio);
+        public signal void added_new_artist (Objects.Artist artist);
+        public signal void added_new_album (Objects.Album album);
+        public signal void added_new_playlist (Objects.Playlist playlist);
+        public signal void added_new_radio (Objects.Radio radio);
+        public signal void adden_new_track (Objects.Track track);
+        public signal void removed_playlist (Objects.Playlist playlist);
+        public signal void artist_removed (Objects.Artist artist);
+        public signal void removed_radio (Objects.Radio radio);
 
-        GLib.List<PlayMyMusic.Objects.Artist> _artists = null;
-        public GLib.List<PlayMyMusic.Objects.Artist> artists {
+        GLib.List<Objects.Artist> _artists = null;
+        public GLib.List<Objects.Artist> artists {
             get {
                 if (_artists == null) {
                     _artists = get_artist_collection ();
@@ -54,8 +55,8 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        GLib.List<PlayMyMusic.Objects.Radio> _radios = null;
-        public  GLib.List<PlayMyMusic.Objects.Radio> radios {
+        GLib.List<Objects.Radio> _radios = null;
+        public  GLib.List<Objects.Radio> radios {
             get {
                 if (_radios == null) {
                     _radios = get_radio_collection ();
@@ -64,8 +65,8 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        GLib.List<PlayMyMusic.Objects.Playlist> _playlists = null;
-        public GLib.List<PlayMyMusic.Objects.Playlist> playlists {
+        GLib.List<Objects.Playlist> _playlists = null;
+        public GLib.List<Objects.Playlist> playlists {
             get {
                 if (_playlists == null) {
                     _playlists = get_playlist_collection ();
@@ -88,7 +89,7 @@ namespace PlayMyMusic.Services {
         }
 
         private void open_database () {
-            Sqlite.Database.open (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH, out db);
+            Sqlite.Database.open (PlayMyMusicApp.instance.DB_PATH, out db);
 
             string q;
             q = """CREATE TABLE IF NOT EXISTS artists (
@@ -182,19 +183,19 @@ namespace PlayMyMusic.Services {
         }
 
         public void reset_database () {
-            File db_path = File.new_for_path (PlayMyMusic.PlayMyMusicApp.instance.DB_PATH);
+            File db_path = File.new_for_path (PlayMyMusicApp.instance.DB_PATH);
             try {
                 db_path.delete ();
             } catch (Error err) {
                 warning (err.message);
             }
-            _artists = new GLib.List<PlayMyMusic.Objects.Artist> ();
+            _artists = new GLib.List<Objects.Artist> ();
             open_database ();
         }
 
 // ARTIST REGION
-        public GLib.List<PlayMyMusic.Objects.Artist> get_artist_collection () {
-            GLib.List<PlayMyMusic.Objects.Artist> return_value = new GLib.List<PlayMyMusic.Objects.Artist> ();
+        public GLib.List<Objects.Artist> get_artist_collection () {
+            GLib.List<Objects.Artist> return_value = new GLib.List<Objects.Artist> ();
 
             Sqlite.Statement stmt;
             string sql = """
@@ -210,8 +211,8 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public PlayMyMusic.Objects.Artist? get_artist_by_name (string name) {
-            PlayMyMusic.Objects.Artist? return_value = null;
+        public Objects.Artist? get_artist_by_name (string name) {
+            Objects.Artist? return_value = null;
             lock (_artists) {
                 foreach (var artist in artists) {
                     if (artist.name == name) {
@@ -223,8 +224,8 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public PlayMyMusic.Objects.Artist? get_artist_by_album_id (int id) {
-            PlayMyMusic.Objects.Artist? return_value = null;
+        public Objects.Artist? get_artist_by_album_id (int id) {
+            Objects.Artist? return_value = null;
             Sqlite.Statement stmt;
             string sql = """
                 SELECT artist_id
@@ -248,14 +249,14 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public PlayMyMusic.Objects.Artist _fill_artist (Sqlite.Statement stmt) {
-            PlayMyMusic.Objects.Artist return_value = new PlayMyMusic.Objects.Artist ();
+        public Objects.Artist _fill_artist (Sqlite.Statement stmt) {
+            Objects.Artist return_value = new Objects.Artist ();
             return_value.ID = stmt.column_int (0);
             return_value.name = stmt.column_text (1);
             return return_value;
         }
 
-        public void insert_artist (PlayMyMusic.Objects.Artist artist) {
+        public void insert_artist (Objects.Artist artist) {
             Sqlite.Statement stmt;
             string sql = """
                 INSERT OR IGNORE INTO artists (name) VALUES ($NAME);
@@ -287,7 +288,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void update_artist (PlayMyMusic.Objects.Artist artist) {
+        public void update_artist (Objects.Artist artist) {
             Sqlite.Statement stmt;
             string sql = """
                 UPDATE artists SET name=$NAME WHERE id=$ID;
@@ -299,12 +300,14 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                artist.updated ();
             }
             stmt.reset ();
         }
 
-        public PlayMyMusic.Objects.Artist insert_artist_if_not_exists (PlayMyMusic.Objects.Artist new_artist) {
-            PlayMyMusic.Objects.Artist? return_value = null;
+        public Objects.Artist insert_artist_if_not_exists (Objects.Artist new_artist) {
+            Objects.Artist? return_value = null;
             lock (_artists) {
                 foreach (var artist in artists) {
                     if (artist.name == new_artist.name) {
@@ -320,7 +323,7 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public void remove_artist (PlayMyMusic.Objects.Artist artist) {
+        public void remove_artist (Objects.Artist artist) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -340,8 +343,8 @@ namespace PlayMyMusic.Services {
         }
 
 // ALBUM REGION
-        public GLib.List<PlayMyMusic.Objects.Album> get_album_collection (PlayMyMusic.Objects.Artist artist) {
-            GLib.List<PlayMyMusic.Objects.Album> return_value = new GLib.List<PlayMyMusic.Objects.Album> ();
+        public GLib.List<Objects.Album> get_album_collection (Objects.Artist artist) {
+            GLib.List<Objects.Album> return_value = new GLib.List<Objects.Album> ();
             Sqlite.Statement stmt;
 
             string sql = """
@@ -358,8 +361,8 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public PlayMyMusic.Objects.Album? get_album_by_track_id (int id) {
-            PlayMyMusic.Objects.Album? return_value = null;
+        public Objects.Album? get_album_by_track_id (int id) {
+            Objects.Album? return_value = null;
             Sqlite.Statement stmt;
 
             string sql = """
@@ -379,15 +382,15 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        private PlayMyMusic.Objects.Album _fill_album (Sqlite.Statement stmt, PlayMyMusic.Objects.Artist? artist) {
-            PlayMyMusic.Objects.Album return_value = new PlayMyMusic.Objects.Album (artist);
+        private Objects.Album _fill_album (Sqlite.Statement stmt, Objects.Artist? artist) {
+            Objects.Album return_value = new Objects.Album (artist);
             return_value.ID = stmt.column_int (0);
             return_value.title = stmt.column_text (1);
             return_value.year = stmt.column_int (2);
             return return_value;
         }
 
-        public void insert_album (PlayMyMusic.Objects.Album album) {
+        public void insert_album (Objects.Album album) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -421,7 +424,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void update_album (PlayMyMusic.Objects.Album album) {
+        public void update_album (Objects.Album album) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -435,11 +438,13 @@ namespace PlayMyMusic.Services {
 
             if (stmt.step () != Sqlite.DONE) {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                album.updated ();
             }
             stmt.reset ();
         }
 
-        public void remove_album (PlayMyMusic.Objects.Album album) {
+        public void remove_album (Objects.Album album) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -459,8 +464,8 @@ namespace PlayMyMusic.Services {
         }
 
 // PLAYLIST REGION
-        public GLib.List<PlayMyMusic.Objects.Playlist> get_playlist_collection () {
-            GLib.List<PlayMyMusic.Objects.Playlist> return_value = new GLib.List<PlayMyMusic.Objects.Playlist> ();
+        public GLib.List<Objects.Playlist> get_playlist_collection () {
+            GLib.List<Objects.Playlist> return_value = new GLib.List<Objects.Playlist> ();
             Sqlite.Statement stmt;
 
             string sql = """
@@ -469,7 +474,7 @@ namespace PlayMyMusic.Services {
             db.prepare_v2 (sql, sql.length, out stmt);
 
             while (stmt.step () == Sqlite.ROW) {
-                var item = new PlayMyMusic.Objects.Playlist ();
+                var item = new Objects.Playlist ();
                 item.ID = stmt.column_int (0);
                 item.title = stmt.column_text (1);
                 return_value.append (item);
@@ -478,7 +483,7 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public PlayMyMusic.Objects.Playlist? get_playlist_by_title (string title) {
+        public Objects.Playlist? get_playlist_by_title (string title) {
             foreach (var playlist in playlists) {
                 if (playlist.title == title) {
                     return playlist;
@@ -487,7 +492,7 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
-        public PlayMyMusic.Objects.Playlist? get_playlist_by_id (int id) {
+        public Objects.Playlist? get_playlist_by_id (int id) {
             foreach (var playlist in playlists) {
                 if (playlist.ID == id) {
                     return playlist;
@@ -496,7 +501,7 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
-        public void update_playlist (PlayMyMusic.Objects.Playlist playlist) {
+        public void update_playlist (Objects.Playlist playlist) {
             Sqlite.Statement stmt;
             string sql = """
                 UPDATE playlists SET title=$TITLE WHERE id=$ID;
@@ -510,12 +515,12 @@ namespace PlayMyMusic.Services {
                 _playlists.sort ((a, b) => {
                     return a.title.collate (b.title);
                 });
-                playlist.property_changed ("title");
+                playlist.updated ();
             }
             stmt.reset ();
         }
 
-        public void remove_track_from_playlist (PlayMyMusic.Objects.Track track) {
+        public void remove_track_from_playlist (Objects.Track track) {
             Sqlite.Statement stmt;
             string sql = """
                 DELETE FROM playlist_tracks WHERE playlist_id=$PLAYLIST_ID AND track_id=$TRACK_ID;
@@ -531,7 +536,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void insert_playlist (PlayMyMusic.Objects.Playlist playlist) {
+        public void insert_playlist (Objects.Playlist playlist) {
             Sqlite.Statement stmt;
             string sql = """
                 INSERT INTO playlists (title) VALUES ($TITLE);
@@ -564,7 +569,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void insert_track_into_playlist (PlayMyMusic.Objects.Playlist playlist, int track_id) {
+        public void insert_track_into_playlist (Objects.Playlist playlist, int track_id) {
             int next_sort_item = playlist.get_next_sort_item ();
 
             Sqlite.Statement stmt;
@@ -587,7 +592,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void resort_track_in_playlist (PlayMyMusic.Objects.Playlist playlist, PlayMyMusic.Objects.Track track, int new_sort_value) {
+        public void resort_track_in_playlist (Objects.Playlist playlist, Objects.Track track, int new_sort_value) {
             Sqlite.Statement stmt;
             string sql ="";
 
@@ -632,7 +637,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
+        public void remove_playlist (Objects.Playlist playlist) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -650,13 +655,13 @@ namespace PlayMyMusic.Services {
         }
 
 // TRACK REGION
-        public GLib.List<PlayMyMusic.Objects.Track> get_track_collection (PlayMyMusic.Objects.TracksContainer container) {
-            GLib.List<PlayMyMusic.Objects.Track> return_value = new GLib.List<PlayMyMusic.Objects.Track> ();
+        public GLib.List<Objects.Track> get_track_collection (Objects.TracksContainer container) {
+            GLib.List<Objects.Track> return_value = new GLib.List<Objects.Track> ();
             Sqlite.Statement stmt;
 
             string sql;
 
-            if (container is PlayMyMusic.Objects.Album) {
+            if (container is Objects.Album) {
                 sql = """
                     SELECT id, title, genre, track, disc, duration, path
                     FROM tracks
@@ -683,8 +688,8 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public PlayMyMusic.Objects.Track? get_track_by_id (int id) {
-            PlayMyMusic.Objects.Track? return_value = null;
+        public Objects.Track? get_track_by_id (int id) {
+            Objects.Track? return_value = null;
             Sqlite.Statement stmt;
 
             string sql = """
@@ -703,8 +708,8 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        private PlayMyMusic.Objects.Track _fill_track (Sqlite.Statement stmt, PlayMyMusic.Objects.TracksContainer? container) {
-            PlayMyMusic.Objects.Track return_value = new PlayMyMusic.Objects.Track (container);
+        private Objects.Track _fill_track (Sqlite.Statement stmt, Objects.TracksContainer? container) {
+            Objects.Track return_value = new Objects.Track (container);
             return_value.ID = stmt.column_int (0);
             return_value.title = stmt.column_text (1);
             return_value.genre = stmt.column_text (2);
@@ -718,7 +723,7 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public void insert_track (PlayMyMusic.Objects.Track track) {
+        public void insert_track (Objects.Track track) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -748,13 +753,14 @@ namespace PlayMyMusic.Services {
             if (stmt.step () == Sqlite.ROW) {
                 track.ID = stmt.column_int (0);
                 stdout.printf ("Track ID: %d - %s\n", track.ID, track.title);
+                adden_new_track (track);
             } else {
                 warning ("Error: %d: %s", db.errcode (), db.errmsg ());
             }
             stmt.reset ();
         }
 
-        public void update_track (PlayMyMusic.Objects.Track track) {
+        public void update_track (Objects.Track track) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -776,7 +782,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void remove_track (PlayMyMusic.Objects.Track track) {
+        public void remove_track (Objects.Track track) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -796,8 +802,8 @@ namespace PlayMyMusic.Services {
         }
 
 // RADIO REGION
-        public GLib.List<PlayMyMusic.Objects.Radio> get_radio_collection () {
-            GLib.List<PlayMyMusic.Objects.Radio> return_value = new GLib.List<PlayMyMusic.Objects.Radio> ();
+        public GLib.List<Objects.Radio> get_radio_collection () {
+            GLib.List<Objects.Radio> return_value = new GLib.List<Objects.Radio> ();
 
             Sqlite.Statement stmt;
             string sql = """
@@ -807,7 +813,7 @@ namespace PlayMyMusic.Services {
             db.prepare_v2 (sql, sql.length, out stmt);
 
             while (stmt.step () == Sqlite.ROW) {
-                var item = new PlayMyMusic.Objects.Radio ();
+                var item = new Objects.Radio ();
                 item.ID = stmt.column_int (0);
                 item.title = stmt.column_text (1);
                 item.url = stmt.column_text (2);
@@ -817,7 +823,7 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public PlayMyMusic.Objects.Radio? get_radio_by_id (int id) {
+        public Objects.Radio? get_radio_by_id (int id) {
             lock (_radios) {
                 foreach (var radio in radios) {
                     if (radio.ID == id) {
@@ -828,7 +834,7 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
-        public PlayMyMusic.Objects.Radio? get_radio_by_url (string url) {
+        public Objects.Radio? get_radio_by_url (string url) {
             lock (_radios) {
                 foreach (var radio in radios) {
                     if (radio.url == url) {
@@ -839,7 +845,7 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
-        public void update_radio (PlayMyMusic.Objects.Radio radio) {
+        public void update_radio (Objects.Radio radio) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -856,7 +862,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void insert_radio (PlayMyMusic.Objects.Radio radio) {
+        public void insert_radio (Objects.Radio radio) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -891,7 +897,7 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
         }
 
-        public void delete_radio (PlayMyMusic.Objects.Radio radio) {
+        public void delete_radio (Objects.Radio radio) {
             Sqlite.Statement stmt;
 
             string sql = """
@@ -955,7 +961,6 @@ namespace PlayMyMusic.Services {
             stmt.reset ();
             return file_exists;
         }
-
 
 // PARAMENTER REGION
         private void set_parameter_int (Sqlite.Statement? stmt, string sql, string par, int val) {

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,9 +27,9 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class AlbumView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Services.Player player;
-        PlayMyMusic.Settings settings;
+        Services.LibraryManager library_manager;
+        Services.Player player;
+        Settings settings;
 
         Gtk.Menu menu;
         Gtk.Image cover;
@@ -37,11 +37,11 @@ namespace PlayMyMusic.Widgets.Views {
 
         bool only_mark = false;
 
-        public PlayMyMusic.Objects.Album current_album { get; private set; }
+        public Objects.Album current_album { get; private set; }
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
             player = library_manager.player;
             player.state_changed.connect ((state) => {
                 mark_playing_track (player.current_track);
@@ -88,6 +88,7 @@ namespace PlayMyMusic.Widgets.Views {
             tracks_scroll.add (tracks);
 
             content.pack_start (event_box, false, false, 0);
+            content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
             var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
@@ -127,7 +128,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        public void show_album (PlayMyMusic.Objects.Album album) {
+        public void show_album (Objects.Album album) {
             if (current_album == album) {
                 return;
             }
@@ -164,18 +165,17 @@ namespace PlayMyMusic.Widgets.Views {
             cover.pixbuf = current_album.cover;
         }
 
-        private void add_track (PlayMyMusic.Objects.Track track) {
-            Idle.add (() => {
-                if (track.file_exists ()) {
-                    var item = new PlayMyMusic.Widgets.Track (track);
-                    this.tracks.add (item);
-                    item.show_all ();
+        private void add_track (Objects.Track track) {
+            if (track.file_exists ()) {
+                Idle.add (() => {
+                    var item = new Widgets.Track (track);
+                    tracks.add (item);
                     if (player.current_track != null && player.current_track.ID == track.ID) {
                         item.activate ();
                     }
-                }
-                return false;
-            });
+                    return false;
+                });
+            }
         }
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {

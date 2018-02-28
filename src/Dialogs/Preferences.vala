@@ -81,12 +81,12 @@ namespace PlayMyMusic.Dialogs {
                 settings.sync_files = sync_files.active;
             });
 
-            var load_artist_data_label = new Gtk.Label (_("Load Artist data from MusicBrainz"));
-            load_artist_data_label.halign = Gtk.Align.START;
-            var load_artist_data = new Gtk.Switch ();
-            load_artist_data.active = settings.load_artist_from_musicbrainz;
-            load_artist_data.notify["active"].connect (() => {
-                settings.load_artist_from_musicbrainz = load_artist_data.active;
+            var load_content_label = new Gtk.Label (_("Load Content from MusicBrainz"));
+            load_content_label.halign = Gtk.Align.START;
+            var load_content = new Gtk.Switch ();
+            load_content.active = settings.load_content_from_musicbrainz;
+            load_content.notify["active"].connect (() => {
+                settings.load_content_from_musicbrainz = load_content.active;
             });
 
             var save_custom_covers_label = new Gtk.Label (_("Save custom Covers in Library folder"));
@@ -97,6 +97,14 @@ namespace PlayMyMusic.Dialogs {
                 settings.save_custom_covers = save_custom_covers.active;
             });
 
+            var save_id3_tags_label = new Gtk.Label (_("Save changes into ID3-Tag"));
+            save_id3_tags_label.halign = Gtk.Align.START;
+            var save_id3_tags = new Gtk.Switch ();
+            save_id3_tags.active = settings.save_id3_tags;
+            save_id3_tags.notify["active"].connect (() => {
+                settings.save_id3_tags = save_id3_tags.active;
+            });
+
             grid.attach (use_dark_theme_label, 0, 0);
             grid.attach (use_dark_theme, 1, 0);
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1, 2, 1);
@@ -105,10 +113,12 @@ namespace PlayMyMusic.Dialogs {
             grid.attach (sync_files_label, 0, 3);
             grid.attach (sync_files, 1, 3);
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 4, 2, 1);
-            grid.attach (load_artist_data_label, 0, 5);
-            grid.attach (load_artist_data, 1, 5);
+            grid.attach (load_content_label, 0, 5);
+            grid.attach (load_content, 1, 5);
             grid.attach (save_custom_covers_label, 0, 6);
             grid.attach (save_custom_covers, 1, 6);
+            grid.attach (save_id3_tags_label, 0, 7);
+            grid.attach (save_id3_tags, 1, 7);
 
             content.pack_start (grid, false, false, 0);
 

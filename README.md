@@ -1,8 +1,12 @@
 <div>
   <h1 align="center">Play My Music</h1>
   <h3 align="center">A music player for listening to local music files, online radios, and Audio CD's</h3>
-  <p align="center">Designed for <a href="https://elementary.io"> elementary OS</p>
+  <p align="center">Designed for <a href="https://elementary.io">elementary OS</a></p>
 </div>
+
+### Donate
+<a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LiberaPay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Patreon</a>
+
 <p align="center">
   <a href="https://appcenter.elementary.io/com.github.artemanufrij.playmymusic">
     <img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter">
@@ -17,9 +21,6 @@
 ![screenshot](screenshots/Screenshot_MTP.png)
 ![screenshot](screenshots/Screenshot_Audio_CD.png)
 
-## Donations
-If you liked _Play My Music_, and would like to support it's development of this app and more, consider [buying me a coffee](https://www.paypal.me/ArtemAnufrij) :) 
-
 ## Install from Github.
 
 As first you need elementary SDK
@@ -29,9 +30,7 @@ sudo apt install elementary-sdk
 
 Install dependencies
 ```
-sudo apt install libsoup2.4-dev
-sudo apt install libsqlite3-dev
-sudo apt install libgstreamer-plugins-base1.0-dev
+sudo apt install libsoup2.4-dev libsqlite3-dev libgstreamer-plugins-base1.0-dev libtagc0-dev
 ```
 
 Clone repository and change directory

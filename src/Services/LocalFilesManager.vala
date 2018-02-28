@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -68,14 +68,14 @@ namespace PlayMyMusic.Services {
                             }
                         } else if (file_info.get_file_type () == FileType.DIRECTORY) {
                             // Without usleep it crashes on smb:// protocol
-                            if (!uri.has_prefix ("file://")) {
+                            if (!directory.get_uri ().has_prefix ("file://")) {
                                 Thread.usleep (1000000);
                             }
-                            scan_local_files (uri + "/" + file_info.get_name ());
+                            scan_local_files (directory.get_uri () + "/" + file_info.get_name ());
                         } else {
                             string mime_type = file_info.get_content_type ();
                             if (Utils.is_audio_file (mime_type)) {
-                                found_music_file (uri + "/" + file_info.get_name ().replace ("#", "%23"));
+                                found_music_file (directory.get_uri () + "/" + file_info.get_name ().replace ("#", "%23"));
                             }
                         }
                     }

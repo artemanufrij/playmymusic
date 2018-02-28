@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,9 +27,9 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class ArtistsView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Settings settings;
-        PlayMyMusic.MainWindow mainwindow;
+        Services.LibraryManager library_manager;
+        Settings settings;
+        MainWindow mainwindow;
 
         private string _filter = "";
         public string filter {
@@ -38,19 +38,22 @@ namespace PlayMyMusic.Widgets.Views {
             } set {
                 if (_filter != value) {
                     _filter = value;
-                    artists.invalidate_filter ();
+                    do_filter ();
                 }
             }
         }
 
         Gtk.FlowBox artists;
-        Gtk.Box content;
+        Gtk.Stack stack;
 
-        PlayMyMusic.Widgets.Views.ArtistView artist_view;
+        Widgets.Views.ArtistView artist_view;
+
+        uint timer_sort = 0;
+        uint items_found = 0;
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
             library_manager.added_new_artist.connect ((artist) => {
                 Idle.add (() => {
                     add_artist (artist);
@@ -61,11 +64,11 @@ namespace PlayMyMusic.Widgets.Views {
 
         public signal void artist_selected ();
 
-        public ArtistsView (PlayMyMusic.MainWindow mainwindow) {
+        public ArtistsView (MainWindow mainwindow) {
             this.mainwindow = mainwindow;
             this.mainwindow.ctrl_press.connect (() => {
                 foreach (var child in artists.get_selected_children ()) {
-                    var artist = child as PlayMyMusic.Widgets.Artist;
+                    var artist = child as Widgets.Artist;
                     if (!artist.multi_selection) {
                         artist.toggle_multi_selection (false);
                     }
@@ -89,7 +92,6 @@ namespace PlayMyMusic.Widgets.Views {
             artists.valign = Gtk.Align.START;
             artists.max_children_per_line = 1;
             artists.selection_mode = Gtk.SelectionMode.MULTIPLE;
-            artists.set_sort_func (artists_sort_func);
             artists.set_filter_func (artists_filter_func);
             artists.child_activated.connect (show_artist_viewer);
 
@@ -100,29 +102,60 @@ namespace PlayMyMusic.Widgets.Views {
             artist_view = new PlayMyMusic.Widgets.Views.ArtistView ();
             artist_view.expand = true;
 
-            content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            var content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             content.expand = true;
             content.pack_start (artists_scroll, false, false, 0);
             content.pack_end (artist_view, true, true, 0);
 
-            this.add (content);
+            var alert_view = new Granite.Widgets.AlertView (_("No results"), _("Try another search"), "edit-find-symbolic");
+
+            stack = new Gtk.Stack ();
+            stack.add_named (content, "content");
+            stack.add_named (alert_view, "alert");
+
+            this.add (stack);
             this.show_all ();
         }
 
         public void add_artist (Objects.Artist artist) {
+            var a = new Widgets.Artist (artist);
             lock (artists) {
-                var a = new Widgets.Artist (artist);
                 artists.add (a);
-                a.unselect.connect (() => {
-                    artists.unselect_child (a);
+            }
+            a.merge.connect (() => {
+                GLib.List<Objects.Artist> selected = new GLib.List<Objects.Artist> ();
+                foreach (var child in artists.get_selected_children ()){
+                    selected.append ((child as Widgets.Artist).artist);
+                }
+                artist.merge (selected);
+            });
+            do_sort ();
+        }
+
+        private void do_sort () {
+            lock (timer_sort) {
+                if (timer_sort != 0) {
+                    Source.remove (timer_sort);
+                    timer_sort = 0;
+                }
+
+                timer_sort = Timeout.add (500, () => {
+                    artists.set_sort_func (artists_sort_func);
+                    artists.set_sort_func (null);
+                    Source.remove (timer_sort);
+                    timer_sort = 0;
+                    return false;
                 });
-                a.merge.connect (() => {
-                    GLib.List<Objects.Artist> selected = new GLib.List<Objects.Artist> ();
-                    foreach (var child in artists.get_selected_children ()){
-                        selected.append ((child as Widgets.Artist).artist);
-                    }
-                    library_manager.merge_artists (selected, artist);
-                });
+            }
+        }
+
+        private void do_filter () {
+            items_found = 0;
+            artists.invalidate_filter ();
+            if (items_found == 0) {
+                stack.visible_child_name = "alert";
+            } else {
+                stack.visible_child_name = "content";
             }
         }
 
@@ -160,22 +193,22 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void show_artist_viewer (Gtk.FlowBoxChild item) {
             if (mainwindow.ctrl_pressed) {
-                if ((item as PlayMyMusic.Widgets.Artist).multi_selection) {
+                if ((item as Widgets.Artist).multi_selection) {
                     artists.unselect_child (item);
-                    (item as PlayMyMusic.Widgets.Artist).reset ();
+                    (item as Widgets.Artist).reset ();
                     return;
                 } else {
-                    (item as PlayMyMusic.Widgets.Artist).toggle_multi_selection (false);
+                    (item as Widgets.Artist).toggle_multi_selection (false);
                 }
             }
-            if (!(item as PlayMyMusic.Widgets.Artist).multi_selection) {
+            if (!(item as Widgets.Artist).multi_selection) {
                 foreach (var child in artists.get_selected_children ()) {
-                    (child as PlayMyMusic.Widgets.Artist).reset ();
+                    (child as Widgets.Artist).reset ();
                 }
                 artists.unselect_all ();
                 artists.select_child (item);
             }
-            var artist = (item as PlayMyMusic.Widgets.Artist).artist;
+            var artist = (item as Widgets.Artist).artist;
             settings.last_artist_id = artist.ID;
             artist_view.show_artist_viewer (artist);
             artist_selected ();
@@ -183,11 +216,12 @@ namespace PlayMyMusic.Widgets.Views {
 
         private bool artists_filter_func (Gtk.FlowBoxChild child) {
             if (filter.strip ().length == 0) {
+                items_found ++;
                 return true;
             }
 
             string[] filter_elements = filter.strip ().down ().split (" ");
-            var artist = (child as PlayMyMusic.Widgets.Artist).artist;
+            var artist = (child as Widgets.Artist).artist;
 
             foreach (string filter_element in filter_elements) {
                 if (!artist.name.down ().contains (filter_element)) {
@@ -203,12 +237,13 @@ namespace PlayMyMusic.Widgets.Views {
                     return false;
                 }
             }
+            items_found ++;
             return true;
         }
 
         private int artists_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
-            var item1 = (PlayMyMusic.Widgets.Artist)child1;
-            var item2 = (PlayMyMusic.Widgets.Artist)child2;
+            var item1 = (Widgets.Artist)child1;
+            var item2 = (Widgets.Artist)child2;
             if (item1 != null && item2 != null) {
                 return item1.name.collate (item2.name);
             }
@@ -217,7 +252,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void unselect_all () {
             foreach (var child in artists.get_selected_children ()) {
-                (child as PlayMyMusic.Widgets.Artist).reset ();
+                (child as Widgets.Artist).reset ();
             }
             artists.unselect_all ();
         }

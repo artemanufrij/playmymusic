@@ -75,10 +75,10 @@ namespace PlayMyMusic.Interfaces {
 
     [DBus(name = "org.mpris.MediaPlayer2")]
     public class SoundIndicatorRoot : GLib.Object {
-        PlayMyMusic.PlayMyMusicApp app;
+        PlayMyMusicApp app;
 
         construct {
-            this.app = PlayMyMusic.PlayMyMusicApp.instance;
+            this.app = PlayMyMusicApp.instance;
         }
 
         public string DesktopEntry {
@@ -90,52 +90,15 @@ namespace PlayMyMusic.Interfaces {
 
     [DBus(name = "org.mpris.MediaPlayer2.Player")]
     public class SoundIndicatorPlayer : GLib.Object {
-        PlayMyMusic.Services.Player player;
+        Services.Player player;
         DBusConnection connection;
-        PlayMyMusic.PlayMyMusicApp app;
+        PlayMyMusicApp app;
 
         public SoundIndicatorPlayer (DBusConnection connection) {
-            this.app = PlayMyMusic.PlayMyMusicApp.instance;
+            this.app = PlayMyMusicApp.instance;
             this.connection = connection;
-            player = PlayMyMusic.Services.Player.instance;
-            player.state_changed.connect_after ((state) => {
-                Variant property;
-                switch (state) {
-                    case Gst.State.PLAYING:
-                        property = "Playing";
-                        var metadata = new HashTable<string, Variant> (null, null);
-                        if (player.current_track != null) {
-                            if (player.play_mode == PlayMyMusic.Services.PlayMode.AUDIO_CD) {
-                                metadata.insert("xesam:title", player.current_track.title);
-                                metadata.insert("xesam:artist", get_simple_string_array (player.current_track.audio_cd.title));
-                            } else {
-                                var file = File.new_for_path (player.current_track.album.cover_path);
-                                metadata.insert("mpris:artUrl", file.get_uri ());
-                                metadata.insert("xesam:title", player.current_track.title);
-                                metadata.insert("xesam:artist", get_simple_string_array (player.current_track.album.artist.name));
-                            }
-                        } else if (player.current_radio != null) {
-                            var file = File.new_for_path (player.current_radio.cover_path);
-                            metadata.insert("mpris:artUrl", file.get_uri ());
-                            metadata.insert("xesam:title", player.current_radio.title);
-                            metadata.insert("xesam:artist", get_simple_string_array (player.current_radio.url));
-                        }
-                        send_properties ("Metadata", metadata);
-                        break;
-                    case Gst.State.PAUSED:
-                        property = "Paused";
-                        break;
-                    default:
-                        property = "Stopped";
-                        var metadata = new HashTable<string, Variant> (null, null);
-                        metadata.insert("mpris:artUrl", "");
-                        metadata.insert("xesam:title", "");
-                        metadata.insert("xesam:artist", new string [0]);
-                        send_properties ("Metadata", metadata);
-                        break;
-                }
-                send_properties ("PlaybackStatus", property);
-            });
+            player = Services.Player.instance;
+            player.state_changed.connect_after (player_state_changed);
         }
 
         private static string[] get_simple_string_array (string text) {
@@ -188,5 +151,43 @@ namespace PlayMyMusic.Interfaces {
             app.mainwindow.prev ();
         }
 
+        private void player_state_changed (Gst.State state) {
+            Variant property;
+            switch (state) {
+                case Gst.State.PLAYING:
+                    property = "Playing";
+                    var metadata = new HashTable<string, Variant> (null, null);
+                    if (player.current_track != null) {
+                        if (player.play_mode == Services.PlayMode.AUDIO_CD) {
+                            metadata.insert("xesam:title", player.current_track.title);
+                            metadata.insert("xesam:artist", get_simple_string_array (player.current_track.audio_cd.title));
+                        } else {
+                            var file = File.new_for_path (player.current_track.album.cover_path);
+                            metadata.insert("mpris:artUrl", file.get_uri ());
+                            metadata.insert("xesam:title", player.current_track.title);
+                            metadata.insert("xesam:artist", get_simple_string_array (player.current_track.album.artist.name));
+                        }
+                    } else if (player.current_radio != null) {
+                        var file = File.new_for_path (player.current_radio.cover_path);
+                        metadata.insert("mpris:artUrl", file.get_uri ());
+                        metadata.insert("xesam:title", player.current_radio.title);
+                        metadata.insert("xesam:artist", get_simple_string_array (player.current_radio.url));
+                    }
+                    send_properties ("Metadata", metadata);
+                    break;
+                case Gst.State.PAUSED:
+                    property = "Paused";
+                    break;
+                default:
+                    property = "Stopped";
+                    var metadata = new HashTable<string, Variant> (null, null);
+                    metadata.insert("mpris:artUrl", "");
+                    metadata.insert("xesam:title", "");
+                    metadata.insert("xesam:artist", new string [0]);
+                    send_properties ("Metadata", metadata);
+                    break;
+            }
+            send_properties ("PlaybackStatus", property);
+        }
     }
 }

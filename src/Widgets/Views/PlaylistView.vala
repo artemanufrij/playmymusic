@@ -27,9 +27,9 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class PlaylistView : Gtk.FlowBoxChild {
-        PlayMyMusic.Services.LibraryManager library_manager;
+        Services.LibraryManager library_manager;
 
-        public PlayMyMusic.Objects.Playlist playlist { get; private set; }
+        public Objects.Playlist playlist { get; private set; }
         public string title { get { return playlist.title; } }
 
         Gtk.Label playlist_title;
@@ -43,23 +43,23 @@ namespace PlayMyMusic.Widgets.Views {
         public signal void track_selected ();
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
             library_manager.player_state_changed.connect ((state) => {
-                if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || library_manager.player.current_track.playlist.ID != playlist.ID) {
+                if (library_manager.player.play_mode != Services.PlayMode.PLAYLIST || library_manager.player.current_track.playlist.ID != playlist.ID) {
                     tracks.unselect_all ();
                 }
             });
         }
 
-        public PlaylistView (PlayMyMusic.Objects.Playlist playlist) {
+        public PlaylistView (Objects.Playlist playlist) {
             this.playlist = playlist;
 
             this.playlist.track_added.connect ((track) => {
                 add_track (track);
             });
-            this.playlist.property_changed.connect (() => {
-                playlist_title.label = this.playlist.title;
-                playlist_title.tooltip_text = this.playlist.title;
+            this.playlist.updated.connect (() => {
+                playlist_title.label = playlist.title;
+                playlist_title.tooltip_text = playlist.title;
             });
             this.playlist.tracks_resorted.connect (() => {
                 tracks.invalidate_sort ();
@@ -172,8 +172,8 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        private void add_track (PlayMyMusic.Objects.Track track) {
-            var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.PLAYLIST);
+        private void add_track (Objects.Track track) {
+            var item = new Widgets.Track (track, TrackStyle.PLAYLIST);
             tracks.add (item);
             item.show_all ();
         }
@@ -206,7 +206,7 @@ namespace PlayMyMusic.Widgets.Views {
                 menu.popup (null, null, null, evt.button, evt.time);
                 return true;
             } if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
-                if (library_manager.player.play_mode != PlayMyMusic.Services.PlayMode.PLAYLIST || library_manager.player.current_track.playlist.ID != playlist.ID) {
+                if (library_manager.player.play_mode != Services.PlayMode.PLAYLIST || library_manager.player.current_track.playlist.ID != playlist.ID) {
                     library_manager.play_track (playlist.get_first_track (), Services.PlayMode.PLAYLIST);
                 }
             }

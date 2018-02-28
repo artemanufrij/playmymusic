@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -139,7 +139,7 @@ namespace PlayMyMusic.Dialogs {
             } else {
                 GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
                 albums.append (album);
-                library_manager.merge_albums (albums, album_exists);
+                album_exists.merge (albums);
                 if (cover_changed) {
                     album_exists.set_new_cover (cover.pixbuf, 256);
                     if (settings.save_custom_covers) {
@@ -147,6 +147,7 @@ namespace PlayMyMusic.Dialogs {
                     }
                 }
             }
+
             this.destroy ();
         }
     }

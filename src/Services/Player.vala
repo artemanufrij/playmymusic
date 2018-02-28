@@ -27,7 +27,7 @@
 
 namespace PlayMyMusic.Services {
 
-    public enum PlayMode { NONE, ALBUM, ARTIST, PLAYLIST, FILE, RADIO, AUDIO_CD }
+    public enum PlayMode { NONE, TRACKS, ALBUM, ARTIST, PLAYLIST, FILE, RADIO, AUDIO_CD }
 
     public class Player : GLib.Object {
         static Player _instance = null;
@@ -40,8 +40,11 @@ namespace PlayMyMusic.Services {
             }
         }
 
+        public signal void state_changed (Gst.State state);
         public signal void current_progress_changed (double percent);
         public signal void current_duration_changed (int64 duration);
+        public signal Objects.Track? next_track_request (bool random = false);
+        public signal Objects.Track? prev_track_request ();
         uint progress_timer = 0;
 
         PlayMyMusic.Settings settings;
@@ -88,8 +91,6 @@ namespace PlayMyMusic.Services {
 
         public double target_progress { get; set; default = 0; }
 
-        public signal void state_changed (Gst.State state);
-
         private Player () {
             settings = PlayMyMusic.Settings.get_default ();
             playbin = Gst.ElementFactory.make ("playbin", "play");
@@ -99,10 +100,10 @@ namespace PlayMyMusic.Services {
             bus.enable_sync_message_emission();
 
             state_changed.connect ((state) => {
+                stop_progress_signal ();
                 if (state != Gst.State.NULL) {
                     playbin.set_state (state);
                 } else {
-                    stop_progress_signal ();
                     Interfaces.Inhibitor.instance.uninhibit ();
                 }
                 switch (state) {
@@ -273,6 +274,8 @@ namespace PlayMyMusic.Services {
                             next_track = current_track.audio_cd.get_first_track ();
                         }
                     }
+                } else if (play_mode == PlayMode.TRACKS) {
+                    next_track = next_track_request (settings.shuffle_mode);
                 }
             }
 
@@ -294,6 +297,8 @@ namespace PlayMyMusic.Services {
                     prev_track = current_track.album.artist.get_prev_track (current_track);
                 } else if (play_mode == PlayMode.PLAYLIST) {
                     prev_track = current_track.playlist.get_prev_track (current_track);
+                } else if (play_mode == PlayMode.TRACKS) {
+                    prev_track = prev_track_request ();
                 }
                 if (prev_track != null) {
                     set_track (prev_track, play_mode);

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -71,6 +71,13 @@ namespace PlayMyMusic.Objects {
             removed.connect (() => {
                 artist.album_removed (this);
             });
+            updated.connect (() => {
+                if (settings.save_id3_tags) {
+                    foreach (var track in tracks) {
+                        track.save_id3_tags ();
+                    }
+                }
+            });
         }
 
         public Album (Artist? artist = null) {
@@ -112,8 +119,21 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public void merge (GLib.List<Objects.Album> albums) {
+            foreach (var album in albums) {
+                if (album.ID == ID) {
+                    continue;
+                }
+                foreach (var track in album.tracks) {
+                    add_track_if_not_exists (track);
+                    db_manager.update_track (track);
+                }
+                db_manager.remove_album (album);
+            }
+        }
+
 // COVER REGION
-        private async void load_cover_async () {
+        public async void load_cover_async () {
             if (is_cover_loading || cover != null || this.ID == 0 || this.tracks.length () == 0) {
                 return;
             }
@@ -122,6 +142,8 @@ namespace PlayMyMusic.Objects {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
                     this.cover = return_value;
+                } else if (settings.load_content_from_musicbrainz) {
+                    Services.MusicBrainzManager.instance.fill_album_cover_queue (this);
                 }
                 is_cover_loading = false;
             });

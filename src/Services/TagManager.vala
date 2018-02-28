@@ -43,7 +43,7 @@ namespace PlayMyMusic.Services {
 
         Gst.PbUtils.Discoverer discoverer;
 
-        int discover_counter = 0;
+        public int discover_counter { get; private set; default = 0; }
 
         string unknown = _("Unknown");
 
@@ -59,16 +59,14 @@ namespace PlayMyMusic.Services {
 
         private void discovered (Gst.PbUtils.DiscovererInfo info, Error err) {
             new Thread<void*> (null, () => {
+                string uri = info.get_uri ();
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
-                    warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), info.get_uri ());
-
+                    warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), uri);
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
-                        string uri = info.get_uri ();
                         uint64 duration = info.get_duration ();
                         File f = File.new_for_uri (uri);
-
                         string o;
                         GLib.Date? d;
                         Gst.DateTime? dt;
@@ -85,7 +83,6 @@ namespace PlayMyMusic.Services {
                         if (track.title.strip () == "") {
                             track.title = f.get_basename ();
                         }
-
                         if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
                             track.track = (int)u;
                         }
@@ -149,6 +146,7 @@ namespace PlayMyMusic.Services {
                 if (discover_counter == 0) {
                     discover_finished ();
                 }
+
                 info.dispose ();
                 return null;
             });

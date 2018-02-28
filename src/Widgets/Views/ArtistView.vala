@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,9 +27,9 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class ArtistView : Gtk.Grid {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Services.Player player;
-        PlayMyMusic.Settings settings;
+        Services.LibraryManager library_manager;
+        Services.Player player;
+        Settings settings;
 
         Gtk.ListBox tracks;
 
@@ -38,16 +38,17 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Label artist_name;
         Gtk.Label artist_sub_title;
         Gtk.Image background;
-        Gtk.Grid header;
+        Gtk.Box header;
+        Granite.Widgets.AlertView alert_view;
 
         bool only_mark = false;
 
-        public PlayMyMusic.Objects.Artist current_artist { get; private set; }
+        public Objects.Artist current_artist { get; private set; }
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            player = PlayMyMusic.Services.Player.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
+            player = Services.Player.instance;
             player.state_changed.connect ((state) => {
                 mark_playing_track (player.current_track);
             });
@@ -71,22 +72,20 @@ namespace PlayMyMusic.Widgets.Views {
             content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
 
-            header = new Gtk.Grid ();
-            header.margin = 92;
-            header.row_spacing = 6;
+            header = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
+            header.height_request = 256;
             header.valign = Gtk.Align.CENTER;
 
             artist_name = new Gtk.Label ("");
             artist_name.valign = Gtk.Align.END;
-            artist_name.hexpand = true;
             artist_name.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
-            header.attach (artist_name, 0, 0);
+            header.pack_start (artist_name, true, true);
 
             artist_sub_title = new Gtk.Label ("");
             artist_sub_title.valign = Gtk.Align.START;
             artist_sub_title.use_markup = true;
             artist_sub_title.opacity = 0.75;
-            header.attach (artist_sub_title, 0, 1);
+            header.pack_start (artist_sub_title, true, true);
 
             background = new Gtk.Image ();
             background.expand = true;
@@ -108,15 +107,18 @@ namespace PlayMyMusic.Widgets.Views {
             content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
+            alert_view = new Granite.Widgets.AlertView ("Choose an Artist", "No Artist selected", "avatar-default-symbolic");
+
             var overlay = new Gtk.Overlay ();
             overlay.add_overlay (background);
             overlay.add_overlay (content);
+            overlay.add_overlay (alert_view);
 
             this.attach (new Gtk.Separator (Gtk.Orientation.VERTICAL), 0, 0);
             this.attach (overlay, 1, 0);
         }
 
-        public void show_artist_viewer (PlayMyMusic.Objects.Artist artist) {
+        public void show_artist_viewer (Objects.Artist artist) {
             if (current_artist == artist) {
                 return;
             }
@@ -127,6 +129,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
             current_artist = artist;
             this.reset ();
+            alert_view.hide ();
 
             load_background ();
             foreach (var track in artist.tracks) {
@@ -169,13 +172,13 @@ namespace PlayMyMusic.Widgets.Views {
             artist_sub_title.label = "";
             artist_name.get_style_context ().remove_class ("artist-title");
             artist_sub_title.get_style_context ().remove_class ("artist-sub-title");
+            alert_view.show ();
         }
 
-        private void add_track (PlayMyMusic.Objects.Track track) {
+        private void add_track (Objects.Track track) {
             Idle.add (() => {
-                var item = new PlayMyMusic.Widgets.Track (track, TrackStyle.ARTIST);
+                var item = new Widgets.Track (track, TrackStyle.ARTIST);
                 this.tracks.add (item);
-                item.show_all ();
                 update_header ();
                 if (player.current_track != null && player.current_track.ID == track.ID) {
                     item.activate ();

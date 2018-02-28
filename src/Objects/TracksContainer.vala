@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,16 +27,17 @@
 
 namespace PlayMyMusic.Objects {
     public class TracksContainer : GLib.Object {
-        protected PlayMyMusic.Services.LibraryManager library_manager;
-        protected PlayMyMusic.Services.DataBaseManager db_manager;
+        protected Services.LibraryManager library_manager;
+        protected Services.DataBaseManager db_manager;
+        protected Settings settings;
 
         public signal void track_added (Track track);
         public signal void track_removed (Track track);
         public signal void cover_changed ();
         public signal void background_changed ();
         public signal void background_found ();
-        public signal void property_changed (string property);
         public signal void removed ();
+        public signal void updated ();
 
         public string title { get; set; default = ""; }
         public string name { get; set; default = ""; }
@@ -96,7 +97,8 @@ namespace PlayMyMusic.Objects {
         }
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            settings = Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
             db_manager = library_manager.db_manager;
         }
 

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,8 +27,6 @@
 
 namespace PlayMyMusic.Objects {
     public class Artist : TracksContainer {
-        PlayMyMusic.Settings settings;
-
         public signal void album_removed (Album album);
 
         public new int ID {
@@ -37,8 +35,8 @@ namespace PlayMyMusic.Objects {
             } set {
                 _ID = value;
                 if (value > 0) {
-                    this.cover_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d.jpg").printf (this.ID));
-                    this.background_path = GLib.Path.build_filename (PlayMyMusic.PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d_background.png").printf (this.ID));
+                    this.cover_path = GLib.Path.build_filename (PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d.jpg").printf (this.ID));
+                    this.background_path = GLib.Path.build_filename (PlayMyMusicApp.instance.COVER_FOLDER, ("artist_%d_background.png").printf (this.ID));
                 }
             }
         }
@@ -76,22 +74,30 @@ namespace PlayMyMusic.Objects {
         }
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
-            this.cover_changed.connect (() => {
+            cover_changed.connect (() => {
                 create_background ();
             });
 
-            this.track_added.connect (() => {
+            track_added.connect (() => {
                 load_cover_async.begin ();
             });
-            this.album_removed.connect ((album) => {
-                this._albums.remove (album);
-                if (this.albums.length () == 0) {
+            album_removed.connect ((album) => {
+                _albums.remove (album);
+                if (albums.length () == 0) {
                     db_manager.remove_artist (this);
                 }
             });
-            this.removed.connect (() => {
+            removed.connect (() => {
                 db_manager.artist_removed (this);
+            });
+            updated.connect (() => {
+                if (settings.save_id3_tags) {
+                    foreach (var album in albums) {
+                        foreach (var track in album.tracks) {
+                            track.save_id3_tags ();
+                        }
+                    }
+                }
             });
         }
 
@@ -136,6 +142,44 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public bool has_empty_album_covers () {
+            foreach (var album in albums) {
+                if (album.cover == null) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void merge (GLib.List<Objects.Artist> artists) {
+            foreach (var artist in artists) {
+                if (artist.ID == ID) {
+                    continue;
+                }
+
+                var albums_copy = artist.albums.copy ();
+                foreach (var album in albums_copy) {
+                    var album_exists = this.get_album_by_title (album.title);
+                    if (album_exists == null) {
+                        album.set_artist (this);
+                        db_manager.update_album (album);
+                        this.add_album (album);
+                        library_manager.added_new_album (album);
+                    } else {
+                        GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
+                        albums.append (album);
+                        album_exists.merge (albums);
+                    }
+                }
+                foreach (var album in artist.albums) {
+                    album.removed ();
+                }
+                db_manager.remove_artist (artist);
+            }
+        }
+
+        // COVER
         public void set_custom_cover_file (string uri) {
             var first_track = this.tracks.first ().data;
             if (first_track != null) {
@@ -160,7 +204,7 @@ namespace PlayMyMusic.Objects {
                 Gdk.Pixbuf? return_value = load_or_create_cover.end (res);
                 if (return_value != null) {
                     this.cover = return_value;
-                } else if (settings.load_artist_from_musicbrainz && !this.name.down ().contains ("various") && !this.name.down ().contains ("artist")) {
+                } else if (settings.load_content_from_musicbrainz && !this.name.down ().contains ("various") && !this.name.down ().contains ("artist")) {
                     Services.MusicBrainzManager.instance.fill_artist_cover_queue (this);
                 }
                 is_cover_loading = false;

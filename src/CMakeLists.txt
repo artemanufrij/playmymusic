@@ -37,6 +37,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     Widgets/Views/PlaylistsView.vala
     Widgets/Views/AudioCDView.vala
     Widgets/Views/MobilePhone.vala
+    Widgets/Views/TracksView.vala
     Dialogs/Preferences.vala
     Dialogs/AlbumEditor.vala
     Dialogs/ArtistEditor.vala
@@ -51,6 +52,7 @@ PACKAGES
     json-glib-1.0
     gstreamer-pbutils-1.0
     gstreamer-tag-1.0
+    taglib_c
 OPTIONS
     --vapidir=${CMAKE_SOURCE_DIR}/vapi
     --target-glib=2.32

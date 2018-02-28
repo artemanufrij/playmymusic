@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -31,20 +31,23 @@ namespace PlayMyMusic.Services {
         public static MusicBrainzManager instance {
             get {
                 if (_instance == null) {
-                    _instance = new MusicBrainzManager();
+                    _instance = new MusicBrainzManager ();
                 }
                 return _instance;
             }
         }
 
         GLib.List<Objects.Artist> artists = new GLib.List<Objects.Artist> ();
+        GLib.List<Objects.Album> albums = new GLib.List<Objects.Album> ();
 
         bool artist_thread_running = false;
+        bool album_thread_running = false;
 
-        private MusicBrainzManager () {}
+        private MusicBrainzManager () {
+        }
 
-        private static string? get_body_from_url (string url) {
-            string? return_value = null;
+        private static string ? get_body_from_url (string url) {
+            string ? return_value = null;
             var session = new Soup.Session.with_options ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
             var msg = new Soup.Message ("GET", url);
             session.send_message (msg);
@@ -65,53 +68,110 @@ namespace PlayMyMusic.Services {
             read_artists_queue ();
         }
 
+        public void fill_album_cover_queue (Objects.Album album) {
+            lock (albums) {
+                if (albums.index (album) == -1) {
+                    albums.append (album);
+                }
+            }
+            read_albums_queue ();
+        }
+
+        private void read_albums_queue () {
+            if (album_thread_running) {
+                return;
+            }
+            artist_thread_running = true;
+
+            new Thread<void*> (
+                "read_albums_queue",
+                () => {
+                    Objects.Album ? first = null;
+
+                    while (albums.length () > 0) {
+                        lock (albums) {
+                            first = albums.first ().data;
+                            if (first != null) {
+                                albums.remove (first);
+                            }
+                        }
+                        Thread.usleep (1000000);
+                        string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (first.title.replace ("&", "%26").replace ("/", "_"), first.artist.name.replace ("&", "%26").replace ("/", "_"));
+                        var body = get_body_from_url (url);
+                        if (body != null) {
+                            var release_id = Utils.MusicBrainz.get_release_id_from_artist_ws_2 (body);
+                            stdout.printf ("RELEASE ID: %s (%s / %s)\n", release_id, first.title, first.artist.name);
+                            var pixbuf = get_pixbuf_by_release_id (release_id);
+                            if (pixbuf != null) {
+                                pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
+                                try {
+                                    if (pixbuf.save (first.cover_path, "jpeg", "quality", "100")) {
+                                        if (Settings.get_default ().save_custom_covers) {
+                                            first.set_custom_cover_file (first.cover_path);
+                                        }
+                                        first.load_cover_async.begin ();
+                                        break;
+                                    }
+                                } catch (Error err) {
+                                    warning (err.message);
+                                }
+                            }
+                        }
+                    }
+
+                    return null;
+                });
+        }
+
         private void read_artists_queue () {
             if (artist_thread_running) {
                 return;
             }
             artist_thread_running = true;
-            new Thread<void*> (null, () => {
-
-                Objects.Artist? first = null;
-                while (artists.length () > 0) {
-                    lock (artists) {
-                        first = artists.first ().data;
-                        if (first != null) {
-                            artists.remove (first);
+            new Thread<void*> (
+                "read_artists_queue",
+                () => {
+                    Objects.Artist ? first = null;
+                    while (artists.length () > 0) {
+                        lock (artists) {
+                            first = artists.first ().data;
+                            if (first != null) {
+                                artists.remove (first);
+                            }
                         }
-                    }
 
-                    if (first != null && first.cover == null) {
-                        var albums = first.albums_title.copy ();
-                        foreach (var album in albums) {
-                            Thread.usleep (1000000);
-                            string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.replace ("&", "%26").replace("/", "_"), first.name.replace ("&", "%26").replace("/", "_"));
-                            var body = get_body_from_url (url);
-                            if (body != null) {
-                                var artist_id = Utils.MusicBrainz.get_artist_id_from_artist_ws_2 (body);
-                                stdout.printf ("ARTIST ID: %s (%s / %s)\n", artist_id, album, first.name);
-                                var pixbuf = get_pixbuf_by_artist_id (artist_id);
-                                if (pixbuf != null) {
-                                    pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
-                                    try {
-                                        if (pixbuf.save (first.cover_path, "jpeg", "quality", "100")) {
-                                            if (Settings.get_default ().save_custom_covers) {
-                                                first.set_custom_cover_file (first.cover_path);
+                        if (first != null && (first.cover == null || first.has_empty_album_covers ())) {
+                            var albums = first.albums_title.copy ();
+                            foreach (var album in albums) {
+                                Thread.usleep (1000000);
+                                string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.replace ("&", "%26").replace ("/", "_"), first.name.replace ("&", "%26").replace ("/", "_"));
+                                var body = get_body_from_url (url);
+                                if (body != null) {
+                                    var artist_id = Utils.MusicBrainz.get_artist_id_from_artist_ws_2 (body);
+                                    var release_id = Utils.MusicBrainz.get_release_id_from_artist_ws_2 (body);
+                                    stdout.printf ("ARTIST ID: %s; RELEASE ID: %s (%s / %s)\n", artist_id, release_id, album, first.name);
+                                    var pixbuf = get_pixbuf_by_artist_id (artist_id);
+                                    if (pixbuf != null) {
+                                        pixbuf = LibraryManager.instance.align_and_scale_pixbuf (pixbuf, 256);
+                                        try {
+                                            if (pixbuf.save (first.cover_path, "jpeg", "quality", "100")) {
+                                                if (Settings.get_default ().save_custom_covers) {
+                                                    first.set_custom_cover_file (first.cover_path);
+                                                }
+                                                first.load_cover_async.begin ();
+                                                break;
                                             }
-                                            first.load_cover_async.begin ();
-                                            break;
+                                        } catch (Error err) {
+                                            warning (err.message);
                                         }
-                                    } catch (Error err) {
-                                        warning (err.message);
                                     }
                                 }
                             }
                         }
                     }
-                }
-                artist_thread_running = false;
-                return null;
-            });
+                    artist_thread_running = false;
+                    return null;
+                });
         }
 
         public static void fill_audio_cd (PlayMyMusic.Objects.AudioCD audio_cd) {
@@ -125,7 +185,7 @@ namespace PlayMyMusic.Services {
                     parser.load_from_data (body);
                     root = parser.get_root ();
                 } catch (Error err) {
-                    warning (err.message);
+                                            warning (err.message);
                 }
                 if (root != null) {
                     var o = root.get_object ();
@@ -164,7 +224,7 @@ namespace PlayMyMusic.Services {
                                 pixbuf.save (audio_cd.cover_path, "jpeg", "quality", "100");
                                 audio_cd.load_cover_async.begin ();
                             } catch (Error err) {
-                                warning (err.message);
+                                            warning (err.message);
                             }
                         }
                     }
@@ -172,7 +232,38 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public Gdk.Pixbuf? get_pixbuf_by_artist_id (string id) {
+        public Gdk.Pixbuf ? get_pixbuf_by_release_id (string id) {
+            if (id == "") {
+                return null;
+            }
+            string url = "https://coverartarchive.org/release/%s".printf (id);
+            var body = get_body_from_url (url);
+            if (body != null) {
+                var parser = new Json.Parser ();
+                Json.Node root = null;
+                try {
+                    parser.load_from_data (body);
+                    root = parser.get_root ();
+                } catch (Error err) {
+                                            warning (err.message);
+                }
+                if (root != null && root.get_object ().has_member ("images")) {
+                    var images = root.get_object ().get_member ("images").get_array ();
+                    foreach (unowned Json.Node item in images.get_elements ()) {
+                        var o = item.get_object ();
+                        if (o.get_boolean_member ("front") && o.has_member ("thumbnails")) {
+                            var thumb = o.get_member ("thumbnails").get_object ();
+                            if (thumb.has_member ("large")) {
+                                return get_pixbuf_from_url (thumb.get_string_member ("large"));
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public Gdk.Pixbuf ? get_pixbuf_by_artist_id (string id) {
             if (id == "") {
                 return null;
             }
@@ -185,7 +276,7 @@ namespace PlayMyMusic.Services {
                     parser.load_from_data (body);
                     root = parser.get_root ();
                 } catch (Error err) {
-                    warning (err.message);
+                                            warning (err.message);
                 }
                 if (root != null && root.get_object ().has_member ("relations")) {
                     var relations = root.get_object ().get_member ("relations").get_array ();
@@ -222,7 +313,7 @@ namespace PlayMyMusic.Services {
             try {
                 regex = new Regex ("(?<=/wiki/)[^<]*");
             } catch (Error err) {
-                warning (err.message);
+                                            warning (err.message);
                 return "";
             }
 
@@ -234,7 +325,7 @@ namespace PlayMyMusic.Services {
                     try {
                         regex = new Regex ("(?<=\"source\":\")[^\"]*");
                     } catch (Error err) {
-                        warning (err.message);
+                                            warning (err.message);
                         return "";
                     }
                     if (regex.match (body, 0, out match_info)) {
@@ -252,7 +343,7 @@ namespace PlayMyMusic.Services {
             try {
                 regex = new Regex ("(?<=/File:)[^<]*");
             } catch (Error err) {
-                warning (err.message);
+                                            warning (err.message);
                 return "";
             }
 
@@ -264,7 +355,7 @@ namespace PlayMyMusic.Services {
                     try {
                         regex = new Regex ("(?<=\"thumburl\":\")[^\"]*");
                     } catch (Error err) {
-                        warning (err.message);
+                                            warning (err.message);
                         return "";
                     }
                     if (regex.match (body, 0, out match_info)) {
@@ -276,22 +367,22 @@ namespace PlayMyMusic.Services {
             return "";
         }
 
-        public static Gdk.Pixbuf? get_pixbuf_from_url (string url) {
+        public static Gdk.Pixbuf ? get_pixbuf_from_url (string url) {
             if (!url.has_prefix ("http")) {
                 return null;
             }
-            Gdk.Pixbuf? return_value = null;
+            Gdk.Pixbuf ? return_value = null;
             var session = new Soup.Session.with_options ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
             var msg = new Soup.Message ("GET", url);
             session.send_message (msg);
             if (msg.status_code == 200) {
                 string tmp_file = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), Random.next_int ().to_string () + ".jpg");
-                var fs = FileStream.open(tmp_file, "w");
+                var fs = FileStream.open (tmp_file, "w");
                 fs.write (msg.response_body.data, (size_t)msg.response_body.length);
                 try {
                     return_value = new Gdk.Pixbuf.from_file (tmp_file);
                 } catch (Error err) {
-                    warning (err.message);
+                                            warning (err.message);
                 }
                 File f = File.new_for_path (tmp_file);
                 f.delete_async.begin ();

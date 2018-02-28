@@ -42,6 +42,8 @@ namespace PlayMyMusic {
         }
         public int window_width { get; set; }
         public int window_height { get; set; }
+        public int window_x { get; set; }
+        public int window_y { get; set; }
         public bool window_maximized { get; set; }
         public bool shuffle_mode { get; set; }
         public RepeatMode repeat_mode { get; set; }
@@ -57,9 +59,10 @@ namespace PlayMyMusic {
         public string [] covers { get; set; }
         public string library_location { get; set; }
         public int view_index { get; set; }
-        public bool load_artist_from_musicbrainz { get; set; }
+        public bool load_content_from_musicbrainz { get; set; }
         public bool use_dark_theme { get; set; }
         public bool save_custom_covers { get; set; }
+        public bool save_id3_tags { get; set; }
 
         private Settings () {
             base ("com.github.artemanufrij.playmymusic");

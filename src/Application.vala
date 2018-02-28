@@ -31,6 +31,9 @@ namespace PlayMyMusic {
         public string COVER_FOLDER { get; private set; }
         public string CACHE_FOLDER { get; private set; }
 
+        [CCode (array_length = false, array_null_terminated = true)]
+        string[] ? arg_files = null;
+
         PlayMyMusic.Settings settings;
 
         static PlayMyMusicApp _instance = null;
@@ -45,62 +48,79 @@ namespace PlayMyMusic {
 
         construct {
             this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
+            this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = PlayMyMusic.Settings.get_default ();
 
             var action_search_reset = new SimpleAction ("search-reset", null);
             add_action (action_search_reset);
             add_accelerator ("Escape", "app.search-reset", null);
-            action_search_reset.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.search_reset ();
-                }
-            });
+            action_search_reset.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.search_reset ();
+                    }
+                });
 
             var action_show_albums = new SimpleAction ("show-albums", null);
             add_action (action_show_albums);
             add_accelerator ("<Alt>1", "app.show-albums", null);
-            action_show_albums.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (0);
-                }
-            });
+            action_show_albums.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (0);
+                    }
+                });
 
             var action_show_artists = new SimpleAction ("show-artists", null);
             add_action (action_show_artists);
             add_accelerator ("<Alt>2", "app.show-artists", null);
-            action_show_artists.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (1);
-                }
-            });
+            action_show_artists.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (1);
+                    }
+                });
+
+            var action_show_tracks = new SimpleAction ("show-tracks", null);
+            add_action (action_show_tracks);
+            add_accelerator ("<Alt>3", "app.show-tracks", null);
+            action_show_tracks.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (2);
+                    }
+                });
 
             var action_show_playlists = new SimpleAction ("show-playlists", null);
             add_action (action_show_playlists);
-            add_accelerator ("<Alt>3", "app.show-playlists", null);
-            action_show_playlists.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (2);
-                }
-            });
+            add_accelerator ("<Alt>4", "app.show-playlists", null);
+            action_show_playlists.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (3);
+                    }
+                });
 
             var action_show_radiostations = new SimpleAction ("show-radiostations", null);
             add_action (action_show_radiostations);
-            add_accelerator ("<Alt>4", "app.show-radiostations", null);
-            action_show_radiostations.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (3);
-                }
-            });
+            add_accelerator ("<Alt>5", "app.show-radiostations", null);
+            action_show_radiostations.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (4);
+                    }
+                });
 
             var action_show_audiocd = new SimpleAction ("show-audiocd", null);
             add_action (action_show_audiocd);
-            add_accelerator ("<Alt>5", "app.show-audiocd", null);
-            action_show_audiocd.activate.connect (() => {
-                if (mainwindow != null) {
-                    mainwindow.show_view_index (4);
-                }
-            });
+            add_accelerator ("<Alt>6", "app.show-audiocd", null);
+            action_show_audiocd.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.show_view_index (5);
+                    }
+                });
 
             create_cache_folders ();
         }
@@ -133,7 +153,8 @@ namespace PlayMyMusic {
             }
         }
 
-        private PlayMyMusicApp () {}
+        private PlayMyMusicApp () {
+        }
 
         public MainWindow mainwindow { get; private set; default = null; }
 
@@ -148,9 +169,62 @@ namespace PlayMyMusic {
         }
 
         public override void open (File[] files, string hint) {
-            activate ();
             if (files [0].query_exists ()) {
                 mainwindow.open_file (files [0]);
+            }
+        }
+
+        public override int command_line (ApplicationCommandLine cmd) {
+            activate ();
+            command_line_interpreter (cmd);
+            return 0;
+        }
+
+        private void command_line_interpreter (ApplicationCommandLine cmd) {
+            string[] args_cmd = cmd.get_arguments ();
+            unowned string[] args = args_cmd;
+
+            bool next = false;
+            bool prev = false;
+            bool play = false;
+
+            GLib.OptionEntry [] options = new OptionEntry [5];
+            options [0] = { "next", 0, 0, OptionArg.NONE, ref next, "Play next track", null };
+            options [1] = { "prev", 0, 0, OptionArg.NONE, ref prev, "Play previous track", null };
+            options [2] = { "play", 0, 0, OptionArg.NONE, ref play, "Toggle playing", null };
+            options [3] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_files, null, "[URI...]" };
+            options [4] = { null };
+
+            var opt_context = new OptionContext ("actions");
+            opt_context.set_help_enabled (true);
+            opt_context.add_main_entries (options, null);
+            try {
+                opt_context.parse (ref args);
+            } catch (Error err) {
+                warning (err.message);
+                return;
+            }
+
+            if (next || prev || play) {
+                if (next) {
+                    mainwindow.next ();
+                } else if (prev) {
+                    mainwindow.prev ();
+                } else if (play) {
+                    mainwindow.play ();
+                }
+                return;
+            }
+
+            File[] files = null;
+            foreach (string arg_file in arg_files) {
+                if (GLib.FileUtils.test (arg_file, GLib.FileTest.EXISTS)) {
+                    files += (File.new_for_path (arg_file));
+                }
+            }
+
+            if (files != null && files.length > 0) {
+                open (files, "");
             }
         }
     }
