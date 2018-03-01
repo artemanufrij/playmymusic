@@ -441,6 +441,7 @@ namespace PlayMyMusic {
             search_entry = new Gtk.SearchEntry ();
             search_entry.placeholder_text = _ ("Search Music");
             search_entry.margin_right = 5;
+            search_entry.valign = Gtk.Align.CENTER;
             search_entry.search_changed.connect (
                 () => {
                     switch (view_mode.selected) {
