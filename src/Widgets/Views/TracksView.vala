@@ -137,7 +137,7 @@ namespace PlayMyMusic.Widgets.Views {
             album_title.use_markup = true;
             header.attach (album_title, 1, 1);
 
-            alert_view = new Granite.Widgets.AlertView ("Choose a Track", "No track selected", "view-list-symbolic");
+            alert_view = new Granite.Widgets.AlertView (_("Choose a Track"), _("No track selected"), "view-list-symbolic");
             alert_view.vexpand = false;
 
             var overlay = new Gtk.Overlay ();
