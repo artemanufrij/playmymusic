@@ -665,7 +665,7 @@ namespace PlayMyMusic {
         }
 
         private void show_tracks () {
-            mode_buttons.opacity = 0;
+            mode_buttons.opacity = 1;
             mobile_phone_view.reveal_child = false;
             if (tracks_button.sensitive) {
                 content.visible_child_name = "tracks";

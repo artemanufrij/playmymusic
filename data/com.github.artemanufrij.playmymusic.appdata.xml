@@ -59,8 +59,16 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.6.5" date="2018-03-10">
+        <release version="0.6.5" date="2018-03-05">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Shuffle and Repeat mode for Tracks View</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                   <li>Russian (by Camellan)</li>
+                </ul>
                 <p>Misc:</p>
                 <ul>
                     <li>Prepare for JUNO</li>

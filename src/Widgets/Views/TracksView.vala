@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Widgets.Views {
     public class TracksView : Gtk.Grid {
         Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
         Services.Player player;
 
         Gtk.TreeView view;
@@ -58,11 +59,14 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        GLib.List<int> shuffle_index = null;
+
         enum columns { OBJECT, NR, TRACK, ALBUM, ARTIST, DURATION, DURATION_SORT }
 
         int header_height = 256;
 
         construct {
+            settings = Settings.get_default ();
             library_manager = Services.LibraryManager.instance;
             library_manager.added_new_track.connect (
                 (track) => {
@@ -81,8 +85,18 @@ namespace PlayMyMusic.Widgets.Views {
                     }
                 });
             player.next_track_request.connect (
-                (random) => {
-                    return get_next_track ();
+                () => {
+                    Objects.Track next_track = null;
+                    if (settings.shuffle_mode) {
+                        next_track = get_shuffle_track ();
+                    } else {
+                        next_track = get_next_track ();
+                    }
+
+                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
+                        next_track = get_first_track ();
+                    }
+                    return next_track;
                 });
             player.prev_track_request.connect (
                 () => {
@@ -331,6 +345,8 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public Objects.Track ? get_next_track () {
+            shuffle_index = null;
+
             Objects.Track ? return_value = null;
 
             modelsort.@foreach (
@@ -351,7 +367,60 @@ namespace PlayMyMusic.Widgets.Views {
             return return_value;
         }
 
+        public Objects.Track ? get_first_track () {
+            shuffle_index = null;
+
+            Objects.Track ? return_value = null;
+
+            Gtk.TreeIter next_iter;
+            if (modelsort.get_iter_first (out next_iter)) {
+                Value val;
+                modelsort.get_value (next_iter, 0, out val);
+                return_value = val.get_object () as Objects.Track;
+            }
+
+            return return_value;
+        }
+
+        public Objects.Track ? get_shuffle_track () {
+            if (shuffle_index == null) {
+                shuffle_index = new GLib.List<int> ();
+            }
+
+            var tracks_count = modelsort.iter_n_children (null);
+
+            if (shuffle_index.length () >= tracks_count) {
+                shuffle_index = null;
+                return null;
+            }
+
+            int r = GLib.Random.int_range (0, tracks_count);
+            while (shuffle_index.index (r) != -1) {
+                r = GLib.Random.int_range (0, tracks_count);
+            }
+
+            shuffle_index.append (r);
+
+            Objects.Track ? return_value = null;
+
+            int i = 0;
+            modelsort.@foreach (
+                (model, path, iter) => {
+                    var item_track = get_track_by_path (path);
+                    if (i == r) {
+                        return_value = item_track;
+                        return true;
+                    }
+                    i++;
+                    return false;
+                });
+
+            return return_value;
+        }
+
         public Objects.Track ? get_prev_track () {
+            shuffle_index = null;
+
             Objects.Track ? return_value = null;
 
             modelsort.@foreach (
@@ -388,6 +457,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void do_filter () {
             modelfilter.refilter ();
+            shuffle_index = null;
         }
     }
 }

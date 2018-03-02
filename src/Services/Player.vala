@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -43,18 +43,18 @@ namespace PlayMyMusic.Services {
         public signal void state_changed (Gst.State state);
         public signal void current_progress_changed (double percent);
         public signal void current_duration_changed (int64 duration);
-        public signal Objects.Track? next_track_request (bool random = false);
+        public signal Objects.Track? next_track_request ();
         public signal Objects.Track? prev_track_request ();
         uint progress_timer = 0;
 
-        PlayMyMusic.Settings settings;
+        Settings settings;
 
         Gst.Format fmt = Gst.Format.TIME;
         dynamic Gst.Element playbin;
         Gst.Bus bus;
 
-        public PlayMyMusic.Objects.Track? current_track { get; private set; }
-        public PlayMyMusic.Objects.Radio? current_radio { get; private set; }
+        public Objects.Track? current_track { get; private set; }
+        public Objects.Radio? current_radio { get; private set; }
         public File? current_file { get; private set; }
 
         PlayMode _play_mode = PlayMode.NONE;
@@ -92,7 +92,7 @@ namespace PlayMyMusic.Services {
         public double target_progress { get; set; default = 0; }
 
         private Player () {
-            settings = PlayMyMusic.Settings.get_default ();
+            settings = Settings.get_default ();
             playbin = Gst.ElementFactory.make ("playbin", "play");
 
             bus = playbin.get_bus ();
@@ -143,7 +143,7 @@ namespace PlayMyMusic.Services {
             });
         }
 
-        public void set_radio (PlayMyMusic.Objects.Radio? radio) {
+        public void set_radio (Objects.Radio? radio) {
             if (radio == current_radio || radio == null || radio.file == null) {
                 return;
             }
@@ -154,7 +154,7 @@ namespace PlayMyMusic.Services {
             play ();
         }
 
-        public bool load_track (PlayMyMusic.Objects.Track? track, PlayMode play_mode) {
+        public bool load_track (Objects.Track? track, PlayMode play_mode) {
             if (track == current_track || track == null) {
                 return false;
             }
@@ -174,7 +174,7 @@ namespace PlayMyMusic.Services {
             return true;
         }
 
-        public void set_track (PlayMyMusic.Objects.Track? track, PlayMode play_mode) {
+        public void set_track (Objects.Track? track, PlayMode play_mode) {
             current_duration_changed (0);
             if (load_track (track, play_mode)) {
                 play ();
@@ -212,7 +212,7 @@ namespace PlayMyMusic.Services {
                 return;
             }
 
-            PlayMyMusic.Objects.Track? next_track = null;
+            Objects.Track? next_track = null;
 
             if (settings.repeat_mode == RepeatMode.ONE) {
                 next_track = current_track;
@@ -275,7 +275,7 @@ namespace PlayMyMusic.Services {
                         }
                     }
                 } else if (play_mode == PlayMode.TRACKS) {
-                    next_track = next_track_request (settings.shuffle_mode);
+                    next_track = next_track_request ();
                 }
             }
 
@@ -290,7 +290,7 @@ namespace PlayMyMusic.Services {
             }
 
             if (get_position_sec () < 1) {
-                PlayMyMusic.Objects.Track? prev_track = null;
+                Objects.Track? prev_track = null;
                 if (play_mode == PlayMode.ALBUM) {
                     prev_track = current_track.album.get_prev_track (current_track);
                 } else if (play_mode == PlayMode.ARTIST) {
