@@ -312,7 +312,6 @@ namespace PlayMyMusic.Widgets.Views {
                 });
 
             if (settings.shuffle_mode) {
-            stdout.printf ("ADD SHUFFLE: %i\n", i);
                 shuffle_index.append (i);
             } else if (shuffle_index.length () > 0) {
                 shuffle_index = new GLib.List<int> ();
@@ -401,7 +400,6 @@ namespace PlayMyMusic.Widgets.Views {
             var tracks_count = modelsort.iter_n_children (null);
 
             if (shuffle_index.length () >= tracks_count) {
-                stdout.printf ("RESET SHUFFLE: %i\n", tracks_count);
                 shuffle_index = new GLib.List<int> ();
                 return null;
             }
