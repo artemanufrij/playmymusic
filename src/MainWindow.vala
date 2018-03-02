@@ -955,7 +955,6 @@ namespace PlayMyMusic {
                     settings.track_source = "artists";
                     break;
                 case PlayMyMusic.Services.PlayMode.TRACKS :
-                    settings.last_playlist_id = current_track.playlist.ID;
                     settings.track_source = "tracks";
                     break;
                 case PlayMyMusic.Services.PlayMode.PLAYLIST :

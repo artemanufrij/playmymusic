@@ -94,7 +94,11 @@ namespace PlayMyMusic.Widgets.Views {
                     }
 
                     if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
-                        next_track = get_first_track ();
+                        if (settings.shuffle_mode) {
+                            next_track = get_shuffle_track ();
+                        } else {
+                            next_track = get_first_track ();
+                        }
                     }
                     return next_track;
                 });
@@ -114,6 +118,8 @@ namespace PlayMyMusic.Widgets.Views {
                 typeof (string),
                 typeof (string),
                 typeof (uint64));
+
+            shuffle_index = new GLib.List<int> ();
 
             build_ui ();
         }
@@ -285,9 +291,12 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void mark_playing_track (Objects.Track ? track) {
             view.get_selection ().unselect_all ();
-            if (track == null) {
+            if (track == null || track == current_track) {
                 return;
             }
+
+            int i = 0;
+
             modelfilter.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);
@@ -298,8 +307,16 @@ namespace PlayMyMusic.Widgets.Views {
                         only_mark = false;
                         return true;
                     }
+                    i++;
                     return false;
                 });
+
+            if (settings.shuffle_mode) {
+            stdout.printf ("ADD SHUFFLE: %i\n", i);
+                shuffle_index.append (i);
+            } else if (shuffle_index.length () > 0) {
+                shuffle_index = new GLib.List<int> ();
+            }
         }
 
         private void change_cover () {
@@ -368,8 +385,6 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public Objects.Track ? get_first_track () {
-            shuffle_index = null;
-
             Objects.Track ? return_value = null;
 
             Gtk.TreeIter next_iter;
@@ -383,14 +398,11 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public Objects.Track ? get_shuffle_track () {
-            if (shuffle_index == null) {
-                shuffle_index = new GLib.List<int> ();
-            }
-
             var tracks_count = modelsort.iter_n_children (null);
 
             if (shuffle_index.length () >= tracks_count) {
-                shuffle_index = null;
+                stdout.printf ("RESET SHUFFLE: %i\n", tracks_count);
+                shuffle_index = new GLib.List<int> ();
                 return null;
             }
 
@@ -398,8 +410,6 @@ namespace PlayMyMusic.Widgets.Views {
             while (shuffle_index.index (r) != -1) {
                 r = GLib.Random.int_range (0, tracks_count);
             }
-
-            shuffle_index.append (r);
 
             Objects.Track ? return_value = null;
 
@@ -419,8 +429,6 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public Objects.Track ? get_prev_track () {
-            shuffle_index = null;
-
             Objects.Track ? return_value = null;
 
             modelsort.@foreach (
