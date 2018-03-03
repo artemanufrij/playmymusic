@@ -50,7 +50,7 @@ namespace PlayMyMusic {
             this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
             this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
-            settings = PlayMyMusic.Settings.get_default ();
+            settings = Settings.get_default ();
 
             var action_search_reset = new SimpleAction ("search-reset", null);
             add_action (action_search_reset);

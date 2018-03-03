@@ -67,15 +67,6 @@ namespace PlayMyMusic.Interfaces {
             instance = new MediaKeyListener ();
         }
 
-        public void release_keys() {
-            try {
-                media_keys.ReleaseMediaPlayerKeys (PlayMyMusic.PlayMyMusicApp.instance.application_id);
-            }
-            catch (IOError err) {
-                warning ("Could not release media player keys: %s", err.message);
-            }
-        }
-
         private void pressed_key (dynamic Object bus, string application, string key) {
             if (application == (PlayMyMusic.PlayMyMusicApp.instance.application_id)) {
                 if (key == "Previous") {
