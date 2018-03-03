@@ -73,7 +73,8 @@ namespace PlayMyMusic.Dialogs {
             var grid = new Gtk.Grid ();
             grid.column_spacing = 12;
             grid.row_spacing = 12;
-            grid.margin = 12;
+            grid.margin = 6;
+            grid.margin_top = 0;
 
             var event_box = new Gtk.EventBox ();
 
@@ -102,7 +103,7 @@ namespace PlayMyMusic.Dialogs {
             event_box.add (cover);
 
             name_entry = new Gtk.Entry ();
-            name_entry.get_style_context ().add_class("h3");
+            name_entry.get_style_context ().add_class ("h3");
             name_entry.text = artist.name;
 
             grid.attach (event_box, 0, 0, 2, 1);
@@ -111,12 +112,17 @@ namespace PlayMyMusic.Dialogs {
             content.pack_start (grid, false, false, 0);
 
             var save_button = this.add_button (_("Save"), Gtk.ResponseType.ACCEPT) as Gtk.Button;
-            save_button.get_style_context ().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            save_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             this.show_all ();
         }
 
         private void save () {
             var new_name = name_entry.text.strip ();
+
+            if (new_name == artist.name && !cover_changed) {
+                return;
+            }
+
             var artist_exists = db_manager.get_artist_by_name (new_name);
             if (artist_exists == null || artist_exists.ID == artist.ID) {
                 artist.name = new_name;

@@ -47,7 +47,7 @@ namespace PlayMyMusic {
         }
 
         construct {
-            this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
+            this.flags |= ApplicationFlags.HANDLES_OPEN;
             this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = Settings.get_default ();
