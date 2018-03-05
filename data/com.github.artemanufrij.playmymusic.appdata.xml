@@ -47,11 +47,15 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.6.5" date="2018-03-05">
+        <release version="0.6.5" date="2018-03-06">
             <description>
                 <p>New:</p>
                 <ul>
                     <li>Shuffle and Repeat mode for Tracks View</li>
+                </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Remove cover cache file if album or artist was deleted</li>
                 </ul>
                 <p>Translation:</p>
                 <ul>
