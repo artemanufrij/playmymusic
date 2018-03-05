@@ -164,6 +164,29 @@ namespace PlayMyMusic {
                 mainwindow.application = this;
                 Interfaces.MediaKeyListener.listen ();
                 Interfaces.SoundIndicator.listen ();
+
+/*                var entry = Unity.LauncherEntry.get_for_desktop_id (this.application_id + ".desktop");
+
+                var item1 = new Dbusmenu.MenuItem ();
+                item1.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Item 1");
+                item1.item_activated.connect (() => {
+                    message ("Item 1 activated");
+                });
+
+                var item2 = new Dbusmenu.MenuItem ();
+                item1.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Item 2");
+                item1.item_activated.connect (() => {
+                    message ("Item 2 activated");
+                });
+
+                // Add children to the quicklist
+                entry.quicklist.child_append (item1);
+                entry.quicklist.child_append (item2);
+*/
+                //entry.quicklist
+
+
+
             }
             mainwindow.present ();
         }

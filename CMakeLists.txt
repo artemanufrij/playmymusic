@@ -26,6 +26,8 @@ pkg_check_modules (DEPS REQUIRED
     gstreamer-pbutils-1.0
     gstreamer-audio-1.0
     taglib_c
+    unity
+    dbusmenu-glib-0.4
 )
 
 # Comment this out to enable C compiler warnings
@@ -37,6 +39,9 @@ link_directories (${DEPS_LIBRARY_DIRS})
 
 # Vala Stuff
 include (ValaPrecompile)
+vala_precompile (VALA_C ${EXEC_NAME}
+    Dbusmenu-0.4
+)
 find_package (Vala REQUIRED)
 include (ValaVersion)
 ensure_vala_version ("0.21.2" MINIMUM)
