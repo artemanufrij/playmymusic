@@ -62,10 +62,10 @@ namespace PlayMyMusic.Objects {
 
         GLib.List<int> shuffle_index = null;
 
-        public Gdk.Pixbuf? cover_32 { get; private set; }
+        public Gdk.Pixbuf ? cover_32 { get; private set; }
 
-        Gdk.Pixbuf? _cover = null;
-        public Gdk.Pixbuf? cover {
+        Gdk.Pixbuf ? _cover = null;
+        public Gdk.Pixbuf ? cover {
             get {
                 return _cover;
             } protected set {
@@ -75,8 +75,8 @@ namespace PlayMyMusic.Objects {
             }
         }
 
-        Gdk.Pixbuf? _background = null;
-        public Gdk.Pixbuf? background {
+        Gdk.Pixbuf ? _background = null;
+        public Gdk.Pixbuf ? background {
             get {
                 if (_background == null && background_path != "") {
                     File file = File.new_for_path (background_path);
@@ -100,10 +100,29 @@ namespace PlayMyMusic.Objects {
             settings = Settings.get_default ();
             library_manager = Services.LibraryManager.instance;
             db_manager = library_manager.db_manager;
+
+            removed.connect (
+                () => {
+                    var c = File.new_for_path (cover_path);
+                    c.trash_async.begin (
+                        0,
+                        null,
+                        (obj, res) => {
+                            c.dispose ();
+                        });
+
+                    var b = File.new_for_path (background_path);
+                    b.trash_async.begin (
+                        0,
+                        null,
+                        (obj, res) => {
+                            b.dispose ();
+                        });
+                });
         }
 
-        public Track? get_track_by_id (int id) {
-            Track? return_value = null;
+        public Track ? get_track_by_id (int id) {
+            Track ? return_value = null;
             lock (_tracks) {
                 foreach (var track in _tracks) {
                     if (track.ID == id) {
@@ -130,7 +149,7 @@ namespace PlayMyMusic.Objects {
             return return_value;
         }
 
-        public Track? get_next_track (Track current) {
+        public Track ? get_next_track (Track current) {
             shuffle_index = null;
             int i = _tracks.index (current) + 1;
             if (i < _tracks.length ()) {
@@ -139,16 +158,16 @@ namespace PlayMyMusic.Objects {
             return null;
         }
 
-        public Track? get_prev_track (Track current) {
+        public Track ? get_prev_track (Track current) {
             shuffle_index = null;
             int i = _tracks.index (current) - 1;
-            if (i > - 1) {
+            if (i > -1) {
                 return _tracks.nth_data (i);
             }
             return null;
         }
 
-        public Track? get_shuffle_track (Track? current) {
+        public Track ? get_shuffle_track (Track ? current) {
             if (shuffle_index == null || current == null) {
                 shuffle_index = new GLib.List<int> ();
             }
@@ -171,7 +190,7 @@ namespace PlayMyMusic.Objects {
             return _tracks.nth_data (r);
         }
 
-        public Track? get_first_track () {
+        public Track ? get_first_track () {
             return _tracks.nth_data (0);
         }
 
@@ -181,9 +200,11 @@ namespace PlayMyMusic.Objects {
             }
             lock (_tracks) {
                 if (this is Playlist) {
-                    this._tracks.insert_sorted_with_data (track, (a, b) => {
-                        return a.track - b.track;
-                    });
+                    this._tracks.insert_sorted_with_data (
+                        track,
+                        (a, b) => {
+                            return a.track - b.track;
+                        });
                 } else if (this is AudioCD) {
                     this._tracks.append (track);
                 } else {
@@ -228,12 +249,12 @@ namespace PlayMyMusic.Objects {
             this.cover = save_cover (cover, size);
         }
 
-        protected Gdk.Pixbuf? save_cover (Gdk.Pixbuf p, int size) {
-            Gdk.Pixbuf? pixbuf = library_manager.align_and_scale_pixbuf (p, size);
+        protected Gdk.Pixbuf ? save_cover (Gdk.Pixbuf p, int size) {
+            Gdk.Pixbuf ? pixbuf = library_manager.align_and_scale_pixbuf (p, size);
             try {
                 pixbuf.save (cover_path, "jpeg", "quality", "100");
             } catch (Error err) {
-                warning (err.message);
+                        warning (err.message);
             }
             return pixbuf;
         }
@@ -253,40 +274,42 @@ namespace PlayMyMusic.Objects {
             }
             is_background_loading = true;
 
-            new Thread<void*> (null, () => {
-                File f = File.new_for_path (this.background_path);
-                if (f.query_exists ()) {
-                    is_background_loading = false;
+            new Thread<void*> (
+                "create_background",
+                () => {
+                    File f = File.new_for_path (this.background_path);
+                    if (f.query_exists ()) {
+                        is_background_loading = false;
+                        f.dispose ();
+                        background_found ();
+                        return null;
+                    }
                     f.dispose ();
-                    background_found ();
+
+                    double target_size = 1000;
+
+                    int width = this.cover.get_width ();
+
+                    var surface = new Granite.Drawing.BufferSurface ((int)target_size, (int)target_size);
+
+                    double zoom = target_size / (double)width;
+
+                    Gdk.cairo_set_source_pixbuf (surface.context, this.cover, 0, 0);
+                    surface.context.scale (zoom, zoom);
+                    surface.context.paint ();
+
+                    if (this is AudioCD) {
+                        surface.exponential_blur (32);
+                    } else {
+                        surface.exponential_blur (8);
+                    }
+                    surface.context.paint ();
+
+                    surface.surface.write_to_png (this.background_path);
+                    is_background_loading = false;
+                    background_changed ();
                     return null;
-                }
-                f.dispose ();
-
-                double target_size = 1000;
-
-                int width = this.cover.get_width();
-
-                var surface = new Granite.Drawing.BufferSurface ((int)target_size, (int)target_size);
-
-                double zoom = target_size / (double) width;
-
-                Gdk.cairo_set_source_pixbuf (surface.context, this.cover, 0, 0);
-                surface.context.scale (zoom, zoom);
-                surface.context.paint ();
-
-                if (this is AudioCD) {
-                    surface.exponential_blur (32);
-                } else {
-                    surface.exponential_blur (8);
-                }
-                surface.context.paint ();
-
-                surface.surface.write_to_png (this.background_path);
-                is_background_loading = false;
-                background_changed ();
-                return null;
-            });
+                });
         }
     }
 }
