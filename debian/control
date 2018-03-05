@@ -11,6 +11,7 @@ Build-Depends: cmake (>= 2.8),
                libsqlite3-dev,
                libgstreamer-plugins-base1.0-dev,
                libtagc0-dev,
+               libdbusmenu-glib-dev,
                valac (>= 0.26)
 Standards-Version: 3.9.3
 
