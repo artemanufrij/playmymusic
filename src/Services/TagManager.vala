@@ -60,8 +60,10 @@ namespace PlayMyMusic.Services {
         private void discovered (Gst.PbUtils.DiscovererInfo info, Error? err) {
             new Thread<void*> (null, () => {
                 string uri = info.get_uri ();
-                if (info.get_result () != Gst.PbUtils.DiscovererResult.OK && err != null) {
-                    warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), uri);
+                if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
+                    if (err != null) {
+                        warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), uri);
+                    }
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {
