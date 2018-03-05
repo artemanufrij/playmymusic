@@ -25,7 +25,7 @@
     <custom>
         <value key="x-appcenter-color-primary">#004988</value>
         <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
-        <value key="x-appcenter-suggested-price">2</value>
+        <value key="x-appcenter-suggested-price">3</value>
     </custom>
     <developer_name>Artem Anufrij</developer_name>
     <url type="homepage">https://artemanufrij.github.io</url>
