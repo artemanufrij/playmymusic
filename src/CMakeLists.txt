@@ -45,6 +45,7 @@ vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
     MainWindow.vala
     Application.vala
 PACKAGES
+    Dbusmenu-0.4
     granite
     gtk+-3.0
     sqlite3
@@ -54,7 +55,6 @@ PACKAGES
     gstreamer-tag-1.0
     taglib_c
     unity
-    dbusmenu-glib-0.4
 OPTIONS
     --vapidir=${CMAKE_SOURCE_DIR}/vapi
     --target-glib=2.32
