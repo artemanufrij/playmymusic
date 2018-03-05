@@ -17,9 +17,7 @@
 
 ![screenshot](screenshots/Screenshot.png)
 ![screenshot](screenshots/Screenshot_Artists.png)
-![screenshot](screenshots/Screenshot_Playlists.png)
-![screenshot](screenshots/Screenshot_MTP.png)
-![screenshot](screenshots/Screenshot_Audio_CD.png)
+![screenshot](screenshots/Screenshot_Tracks.png)
 
 ## Install from Github.
 
