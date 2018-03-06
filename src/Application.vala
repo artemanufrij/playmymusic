@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -31,8 +31,6 @@ namespace PlayMyMusic {
         public string COVER_FOLDER { get; private set; }
         public string CACHE_FOLDER { get; private set; }
 
-
-
         PlayMyMusic.Settings settings;
 
         static PlayMyMusicApp _instance = null;
@@ -45,8 +43,12 @@ namespace PlayMyMusic {
             }
         }
 
+        [CCode (array_length = false, array_null_terminated = true)]
+        string[] ? arg_files = null;
+
         construct {
             this.flags |= ApplicationFlags.HANDLES_OPEN;
+            this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = Settings.get_default ();
 
@@ -162,48 +164,6 @@ namespace PlayMyMusic {
                 mainwindow.application = this;
                 Interfaces.MediaKeyListener.listen ();
                 Interfaces.SoundIndicator.listen ();
-
-                var entry = Unity.LauncherEntry.get_for_desktop_id (this.application_id + ".desktop");
-
-                var entry_play = new Dbusmenu.Menuitem ();
-                entry_play.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Play");
-                entry_play.property_set (Dbusmenu.MENUITEM_PROP_ICON_NAME, "media-playback-start-symbolic");
-                entry_play.item_activated.connect (() => {
-                    mainwindow.play ();
-                });
-
-                var entry_next = new Dbusmenu.Menuitem ();
-                entry_next.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Next");
-                entry_next.property_set (Dbusmenu.MENUITEM_PROP_ICON_NAME, "media-skip-forward-symbolic");
-                entry_next.item_activated.connect (() => {
-                    mainwindow.next ();
-                });
-
-                var entry_prev = new Dbusmenu.Menuitem ();
-                entry_prev.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Previous");
-                entry_prev.property_set (Dbusmenu.MENUITEM_PROP_ICON_NAME, "media-skip-backward-symbolic");
-                entry_prev.item_activated.connect (() => {
-                    mainwindow.prev ();
-                });
-
-                var quicklist = new Dbusmenu.Menuitem ();
-
-                quicklist.child_append (entry_play);
-                quicklist.child_append (entry_next);
-                quicklist.child_append (entry_prev);
-
-                Services.Player.instance.state_changed.connect (
-                (state) => {
-                    if (state == Gst.State.PLAYING) {
-                        entry_play.property_set (Dbusmenu.MENUITEM_PROP_ICON_NAME, "media-playback-pause-symbolic");
-                        entry_play.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Pause");
-                    } else {
-                        entry_play.property_set (Dbusmenu.MENUITEM_PROP_ICON_NAME, "media-playback-start-symbolic");
-                        entry_play.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Play");
-                    }
-                });
-
-                entry.quicklist = quicklist;
             }
 
             mainwindow.present ();
@@ -213,6 +173,60 @@ namespace PlayMyMusic {
             activate ();
             if (files [0].query_exists ()) {
                 mainwindow.open_file (files [0]);
+            }
+        }
+
+        public override int command_line (ApplicationCommandLine cmd) {
+            activate ();
+            command_line_interpreter (cmd);
+            return 0;
+        }
+
+        private void command_line_interpreter (ApplicationCommandLine cmd) {
+            string[] args_cmd = cmd.get_arguments ();
+            unowned string[] args = args_cmd;
+
+            bool next = false;
+            bool prev = false;
+            bool play = false;
+
+            GLib.OptionEntry [] options = new OptionEntry [5];
+            options [0] = { "next", 0, 0, OptionArg.NONE, ref next, "Play next track", null };
+            options [1] = { "prev", 0, 0, OptionArg.NONE, ref prev, "Play previous track", null };
+            options [2] = { "play", 0, 0, OptionArg.NONE, ref play, "Toggle playing", null };
+            options [3] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_files, null, "[URI...]" };
+            options [4] = { null };
+
+            var opt_context = new OptionContext ("actions");
+            opt_context.set_help_enabled (true);
+            opt_context.add_main_entries (options, null);
+            try {
+                opt_context.parse (ref args);
+            } catch (Error err) {
+                warning (err.message);
+                return;
+            }
+
+            if (next || prev || play) {
+                if (next) {
+                    mainwindow.next ();
+                } else if (prev) {
+                    mainwindow.prev ();
+                } else if (play) {
+                    mainwindow.play ();
+                }
+                return;
+            }
+
+            File[] files = null;
+            foreach (string arg_file in arg_files) {
+                if (GLib.FileUtils.test (arg_file, GLib.FileTest.EXISTS)) {
+                    files += (File.new_for_path (arg_file));
+                }
+            }
+
+            if (files != null && files.length > 0) {
+                open (files, "");
             }
         }
     }

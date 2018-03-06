@@ -26,8 +26,6 @@ pkg_check_modules (DEPS REQUIRED
     gstreamer-pbutils-1.0
     gstreamer-audio-1.0
     taglib_c
-    unity
-    dbusmenu-glib-0.4
 )
 
 # Comment this out to enable C compiler warnings
