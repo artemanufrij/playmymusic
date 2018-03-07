@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -140,7 +140,7 @@ namespace PlayMyMusic.Interfaces {
         public bool CanPause { get { return true; } }
 
         public void PlayPause () {
-            app.mainwindow.play ();
+            app.mainwindow.toggle_playing ();
         }
 
         public void Next () {

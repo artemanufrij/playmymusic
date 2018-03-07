@@ -330,7 +330,7 @@ namespace PlayMyMusic {
             play_button.sensitive = false;
             play_button.clicked.connect (
                 () => {
-                    play ();
+                    toggle_playing ();
                 });
 
             next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
@@ -784,7 +784,7 @@ namespace PlayMyMusic {
             tracks_view.reset ();
         }
 
-        public void play () {
+        public void toggle_playing () {
             send_desktop_notification = false;
             if (library_manager.player.current_track != null || library_manager.player.current_radio != null || library_manager.player.current_file != null) {
                 library_manager.player.toggle_playing ();

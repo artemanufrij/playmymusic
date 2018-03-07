@@ -214,7 +214,7 @@ namespace PlayMyMusic {
                     if (mainwindow == null) {
                         activate ();
                     }
-                    mainwindow.play ();
+                    mainwindow.toggle_playing ();
                 }
                 return;
             }
