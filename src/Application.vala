@@ -197,7 +197,6 @@ namespace PlayMyMusic {
             options [4] = { null };
 
             var opt_context = new OptionContext ("actions");
-            opt_context.set_help_enabled (true);
             opt_context.add_main_entries (options, null);
             try {
                 opt_context.parse (ref args);
