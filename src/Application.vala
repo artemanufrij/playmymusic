@@ -177,7 +177,6 @@ namespace PlayMyMusic {
         }
 
         public override int command_line (ApplicationCommandLine cmd) {
-            activate ();
             command_line_interpreter (cmd);
             return 0;
         }
@@ -208,11 +207,14 @@ namespace PlayMyMusic {
             }
 
             if (next || prev || play) {
-                if (next) {
+                if (next && mainwindow != null) {
                     mainwindow.next ();
-                } else if (prev) {
+                } else if (prev && mainwindow != null) {
                     mainwindow.prev ();
                 } else if (play) {
+                    if (mainwindow == null) {
+                        activate ();
+                    }
                     mainwindow.play ();
                 }
                 return;
