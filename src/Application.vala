@@ -228,7 +228,10 @@ namespace PlayMyMusic {
 
             if (files != null && files.length > 0) {
                 open (files, "");
+                return;
             }
+
+            activate ();
         }
     }
 }
