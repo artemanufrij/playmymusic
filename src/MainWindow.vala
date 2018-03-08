@@ -308,6 +308,7 @@ namespace PlayMyMusic {
             headerbar.title = _ ("Melody");
             headerbar.show_close_button = true;
             headerbar.get_style_context ().add_class ("custom_titlebar");
+            headerbar.get_style_context ().add_class ("default-decoration");
             this.set_titlebar (headerbar);
 
             // PLAY BUTTONS
