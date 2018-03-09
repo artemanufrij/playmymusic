@@ -47,6 +47,14 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.6.6" date="2018-03-10">
+            <description>
+                <p>Improved:</p>
+                <ul>
+                    <li>Desktop Action Menu</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.6.5" date="2018-03-06">
             <description>
                 <p>New:</p>
