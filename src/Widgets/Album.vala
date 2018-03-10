@@ -27,12 +27,12 @@
 
 namespace PlayMyMusic.Widgets {
     public class Album : Gtk.FlowBoxChild {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Settings settings;
+        Services.LibraryManager library_manager;
+        Settings settings;
 
         public signal void merge ();
 
-        public PlayMyMusic.Objects.Album album { get; private set; }
+        public Objects.Album album { get; private set; }
         public string title { get { return album.title; } }
         public int year { get { return album.year; } }
 
@@ -50,8 +50,8 @@ namespace PlayMyMusic.Widgets {
         public bool multi_selection { get; private set; default = false; }
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
-            settings = PlayMyMusic.Settings.get_default ();
+            library_manager = Services.LibraryManager.instance;
+            settings = Settings.get_default ();
         }
 
         public Album (PlayMyMusic.Objects.Album album) {
@@ -60,28 +60,34 @@ namespace PlayMyMusic.Widgets {
 
             build_ui ();
 
-            this.album.cover_changed.connect (() => {
-                Idle.add (() => {
-                    cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+            this.album.cover_changed.connect (
+                () => {
+                    Idle.add (
+                        () => {
+                            cover.pixbuf = this.album.cover.scale_simple (128, 128, Gdk.InterpType.BILINEAR);
+                            return false;
+                        });
+                });
+            this.album.removed.connect (
+                () => {
+                    Idle.add (
+                        () => {
+                            this.destroy ();
+                            return false;
+                        });
+                });
+            this.album.updated.connect (
+                () => {
+                    set_values ();
+                });
+            this.key_press_event.connect (
+                (event) => {
+                    if (event.keyval == Gdk.Key.F2) {
+                        edit_album ();
+                        return true;
+                    }
                     return false;
                 });
-            });
-            this.album.removed.connect (() => {
-                Idle.add (() => {
-                    this.destroy ();
-                    return false;
-                });
-            });
-            this.album.updated.connect (() => {
-                set_values ();
-            });
-            this.key_press_event.connect ((event) => {
-                if (event.keyval == Gdk.Key.F2) {
-                    edit_album ();
-                    return true;
-                }
-                return false;
-            });
         }
 
         private bool first_draw () {
@@ -102,16 +108,30 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
             event_box.drag_data_get.connect (on_drag_data_get);
             event_box.drag_begin.connect (on_drag_begin);
-            event_box.enter_notify_event.connect ((event) => {
-                multi_select.opacity = 1;
-                return false;
-            });
-            event_box.leave_notify_event.connect ((event) => {
-                if (!this.is_selected ()) {
-                    multi_select.opacity = 0;
-                }
-                return false;
-            });
+            event_box.enter_notify_event.connect (
+                (event) => {
+                    multi_select.opacity = 1;
+                    return false;
+                });
+            event_box.leave_notify_event.connect (
+                (event) => {
+                    if (!this.is_selected ()) {
+                        multi_select.opacity = 0;
+                    }
+                    return false;
+                });
+            event_box.event.connect (
+                (event) => {
+                    if (event.type == Gdk.EventType.@2BUTTON_PRESS) {
+                        var first = album.get_first_track ();
+                        if (first != null) {
+                            library_manager.player.reset_playing ();
+                            library_manager.player.set_track (first, Services.PlayMode.ALBUM);
+                        }
+                        return true;
+                    }
+                    return false;
+                });
 
             var content = new Gtk.Grid ();
             content.margin = 12;
@@ -148,13 +168,15 @@ namespace PlayMyMusic.Widgets {
             multi_select.set_image (add_selection_image);
             multi_select.can_focus = false;
             multi_select.opacity = 0;
-            multi_select.clicked.connect (() => {
-                toggle_multi_selection ();
-            });
-            multi_select.enter_notify_event.connect ((event) => {
-                multi_select.opacity = 1;
-                return false;
-            });
+            multi_select.clicked.connect (
+                () => {
+                    toggle_multi_selection ();
+                });
+            multi_select.enter_notify_event.connect (
+                (event) => {
+                    multi_select.opacity = 1;
+                    return false;
+                });
 
             content.attach (multi_select, 0, 0);
             content.attach (cover, 0, 0);
@@ -185,7 +207,7 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void set_values () {
-            this.tooltip_markup = ("<b>%s</b>%s\n%s").printf (album.title.replace ("&", "&amp;"), year > 0 ? (" (%d)").printf (year) :"", album.artist.name.replace ("&", "&amp;"));
+            this.tooltip_markup = ("<b>%s</b>%s\n%s").printf (album.title.replace ("&", "&amp;"), year > 0 ? (" (%d)").printf (year) : "", album.artist.name.replace ("&", "&amp;"));
             title_label.label = ("<b>%s</b>").printf (this.title.replace ("&", "&amp;"));
             this.changed ();
         }
@@ -218,44 +240,46 @@ namespace PlayMyMusic.Widgets {
 
         private void build_context_menu () {
             menu = new Gtk.Menu ();
-            var menu_new_cover = new Gtk.MenuItem.with_label (_("Set new Cover…"));
-            menu_new_cover.activate.connect (() => {
-                var new_cover = library_manager.choose_new_cover ();
-                if (new_cover != null) {
-                    try {
-                        var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                        album.set_new_cover (pixbuf, 256);
-                        if (settings.save_custom_covers) {
-                            album.set_custom_cover_file (new_cover);
+            var menu_new_cover = new Gtk.MenuItem.with_label (_ ("Set new Cover…"));
+            menu_new_cover.activate.connect (
+                () => {
+                    var new_cover = library_manager.choose_new_cover ();
+                    if (new_cover != null) {
+                        try {
+                            var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
+                            album.set_new_cover (pixbuf, 256);
+                            if (settings.save_custom_covers) {
+                                album.set_custom_cover_file (new_cover);
+                            }
+                        } catch (Error err) {
+                            warning (err.message);
                         }
-                    } catch (Error err) {
-                        warning (err.message);
                     }
-                }
-            });
+                });
             menu.add (menu_new_cover);
 
-            var menu_edit_album = new Gtk.MenuItem.with_label (_("Edit Album properties…"));
+            var menu_edit_album = new Gtk.MenuItem.with_label (_ ("Edit Album properties…"));
             menu_edit_album.activate.connect (() => {
-                edit_album ();
-            });
+                                                  edit_album ();
+                                              });
             menu.add (menu_edit_album);
             menu.add (new Gtk.SeparatorMenuItem ());
 
-            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_("Add into Playlist"));
+            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_ ("Add into Playlist"));
             menu.add (menu_add_into_playlist);
             playlists = new Gtk.Menu ();
             menu_add_into_playlist.set_submenu (playlists);
 
-            menu_send_to = new Gtk.MenuItem.with_label (_("Send to"));
+            menu_send_to = new Gtk.MenuItem.with_label (_ ("Send to"));
             menu.add (menu_send_to);
             send_to = new Gtk.Menu ();
             menu_send_to.set_submenu (send_to);
 
-            menu_merge = new Gtk.MenuItem.with_label (_("Merge selected Albums"));
-            menu_merge.activate.connect (() => {
-                merge ();
-            });
+            menu_merge = new Gtk.MenuItem.with_label (_ ("Merge selected Albums"));
+            menu_merge.activate.connect (
+                () => {
+                    merge ();
+                });
             menu.add (menu_merge);
 
             menu.show_all ();
@@ -263,7 +287,6 @@ namespace PlayMyMusic.Widgets {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
-
                 if (menu == null) {
                     build_context_menu ();
                 }
@@ -273,24 +296,26 @@ namespace PlayMyMusic.Widgets {
                 foreach (var child in playlists.get_children ()) {
                     child.destroy ();
                 }
-                var item = new Gtk.MenuItem.with_label (_("Create New Playlist"));
-                item.activate.connect (() => {
-                    var new_playlist = library_manager.create_new_playlist ();
-                    foreach (var track in album.tracks) {
-                        library_manager.add_track_into_playlist (new_playlist, track.ID);
-                    }
-                });
+                var item = new Gtk.MenuItem.with_label (_ ("Create New Playlist"));
+                item.activate.connect (
+                    () => {
+                        var new_playlist = library_manager.create_new_playlist ();
+                        foreach (var track in album.tracks) {
+                            library_manager.add_track_into_playlist (new_playlist, track.ID);
+                        }
+                    });
                 playlists.add (item);
                 if (library_manager.playlists.length () > 0) {
                     playlists.add (new Gtk.SeparatorMenuItem ());
                 }
                 foreach (var playlist in library_manager.playlists) {
                     item = new Gtk.MenuItem.with_label (playlist.title);
-                    item.activate.connect (() => {
-                        foreach (var track in album.tracks) {
-                            library_manager.add_track_into_playlist (playlist, track.ID);
-                        }
-                    });
+                    item.activate.connect (
+                        () => {
+                            foreach (var track in album.tracks) {
+                                library_manager.add_track_into_playlist (playlist, track.ID);
+                            }
+                        });
                     playlists.add (item);
                 }
                 playlists.show_all ();
@@ -304,9 +329,10 @@ namespace PlayMyMusic.Widgets {
                 if (current_mobile_phone != null) {
                     foreach (var music_folder in current_mobile_phone.music_folders) {
                         item = new Gtk.MenuItem.with_label (music_folder.name);
-                        item.activate.connect (() => {
-                            current_mobile_phone.add_album (album, music_folder);
-                        });
+                        item.activate.connect (
+                            () => {
+                                current_mobile_phone.add_album (album, music_folder);
+                            });
                         send_to.add (item);
                     }
                 }

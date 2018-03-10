@@ -84,6 +84,29 @@ namespace PlayMyMusic.Widgets {
             this.tooltip_text = this.track.title;
 
             var event_box = new Gtk.EventBox ();
+            event_box.event.connect (
+                (event) => {
+                    if (event.type == Gdk.EventType.@2BUTTON_PRESS) {
+                        library_manager.player.reset_playing ();
+                        switch (track_style) {
+                        case TrackStyle.ARTIST :
+                            library_manager.player.set_track (track, Services.PlayMode.ARTIST);
+                            break;
+                        case TrackStyle.PLAYLIST :
+                            library_manager.player.set_track (track, Services.PlayMode.PLAYLIST);
+                            break;
+                        case TrackStyle.AUDIO_CD :
+                            library_manager.player.set_track (track, Services.PlayMode.AUDIO_CD);
+                            break;
+                        default :
+                            library_manager.player.set_track (track, Services.PlayMode.ALBUM);
+                            break;
+                        }
+
+                        return true;
+                    }
+                    return false;
+                });
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST || this.track_style == TrackStyle.AUDIO_CD) {
