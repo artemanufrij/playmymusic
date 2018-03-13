@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -96,7 +96,7 @@ namespace PlayMyMusic.Services {
                             }
                         }
                         Thread.usleep (1000000);
-                        string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (first.title.replace ("&", "%26").replace ("/", "_"), first.artist.name.replace ("&", "%26").replace ("/", "_"));
+                        string url = "https://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (first.title.replace ("&", "%26").replace ("/", "_"), first.artist.name.replace ("&", "%26").replace ("/", "_"));
                         var body = get_body_from_url (url);
                         if (body != null) {
                             var release_id = Utils.MusicBrainz.get_release_id_from_artist_ws_2 (body);
@@ -144,7 +144,7 @@ namespace PlayMyMusic.Services {
                             var albums = first.albums_title.copy ();
                             foreach (var album in albums) {
                                 Thread.usleep (1000000);
-                                string url = "http://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.replace ("&", "%26").replace ("/", "_"), first.name.replace ("&", "%26").replace ("/", "_"));
+                                string url = "https://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (album.replace ("&", "%26").replace ("/", "_"), first.name.replace ("&", "%26").replace ("/", "_"));
                                 var body = get_body_from_url (url);
                                 if (body != null) {
                                     var artist_id = Utils.MusicBrainz.get_artist_id_from_artist_ws_2 (body);
@@ -175,7 +175,7 @@ namespace PlayMyMusic.Services {
         }
 
         public static void fill_audio_cd (PlayMyMusic.Objects.AudioCD audio_cd) {
-            string url = "http://musicbrainz.org/ws/2/discid/%s?inc=artists+recordings&fmt=json".printf (audio_cd.mb_disc_id);
+            string url = "https://musicbrainz.org/ws/2/discid/%s?inc=artists+recordings&fmt=json".printf (audio_cd.mb_disc_id);
             string album_id = "";
             var body = get_body_from_url (url);
             if (body != null) {
@@ -213,7 +213,7 @@ namespace PlayMyMusic.Services {
                 }
 
                 if (album_id != "" && audio_cd.cover == null) {
-                    url = "http://coverartarchive.org/release/%s".printf (album_id);
+                    url = "https://coverartarchive.org/release/%s".printf (album_id);
                     body = get_body_from_url (url);
                     if (body != null) {
                         var url_pixbuf = Utils.MusicBrainz.get_large_thumbnail_from_release (body);
@@ -267,7 +267,7 @@ namespace PlayMyMusic.Services {
             if (id == "") {
                 return null;
             }
-            string url = "http://musicbrainz.org/ws/2/artist/%s?inc=url-rels&fmt=json".printf (id);
+            string url = "https://musicbrainz.org/ws/2/artist/%s?inc=url-rels&fmt=json".printf (id);
             var body = get_body_from_url (url);
             if (body != null) {
                 var parser = new Json.Parser ();
