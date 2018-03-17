@@ -93,7 +93,7 @@ namespace PlayMyMusic.Utils {
                         padding-bottom: 0px;
                     }
                     .track-drag-begin {
-                        border-top: 1px solid black;
+                        border-top: 1px solid #666666;
                     }
                     .mobile-close-button {
                         padding: 3px;
