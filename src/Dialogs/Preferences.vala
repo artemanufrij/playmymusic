@@ -36,7 +36,8 @@ namespace PlayMyMusic.Dialogs {
         public Preferences (Gtk.Window parent) {
             Object (
                 transient_for: parent,
-                deletable: false
+                deletable: false,
+                resizable: false
             );
             build_ui ();
 
@@ -50,7 +51,6 @@ namespace PlayMyMusic.Dialogs {
         }
 
         private void build_ui () {
-            this.resizable = false;
             var content = get_content_area () as Gtk.Box;
 
             var grid = new Gtk.Grid ();
