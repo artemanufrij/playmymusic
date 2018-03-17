@@ -173,7 +173,7 @@ namespace PlayMyMusic {
                 (audio_cd) => {
                     audio_cd_view.show_audio_cd (audio_cd);
                     audio_cd_widget.show ();
-                    view_mode.set_active (4);
+                    view_mode.set_active (5);
                 });
             library_manager.audio_cd_disconnected.connect (
                 (volume) => {
