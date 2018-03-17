@@ -47,6 +47,20 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.6.7" date="2018-03-20">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Double click on Album/Artist starts playing first track</li>
+                    <li>Double click on Track starts playing from begining</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Portuguese - Brazil (by Gustavo Marques)</li>
+                    <li>Polish (by Michał Węglowski-Hodur)</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.6.6" date="2018-03-10">
             <description>
                 <p>Improved:</p>
