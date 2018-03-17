@@ -183,7 +183,7 @@ namespace PlayMyMusic {
                         }
                         audio_cd_view.reset ();
                         audio_cd_widget.hide ();
-                        if (view_mode.selected == 4) {
+                        if (view_mode.selected == 5) {
                             show_playing_view ();
                         }
                     }
