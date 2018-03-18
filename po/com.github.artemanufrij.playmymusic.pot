@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-28 18:50+0400\n"
+"POT-Creation-Date: 2018-03-18 10:20+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,44 +17,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/Dialogs/AlbumEditor.vala:82 ../src/Dialogs/ArtistEditor.vala:81
+#: ../src/Dialogs/AlbumEditor.vala:83 ../src/Dialogs/ArtistEditor.vala:82
 msgid "Click to choose a new cover…"
 msgstr ""
 
-#: ../src/Dialogs/AlbumEditor.vala:109
+#: ../src/Dialogs/AlbumEditor.vala:110
 msgid "Year"
 msgstr ""
 
-#: ../src/Dialogs/AlbumEditor.vala:120 ../src/Dialogs/ArtistEditor.vala:113
+#: ../src/Dialogs/AlbumEditor.vala:121 ../src/Dialogs/ArtistEditor.vala:114
 #: ../src/Widgets/Views/RadiosView.vala:243
 msgid "Save"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:60
+#: ../src/Dialogs/Preferences.vala:61
 msgid "Use Dark Theme"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:68
+#: ../src/Dialogs/Preferences.vala:69
 msgid "Play in background if closed"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:76
+#: ../src/Dialogs/Preferences.vala:77
 msgid "Sync files on start up"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:84
+#: ../src/Dialogs/Preferences.vala:85
 msgid "Load Content from MusicBrainz"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:92
+#: ../src/Dialogs/Preferences.vala:93
 msgid "Save custom Covers in Library folder"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:100
+#: ../src/Dialogs/Preferences.vala:101
 msgid "Save changes into ID3-Tag"
 msgstr ""
 
-#: ../src/Dialogs/Preferences.vala:125
+#: ../src/Dialogs/Preferences.vala:126
 msgid "Close"
 msgstr ""
 
@@ -66,84 +66,84 @@ msgstr ""
 msgid "Melody"
 msgstr ""
 
-#: ../src/MainWindow.vala:169 ../src/MainWindow.vala:329
+#: ../src/MainWindow.vala:169 ../src/MainWindow.vala:330
 msgid "Play"
 msgstr ""
 
-#: ../src/MainWindow.vala:319
+#: ../src/MainWindow.vala:320
 msgid "Previous"
 msgstr ""
 
-#: ../src/MainWindow.vala:338
+#: ../src/MainWindow.vala:339
 msgid "Next"
 msgstr ""
 
-#: ../src/MainWindow.vala:389
+#: ../src/MainWindow.vala:390
 msgid "Change Music Folder…"
 msgstr ""
 
-#: ../src/MainWindow.vala:399
+#: ../src/MainWindow.vala:400
 msgid "Import Music…"
 msgstr ""
 
-#: ../src/MainWindow.vala:408
+#: ../src/MainWindow.vala:409
 msgid "Reset all views"
 msgstr ""
 
-#: ../src/MainWindow.vala:415
+#: ../src/MainWindow.vala:416
 msgid "Resync Library"
 msgstr ""
 
-#: ../src/MainWindow.vala:421
+#: ../src/MainWindow.vala:422
 msgid "Preferences"
 msgstr ""
 
-#: ../src/MainWindow.vala:442
+#: ../src/MainWindow.vala:443
 msgid "Search Music"
 msgstr ""
 
-#: ../src/MainWindow.vala:483
+#: ../src/MainWindow.vala:485
 msgid "Shuffle"
 msgstr ""
 
-#: ../src/MainWindow.vala:496
+#: ../src/MainWindow.vala:498
 msgid "Repeat"
 msgstr ""
 
-#: ../src/MainWindow.vala:534
+#: ../src/MainWindow.vala:536
 msgid "Loading…"
 msgstr ""
 
-#: ../src/MainWindow.vala:534
+#: ../src/MainWindow.vala:536
 msgid "Reading out database content"
 msgstr ""
 
-#: ../src/MainWindow.vala:572
+#: ../src/MainWindow.vala:574
 msgid "Albums"
 msgstr ""
 
-#: ../src/MainWindow.vala:576
+#: ../src/MainWindow.vala:578
 msgid "Artists"
 msgstr ""
 
-#: ../src/MainWindow.vala:581
+#: ../src/MainWindow.vala:583
 msgid "Tracks"
 msgstr ""
 
-#: ../src/MainWindow.vala:586
+#: ../src/MainWindow.vala:588
 msgid "Playlists"
 msgstr ""
 
-#: ../src/MainWindow.vala:591
+#: ../src/MainWindow.vala:593
 msgid "Radio Stations"
 msgstr ""
 
-#: ../src/MainWindow.vala:598
+#: ../src/MainWindow.vala:600
 msgid "Audio CD"
 msgstr ""
 
-#: ../src/MainWindow.vala:723 ../src/MainWindow.vala:731
-#: ../src/Widgets/Views/TracksView.vala:258
+#: ../src/MainWindow.vala:725 ../src/MainWindow.vala:733
+#: ../src/Widgets/Views/TracksView.vala:278
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
 
@@ -152,7 +152,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: ../src/Objects/AudioCD.vala:100
+#: ../src/Objects/AudioCD.vala:105
 msgid "Track %d"
 msgstr ""
 
@@ -194,38 +194,38 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:221 ../src/Widgets/Artist.vala:209
+#: ../src/Widgets/Album.vala:243 ../src/Widgets/Artist.vala:231
 #: ../src/Widgets/Views/AlbumView.vala:65
 #: ../src/Widgets/Views/AudioCDView.vala:98
 msgid "Set new Cover…"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:238
+#: ../src/Widgets/Album.vala:261
 msgid "Edit Album properties…"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:245 ../src/Widgets/Track.vala:172
+#: ../src/Widgets/Album.vala:268 ../src/Widgets/Track.vala:195
 msgid "Add into Playlist"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:250 ../src/Widgets/Artist.vala:232
-#: ../src/Widgets/Track.vala:187
+#: ../src/Widgets/Album.vala:273 ../src/Widgets/Artist.vala:256
+#: ../src/Widgets/Track.vala:210
 msgid "Send to"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:255
+#: ../src/Widgets/Album.vala:278
 msgid "Merge selected Albums"
 msgstr ""
 
-#: ../src/Widgets/Album.vala:276 ../src/Widgets/Track.vala:204
+#: ../src/Widgets/Album.vala:299 ../src/Widgets/Track.vala:227
 msgid "Create New Playlist"
 msgstr ""
 
-#: ../src/Widgets/Artist.vala:226
+#: ../src/Widgets/Artist.vala:249
 msgid "Edit Artist properties…"
 msgstr ""
 
-#: ../src/Widgets/Artist.vala:237
+#: ../src/Widgets/Artist.vala:261
 msgid "Merge selected Artists"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/Widgets/Track.vala:176
+#: ../src/Widgets/Track.vala:199
 msgid "Remove from Playlist"
 msgstr ""
 
@@ -287,6 +287,14 @@ msgstr ""
 #: ../src/Widgets/Views/PlaylistsView.vala:154
 #: ../src/Widgets/Views/RadiosView.vala:205
 msgid "Try another search"
+msgstr ""
+
+#: ../src/Widgets/Views/ArtistView.vala:110
+msgid "Choose an Artist"
+msgstr ""
+
+#: ../src/Widgets/Views/ArtistView.vala:110
+msgid "No Artist selected"
 msgstr ""
 
 #: ../src/Widgets/Views/ArtistView.vala:163
@@ -366,30 +374,30 @@ msgstr ""
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:140
+#: ../src/Widgets/Views/TracksView.vala:160
 msgid "Choose a Track"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:140
+#: ../src/Widgets/Views/TracksView.vala:160
 msgid "No track selected"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:166
+#: ../src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:173
+#: ../src/Widgets/Views/TracksView.vala:193
 msgid "Title"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:180
+#: ../src/Widgets/Views/TracksView.vala:200
 msgid "Album"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:182
+#: ../src/Widgets/Views/TracksView.vala:202
 msgid "Artist"
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:187
+#: ../src/Widgets/Views/TracksView.vala:207
 msgid "Duration"
 msgstr ""

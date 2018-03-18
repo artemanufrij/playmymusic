@@ -107,7 +107,7 @@ namespace PlayMyMusic.Widgets.Views {
             content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
             content.pack_start (tracks_scroll, true, true, 0);
 
-            alert_view = new Granite.Widgets.AlertView ("Choose an Artist", "No Artist selected", "avatar-default-symbolic");
+            alert_view = new Granite.Widgets.AlertView (_("Choose an Artist"), _("No Artist selected"), "avatar-default-symbolic");
 
             var overlay = new Gtk.Overlay ();
             overlay.add_overlay (background);
