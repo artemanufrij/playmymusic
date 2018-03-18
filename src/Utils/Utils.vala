@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -93,7 +93,7 @@ namespace PlayMyMusic.Utils {
                         padding-bottom: 0px;
                     }
                     .track-drag-begin {
-                        border-top: 1px solid black;
+                        border-top: 1px solid #666666;
                     }
                     .mobile-close-button {
                         padding: 3px;

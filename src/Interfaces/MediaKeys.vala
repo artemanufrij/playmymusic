@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -67,22 +67,13 @@ namespace PlayMyMusic.Interfaces {
             instance = new MediaKeyListener ();
         }
 
-        public void release_keys() {
-            try {
-                media_keys.ReleaseMediaPlayerKeys (PlayMyMusic.PlayMyMusicApp.instance.application_id);
-            }
-            catch (IOError err) {
-                warning ("Could not release media player keys: %s", err.message);
-            }
-        }
-
         private void pressed_key (dynamic Object bus, string application, string key) {
             if (application == (PlayMyMusic.PlayMyMusicApp.instance.application_id)) {
                 if (key == "Previous") {
                     library_manager.player.prev ();
                 }
                 else if (key == "Play") {
-                    PlayMyMusic.PlayMyMusicApp.instance.mainwindow.play ();
+                    PlayMyMusic.PlayMyMusicApp.instance.mainwindow.toggle_playing ();
                 }
                 else if (key == "Next") {
                     library_manager.player.next ();

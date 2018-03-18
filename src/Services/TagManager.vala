@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -57,11 +57,13 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        private void discovered (Gst.PbUtils.DiscovererInfo info, Error err) {
+        private void discovered (Gst.PbUtils.DiscovererInfo info, Error? err) {
             new Thread<void*> (null, () => {
                 string uri = info.get_uri ();
                 if (info.get_result () != Gst.PbUtils.DiscovererResult.OK) {
-                    warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), uri);
+                    if (err != null) {
+                        warning ("DISCOVER ERROR: '%d' %s %s\n(%s)", err.code, err.message, info.get_result ().to_string (), uri);
+                    }
                 } else {
                     var tags = info.get_tags ();
                     if (tags != null) {

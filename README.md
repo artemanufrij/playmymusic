@@ -1,6 +1,6 @@
 <div>
-  <h1 align="center">Play My Music</h1>
-  <h3 align="center">A music player for listening to local music files, online radios, and Audio CD's</h3>
+  <h1 align="center">Melody</h1>
+  <h3 align="center"><img src="data/icons/com.github.artemanufrij.playmymusic.svg"/><br>A music player for listening to local music files, online radios, and Audio CD's</h3>
   <p align="center">Designed for <a href="https://elementary.io">elementary OS</a></p>
 </div>
 
@@ -17,9 +17,7 @@
 
 ![screenshot](screenshots/Screenshot.png)
 ![screenshot](screenshots/Screenshot_Artists.png)
-![screenshot](screenshots/Screenshot_Playlists.png)
-![screenshot](screenshots/Screenshot_MTP.png)
-![screenshot](screenshots/Screenshot_Audio_CD.png)
+![screenshot](screenshots/Screenshot_Tracks.png)
 
 ## Install from Github.
 

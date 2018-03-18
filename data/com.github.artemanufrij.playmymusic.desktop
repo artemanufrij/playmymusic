@@ -17,11 +17,14 @@ Actions=Toggle;Next;Prev;
 [Desktop Action Toggle]
 Name=Play/Pause
 Exec=com.github.artemanufrij.playmymusic --play
+Icon=media-playback-start-symbolic
 
 [Desktop Action Next]
 Name=Next
 Exec=com.github.artemanufrij.playmymusic --next
+Icon=media-skip-forward-symbolic
 
 [Desktop Action Prev]
 Name=Previous
 Exec=com.github.artemanufrij.playmymusic --prev
+Icon=media-skip-backward-symbolic

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -31,9 +31,6 @@ namespace PlayMyMusic {
         public string COVER_FOLDER { get; private set; }
         public string CACHE_FOLDER { get; private set; }
 
-        [CCode (array_length = false, array_null_terminated = true)]
-        string[] ? arg_files = null;
-
         PlayMyMusic.Settings settings;
 
         static PlayMyMusicApp _instance = null;
@@ -46,11 +43,14 @@ namespace PlayMyMusic {
             }
         }
 
+        [CCode (array_length = false, array_null_terminated = true)]
+        string[] ? arg_files = null;
+
         construct {
-            this.flags |= GLib.ApplicationFlags.HANDLES_OPEN;
+            this.flags |= ApplicationFlags.HANDLES_OPEN;
             this.flags |= ApplicationFlags.HANDLES_COMMAND_LINE;
             this.application_id = "com.github.artemanufrij.playmymusic";
-            settings = PlayMyMusic.Settings.get_default ();
+            settings = Settings.get_default ();
 
             var action_search_reset = new SimpleAction ("search-reset", null);
             add_action (action_search_reset);
@@ -165,17 +165,18 @@ namespace PlayMyMusic {
                 Interfaces.MediaKeyListener.listen ();
                 Interfaces.SoundIndicator.listen ();
             }
+
             mainwindow.present ();
         }
 
         public override void open (File[] files, string hint) {
+            activate ();
             if (files [0].query_exists ()) {
                 mainwindow.open_file (files [0]);
             }
         }
 
         public override int command_line (ApplicationCommandLine cmd) {
-            activate ();
             command_line_interpreter (cmd);
             return 0;
         }
@@ -196,7 +197,6 @@ namespace PlayMyMusic {
             options [4] = { null };
 
             var opt_context = new OptionContext ("actions");
-            opt_context.set_help_enabled (true);
             opt_context.add_main_entries (options, null);
             try {
                 opt_context.parse (ref args);
@@ -206,12 +206,15 @@ namespace PlayMyMusic {
             }
 
             if (next || prev || play) {
-                if (next) {
+                if (next && mainwindow != null) {
                     mainwindow.next ();
-                } else if (prev) {
+                } else if (prev && mainwindow != null) {
                     mainwindow.prev ();
                 } else if (play) {
-                    mainwindow.play ();
+                    if (mainwindow == null) {
+                        activate ();
+                    }
+                    mainwindow.toggle_playing ();
                 }
                 return;
             }
@@ -225,7 +228,10 @@ namespace PlayMyMusic {
 
             if (files != null && files.length > 0) {
                 open (files, "");
+                return;
             }
+
+            activate ();
         }
     }
 }

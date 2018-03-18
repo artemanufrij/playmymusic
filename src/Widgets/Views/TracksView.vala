@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Widgets.Views {
     public class TracksView : Gtk.Grid {
         Services.LibraryManager library_manager;
+        PlayMyMusic.Settings settings;
         Services.Player player;
 
         Gtk.TreeView view;
@@ -58,11 +59,14 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
+        GLib.List<int> shuffle_index = null;
+
         enum columns { OBJECT, NR, TRACK, ALBUM, ARTIST, DURATION, DURATION_SORT }
 
         int header_height = 256;
 
         construct {
+            settings = Settings.get_default ();
             library_manager = Services.LibraryManager.instance;
             library_manager.added_new_track.connect (
                 (track) => {
@@ -81,8 +85,22 @@ namespace PlayMyMusic.Widgets.Views {
                     }
                 });
             player.next_track_request.connect (
-                (random) => {
-                    return get_next_track ();
+                () => {
+                    Objects.Track next_track = null;
+                    if (settings.shuffle_mode) {
+                        next_track = get_shuffle_track ();
+                    } else {
+                        next_track = get_next_track ();
+                    }
+
+                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
+                        if (settings.shuffle_mode) {
+                            next_track = get_shuffle_track ();
+                        } else {
+                            next_track = get_first_track ();
+                        }
+                    }
+                    return next_track;
                 });
             player.prev_track_request.connect (
                 () => {
@@ -100,6 +118,8 @@ namespace PlayMyMusic.Widgets.Views {
                 typeof (string),
                 typeof (string),
                 typeof (uint64));
+
+            shuffle_index = new GLib.List<int> ();
 
             build_ui ();
         }
@@ -271,9 +291,12 @@ namespace PlayMyMusic.Widgets.Views {
 
         public void mark_playing_track (Objects.Track ? track) {
             view.get_selection ().unselect_all ();
-            if (track == null) {
+            if (track == null || track == current_track) {
                 return;
             }
+
+            int i = 0;
+
             modelfilter.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);
@@ -284,8 +307,15 @@ namespace PlayMyMusic.Widgets.Views {
                         only_mark = false;
                         return true;
                     }
+                    i++;
                     return false;
                 });
+
+            if (settings.shuffle_mode) {
+                shuffle_index.append (i);
+            } else if (shuffle_index.length () > 0) {
+                shuffle_index = new GLib.List<int> ();
+            }
         }
 
         private void change_cover () {
@@ -331,6 +361,8 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public Objects.Track ? get_next_track () {
+            shuffle_index = null;
+
             Objects.Track ? return_value = null;
 
             modelsort.@foreach (
@@ -345,6 +377,49 @@ namespace PlayMyMusic.Widgets.Views {
                         }
                         return true;
                     }
+                    return false;
+                });
+
+            return return_value;
+        }
+
+        public Objects.Track ? get_first_track () {
+            Objects.Track ? return_value = null;
+
+            Gtk.TreeIter next_iter;
+            if (modelsort.get_iter_first (out next_iter)) {
+                Value val;
+                modelsort.get_value (next_iter, 0, out val);
+                return_value = val.get_object () as Objects.Track;
+            }
+
+            return return_value;
+        }
+
+        public Objects.Track ? get_shuffle_track () {
+            var tracks_count = modelsort.iter_n_children (null);
+
+            if (shuffle_index.length () >= tracks_count) {
+                shuffle_index = new GLib.List<int> ();
+                return null;
+            }
+
+            int r = GLib.Random.int_range (0, tracks_count);
+            while (shuffle_index.index (r) != -1) {
+                r = GLib.Random.int_range (0, tracks_count);
+            }
+
+            Objects.Track ? return_value = null;
+
+            int i = 0;
+            modelsort.@foreach (
+                (model, path, iter) => {
+                    var item_track = get_track_by_path (path);
+                    if (i == r) {
+                        return_value = item_track;
+                        return true;
+                    }
+                    i++;
                     return false;
                 });
 
@@ -388,6 +463,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void do_filter () {
             modelfilter.refilter ();
+            shuffle_index = null;
         }
     }
 }

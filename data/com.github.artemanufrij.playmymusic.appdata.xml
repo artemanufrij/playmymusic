@@ -25,7 +25,7 @@
     <custom>
         <value key="x-appcenter-color-primary">#004988</value>
         <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
-        <value key="x-appcenter-suggested-price">2</value>
+        <value key="x-appcenter-suggested-price">3</value>
     </custom>
     <developer_name>Artem Anufrij</developer_name>
     <url type="homepage">https://artemanufrij.github.io</url>
@@ -42,23 +42,53 @@
             <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Artists.png</image>
         </screenshot>
         <screenshot>
-            <caption>Playlists</caption>
-            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Playlists.png</image>
-        </screenshot>
-        <screenshot>
-            <caption>MTP Support</caption>
-            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_MTP.png</image>
-        </screenshot>
-        <screenshot>
-            <caption>Manage Online Radio Stations</caption>
-            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Radio_Stations.png</image>
-        </screenshot>
-        <screenshot>
-            <caption>Audio CD</caption>
-            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Audio_CD.png</image>
+            <caption>Tracks</caption>
+            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Tracks.png</image>
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.6.7" date="2018-03-20">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Double click on Album/Artist starts playing first track</li>
+                    <li>Double click on Track starts playing from begining</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Portuguese - Brazil (by Gustavo Marques)</li>
+                    <li>Polish (by Michał Węglowski-Hodur)</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.6.6" date="2018-03-10">
+            <description>
+                <p>Improved:</p>
+                <ul>
+                    <li>Desktop Action Menu</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.6.5" date="2018-03-06">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Shuffle and Repeat mode for Tracks View</li>
+                </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Remove cover cache file if album or artist was deleted</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                   <li>Russian (by Camellan)</li>
+                </ul>
+                <p>Misc:</p>
+                <ul>
+                    <li>Prepare for JUNO</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.6.4" date="2018-02-28">
             <description>
                 <p>New:</p>

@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -173,7 +173,7 @@ namespace PlayMyMusic {
                 (audio_cd) => {
                     audio_cd_view.show_audio_cd (audio_cd);
                     audio_cd_widget.show ();
-                    view_mode.set_active (4);
+                    view_mode.set_active (5);
                 });
             library_manager.audio_cd_disconnected.connect (
                 (volume) => {
@@ -183,7 +183,7 @@ namespace PlayMyMusic {
                         }
                         audio_cd_view.reset ();
                         audio_cd_widget.hide ();
-                        if (view_mode.selected == 4) {
+                        if (view_mode.selected == 5) {
                             show_playing_view ();
                         }
                     }
@@ -308,6 +308,7 @@ namespace PlayMyMusic {
             headerbar.title = _ ("Melody");
             headerbar.show_close_button = true;
             headerbar.get_style_context ().add_class ("custom_titlebar");
+            headerbar.get_style_context ().add_class ("default-decoration");
             this.set_titlebar (headerbar);
 
             // PLAY BUTTONS
@@ -330,7 +331,7 @@ namespace PlayMyMusic {
             play_button.sensitive = false;
             play_button.clicked.connect (
                 () => {
-                    play ();
+                    toggle_playing ();
                 });
 
             next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
@@ -441,6 +442,7 @@ namespace PlayMyMusic {
             search_entry = new Gtk.SearchEntry ();
             search_entry.placeholder_text = _ ("Search Music");
             search_entry.margin_right = 5;
+            search_entry.valign = Gtk.Align.CENTER;
             search_entry.search_changed.connect (
                 () => {
                     switch (view_mode.selected) {
@@ -664,7 +666,7 @@ namespace PlayMyMusic {
         }
 
         private void show_tracks () {
-            mode_buttons.opacity = 0;
+            mode_buttons.opacity = 1;
             mobile_phone_view.reveal_child = false;
             if (tracks_button.sensitive) {
                 content.visible_child_name = "tracks";
@@ -783,7 +785,7 @@ namespace PlayMyMusic {
             tracks_view.reset ();
         }
 
-        public void play () {
+        public void toggle_playing () {
             send_desktop_notification = false;
             if (library_manager.player.current_track != null || library_manager.player.current_radio != null || library_manager.player.current_file != null) {
                 library_manager.player.toggle_playing ();
@@ -954,7 +956,6 @@ namespace PlayMyMusic {
                     settings.track_source = "artists";
                     break;
                 case PlayMyMusic.Services.PlayMode.TRACKS :
-                    settings.last_playlist_id = current_track.playlist.ID;
                     settings.track_source = "tracks";
                     break;
                 case PlayMyMusic.Services.PlayMode.PLAYLIST :

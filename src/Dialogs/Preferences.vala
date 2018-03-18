@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -35,7 +35,9 @@ namespace PlayMyMusic.Dialogs {
 
         public Preferences (Gtk.Window parent) {
             Object (
-                transient_for: parent
+                transient_for: parent,
+                deletable: false,
+                resizable: false
             );
             build_ui ();
 
@@ -49,7 +51,6 @@ namespace PlayMyMusic.Dialogs {
         }
 
         private void build_ui () {
-            this.resizable = false;
             var content = get_content_area () as Gtk.Box;
 
             var grid = new Gtk.Grid ();

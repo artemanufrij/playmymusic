@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * The Noise authors hereby grant permission for non-GPL compatible
  * GStreamer plugins to be used and distributed together with GStreamer
@@ -84,6 +84,29 @@ namespace PlayMyMusic.Widgets {
             this.tooltip_text = this.track.title;
 
             var event_box = new Gtk.EventBox ();
+            event_box.event.connect (
+                (event) => {
+                    if (event.type == Gdk.EventType.@2BUTTON_PRESS) {
+                        library_manager.player.reset_playing ();
+                        switch (track_style) {
+                        case TrackStyle.ARTIST :
+                            library_manager.player.set_track (track, Services.PlayMode.ARTIST);
+                            break;
+                        case TrackStyle.PLAYLIST :
+                            library_manager.player.set_track (track, Services.PlayMode.PLAYLIST);
+                            break;
+                        case TrackStyle.AUDIO_CD :
+                            library_manager.player.set_track (track, Services.PlayMode.AUDIO_CD);
+                            break;
+                        default :
+                            library_manager.player.set_track (track, Services.PlayMode.ALBUM);
+                            break;
+                        }
+
+                        return true;
+                    }
+                    return false;
+                });
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST || this.track_style == TrackStyle.AUDIO_CD) {
