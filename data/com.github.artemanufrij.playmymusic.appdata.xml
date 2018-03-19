@@ -49,6 +49,15 @@
     <releases>
         <release version="0.6.7" date="2018-03-20">
             <description>
+                <p>Improved:</p>
+                <ul>
+                    <li>Context menu behaviour</li>
+                    <li>Removed multi selection button</li>
+                </ul>
+            </description>
+        </release>
+        <release version="0.6.7" date="2018-03-20">
+            <description>
                 <p>New:</p>
                 <ul>
                     <li>Double click on Album/Artist starts playing first track</li>

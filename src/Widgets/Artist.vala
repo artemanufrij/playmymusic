@@ -40,9 +40,6 @@ namespace PlayMyMusic.Widgets {
         Gtk.MenuItem menu_send_to;
         Gtk.MenuItem menu_merge;
         Gtk.Image cover;
-        Gtk.Button multi_select;
-        Gtk.Image add_selection_image;
-        Gtk.Image multi_selected_image;
         Gtk.Label name_label;
 
         public bool multi_selection { get; private set; default = false; }
@@ -105,18 +102,6 @@ namespace PlayMyMusic.Widgets {
             event_box.button_press_event.connect (show_context_menu);
             event_box.drag_data_get.connect (on_drag_data_get);
             event_box.drag_begin.connect (on_drag_begin);
-            event_box.enter_notify_event.connect (
-                (event) => {
-                    multi_select.opacity = 1;
-                    return false;
-                });
-            event_box.leave_notify_event.connect (
-                (event) => {
-                    if (!this.is_selected ()) {
-                        multi_select.opacity = 0;
-                    }
-                    return false;
-                });
             event_box.event.connect (
                 (event) => {
                     if (event.type == Gdk.EventType.@2BUTTON_PRESS) {
@@ -146,28 +131,6 @@ namespace PlayMyMusic.Widgets {
             name_label.ellipsize = Pango.EllipsizeMode.END;
             name_label.use_markup = true;
 
-            // MULTISELECTION BUTTON
-            add_selection_image = new Gtk.Image.from_icon_name ("selection-add", Gtk.IconSize.BUTTON);
-            multi_selected_image = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.BUTTON);
-
-            multi_select = new Gtk.Button ();
-            multi_select.valign = Gtk.Align.START;
-            multi_select.halign = Gtk.Align.START;
-            multi_select.get_style_context ().remove_class ("button");
-            multi_select.set_image (add_selection_image);
-            multi_select.can_focus = false;
-            multi_select.opacity = 0;
-            multi_select.clicked.connect (
-                () => {
-                    toggle_multi_selection ();
-                });
-            multi_select.enter_notify_event.connect (
-                (event) => {
-                    multi_select.opacity = 1;
-                    return false;
-                });
-
-            content.attach (multi_select, 0, 0);
             content.attach (cover, 0, 0);
             content.attach (name_label, 0, 1);
 
@@ -185,12 +148,9 @@ namespace PlayMyMusic.Widgets {
                 if (activate) {
                     this.activate ();
                 }
-                multi_select.opacity = 1;
-                multi_select.set_image (multi_selected_image);
             } else {
                 multi_selection = false;
                 (this.parent as Gtk.FlowBox).unselect_child (this);
-                multi_select.set_image (add_selection_image);
             }
         }
 
@@ -201,8 +161,6 @@ namespace PlayMyMusic.Widgets {
         }
 
         public void reset () {
-            multi_select.set_image (add_selection_image);
-            multi_select.opacity = 0;
             multi_selection = false;
         }
 
@@ -258,7 +216,7 @@ namespace PlayMyMusic.Widgets {
             send_to = new Gtk.Menu ();
             menu_send_to.set_submenu (send_to);
 
-            menu_merge = new Gtk.MenuItem.with_label (_ ("Merge selected Artists"));
+            menu_merge = new Gtk.MenuItem ();
             menu_merge.activate.connect (
                 () => {
                     merge ();
@@ -298,7 +256,9 @@ namespace PlayMyMusic.Widgets {
                 }
 
                 // MERGE
-                if ((this.parent as Gtk.FlowBox).get_selected_children ().length () > 1) {
+                var merge_counter = (this.parent as Gtk.FlowBox).get_selected_children ().length ();
+                if (merge_counter > 1) {
+                    menu_merge.label = _ ("Merge %u selected Albums").printf (merge_counter);
                     menu_merge.show_all ();
                 } else {
                     menu_merge.hide ();
