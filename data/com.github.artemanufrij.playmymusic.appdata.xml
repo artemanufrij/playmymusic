@@ -49,6 +49,10 @@
     <releases>
         <release version="0.6.8" date="2018-03-30">
             <description>
+                <p>Fixed:</p>
+                <ul>
+                    <li>'&' char in Tracks View</li>
+                </ul>
                 <p>Improved:</p>
                 <ul>
                     <li>Context menu behaviour</li>

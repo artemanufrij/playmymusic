@@ -275,7 +275,7 @@ namespace PlayMyMusic.Widgets.Views {
             current_track = track;
 
             title_name.label = track.title;
-            album_title.label = _ ("<b>%s</b> by <b>%s</b>").printf (track.album.title, track.album.artist.name);
+            album_title.label = _ ("<b>%s</b> by <b>%s</b>").printf (track.album.title.replace ("&", "&amp;"), track.album.artist.name.replace ("&", "&amp;"));
 
             current_track.album.cover_changed.connect (change_cover);
 
