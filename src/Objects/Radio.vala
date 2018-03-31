@@ -71,10 +71,7 @@ namespace PlayMyMusic.Objects {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             removed.connect (
                 () => {
-                    var file = File.new_for_path (cover_path);
-                    if (file.query_exists ()) {
-                        file.delete_async.begin ();
-                    }
+                    FileUtils.remove (cover_path);
                 });
         }
 
@@ -179,8 +176,7 @@ namespace PlayMyMusic.Objects {
         }
 
         private void load_cover () {
-            var file = File.new_for_path (cover_path);
-            if (file.query_exists ()) {
+            if (FileUtils.test (cover_path, FileTest.EXISTS)) {
                 try {
                     this.cover = new Gdk.Pixbuf.from_file (cover_path);
                 } catch (Error err) {

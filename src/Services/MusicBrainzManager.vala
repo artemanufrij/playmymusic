@@ -113,7 +113,7 @@ namespace PlayMyMusic.Services {
                                         break;
                                     }
                                 } catch (Error err) {
-                                    warning (err.message);
+                                            warning (err.message);
                                 }
                             }
                         }
@@ -371,21 +371,21 @@ namespace PlayMyMusic.Services {
             if (!url.has_prefix ("http")) {
                 return null;
             }
+            stdout.printf ("Download Pixbuf from URL: %s\n", url);
             Gdk.Pixbuf ? return_value = null;
             var session = new Soup.Session.with_options ("user_agent", "PlayMyMusic/0.1.0 (https://github.com/artemanufrij/playmymusic)");
             var msg = new Soup.Message ("GET", url);
             session.send_message (msg);
             if (msg.status_code == 200) {
                 string tmp_file = GLib.Path.build_filename (GLib.Environment.get_user_cache_dir (), Random.next_int ().to_string () + ".jpg");
-                var fs = FileStream.open (tmp_file, "w");
-                fs.write (msg.response_body.data, (size_t)msg.response_body.length);
                 try {
-                    return_value = new Gdk.Pixbuf.from_file (tmp_file);
+                    if (FileUtils.set_data (tmp_file, msg.response_body.data)) {
+                        return_value = new Gdk.Pixbuf.from_file (tmp_file);
+                    }
                 } catch (Error err) {
                                             warning (err.message);
                 }
-                File f = File.new_for_path (tmp_file);
-                f.delete_async.begin ();
+                FileUtils.remove (tmp_file);
             }
             msg.dispose ();
             session.dispose ();

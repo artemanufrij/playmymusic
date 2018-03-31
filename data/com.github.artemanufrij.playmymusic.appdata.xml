@@ -47,6 +47,15 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="0.6.10" date="2018-04-15">
+            <description>
+                <p>Improved:</p>
+                <ul>
+                    <li>Tooltip for album cover</li>
+                    <li>Fetching of Artist Art from MusicBrainz</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.6.9" date="2018-03-30">
             <description>
                 <p>Fixed:</p>

@@ -147,6 +147,8 @@ namespace PlayMyMusic.Widgets.Views {
                 cover.pixbuf = current_album.cover;
             }
 
+            cover.tooltip_markup = ("<b>%s</b>%s\n%s").printf (album.title.replace ("&", "&amp;"), album.year > 0 ? (" (%d)").printf (album.year) : "", album.artist.name.replace ("&", "&amp;"));
+
             foreach (var track in current_album.tracks) {
                 add_track (track);
             }

@@ -79,15 +79,13 @@ namespace PlayMyMusic.Objects {
         public Gdk.Pixbuf ? background {
             get {
                 if (_background == null && background_path != "") {
-                    File file = File.new_for_path (background_path);
-                    if (file.query_exists ()) {
+                    if (FileUtils.test (background_path, FileTest.EXISTS)) {
                         try {
                             _background = new Gdk.Pixbuf.from_file (background_path);
                         } catch (Error err) {
                             warning (err.message);
                         }
                     }
-                    file.dispose ();
                 }
                 return _background;
             } set {
@@ -103,21 +101,8 @@ namespace PlayMyMusic.Objects {
 
             removed.connect (
                 () => {
-                    var c = File.new_for_path (cover_path);
-                    c.trash_async.begin (
-                        0,
-                        null,
-                        (obj, res) => {
-                            c.dispose ();
-                        });
-
-                    var b = File.new_for_path (background_path);
-                    b.trash_async.begin (
-                        0,
-                        null,
-                        (obj, res) => {
-                            b.dispose ();
-                        });
+                    FileUtils.remove (cover_path);
+                    FileUtils.remove (background_path);
                 });
         }
 
@@ -235,16 +220,7 @@ namespace PlayMyMusic.Objects {
         }
 
         public void set_new_cover (Gdk.Pixbuf cover, int size) {
-            if (background_path != "") {
-                File f = File.new_for_path (background_path);
-                if (f.query_exists ()) {
-                    try {
-                        f.delete ();
-                    } catch (Error err) {
-                        warning (err.message);
-                    }
-                }
-            }
+            FileUtils.remove (background_path);
             this.background = null;
             this.cover = save_cover (cover, size);
         }
@@ -254,7 +230,7 @@ namespace PlayMyMusic.Objects {
             try {
                 pixbuf.save (cover_path, "jpeg", "quality", "100");
             } catch (Error err) {
-                        warning (err.message);
+                warning (err.message);
             }
             return pixbuf;
         }
@@ -277,14 +253,11 @@ namespace PlayMyMusic.Objects {
             new Thread<void*> (
                 "create_background",
                 () => {
-                    File f = File.new_for_path (this.background_path);
-                    if (f.query_exists ()) {
+                    if (FileUtils.test (background_path, FileTest.EXISTS)) {
                         is_background_loading = false;
-                        f.dispose ();
                         background_found ();
                         return null;
                     }
-                    f.dispose ();
 
                     double target_size = 1000;
 

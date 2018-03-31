@@ -182,8 +182,7 @@ namespace PlayMyMusic.Objects {
         }
 
         public async void load_cover_async () {
-            var cover_full_path = File.new_for_path (cover_path);
-            if (cover_full_path.query_exists ()) {
+            if (FileUtils.test (cover_path, FileTest.EXISTS)) {
                 try {
                     cover = new Gdk.Pixbuf.from_file (cover_path);
                 } catch (Error err) {
