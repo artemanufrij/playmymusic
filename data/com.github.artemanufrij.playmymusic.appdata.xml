@@ -54,6 +54,10 @@
                     <li>Tooltip for album cover</li>
                     <li>Fetching of Artist Art from MusicBrainz</li>
                 </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Danish (by rasmus91)</li>
+                </ul>
             </description>
         </release>
         <release version="0.6.9" date="2018-03-30">

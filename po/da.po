@@ -9,117 +9,117 @@ msgstr ""
 #: ../src/Widgets/Views/AlbumView.vala:86
 #: ../src/Widgets/Views/AudioCDView.vala:118
 msgid "Set new Cover…"
-msgstr ""
+msgstr "Sæt nyt Coverbillede.."
 
 #: ../src/Widgets/Album.vala:114 ../src/Widgets/Track.vala:100
 msgid "Add into Playlist"
-msgstr ""
+msgstr "Tilføj til Playliste"
 
 #: ../src/Widgets/Album.vala:119 ../src/Widgets/Artist.vala:99
 #: ../src/Widgets/Track.vala:114
 msgid "Send to"
-msgstr ""
+msgstr "Send til"
 
 #: ../src/Widgets/Album.vala:165 ../src/Widgets/Track.vala:160
 msgid "Create New Playlist"
-msgstr ""
+msgstr "Opret Ny Playliste"
 
 #: ../src/Widgets/TrackTimeLine.vala:93 ../src/Widgets/TrackTimeLine.vala:97
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> fra <b>%s</b> af <b>%s</b>"
 
 #: ../src/Widgets/Views/AlbumView.vala:120
 #: ../src/Widgets/Views/ArtistView.vala:138
 #: ../src/Widgets/Views/PlaylistsView.vala:128
 #: ../src/Widgets/Views/AudioCDView.vala:173
 msgid "Shuffle"
-msgstr ""
+msgstr "Bland"
 
 #: ../src/Widgets/Views/AlbumView.vala:132
 #: ../src/Widgets/Views/ArtistView.vala:150
 #: ../src/Widgets/Views/PlaylistsView.vala:140
 #: ../src/Widgets/Views/AudioCDView.vala:185
 msgid "Repeat"
-msgstr ""
+msgstr "Gentag"
 
 #: ../src/Widgets/Views/AlbumsView.vala:107
 msgid "Change Music Folder"
-msgstr ""
+msgstr "Skift Musik Mappe"
 
 #: ../src/Widgets/Views/AlbumsView.vala:107
 msgid "Load music from a folder, a network or an external disk."
-msgstr ""
+msgstr "Indlæs musik fra en mappe, et netværk eller en ekstern disk."
 
 #: ../src/Widgets/Views/AlbumsView.vala:108
 msgid "Import Music"
-msgstr ""
+msgstr "Importér Musik"
 
 #: ../src/Widgets/Views/AlbumsView.vala:108
 msgid "Import music from a source into your library."
-msgstr ""
+msgstr "Importér musik fra en kilde til dit bibliotek."
 
 #: ../src/Widgets/Views/RadiosView.vala:108
 msgid "Add a radio station"
-msgstr ""
+msgstr "Tilføj en radiostation"
 
 #: ../src/Widgets/Views/RadiosView.vala:143
 msgid "Choose a Cover"
-msgstr ""
+msgstr "Vælg et Coverbillede"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
-msgstr ""
+msgstr "Tilføj Radio Station"
 
 #: ../src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
-msgstr ""
+msgstr "Tilføj en Stream URL såsom .pls eller .m3u."
 
 #: ../src/Widgets/Views/RadiosView.vala:226
 #: ../src/Widgets/Views/PlaylistsView.vala:158
 msgid "Add"
-msgstr ""
+msgstr "Tilføj"
 
 #: ../src/Widgets/Views/RadiosView.vala:228
 msgid "Save"
-msgstr ""
+msgstr "Gem"
 
 #: ../src/Widgets/Views/PlaylistView.vala:97
 msgid "Rename"
-msgstr ""
+msgstr "Omdøb"
 
 #: ../src/Widgets/Views/PlaylistView.vala:115
 msgid "Rename Playlist"
-msgstr ""
+msgstr "Omdøb Playliste"
 
 #: ../src/Widgets/Views/PlaylistView.vala:124
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Fjern Playliste"
 
 #: ../src/Widgets/Views/ArtistView.vala:213
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr ""
+msgstr "<b>%d Numre</b> i <b>%d Album</b>(s)"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:110
 msgid "Add a playlist"
-msgstr ""
+msgstr "Tilføj en playliste"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:178
 msgid "Add Playlist"
-msgstr ""
+msgstr "Tilføj Playliste"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:178
 msgid "Add a playlist for manage your favorite songs."
-msgstr ""
+msgstr "Tilføj en playliste til dine yndlings sange."
 
 #: ../src/Widgets/Track.vala:61
 msgid ""
 "File couldn't be found\n"
 "%s"
-msgstr ""
+msgstr "Filen kunne ikke findes\n %s"
 
 #: ../src/Widgets/Track.vala:104
 msgid "Remove from Playlist"
-msgstr ""
+msgstr "Fjern fra Playliste"
 
 #: ../src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -127,7 +127,7 @@ msgstr ""
 
 #: ../src/Widgets/Radio.vala:103
 msgid "Remove Radio Station"
-msgstr ""
+msgstr "Fjern Radiostation"
 
 #: ../src/Services/LibraryManager.vala:207
 msgid "New Playlist"
@@ -135,127 +135,127 @@ msgstr ""
 
 #: ../src/Services/LibraryManager.vala:246
 msgid "Choose an image…"
-msgstr ""
+msgstr "Vælg et billede..."
 
 #: ../src/Services/LibraryManager.vala:248
 #: ../src/Services/LibraryManager.vala:269
 msgid "_Cancel"
-msgstr ""
+msgstr "_Anullér"
 
 #: ../src/Services/LibraryManager.vala:249
 #: ../src/Services/LibraryManager.vala:270
 msgid "_Open"
-msgstr ""
+msgstr "_Åben"
 
 #: ../src/Services/LibraryManager.vala:252
 msgid "Images"
-msgstr ""
+msgstr "Billeder"
 
 #: ../src/Services/LibraryManager.vala:268
 msgid "Select a folder."
-msgstr ""
+msgstr "Vælg en mappe."
 
 #: ../src/Services/LibraryManager.vala:273
 msgid "Folder"
-msgstr ""
+msgstr "Mappe"
 
 #: ../src/Services/TagManager.vala:48 ../src/Objects/AudioCD.vala:67
 #: ../src/Objects/AudioCD.vala:68
 msgid "Unknown"
-msgstr ""
+msgstr "Ukendt"
 
 #: ../src/Objects/MobilePhoneMusicFolder.vala:82
 msgid "deleting…"
-msgstr ""
+msgstr "sletter…"
 
 #: ../src/Objects/AudioCD.vala:100
 msgid "Track %d"
-msgstr ""
+msgstr "Spor %d"
 
 #: ../src/Objects/MobilePhone.vala:45
 msgid "No Music Files found"
-msgstr ""
+msgstr "Ingen Musik Filer fundet"
 
 #: ../src/MainWindow.vala:110
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 #: ../src/MainWindow.vala:130 ../src/MainWindow.vala:264
 msgid "Play My Music"
-msgstr ""
+msgstr "Afspil Min Musik"
 
 #: ../src/MainWindow.vala:133 ../src/MainWindow.vala:281
 msgid "Play"
-msgstr ""
+msgstr "Afspil"
 
 #: ../src/MainWindow.vala:273
 msgid "Previous"
-msgstr ""
+msgstr "Forrige"
 
 #: ../src/MainWindow.vala:288
 msgid "Next"
-msgstr ""
+msgstr "Næste"
 
 #: ../src/MainWindow.vala:336
 msgid "Change Music Folder…"
-msgstr ""
+msgstr "Skift Musik Mappe…"
 
 #: ../src/MainWindow.vala:345
 msgid "Import Music…"
-msgstr ""
+msgstr "Importér Musik…"
 
 #: ../src/MainWindow.vala:353
 msgid "Reset all views"
-msgstr ""
+msgstr "Nulstil alle views"
 
 #: ../src/MainWindow.vala:359
 msgid "Rescan Library"
-msgstr ""
+msgstr "Genskan Biblioteket"
 
 #: ../src/MainWindow.vala:365
 msgid "Preferences"
-msgstr ""
+msgstr "Indstillinger"
 
 #: ../src/MainWindow.vala:385
 msgid "Search Music"
-msgstr ""
+msgstr "Søg i Musik"
 
 #: ../src/MainWindow.vala:463
 msgid "Albums"
-msgstr ""
+msgstr "Albummer"
 
 #: ../src/MainWindow.vala:467
 msgid "Artists"
-msgstr ""
+msgstr "Kunstnere"
 
 #: ../src/MainWindow.vala:472
 msgid "Playlists"
-msgstr ""
+msgstr "Playlister"
 
 #: ../src/MainWindow.vala:477
 msgid "Radio Stations"
-msgstr ""
+msgstr "Radiostationer"
 
 #: ../src/MainWindow.vala:484
 msgid "Audio CD"
-msgstr ""
+msgstr "Lyd CD"
 
 #: ../src/MainWindow.vala:544 ../src/MainWindow.vala:552
 msgid "<b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> af <b>%s</b>"
 
 #: ../src/Dialogs/Preferences.vala:60
 msgid "Use Dark Theme"
-msgstr ""
+msgstr "Brug Mørkt Tema"
 
 #: ../src/Dialogs/Preferences.vala:68
 msgid "Play in background if closed"
-msgstr ""
+msgstr "Afspil i baggrund hvis lukket"
 
 #: ../src/Dialogs/Preferences.vala:76
 msgid "Look for new files on start up"
-msgstr ""
+msgstr "Kig efter nye filer ved opstart"
 
 #: ../src/Dialogs/Preferences.vala:84
 msgid "Load Artist data from MusicBrainz"
-msgstr ""
+msgstr "Indlæs Kunstner data fra MusicBrainz"
