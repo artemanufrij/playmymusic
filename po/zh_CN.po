@@ -1,125 +1,224 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 17:36+0100\n"
+"POT-Creation-Date: 2018-04-05 13:06+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: 金立龙 <trampover@gmail.com>\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Project-Id-Version: \n"
-"PO-Revision-Date: \n"
-"Language-Team: \n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.4\n"
-"Last-Translator: 金立龙 <trampover@gmail.com>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Language: zh_CN\n"
 
-#: ../src/Widgets/Album.vala:100 ../src/Widgets/Artist.vala:85
-#: ../src/Widgets/Views/AlbumView.vala:86
-#: ../src/Widgets/Views/AudioCDView.vala:118
+#: ../src/Widgets/Album.vala:201 ../src/Widgets/Artist.vala:189
+#: ../src/Widgets/Views/AlbumView.vala:65
+#: ../src/Widgets/Views/AudioCDView.vala:98
 msgid "Set new Cover…"
 msgstr "设置新的封面."
 
-#: ../src/Widgets/Album.vala:114 ../src/Widgets/Track.vala:100
+#: ../src/Widgets/Album.vala:219
+msgid "Edit Album properties…"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:226 ../src/Widgets/Track.vala:195
 msgid "Add into Playlist"
 msgstr "添加到播放列表"
 
-#: ../src/Widgets/Album.vala:119 ../src/Widgets/Artist.vala:99
-#: ../src/Widgets/Track.vala:114
+#: ../src/Widgets/Album.vala:231 ../src/Widgets/Artist.vala:214
+#: ../src/Widgets/Track.vala:210
 msgid "Send to"
 msgstr "发给"
 
-#: ../src/Widgets/Album.vala:165 ../src/Widgets/Track.vala:160
+#: ../src/Widgets/Album.vala:257 ../src/Widgets/Track.vala:227
 msgid "Create New Playlist"
 msgstr "建立播放列表"
+
+#: ../src/Widgets/Album.vala:306 ../src/Widgets/Artist.vala:261
+msgid "Merge %u selected Albums"
+msgstr ""
 
 #: ../src/Widgets/TrackTimeLine.vala:93 ../src/Widgets/TrackTimeLine.vala:97
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
 msgstr "正在播放的是<b>%s</b> - 专辑<b>%s</b> - 艺人<b>%s</b> "
 
-#: ../src/Widgets/Views/AlbumView.vala:120
-#: ../src/Widgets/Views/ArtistView.vala:138
-#: ../src/Widgets/Views/PlaylistsView.vala:128
-#: ../src/Widgets/Views/AudioCDView.vala:173
-msgid "Shuffle"
-msgstr "不循环播放"
+#: ../src/Widgets/Artist.vala:207
+msgid "Edit Artist properties…"
+msgstr ""
 
-#: ../src/Widgets/Views/AlbumView.vala:132
-#: ../src/Widgets/Views/ArtistView.vala:150
-#: ../src/Widgets/Views/PlaylistsView.vala:140
-#: ../src/Widgets/Views/AudioCDView.vala:185
-msgid "Repeat"
-msgstr "循环播放"
+#: ../src/Widgets/Views/AlbumsView.vala:119
+msgid "Get Some Tunes"
+msgstr ""
 
-#: ../src/Widgets/Views/AlbumsView.vala:107
+#: ../src/Widgets/Views/AlbumsView.vala:119
+#, fuzzy
+msgid "Add music to your library."
+msgstr "将音乐导入您的乐库。"
+
+#: ../src/Widgets/Views/AlbumsView.vala:120
 msgid "Change Music Folder"
 msgstr "更改乐库位置"
 
-#: ../src/Widgets/Views/AlbumsView.vala:107
+#: ../src/Widgets/Views/AlbumsView.vala:120
 msgid "Load music from a folder, a network or an external disk."
 msgstr "从文件夹，网络或外部磁盘导入音乐。"
 
-#: ../src/Widgets/Views/AlbumsView.vala:108
+#: ../src/Widgets/Views/AlbumsView.vala:121
 msgid "Import Music"
 msgstr "导入音乐"
 
-#: ../src/Widgets/Views/AlbumsView.vala:108
+#: ../src/Widgets/Views/AlbumsView.vala:121
 msgid "Import music from a source into your library."
 msgstr "将音乐导入您的乐库。"
 
-#: ../src/Widgets/Views/RadiosView.vala:108
+#: ../src/Widgets/Views/AlbumsView.vala:140
+#: ../src/Widgets/Views/ArtistsView.vala:110
+#: ../src/Widgets/Views/RadiosView.vala:205
+#: ../src/Widgets/Views/PlaylistsView.vala:154
+msgid "No results"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:140
+#: ../src/Widgets/Views/ArtistsView.vala:110
+#: ../src/Widgets/Views/RadiosView.vala:205
+#: ../src/Widgets/Views/PlaylistsView.vala:154
+msgid "Try another search"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:113
 msgid "Add a radio station"
 msgstr "添加一个电台"
 
-#: ../src/Widgets/Views/RadiosView.vala:143
+#: ../src/Widgets/Views/RadiosView.vala:123
+msgid "Station Name"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:131
+msgid "URL"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:150
 msgid "Choose a Cover"
 msgstr "选择封面"
 
-#: ../src/Widgets/Views/RadiosView.vala:178
+#: ../src/Widgets/Views/RadiosView.vala:187
+#, fuzzy
+msgid "No Radio Stations"
+msgstr "广播电台"
+
+#: ../src/Widgets/Views/RadiosView.vala:187
+#, fuzzy
+msgid "Add radio stations to your library."
+msgstr "添加一个电台"
+
+#: ../src/Widgets/Views/RadiosView.vala:188
 msgid "Add Radio Station"
 msgstr "添加电台"
 
-#: ../src/Widgets/Views/RadiosView.vala:178
+#: ../src/Widgets/Views/RadiosView.vala:188
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "添加像.pls或.m3u之类的流式URL."
 
-#: ../src/Widgets/Views/RadiosView.vala:226
-#: ../src/Widgets/Views/PlaylistsView.vala:158
+#: ../src/Widgets/Views/RadiosView.vala:241
+#: ../src/Widgets/Views/PlaylistsView.vala:114
 msgid "Add"
 msgstr "添加"
 
-#: ../src/Widgets/Views/RadiosView.vala:228
+#: ../src/Widgets/Views/RadiosView.vala:243
+#: ../src/Dialogs/ArtistEditor.vala:114 ../src/Dialogs/AlbumEditor.vala:121
 msgid "Save"
 msgstr "保存"
 
-#: ../src/Widgets/Views/PlaylistView.vala:97
+#: ../src/Widgets/Views/TracksView.vala:160
+#, fuzzy
+msgid "Choose a Track"
+msgstr "选择封面"
+
+#: ../src/Widgets/Views/TracksView.vala:160
+msgid "No track selected"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:186
+msgid "Nr"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:193
+msgid "Title"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:200
+#, fuzzy
+msgid "Album"
+msgstr "专辑"
+
+#: ../src/Widgets/Views/TracksView.vala:202
+#, fuzzy
+msgid "Artist"
+msgstr "艺人"
+
+#: ../src/Widgets/Views/TracksView.vala:207
+msgid "Duration"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:278 ../src/MainWindow.vala:725
+#: ../src/MainWindow.vala:733
+msgid "<b>%s</b> by <b>%s</b>"
+msgstr "<b>%s</b> 的 <b>%s</b>"
+
+#: ../src/Widgets/Views/PlaylistView.vala:101
 msgid "Rename"
 msgstr "更改名字"
 
-#: ../src/Widgets/Views/PlaylistView.vala:115
+#: ../src/Widgets/Views/PlaylistView.vala:122
 msgid "Rename Playlist"
 msgstr "更改播放列表名称"
 
-#: ../src/Widgets/Views/PlaylistView.vala:124
+#: ../src/Widgets/Views/PlaylistView.vala:132
 msgid "Remove Playlist"
 msgstr "删除播放列表"
 
-#: ../src/Widgets/Views/ArtistView.vala:213
+#: ../src/Widgets/Views/ArtistView.vala:110
+#, fuzzy
+msgid "Choose an Artist"
+msgstr "选择封面"
+
+#: ../src/Widgets/Views/ArtistView.vala:110
+msgid "No Artist selected"
+msgstr ""
+
+#: ../src/Widgets/Views/ArtistView.vala:163
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
 msgstr "<b>%d 首歌曲</b>一共<b>%d </b>张专辑"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:110
+#: ../src/Widgets/Views/PlaylistsView.vala:95
 msgid "Add a playlist"
 msgstr "添加一个播放列表"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:178
+#: ../src/Widgets/Views/PlaylistsView.vala:137
+#, fuzzy
+msgid "No Playlists"
+msgstr "播放列表"
+
+#: ../src/Widgets/Views/PlaylistsView.vala:137
+#, fuzzy
+msgid "Add playlist to your library."
+msgstr "添加播放列表来管理您最喜爱的歌曲."
+
+#: ../src/Widgets/Views/PlaylistsView.vala:138
 msgid "Add Playlist"
 msgstr "添加播放列表"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:178
+#: ../src/Widgets/Views/PlaylistsView.vala:138
 msgid "Add a playlist for manage your favorite songs."
 msgstr "添加播放列表来管理您最喜爱的歌曲."
 
-#: ../src/Widgets/Track.vala:61
+#: ../src/Widgets/Views/MobilePhone.vala:108
+msgid "Hide Mobile Panel"
+msgstr ""
+
+#: ../src/Widgets/Track.vala:69
 msgid ""
 "File couldn't be found\n"
 "%s"
@@ -127,7 +226,7 @@ msgstr ""
 "无法找到文件\n"
 "％S"
 
-#: ../src/Widgets/Track.vala:104
+#: ../src/Widgets/Track.vala:199
 msgid "Remove from Playlist"
 msgstr "从播放列表中删除"
 
@@ -139,33 +238,33 @@ msgstr "编辑电台..."
 msgid "Remove Radio Station"
 msgstr "移除电台"
 
-#: ../src/Services/LibraryManager.vala:207
+#: ../src/Services/LibraryManager.vala:295
 msgid "New Playlist"
 msgstr "新建播放列表"
 
-#: ../src/Services/LibraryManager.vala:246
+#: ../src/Services/LibraryManager.vala:353
 msgid "Choose an image…"
 msgstr "选择图片"
 
-#: ../src/Services/LibraryManager.vala:248
-#: ../src/Services/LibraryManager.vala:269
+#: ../src/Services/LibraryManager.vala:355
+#: ../src/Services/LibraryManager.vala:376
 msgid "_Cancel"
 msgstr "取消"
 
-#: ../src/Services/LibraryManager.vala:249
-#: ../src/Services/LibraryManager.vala:270
+#: ../src/Services/LibraryManager.vala:356
+#: ../src/Services/LibraryManager.vala:377
 msgid "_Open"
 msgstr "打开"
 
-#: ../src/Services/LibraryManager.vala:252
+#: ../src/Services/LibraryManager.vala:359
 msgid "Images"
 msgstr "图片"
 
-#: ../src/Services/LibraryManager.vala:268
+#: ../src/Services/LibraryManager.vala:375
 msgid "Select a folder."
 msgstr "选择文件夹"
 
-#: ../src/Services/LibraryManager.vala:273
+#: ../src/Services/LibraryManager.vala:380
 msgid "Folder"
 msgstr "文件夹"
 
@@ -174,11 +273,11 @@ msgstr "文件夹"
 msgid "Unknown"
 msgstr "未知"
 
-#: ../src/Objects/MobilePhoneMusicFolder.vala:82
+#: ../src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
 msgstr "删除..."
 
-#: ../src/Objects/AudioCD.vala:100
+#: ../src/Objects/AudioCD.vala:105
 msgid "Track %d"
 msgstr "音轨%d"
 
@@ -186,86 +285,130 @@ msgstr "音轨%d"
 msgid "No Music Files found"
 msgstr "找不到音乐文件"
 
-#: ../src/MainWindow.vala:110
+#: ../src/MainWindow.vala:146
 msgid "Pause"
 msgstr "暂停"
 
-#: ../src/MainWindow.vala:130 ../src/MainWindow.vala:264
-msgid "Play My Music"
-msgstr "播放我的音乐"
+#: ../src/MainWindow.vala:166 ../src/MainWindow.vala:308
+msgid "Melody"
+msgstr ""
 
-#: ../src/MainWindow.vala:133 ../src/MainWindow.vala:281
+#: ../src/MainWindow.vala:169 ../src/MainWindow.vala:330
 msgid "Play"
 msgstr "播放"
 
-#: ../src/MainWindow.vala:273
+#: ../src/MainWindow.vala:320
 msgid "Previous"
 msgstr "上一首"
 
-#: ../src/MainWindow.vala:288
+#: ../src/MainWindow.vala:339
 msgid "Next"
 msgstr "下一首"
 
-#: ../src/MainWindow.vala:336
+#: ../src/MainWindow.vala:390
 msgid "Change Music Folder…"
 msgstr "更改乐库位置"
 
-#: ../src/MainWindow.vala:345
+#: ../src/MainWindow.vala:400
 msgid "Import Music…"
 msgstr "导入音乐"
 
-#: ../src/MainWindow.vala:353
+#: ../src/MainWindow.vala:409
 msgid "Reset all views"
 msgstr "重置所有乐库"
 
-#: ../src/MainWindow.vala:359
-msgid "Rescan Library"
+#: ../src/MainWindow.vala:416
+#, fuzzy
+msgid "Resync Library"
 msgstr "重新扫描乐库"
 
-#: ../src/MainWindow.vala:365
+#: ../src/MainWindow.vala:422
 msgid "Preferences"
 msgstr "偏好设置"
 
-#: ../src/MainWindow.vala:385
+#: ../src/MainWindow.vala:443
 msgid "Search Music"
 msgstr "搜索音乐"
 
-#: ../src/MainWindow.vala:463
+#: ../src/MainWindow.vala:485
+msgid "Shuffle"
+msgstr "不循环播放"
+
+#: ../src/MainWindow.vala:498
+msgid "Repeat"
+msgstr "循环播放"
+
+#: ../src/MainWindow.vala:536
+#, fuzzy
+msgid "Loading…"
+msgstr "删除..."
+
+#: ../src/MainWindow.vala:536
+msgid "Reading out database content"
+msgstr ""
+
+#: ../src/MainWindow.vala:574
 msgid "Albums"
 msgstr "专辑"
 
-#: ../src/MainWindow.vala:467
+#: ../src/MainWindow.vala:578
 msgid "Artists"
 msgstr "艺人"
 
-#: ../src/MainWindow.vala:472
+#: ../src/MainWindow.vala:583
+#, fuzzy
+msgid "Tracks"
+msgstr "音轨%d"
+
+#: ../src/MainWindow.vala:588
 msgid "Playlists"
 msgstr "播放列表"
 
-#: ../src/MainWindow.vala:477
+#: ../src/MainWindow.vala:593
 msgid "Radio Stations"
 msgstr "广播电台"
 
-#: ../src/MainWindow.vala:484
+#: ../src/MainWindow.vala:600
 msgid "Audio CD"
 msgstr "音频光盘"
 
-#: ../src/MainWindow.vala:544 ../src/MainWindow.vala:552
-msgid "<b>%s</b> by <b>%s</b>"
-msgstr "<b>%s</b> 的 <b>%s</b>"
-
-#: ../src/Dialogs/Preferences.vala:60
+#: ../src/Dialogs/Preferences.vala:61
 msgid "Use Dark Theme"
 msgstr "暗色主题"
 
-#: ../src/Dialogs/Preferences.vala:68
+#: ../src/Dialogs/Preferences.vala:69
 msgid "Play in background if closed"
 msgstr "关闭后继续播放"
 
-#: ../src/Dialogs/Preferences.vala:76
-msgid "Look for new files on start up"
+#: ../src/Dialogs/Preferences.vala:77
+#, fuzzy
+msgid "Sync files on start up"
 msgstr "启动时监视乐库中的新音乐"
 
-#: ../src/Dialogs/Preferences.vala:84
-msgid "Load Artist data from MusicBrainz"
+#: ../src/Dialogs/Preferences.vala:85
+#, fuzzy
+msgid "Load Content from MusicBrainz"
 msgstr "从MusicBrainz加载艺人数据"
+
+#: ../src/Dialogs/Preferences.vala:93
+msgid "Save custom Covers in Library folder"
+msgstr ""
+
+#: ../src/Dialogs/Preferences.vala:101
+msgid "Save changes into ID3-Tag"
+msgstr ""
+
+#: ../src/Dialogs/Preferences.vala:126
+msgid "Close"
+msgstr ""
+
+#: ../src/Dialogs/ArtistEditor.vala:82 ../src/Dialogs/AlbumEditor.vala:83
+msgid "Click to choose a new cover…"
+msgstr ""
+
+#: ../src/Dialogs/AlbumEditor.vala:110
+msgid "Year"
+msgstr ""
+
+#~ msgid "Play My Music"
+#~ msgstr "播放我的音乐"

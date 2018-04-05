@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 17:36+0100\n"
+"POT-Creation-Date: 2018-04-05 13:06+0200\n"
 "PO-Revision-Date: 2017-10-18 22:34+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: \n"
@@ -19,113 +19,212 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/Widgets/Album.vala:100 ../src/Widgets/Artist.vala:85
-#: ../src/Widgets/Views/AlbumView.vala:86
-#: ../src/Widgets/Views/AudioCDView.vala:118
+#: ../src/Widgets/Album.vala:201 ../src/Widgets/Artist.vala:189
+#: ../src/Widgets/Views/AlbumView.vala:65
+#: ../src/Widgets/Views/AudioCDView.vala:98
 msgid "Set new Cover…"
 msgstr "Nustatyti naują viršelį…"
 
-#: ../src/Widgets/Album.vala:114 ../src/Widgets/Track.vala:100
+#: ../src/Widgets/Album.vala:219
+msgid "Edit Album properties…"
+msgstr ""
+
+#: ../src/Widgets/Album.vala:226 ../src/Widgets/Track.vala:195
 msgid "Add into Playlist"
 msgstr "Pridėti į grojaraštį"
 
-#: ../src/Widgets/Album.vala:119 ../src/Widgets/Artist.vala:99
-#: ../src/Widgets/Track.vala:114
+#: ../src/Widgets/Album.vala:231 ../src/Widgets/Artist.vala:214
+#: ../src/Widgets/Track.vala:210
 msgid "Send to"
 msgstr "Siųsti į"
 
-#: ../src/Widgets/Album.vala:165 ../src/Widgets/Track.vala:160
+#: ../src/Widgets/Album.vala:257 ../src/Widgets/Track.vala:227
 msgid "Create New Playlist"
 msgstr "Sukurti naują grojaraštį"
+
+#: ../src/Widgets/Album.vala:306 ../src/Widgets/Artist.vala:261
+msgid "Merge %u selected Albums"
+msgstr ""
 
 #: ../src/Widgets/TrackTimeLine.vala:93 ../src/Widgets/TrackTimeLine.vala:97
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> iš <b>%s</b>, atlieka <b>%s</b>"
 
-#: ../src/Widgets/Views/AlbumView.vala:120
-#: ../src/Widgets/Views/ArtistView.vala:138
-#: ../src/Widgets/Views/PlaylistsView.vala:128
-#: ../src/Widgets/Views/AudioCDView.vala:173
-msgid "Shuffle"
-msgstr "Maišyti"
+#: ../src/Widgets/Artist.vala:207
+msgid "Edit Artist properties…"
+msgstr ""
 
-#: ../src/Widgets/Views/AlbumView.vala:132
-#: ../src/Widgets/Views/ArtistView.vala:150
-#: ../src/Widgets/Views/PlaylistsView.vala:140
-#: ../src/Widgets/Views/AudioCDView.vala:185
-msgid "Repeat"
-msgstr "Kartoti"
+#: ../src/Widgets/Views/AlbumsView.vala:119
+msgid "Get Some Tunes"
+msgstr ""
 
-#: ../src/Widgets/Views/AlbumsView.vala:107
+#: ../src/Widgets/Views/AlbumsView.vala:119
+#, fuzzy
+msgid "Add music to your library."
+msgstr "Importuokite muziką iš šaltinio į savo biblioteką."
+
+#: ../src/Widgets/Views/AlbumsView.vala:120
 msgid "Change Music Folder"
 msgstr "Keisti muzikos aplanką"
 
-#: ../src/Widgets/Views/AlbumsView.vala:107
+#: ../src/Widgets/Views/AlbumsView.vala:120
 msgid "Load music from a folder, a network or an external disk."
 msgstr "Įkelkite muziką iš aplanko, tinklo ar išorinio disko."
 
-#: ../src/Widgets/Views/AlbumsView.vala:108
+#: ../src/Widgets/Views/AlbumsView.vala:121
 msgid "Import Music"
 msgstr "Importuoti muziką"
 
-#: ../src/Widgets/Views/AlbumsView.vala:108
+#: ../src/Widgets/Views/AlbumsView.vala:121
 msgid "Import music from a source into your library."
 msgstr "Importuokite muziką iš šaltinio į savo biblioteką."
 
-#: ../src/Widgets/Views/RadiosView.vala:108
+#: ../src/Widgets/Views/AlbumsView.vala:140
+#: ../src/Widgets/Views/ArtistsView.vala:110
+#: ../src/Widgets/Views/RadiosView.vala:205
+#: ../src/Widgets/Views/PlaylistsView.vala:154
+msgid "No results"
+msgstr ""
+
+#: ../src/Widgets/Views/AlbumsView.vala:140
+#: ../src/Widgets/Views/ArtistsView.vala:110
+#: ../src/Widgets/Views/RadiosView.vala:205
+#: ../src/Widgets/Views/PlaylistsView.vala:154
+msgid "Try another search"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:113
 msgid "Add a radio station"
 msgstr "Pridėti radijo stotį"
 
-#: ../src/Widgets/Views/RadiosView.vala:143
+#: ../src/Widgets/Views/RadiosView.vala:123
+msgid "Station Name"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:131
+msgid "URL"
+msgstr ""
+
+#: ../src/Widgets/Views/RadiosView.vala:150
 msgid "Choose a Cover"
 msgstr "Pasirinkti viršelį"
 
-#: ../src/Widgets/Views/RadiosView.vala:178
+#: ../src/Widgets/Views/RadiosView.vala:187
+#, fuzzy
+msgid "No Radio Stations"
+msgstr "Radijo stotys"
+
+#: ../src/Widgets/Views/RadiosView.vala:187
+#, fuzzy
+msgid "Add radio stations to your library."
+msgstr "Pridėti radijo stotį"
+
+#: ../src/Widgets/Views/RadiosView.vala:188
 msgid "Add Radio Station"
 msgstr "Pridėti radijo stotį"
 
-#: ../src/Widgets/Views/RadiosView.vala:178
+#: ../src/Widgets/Views/RadiosView.vala:188
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "Pridėkite srauto URL, tokius kaip .pls ar .m3u."
 
-#: ../src/Widgets/Views/RadiosView.vala:226
-#: ../src/Widgets/Views/PlaylistsView.vala:158
+#: ../src/Widgets/Views/RadiosView.vala:241
+#: ../src/Widgets/Views/PlaylistsView.vala:114
 msgid "Add"
 msgstr "Pridėti"
 
-#: ../src/Widgets/Views/RadiosView.vala:228
+#: ../src/Widgets/Views/RadiosView.vala:243
+#: ../src/Dialogs/ArtistEditor.vala:114 ../src/Dialogs/AlbumEditor.vala:121
 msgid "Save"
 msgstr "Įrašyti"
 
-#: ../src/Widgets/Views/PlaylistView.vala:97
+#: ../src/Widgets/Views/TracksView.vala:160
+#, fuzzy
+msgid "Choose a Track"
+msgstr "Pasirinkti viršelį"
+
+#: ../src/Widgets/Views/TracksView.vala:160
+msgid "No track selected"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:186
+msgid "Nr"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:193
+msgid "Title"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:200
+#, fuzzy
+msgid "Album"
+msgstr "Albumai"
+
+#: ../src/Widgets/Views/TracksView.vala:202
+#, fuzzy
+msgid "Artist"
+msgstr "Atlikėjai"
+
+#: ../src/Widgets/Views/TracksView.vala:207
+msgid "Duration"
+msgstr ""
+
+#: ../src/Widgets/Views/TracksView.vala:278 ../src/MainWindow.vala:725
+#: ../src/MainWindow.vala:733
+msgid "<b>%s</b> by <b>%s</b>"
+msgstr "<b>%s</b>, atlieka<b>%s</b>"
+
+#: ../src/Widgets/Views/PlaylistView.vala:101
 msgid "Rename"
 msgstr "Pervadinti"
 
-#: ../src/Widgets/Views/PlaylistView.vala:115
+#: ../src/Widgets/Views/PlaylistView.vala:122
 msgid "Rename Playlist"
 msgstr "Pervadinti grojaraštį"
 
-#: ../src/Widgets/Views/PlaylistView.vala:124
+#: ../src/Widgets/Views/PlaylistView.vala:132
 msgid "Remove Playlist"
 msgstr "Šalinti grojaraštį"
 
-#: ../src/Widgets/Views/ArtistView.vala:213
+#: ../src/Widgets/Views/ArtistView.vala:110
+#, fuzzy
+msgid "Choose an Artist"
+msgstr "Pasirinkti viršelį"
+
+#: ../src/Widgets/Views/ArtistView.vala:110
+msgid "No Artist selected"
+msgstr ""
+
+#: ../src/Widgets/Views/ArtistView.vala:163
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
 msgstr "<b>%d takeliai(-ių)</b> <b>%d albumuose</b>(-ų)"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:110
+#: ../src/Widgets/Views/PlaylistsView.vala:95
 msgid "Add a playlist"
 msgstr "Pridėti grojaraštį"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:178
+#: ../src/Widgets/Views/PlaylistsView.vala:137
+#, fuzzy
+msgid "No Playlists"
+msgstr "Grojaraščiai"
+
+#: ../src/Widgets/Views/PlaylistsView.vala:137
+#, fuzzy
+msgid "Add playlist to your library."
+msgstr "Pridėti grojaraštį jūsų mėgstamų dainų tvarkymui."
+
+#: ../src/Widgets/Views/PlaylistsView.vala:138
 msgid "Add Playlist"
 msgstr "Pridėti grojaraštį"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:178
+#: ../src/Widgets/Views/PlaylistsView.vala:138
 msgid "Add a playlist for manage your favorite songs."
 msgstr "Pridėti grojaraštį jūsų mėgstamų dainų tvarkymui."
 
-#: ../src/Widgets/Track.vala:61
+#: ../src/Widgets/Views/MobilePhone.vala:108
+msgid "Hide Mobile Panel"
+msgstr ""
+
+#: ../src/Widgets/Track.vala:69
 msgid ""
 "File couldn't be found\n"
 "%s"
@@ -133,7 +232,7 @@ msgstr ""
 "Nepavyko rasti failo\n"
 "%s"
 
-#: ../src/Widgets/Track.vala:104
+#: ../src/Widgets/Track.vala:199
 msgid "Remove from Playlist"
 msgstr "Šalinti iš grojaraščio"
 
@@ -145,33 +244,33 @@ msgstr "Taisyti radijo stotį…"
 msgid "Remove Radio Station"
 msgstr "Šalinti radijo stotį"
 
-#: ../src/Services/LibraryManager.vala:207
+#: ../src/Services/LibraryManager.vala:295
 msgid "New Playlist"
 msgstr "Naujas grojaraštis"
 
-#: ../src/Services/LibraryManager.vala:246
+#: ../src/Services/LibraryManager.vala:353
 msgid "Choose an image…"
 msgstr "Pasirinkti paveikslą…"
 
-#: ../src/Services/LibraryManager.vala:248
-#: ../src/Services/LibraryManager.vala:269
+#: ../src/Services/LibraryManager.vala:355
+#: ../src/Services/LibraryManager.vala:376
 msgid "_Cancel"
 msgstr "_Atsisakyti"
 
-#: ../src/Services/LibraryManager.vala:249
-#: ../src/Services/LibraryManager.vala:270
+#: ../src/Services/LibraryManager.vala:356
+#: ../src/Services/LibraryManager.vala:377
 msgid "_Open"
 msgstr "A_tverti"
 
-#: ../src/Services/LibraryManager.vala:252
+#: ../src/Services/LibraryManager.vala:359
 msgid "Images"
 msgstr "Paveikslai"
 
-#: ../src/Services/LibraryManager.vala:268
+#: ../src/Services/LibraryManager.vala:375
 msgid "Select a folder."
 msgstr "Pasirinkti aplanką."
 
-#: ../src/Services/LibraryManager.vala:273
+#: ../src/Services/LibraryManager.vala:380
 msgid "Folder"
 msgstr "Aplankas"
 
@@ -180,11 +279,11 @@ msgstr "Aplankas"
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: ../src/Objects/MobilePhoneMusicFolder.vala:82
+#: ../src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
 msgstr "ištrinama…"
 
-#: ../src/Objects/AudioCD.vala:100
+#: ../src/Objects/AudioCD.vala:105
 msgid "Track %d"
 msgstr "Takelis %d"
 
@@ -192,86 +291,130 @@ msgstr "Takelis %d"
 msgid "No Music Files found"
 msgstr "Nerasta jokių muzikos failų"
 
-#: ../src/MainWindow.vala:110
+#: ../src/MainWindow.vala:146
 msgid "Pause"
 msgstr "Pristabdyti"
 
-#: ../src/MainWindow.vala:130 ../src/MainWindow.vala:264
-msgid "Play My Music"
-msgstr "Groti mano muziką"
+#: ../src/MainWindow.vala:166 ../src/MainWindow.vala:308
+msgid "Melody"
+msgstr ""
 
-#: ../src/MainWindow.vala:133 ../src/MainWindow.vala:281
+#: ../src/MainWindow.vala:169 ../src/MainWindow.vala:330
 msgid "Play"
 msgstr "Groti"
 
-#: ../src/MainWindow.vala:273
+#: ../src/MainWindow.vala:320
 msgid "Previous"
 msgstr "Ankstesnis"
 
-#: ../src/MainWindow.vala:288
+#: ../src/MainWindow.vala:339
 msgid "Next"
 msgstr "Kitas"
 
-#: ../src/MainWindow.vala:336
+#: ../src/MainWindow.vala:390
 msgid "Change Music Folder…"
 msgstr "Keisti muzikos aplanką…"
 
-#: ../src/MainWindow.vala:345
+#: ../src/MainWindow.vala:400
 msgid "Import Music…"
 msgstr "Importuoti muziką…"
 
-#: ../src/MainWindow.vala:353
+#: ../src/MainWindow.vala:409
 msgid "Reset all views"
 msgstr "Atstatyti visus rodinius"
 
-#: ../src/MainWindow.vala:359
-msgid "Rescan Library"
+#: ../src/MainWindow.vala:416
+#, fuzzy
+msgid "Resync Library"
 msgstr "Iš naujo peržiūrėti biblioteką"
 
-#: ../src/MainWindow.vala:365
+#: ../src/MainWindow.vala:422
 msgid "Preferences"
 msgstr "Nuostatos"
 
-#: ../src/MainWindow.vala:385
+#: ../src/MainWindow.vala:443
 msgid "Search Music"
 msgstr "Ieškoti muzikos"
 
-#: ../src/MainWindow.vala:463
+#: ../src/MainWindow.vala:485
+msgid "Shuffle"
+msgstr "Maišyti"
+
+#: ../src/MainWindow.vala:498
+msgid "Repeat"
+msgstr "Kartoti"
+
+#: ../src/MainWindow.vala:536
+#, fuzzy
+msgid "Loading…"
+msgstr "ištrinama…"
+
+#: ../src/MainWindow.vala:536
+msgid "Reading out database content"
+msgstr ""
+
+#: ../src/MainWindow.vala:574
 msgid "Albums"
 msgstr "Albumai"
 
-#: ../src/MainWindow.vala:467
+#: ../src/MainWindow.vala:578
 msgid "Artists"
 msgstr "Atlikėjai"
 
-#: ../src/MainWindow.vala:472
+#: ../src/MainWindow.vala:583
+#, fuzzy
+msgid "Tracks"
+msgstr "Takelis %d"
+
+#: ../src/MainWindow.vala:588
 msgid "Playlists"
 msgstr "Grojaraščiai"
 
-#: ../src/MainWindow.vala:477
+#: ../src/MainWindow.vala:593
 msgid "Radio Stations"
 msgstr "Radijo stotys"
 
-#: ../src/MainWindow.vala:484
+#: ../src/MainWindow.vala:600
 msgid "Audio CD"
 msgstr "Garso CD"
 
-#: ../src/MainWindow.vala:544 ../src/MainWindow.vala:552
-msgid "<b>%s</b> by <b>%s</b>"
-msgstr "<b>%s</b>, atlieka<b>%s</b>"
-
-#: ../src/Dialogs/Preferences.vala:60
+#: ../src/Dialogs/Preferences.vala:61
 msgid "Use Dark Theme"
 msgstr "Naudoti tamsią temą"
 
-#: ../src/Dialogs/Preferences.vala:68
+#: ../src/Dialogs/Preferences.vala:69
 msgid "Play in background if closed"
 msgstr "Užvėrus, groti fone"
 
-#: ../src/Dialogs/Preferences.vala:76
-msgid "Look for new files on start up"
+#: ../src/Dialogs/Preferences.vala:77
+#, fuzzy
+msgid "Sync files on start up"
 msgstr "Paleidus programą, ieškoti naujų failų"
 
-#: ../src/Dialogs/Preferences.vala:84
-msgid "Load Artist data from MusicBrainz"
+#: ../src/Dialogs/Preferences.vala:85
+#, fuzzy
+msgid "Load Content from MusicBrainz"
 msgstr "Įkelti atlikėjo duomenis iš MusicBrainz"
+
+#: ../src/Dialogs/Preferences.vala:93
+msgid "Save custom Covers in Library folder"
+msgstr ""
+
+#: ../src/Dialogs/Preferences.vala:101
+msgid "Save changes into ID3-Tag"
+msgstr ""
+
+#: ../src/Dialogs/Preferences.vala:126
+msgid "Close"
+msgstr ""
+
+#: ../src/Dialogs/ArtistEditor.vala:82 ../src/Dialogs/AlbumEditor.vala:83
+msgid "Click to choose a new cover…"
+msgstr ""
+
+#: ../src/Dialogs/AlbumEditor.vala:110
+msgid "Year"
+msgstr ""
+
+#~ msgid "Play My Music"
+#~ msgstr "Groti mano muziką"
