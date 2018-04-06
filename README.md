@@ -37,16 +37,9 @@ git clone https://github.com/artemanufrij/playmymusic.git
 cd playmymusic
 ```
 
-Create **build** folder, compile and start application
+Compile, install and start Play My Music on your system
 ```
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr ..
-make
-```
-
-Install and start Play My Music on your system
-```
-sudo make install
+meson builddir
+sudo ninja -C builddir install
 com.github.artemanufrij.playmymusic
 ```
