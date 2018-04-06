@@ -47,8 +47,12 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="0.6.10" date="2018-04-15">
+        <release version="1.0.0" date="2018-04-07">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Switch to meson</li>
+                </ul>
                 <p>Improved:</p>
                 <ul>
                     <li>Tooltip for album cover</li>
@@ -56,7 +60,7 @@
                 </ul>
                 <p>Translation:</p>
                 <ul>
-                    <li>Danish (by rasmus91)</li>
+                    <li>Danish (by Rasmus Lindegaard)</li>
                 </ul>
             </description>
         </release>
