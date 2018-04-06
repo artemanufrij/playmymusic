@@ -16,16 +16,25 @@ i18n.merge_file(
   install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
-test(
-    'Validate desktop file',
-    find_program('desktop-file-validate'),
-    args : join_paths(meson.current_build_dir(), meson.project_name() + '.desktop')
-)
+desktop_file_validate = find_program('desktop-file-validate', required:false)
 
-test(
+if desktop_file_validate.found()
+  test (
+    'Validate desktop file',
+    desktop_file_validate,
+    args: join_paths(meson.current_build_dir (), meson.project_name() + '.desktop')
+  )
+endif
+
+appstreamcli = find_program(['appstreamcli', 'appstream-util'], required:false)
+
+if appstreamcli.found()
+  test (
     'Validate appdata file',
-    find_program('appstreamcli'),
-    args : ['validate', join_paths(meson.current_build_dir(), meson.project_name() + '.appdata.xml')]
-)
+    appstreamcli,
+    args: ['validate', join_paths(meson.current_build_dir (), meson.project_name() + '.appdata.xml')]
+  )
+endif
+
 
 subdir('icons')
