@@ -2,7 +2,6 @@
 Name=Melody
 GenericName=Melody
 Comment=Listen your music
-Comment[lt]=Klausytis savo muzikos
 Keywords=music;radio;playlist;
 Exec=com.github.artemanufrij.playmymusic %U
 Icon=com.github.artemanufrij.playmymusic
