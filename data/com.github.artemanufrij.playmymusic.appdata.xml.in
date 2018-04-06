@@ -49,6 +49,14 @@
     <releases>
         <release version="1.0.0" date="2018-04-07">
             <description>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Meson Errors</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.0.0" date="2018-04-07">
+            <description>
                 <p>New:</p>
                 <ul>
                     <li>Switch to meson</li>
