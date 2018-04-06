@@ -39,7 +39,8 @@ cd playmymusic
 
 Compile, install and start Play My Music on your system
 ```
-meson builddir
-sudo ninja -C builddir install
+meson build --prefix=/usr
+cd build
+sudo ninja install
 com.github.artemanufrij.playmymusic
 ```
