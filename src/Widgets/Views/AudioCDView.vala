@@ -75,8 +75,8 @@ namespace PlayMyMusic.Widgets.Views {
             content = new Gtk.Grid ();
             content.column_spacing = 90;
             content.row_spacing = 24;
-            content.margin_left = 96;
-            content.margin_right = 90;
+            content.margin_start = 96;
+            content.margin_end = 90;
             content.margin_bottom = 48;
             content.margin_top = 48;
 
@@ -90,8 +90,8 @@ namespace PlayMyMusic.Widgets.Views {
             cover.get_style_context ().add_class ("card");
             cover.valign = Gtk.Align.START;
             cover.margin_top = 48;
-            cover.margin_left = 6;
-            cover.margin_right = 6;
+            cover.margin_start = 6;
+            cover.margin_end = 6;
             event_box.add (cover);
 
             menu = new Gtk.Menu ();

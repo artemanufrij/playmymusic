@@ -54,7 +54,7 @@ namespace PlayMyMusic {
 
             var action_search_reset = new SimpleAction ("search-reset", null);
             add_action (action_search_reset);
-            add_accelerator ("Escape", "app.search-reset", null);
+            set_accels_for_action ("app.search-reset", {"Escape"});
             action_search_reset.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -64,7 +64,7 @@ namespace PlayMyMusic {
 
             var action_show_albums = new SimpleAction ("show-albums", null);
             add_action (action_show_albums);
-            add_accelerator ("<Alt>1", "app.show-albums", null);
+            set_accels_for_action ("app.show-albums", {"<Alt>1"});
             action_show_albums.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -74,7 +74,7 @@ namespace PlayMyMusic {
 
             var action_show_artists = new SimpleAction ("show-artists", null);
             add_action (action_show_artists);
-            add_accelerator ("<Alt>2", "app.show-artists", null);
+            set_accels_for_action ("app.show-artists", {"<Alt>2"});
             action_show_artists.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -84,7 +84,7 @@ namespace PlayMyMusic {
 
             var action_show_tracks = new SimpleAction ("show-tracks", null);
             add_action (action_show_tracks);
-            add_accelerator ("<Alt>3", "app.show-tracks", null);
+            set_accels_for_action ("app.show-tracks", {"<Alt>3"});
             action_show_tracks.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -94,7 +94,7 @@ namespace PlayMyMusic {
 
             var action_show_playlists = new SimpleAction ("show-playlists", null);
             add_action (action_show_playlists);
-            add_accelerator ("<Alt>4", "app.show-playlists", null);
+            set_accels_for_action ("app.show-playlists", {"<Alt>4"});
             action_show_playlists.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -104,7 +104,7 @@ namespace PlayMyMusic {
 
             var action_show_radiostations = new SimpleAction ("show-radiostations", null);
             add_action (action_show_radiostations);
-            add_accelerator ("<Alt>5", "app.show-radiostations", null);
+            set_accels_for_action ("app.show-radiostations", {"<Alt>5"});
             action_show_radiostations.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -114,7 +114,7 @@ namespace PlayMyMusic {
 
             var action_show_audiocd = new SimpleAction ("show-audiocd", null);
             add_action (action_show_audiocd);
-            add_accelerator ("<Alt>6", "app.show-audiocd", null);
+            set_accels_for_action ("app.show-audiocd", {"<Alt>6"});
             action_show_audiocd.activate.connect (
                 () => {
                     if (mainwindow != null) {

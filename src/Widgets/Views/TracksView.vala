@@ -137,8 +137,8 @@ namespace PlayMyMusic.Widgets.Views {
             album.get_style_context ().add_class ("card");
             album.margin_top = 32;
             album.margin_bottom = 32;
-            album.margin_left = 64;
-            album.margin_right = 64;
+            album.margin_start = 64;
+            album.margin_end = 64;
             album.height_request = 192;
             album.width_request = 192;
             header.attach (album, 0, 0, 1, 2);
