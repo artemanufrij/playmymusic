@@ -160,7 +160,7 @@ namespace PlayMyMusic.Interfaces {
                     if (player.current_track != null) {
                         if (player.play_mode == Services.PlayMode.AUDIO_CD) {
                             metadata.insert("xesam:title", player.current_track.title);
-                            metadata.insert("xesam:artist", get_simple_string_array (player.current_track.audio_cd.title));
+                            metadata.insert("xesam:artist", get_simple_string_array (player.current_track.audio_cd.artist));
                         } else {
                             var file = File.new_for_path (player.current_track.album.cover_path);
                             metadata.insert("mpris:artUrl", file.get_uri ());
