@@ -53,8 +53,8 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void build_ui () {
-            this.margin_left = 32;
-            this.margin_right = 32;
+            this.margin_start = 32;
+            this.margin_end = 32;
 
             var content = new Gtk.Grid ();
 

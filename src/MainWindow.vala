@@ -441,7 +441,7 @@ namespace PlayMyMusic {
             // SEARCH ENTRY
             search_entry = new Gtk.SearchEntry ();
             search_entry.placeholder_text = _ ("Search Music");
-            search_entry.margin_right = 5;
+            search_entry.margin_end = 5;
             search_entry.valign = Gtk.Align.CENTER;
             search_entry.search_changed.connect (
                 () => {
@@ -568,7 +568,7 @@ namespace PlayMyMusic {
             view_mode = new Granite.Widgets.ModeButton ();
             view_mode.homogeneous = false;
             view_mode.valign = Gtk.Align.CENTER;
-            view_mode.margin_left = 12;
+            view_mode.margin_start = 12;
 
             var album_button = new Gtk.Image.from_icon_name ("view-grid-symbolic", Gtk.IconSize.BUTTON);
             album_button.tooltip_text = _ ("Albums");
@@ -593,7 +593,7 @@ namespace PlayMyMusic {
             radio_button.tooltip_text = _ ("Radio Stations");
             view_mode.append (radio_button);
             var wid = view_mode.get_children ().last ().data;
-            wid.margin_left = 4;
+            wid.margin_start = 4;
             wid.get_style_context ().add_class ("mode_button_split");
 
             var audio_cd_button = new Gtk.Image.from_icon_name ("media-optical-cd-audio-symbolic", Gtk.IconSize.BUTTON);

@@ -83,7 +83,7 @@ namespace PlayMyMusic.Widgets.Views {
             playlist_title.tooltip_text = this.playlist.title;
             playlist_title.halign = Gtk.Align.START;
             playlist_title.get_style_context ().add_class ("h3");
-            playlist_title.margin_left = 12;
+            playlist_title.margin_start = 12;
             playlist_title.ellipsize = Pango.EllipsizeMode.END;
             event_box.add (playlist_title);
 
