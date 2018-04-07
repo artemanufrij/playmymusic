@@ -52,9 +52,7 @@ namespace PlayMyMusic {
             this.application_id = "com.github.artemanufrij.playmymusic";
             settings = Settings.get_default ();
 
-            var action_search_reset = new SimpleAction ("search-reset", null);
-            add_action (action_search_reset);
-            set_accels_for_action ("app.search-reset", {"Escape"});
+            var action_search_reset = action_generator ("Escape", "search-reset");
             action_search_reset.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -62,9 +60,7 @@ namespace PlayMyMusic {
                     }
                 });
 
-            var action_show_albums = new SimpleAction ("show-albums", null);
-            add_action (action_show_albums);
-            set_accels_for_action ("app.show-albums", {"<Alt>1"});
+            var action_show_albums = action_generator ("<Alt>1", "show-albums");
             action_show_albums.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -72,9 +68,7 @@ namespace PlayMyMusic {
                     }
                 });
 
-            var action_show_artists = new SimpleAction ("show-artists", null);
-            add_action (action_show_artists);
-            set_accels_for_action ("app.show-artists", {"<Alt>2"});
+            var action_show_artists = action_generator ("<Alt>2", "show-artists");
             action_show_artists.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -82,9 +76,7 @@ namespace PlayMyMusic {
                     }
                 });
 
-            var action_show_tracks = new SimpleAction ("show-tracks", null);
-            add_action (action_show_tracks);
-            set_accels_for_action ("app.show-tracks", {"<Alt>3"});
+            var action_show_tracks = action_generator ("<Alt>3", "show-tracks");
             action_show_tracks.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -92,9 +84,7 @@ namespace PlayMyMusic {
                     }
                 });
 
-            var action_show_playlists = new SimpleAction ("show-playlists", null);
-            add_action (action_show_playlists);
-            set_accels_for_action ("app.show-playlists", {"<Alt>4"});
+            var action_show_playlists = action_generator ("<Alt>4", "show-playlists");
             action_show_playlists.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -102,9 +92,7 @@ namespace PlayMyMusic {
                     }
                 });
 
-            var action_show_radiostations = new SimpleAction ("show-radiostations", null);
-            add_action (action_show_radiostations);
-            set_accels_for_action ("app.show-radiostations", {"<Alt>5"});
+            var action_show_radiostations = action_generator ("<Alt>5", "show-radiostations");
             action_show_radiostations.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -112,9 +100,7 @@ namespace PlayMyMusic {
                     }
                 });
 
-            var action_show_audiocd = new SimpleAction ("show-audiocd", null);
-            add_action (action_show_audiocd);
-            set_accels_for_action ("app.show-audiocd", {"<Alt>6"});
+            var action_show_audiocd = action_generator ("<Alt>6", "show-audiocd");
             action_show_audiocd.activate.connect (
                 () => {
                     if (mainwindow != null) {
@@ -123,6 +109,13 @@ namespace PlayMyMusic {
                 });
 
             create_cache_folders ();
+        }
+
+        private SimpleAction action_generator (string command, string action) {
+            var return_value = new SimpleAction (action, null);
+            add_action (return_value);
+            set_accels_for_action ("app.%s".printf (action), {command});
+            return return_value;
         }
 
         public void create_cache_folders () {
