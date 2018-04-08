@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-05 13:06+0200\n"
+"POT-Creation-Date: 2018-04-08 14:43+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: \n"
@@ -12,206 +12,311 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: ../src/Widgets/Album.vala:201 ../src/Widgets/Artist.vala:189
-#: ../src/Widgets/Views/AlbumView.vala:65
-#: ../src/Widgets/Views/AudioCDView.vala:98
-msgid "Set new Cover…"
-msgstr "Estableix una caràtula nova…"
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
+#: data/com.github.artemanufrij.playmymusic.desktop.in:3
+#: data/com.github.artemanufrij.playmymusic.desktop.in:4
+#: src/MainWindow.vala:166 src/MainWindow.vala:308
+msgid "Melody"
+msgstr "Melodia"
 
-#: ../src/Widgets/Album.vala:219
-msgid "Edit Album properties…"
-msgstr "Edita les propietats de l’àlbum…"
-
-#: ../src/Widgets/Album.vala:226 ../src/Widgets/Track.vala:195
-msgid "Add into Playlist"
-msgstr "Afegeix-ho en una llista"
-
-#: ../src/Widgets/Album.vala:231 ../src/Widgets/Artist.vala:214
-#: ../src/Widgets/Track.vala:210
-msgid "Send to"
-msgstr "Envia a"
-
-#: ../src/Widgets/Album.vala:257 ../src/Widgets/Track.vala:227
-msgid "Create New Playlist"
-msgstr "Crea una llista nova"
-
-#: ../src/Widgets/Album.vala:306 ../src/Widgets/Artist.vala:261
-#, fuzzy
-msgid "Merge %u selected Albums"
-msgstr "Combina els àlbums seleccionats"
-
-#: ../src/Widgets/TrackTimeLine.vala:93 ../src/Widgets/TrackTimeLine.vala:97
-msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr "<b>%s</b> de <b>%s</b> per <b>%s</b>"
-
-#: ../src/Widgets/Artist.vala:207
-msgid "Edit Artist properties…"
-msgstr "Edita les propietats de l’artista…"
-
-#: ../src/Widgets/Views/AlbumsView.vala:119
-msgid "Get Some Tunes"
-msgstr "Conseguiu-vos algunes melodies"
-
-#: ../src/Widgets/Views/AlbumsView.vala:119
-msgid "Add music to your library."
-msgstr "Afegiu música a la vostra fonoteca."
-
-#: ../src/Widgets/Views/AlbumsView.vala:120
-msgid "Change Music Folder"
-msgstr "Canvia la carpeta de música"
-
-#: ../src/Widgets/Views/AlbumsView.vala:120
-msgid "Load music from a folder, a network or an external disk."
-msgstr "Carregueu música des d’una carpeta, una xarxa o un disc extern."
-
-#: ../src/Widgets/Views/AlbumsView.vala:121
-msgid "Import Music"
-msgstr "Importa música"
-
-#: ../src/Widgets/Views/AlbumsView.vala:121
-msgid "Import music from a source into your library."
-msgstr "Importeu música des d’un origen en la vostra fonoteca."
-
-#: ../src/Widgets/Views/AlbumsView.vala:140
-#: ../src/Widgets/Views/ArtistsView.vala:110
-#: ../src/Widgets/Views/RadiosView.vala:205
-#: ../src/Widgets/Views/PlaylistsView.vala:154
-msgid "No results"
-msgstr "No hi ha cap resultat"
-
-#: ../src/Widgets/Views/AlbumsView.vala:140
-#: ../src/Widgets/Views/ArtistsView.vala:110
-#: ../src/Widgets/Views/RadiosView.vala:205
-#: ../src/Widgets/Views/PlaylistsView.vala:154
-msgid "Try another search"
-msgstr "Proveu amb un altre terme de cerca"
-
-#: ../src/Widgets/Views/RadiosView.vala:113
-msgid "Add a radio station"
-msgstr "Afegeix una estació de ràdio"
-
-#: ../src/Widgets/Views/RadiosView.vala:123
-msgid "Station Name"
-msgstr "Nom de l’estació"
-
-#: ../src/Widgets/Views/RadiosView.vala:131
-msgid "URL"
-msgstr "URL"
-
-#: ../src/Widgets/Views/RadiosView.vala:150
-msgid "Choose a Cover"
-msgstr "Trieu una caràtula"
-
-#: ../src/Widgets/Views/RadiosView.vala:187
-msgid "No Radio Stations"
-msgstr "No hi ha cap estació de ràdio"
-
-#: ../src/Widgets/Views/RadiosView.vala:187
-msgid "Add radio stations to your library."
-msgstr "Afegiu estacions de ràdio a la vostra fonoteca."
-
-#: ../src/Widgets/Views/RadiosView.vala:188
-msgid "Add Radio Station"
-msgstr "Afegeix una estació de ràdio"
-
-#: ../src/Widgets/Views/RadiosView.vala:188
-msgid "Add a Stream URL like .pls or .m3u."
-msgstr "Afegiu un URL de flux de dades, com ara .pls o .m3u."
-
-#: ../src/Widgets/Views/RadiosView.vala:241
-#: ../src/Widgets/Views/PlaylistsView.vala:114
-msgid "Add"
-msgstr "Afegeix"
-
-#: ../src/Widgets/Views/RadiosView.vala:243
-#: ../src/Dialogs/ArtistEditor.vala:114 ../src/Dialogs/AlbumEditor.vala:121
-msgid "Save"
-msgstr "Desa"
-
-#: ../src/Widgets/Views/TracksView.vala:160
-#, fuzzy
-msgid "Choose a Track"
-msgstr "Trieu una caràtula"
-
-#: ../src/Widgets/Views/TracksView.vala:160
-msgid "No track selected"
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
+msgid ""
+"A music player for listening local music files, online radios and Audio CD's."
 msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:186
-msgid "Nr"
-msgstr "Núm."
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
+msgid "A very fast music player designed extra for large local libraries."
+msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:193
-msgid "Title"
-msgstr "Títol"
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
+msgid "Features:"
+msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:200
-msgid "Album"
-msgstr "Àlbum"
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
+#, fuzzy
+msgid "Show all Albums from your library"
+msgstr "Afegiu llistes a la vostra fonoteca."
 
-#: ../src/Widgets/Views/TracksView.vala:202
-msgid "Artist"
-msgstr "Artista"
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
+msgid "Group tracks by Artists"
+msgstr ""
 
-#: ../src/Widgets/Views/TracksView.vala:207
-msgid "Duration"
-msgstr "Durada"
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
+#, fuzzy
+msgid "Manage your Playlists"
+msgstr "No hi ha cap llista"
 
-#: ../src/Widgets/Views/TracksView.vala:278 ../src/MainWindow.vala:725
-#: ../src/MainWindow.vala:733
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
+msgid "Listen to online Radio"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
+#, fuzzy
+msgid "Audio CD support"
+msgstr "CD d’àudio"
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
+msgid "Manage your MTP device"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
+msgid "ID3-Tag support"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:30
+msgid "Artem Anufrij"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:37
+#: src/MainWindow.vala:574
+msgid "Albums"
+msgstr "Àlbums"
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
+#: src/MainWindow.vala:578
+msgid "Artists"
+msgstr "Artistes"
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
+#: src/MainWindow.vala:583
+msgid "Tracks"
+msgstr "Peces"
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:5
+msgid "Listen your music"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:6
+msgid "music;radio;playlist;"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:8
+msgid "com.github.artemanufrij.playmymusic"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:18
+#, fuzzy
+msgid "Play/Pause"
+msgstr "Posa en pausa"
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:20
+msgid "media-playback-start-symbolic"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:23
+#: src/MainWindow.vala:339
+msgid "Next"
+msgstr "Següent"
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:25
+msgid "media-skip-forward-symbolic"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:28
+#: src/MainWindow.vala:320
+msgid "Previous"
+msgstr "Anterior"
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:30
+msgid "media-skip-backward-symbolic"
+msgstr ""
+
+#: src/MainWindow.vala:146
+msgid "Pause"
+msgstr "Posa en pausa"
+
+#: src/MainWindow.vala:169 src/MainWindow.vala:330
+msgid "Play"
+msgstr "Reprodueix"
+
+#: src/MainWindow.vala:390
+msgid "Change Music Folder…"
+msgstr "Canvia la carpeta de música…"
+
+#: src/MainWindow.vala:400
+msgid "Import Music…"
+msgstr "Importa música…"
+
+#: src/MainWindow.vala:409
+msgid "Reset all views"
+msgstr "Reinicialitza totes les vistes"
+
+#: src/MainWindow.vala:416
+msgid "Resync Library"
+msgstr "Resincronitza la fonoteca"
+
+#: src/MainWindow.vala:422
+msgid "Preferences"
+msgstr "Preferències"
+
+#. SEARCH ENTRY
+#: src/MainWindow.vala:443
+msgid "Search Music"
+msgstr "Cerca música"
+
+#: src/MainWindow.vala:485
+msgid "Shuffle"
+msgstr "Mescla"
+
+#: src/MainWindow.vala:498
+msgid "Repeat"
+msgstr "Repeteix"
+
+#: src/MainWindow.vala:536
+#, fuzzy
+msgid "Loading…"
+msgstr "s’està suprimint…"
+
+#: src/MainWindow.vala:536
+msgid "Reading out database content"
+msgstr ""
+
+#: src/MainWindow.vala:588
+msgid "Playlists"
+msgstr "Llistes"
+
+#: src/MainWindow.vala:593
+msgid "Radio Stations"
+msgstr "Estacions de ràdio"
+
+#: src/MainWindow.vala:600
+msgid "Audio CD"
+msgstr "CD d’àudio"
+
+#: src/MainWindow.vala:725 src/MainWindow.vala:733
+#: src/Widgets/Views/TracksView.vala:278
+#, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> per <b>%s</b>"
 
-#: ../src/Widgets/Views/PlaylistView.vala:101
-msgid "Rename"
-msgstr "Canvia el nom"
+#: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
+msgid "Click to choose a new cover…"
+msgstr "Feu clic per a triar una caràtula nova…"
 
-#: ../src/Widgets/Views/PlaylistView.vala:122
-msgid "Rename Playlist"
-msgstr "Canvia el nom de la llista"
+#: src/Dialogs/AlbumEditor.vala:110
+msgid "Year"
+msgstr "Any"
 
-#: ../src/Widgets/Views/PlaylistView.vala:132
-msgid "Remove Playlist"
-msgstr "Suprimeix la llista"
+#: src/Dialogs/AlbumEditor.vala:121 src/Dialogs/ArtistEditor.vala:114
+#: src/Widgets/Views/RadiosView.vala:243
+msgid "Save"
+msgstr "Desa"
 
-#: ../src/Widgets/Views/ArtistView.vala:110
-#, fuzzy
-msgid "Choose an Artist"
-msgstr "Trieu una caràtula"
+#: src/Dialogs/Preferences.vala:61
+msgid "Use Dark Theme"
+msgstr "Utilitza el tema fosc"
 
-#: ../src/Widgets/Views/ArtistView.vala:110
-msgid "No Artist selected"
-msgstr ""
+#: src/Dialogs/Preferences.vala:69
+msgid "Play in background if closed"
+msgstr "Reprodueix en segon pla en tancar"
 
-#: ../src/Widgets/Views/ArtistView.vala:163
-msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr "<b>%d peces</b> a <b>%d àlbum</b>(s)"
+#: src/Dialogs/Preferences.vala:77
+msgid "Sync files on start up"
+msgstr "Sincronitza els fitxers en arrencar"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:95
-msgid "Add a playlist"
-msgstr "Afegeix una llista"
+#: src/Dialogs/Preferences.vala:85
+msgid "Load Content from MusicBrainz"
+msgstr "Carrega continguts des del MusicBrainz"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:137
-msgid "No Playlists"
-msgstr "No hi ha cap llista"
+#: src/Dialogs/Preferences.vala:93
+msgid "Save custom Covers in Library folder"
+msgstr "Desa les caràtules personalitzades a la carpeta de la fonoteca"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:137
-msgid "Add playlist to your library."
-msgstr "Afegiu llistes a la vostra fonoteca."
+#: src/Dialogs/Preferences.vala:101
+msgid "Save changes into ID3-Tag"
+msgstr "Desa els canvis en l’etiqueta ID3"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:138
-msgid "Add Playlist"
-msgstr "Afegeix una llista"
+#: src/Dialogs/Preferences.vala:126
+msgid "Close"
+msgstr "Tanca"
 
-#: ../src/Widgets/Views/PlaylistsView.vala:138
-msgid "Add a playlist for manage your favorite songs."
-msgstr "Afegiu una llista per a gestionar les vostres cançons preferides."
+#: src/Objects/AudioCD.vala:67 src/Objects/AudioCD.vala:68
+#: src/Services/TagManager.vala:48
+msgid "Unknown"
+msgstr "Desconegut"
 
-#: ../src/Widgets/Views/MobilePhone.vala:108
-msgid "Hide Mobile Panel"
-msgstr ""
+#: src/Objects/AudioCD.vala:105
+#, c-format
+msgid "Track %d"
+msgstr "Peça %d"
 
-#: ../src/Widgets/Track.vala:69
+#: src/Objects/MobilePhone.vala:45
+msgid "No Music Files found"
+msgstr "No s’ha trobat cap fitxer musical"
+
+#: src/Objects/MobilePhoneMusicFolder.vala:86
+msgid "deleting…"
+msgstr "s’està suprimint…"
+
+#: src/Services/LibraryManager.vala:295
+msgid "New Playlist"
+msgstr "Llista nova"
+
+#: src/Services/LibraryManager.vala:353
+msgid "Choose an image…"
+msgstr "Trieu una imatge…"
+
+#: src/Services/LibraryManager.vala:355 src/Services/LibraryManager.vala:376
+msgid "_Cancel"
+msgstr "_Cancel·la"
+
+#: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:377
+msgid "_Open"
+msgstr "_Obre"
+
+#: src/Services/LibraryManager.vala:359
+msgid "Images"
+msgstr "Imatges"
+
+#: src/Services/LibraryManager.vala:375
+msgid "Select a folder."
+msgstr "Seleccioneu una carpeta."
+
+#: src/Services/LibraryManager.vala:380
+msgid "Folder"
+msgstr "Carpeta"
+
+#: src/Widgets/Album.vala:201 src/Widgets/Artist.vala:189
+#: src/Widgets/Views/AlbumView.vala:65 src/Widgets/Views/AudioCDView.vala:98
+msgid "Set new Cover…"
+msgstr "Estableix una caràtula nova…"
+
+#: src/Widgets/Album.vala:219
+msgid "Edit Album properties…"
+msgstr "Edita les propietats de l’àlbum…"
+
+#: src/Widgets/Album.vala:226 src/Widgets/Track.vala:195
+msgid "Add into Playlist"
+msgstr "Afegeix-ho en una llista"
+
+#: src/Widgets/Album.vala:231 src/Widgets/Artist.vala:214
+#: src/Widgets/Track.vala:210
+msgid "Send to"
+msgstr "Envia a"
+
+#: src/Widgets/Album.vala:257 src/Widgets/Track.vala:227
+msgid "Create New Playlist"
+msgstr "Crea una llista nova"
+
+#: src/Widgets/Album.vala:306 src/Widgets/Artist.vala:261
+#, fuzzy, c-format
+msgid "Merge %u selected Albums"
+msgstr "Combina els àlbums seleccionats"
+
+#: src/Widgets/Artist.vala:207
+msgid "Edit Artist properties…"
+msgstr "Edita les propietats de l’artista…"
+
+#: src/Widgets/Radio.vala:95
+msgid "Edit Radio Station…"
+msgstr "Edita l’estació de ràdio…"
+
+#: src/Widgets/Radio.vala:103
+msgid "Remove Radio Station"
+msgstr "Suprimeix l’estació de ràdio"
+
+#: src/Widgets/Track.vala:69
+#, c-format
 msgid ""
 "File couldn't be found\n"
 "%s"
@@ -219,185 +324,173 @@ msgstr ""
 "No s’ha trobat el fitxer\n"
 "%s"
 
-#: ../src/Widgets/Track.vala:199
+#: src/Widgets/Track.vala:199
 msgid "Remove from Playlist"
 msgstr "Treu de la llista"
 
-#: ../src/Widgets/Radio.vala:95
-msgid "Edit Radio Station…"
-msgstr "Edita l’estació de ràdio…"
+#: src/Widgets/TrackTimeLine.vala:93 src/Widgets/TrackTimeLine.vala:97
+#, c-format
+msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
+msgstr "<b>%s</b> de <b>%s</b> per <b>%s</b>"
 
-#: ../src/Widgets/Radio.vala:103
-msgid "Remove Radio Station"
-msgstr "Suprimeix l’estació de ràdio"
+#: src/Widgets/Views/AlbumsView.vala:119
+msgid "Get Some Tunes"
+msgstr "Conseguiu-vos algunes melodies"
 
-#: ../src/Services/LibraryManager.vala:295
-msgid "New Playlist"
-msgstr "Llista nova"
+#: src/Widgets/Views/AlbumsView.vala:119
+msgid "Add music to your library."
+msgstr "Afegiu música a la vostra fonoteca."
 
-#: ../src/Services/LibraryManager.vala:353
-msgid "Choose an image…"
-msgstr "Trieu una imatge…"
+#: src/Widgets/Views/AlbumsView.vala:120
+msgid "Change Music Folder"
+msgstr "Canvia la carpeta de música"
 
-#: ../src/Services/LibraryManager.vala:355
-#: ../src/Services/LibraryManager.vala:376
-msgid "_Cancel"
-msgstr "_Cancel·la"
+#: src/Widgets/Views/AlbumsView.vala:120
+msgid "Load music from a folder, a network or an external disk."
+msgstr "Carregueu música des d’una carpeta, una xarxa o un disc extern."
 
-#: ../src/Services/LibraryManager.vala:356
-#: ../src/Services/LibraryManager.vala:377
-msgid "_Open"
-msgstr "_Obre"
+#: src/Widgets/Views/AlbumsView.vala:121
+msgid "Import Music"
+msgstr "Importa música"
 
-#: ../src/Services/LibraryManager.vala:359
-msgid "Images"
-msgstr "Imatges"
+#: src/Widgets/Views/AlbumsView.vala:121
+msgid "Import music from a source into your library."
+msgstr "Importeu música des d’un origen en la vostra fonoteca."
 
-#: ../src/Services/LibraryManager.vala:375
-msgid "Select a folder."
-msgstr "Seleccioneu una carpeta."
+#: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
+#: src/Widgets/Views/PlaylistsView.vala:154
+#: src/Widgets/Views/RadiosView.vala:205
+msgid "No results"
+msgstr "No hi ha cap resultat"
 
-#: ../src/Services/LibraryManager.vala:380
-msgid "Folder"
-msgstr "Carpeta"
+#: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
+#: src/Widgets/Views/PlaylistsView.vala:154
+#: src/Widgets/Views/RadiosView.vala:205
+msgid "Try another search"
+msgstr "Proveu amb un altre terme de cerca"
 
-#: ../src/Services/TagManager.vala:48 ../src/Objects/AudioCD.vala:67
-#: ../src/Objects/AudioCD.vala:68
-msgid "Unknown"
-msgstr "Desconegut"
-
-#: ../src/Objects/MobilePhoneMusicFolder.vala:86
-msgid "deleting…"
-msgstr "s’està suprimint…"
-
-#: ../src/Objects/AudioCD.vala:105
-msgid "Track %d"
-msgstr "Peça %d"
-
-#: ../src/Objects/MobilePhone.vala:45
-msgid "No Music Files found"
-msgstr "No s’ha trobat cap fitxer musical"
-
-#: ../src/MainWindow.vala:146
-msgid "Pause"
-msgstr "Posa en pausa"
-
-#: ../src/MainWindow.vala:166 ../src/MainWindow.vala:308
-msgid "Melody"
-msgstr "Melodia"
-
-#: ../src/MainWindow.vala:169 ../src/MainWindow.vala:330
-msgid "Play"
-msgstr "Reprodueix"
-
-#: ../src/MainWindow.vala:320
-msgid "Previous"
-msgstr "Anterior"
-
-#: ../src/MainWindow.vala:339
-msgid "Next"
-msgstr "Següent"
-
-#: ../src/MainWindow.vala:390
-msgid "Change Music Folder…"
-msgstr "Canvia la carpeta de música…"
-
-#: ../src/MainWindow.vala:400
-msgid "Import Music…"
-msgstr "Importa música…"
-
-#: ../src/MainWindow.vala:409
-msgid "Reset all views"
-msgstr "Reinicialitza totes les vistes"
-
-#: ../src/MainWindow.vala:416
-msgid "Resync Library"
-msgstr "Resincronitza la fonoteca"
-
-#: ../src/MainWindow.vala:422
-msgid "Preferences"
-msgstr "Preferències"
-
-#: ../src/MainWindow.vala:443
-msgid "Search Music"
-msgstr "Cerca música"
-
-#: ../src/MainWindow.vala:485
-msgid "Shuffle"
-msgstr "Mescla"
-
-#: ../src/MainWindow.vala:498
-msgid "Repeat"
-msgstr "Repeteix"
-
-#: ../src/MainWindow.vala:536
+#: src/Widgets/Views/ArtistView.vala:110
 #, fuzzy
-msgid "Loading…"
-msgstr "s’està suprimint…"
+msgid "Choose an Artist"
+msgstr "Trieu una caràtula"
 
-#: ../src/MainWindow.vala:536
-msgid "Reading out database content"
+#: src/Widgets/Views/ArtistView.vala:110
+msgid "No Artist selected"
 msgstr ""
 
-#: ../src/MainWindow.vala:574
-msgid "Albums"
-msgstr "Àlbums"
+#: src/Widgets/Views/ArtistView.vala:163
+#, c-format
+msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
+msgstr "<b>%d peces</b> a <b>%d àlbum</b>(s)"
 
-#: ../src/MainWindow.vala:578
-msgid "Artists"
-msgstr "Artistes"
+#: src/Widgets/Views/MobilePhone.vala:108
+msgid "Hide Mobile Panel"
+msgstr ""
 
-#: ../src/MainWindow.vala:583
-msgid "Tracks"
-msgstr "Peces"
+#: src/Widgets/Views/PlaylistsView.vala:95
+msgid "Add a playlist"
+msgstr "Afegeix una llista"
 
-#: ../src/MainWindow.vala:588
-msgid "Playlists"
-msgstr "Llistes"
+#: src/Widgets/Views/PlaylistsView.vala:114
+#: src/Widgets/Views/RadiosView.vala:241
+msgid "Add"
+msgstr "Afegeix"
 
-#: ../src/MainWindow.vala:593
-msgid "Radio Stations"
-msgstr "Estacions de ràdio"
+#: src/Widgets/Views/PlaylistsView.vala:137
+msgid "No Playlists"
+msgstr "No hi ha cap llista"
 
-#: ../src/MainWindow.vala:600
-msgid "Audio CD"
-msgstr "CD d’àudio"
+#: src/Widgets/Views/PlaylistsView.vala:137
+msgid "Add playlist to your library."
+msgstr "Afegiu llistes a la vostra fonoteca."
 
-#: ../src/Dialogs/Preferences.vala:61
-msgid "Use Dark Theme"
-msgstr "Utilitza el tema fosc"
+#: src/Widgets/Views/PlaylistsView.vala:138
+#, fuzzy
+msgid "Create Playlist"
+msgstr "Crea una llista nova"
 
-#: ../src/Dialogs/Preferences.vala:69
-msgid "Play in background if closed"
-msgstr "Reprodueix en segon pla en tancar"
+#: src/Widgets/Views/PlaylistsView.vala:138
+#, fuzzy
+msgid "Create a playlist for manage your favorite songs."
+msgstr "Afegiu una llista per a gestionar les vostres cançons preferides."
 
-#: ../src/Dialogs/Preferences.vala:77
-msgid "Sync files on start up"
-msgstr "Sincronitza els fitxers en arrencar"
+#: src/Widgets/Views/PlaylistView.vala:101
+msgid "Rename"
+msgstr "Canvia el nom"
 
-#: ../src/Dialogs/Preferences.vala:85
-msgid "Load Content from MusicBrainz"
-msgstr "Carrega continguts des del MusicBrainz"
+#. CONTEXT MENU REGION
+#: src/Widgets/Views/PlaylistView.vala:122
+msgid "Rename Playlist"
+msgstr "Canvia el nom de la llista"
 
-#: ../src/Dialogs/Preferences.vala:93
-msgid "Save custom Covers in Library folder"
-msgstr "Desa les caràtules personalitzades a la carpeta de la fonoteca"
+#: src/Widgets/Views/PlaylistView.vala:132
+msgid "Remove Playlist"
+msgstr "Suprimeix la llista"
 
-#: ../src/Dialogs/Preferences.vala:101
-msgid "Save changes into ID3-Tag"
-msgstr "Desa els canvis en l’etiqueta ID3"
+#: src/Widgets/Views/RadiosView.vala:113
+msgid "Add a radio station"
+msgstr "Afegeix una estació de ràdio"
 
-#: ../src/Dialogs/Preferences.vala:126
-msgid "Close"
-msgstr "Tanca"
+#: src/Widgets/Views/RadiosView.vala:123
+msgid "Station Name"
+msgstr "Nom de l’estació"
 
-#: ../src/Dialogs/ArtistEditor.vala:82 ../src/Dialogs/AlbumEditor.vala:83
-msgid "Click to choose a new cover…"
-msgstr "Feu clic per a triar una caràtula nova…"
+#: src/Widgets/Views/RadiosView.vala:131
+msgid "URL"
+msgstr "URL"
 
-#: ../src/Dialogs/AlbumEditor.vala:110
-msgid "Year"
-msgstr "Any"
+#: src/Widgets/Views/RadiosView.vala:150
+msgid "Choose a Cover"
+msgstr "Trieu una caràtula"
+
+#. NEW STATION POPOVER END
+#: src/Widgets/Views/RadiosView.vala:187
+msgid "No Radio Stations"
+msgstr "No hi ha cap estació de ràdio"
+
+#: src/Widgets/Views/RadiosView.vala:187
+msgid "Add radio stations to your library."
+msgstr "Afegiu estacions de ràdio a la vostra fonoteca."
+
+#: src/Widgets/Views/RadiosView.vala:188
+msgid "Add Radio Station"
+msgstr "Afegeix una estació de ràdio"
+
+#: src/Widgets/Views/RadiosView.vala:188
+msgid "Add a Stream URL like .pls or .m3u."
+msgstr "Afegiu un URL de flux de dades, com ara .pls o .m3u."
+
+#: src/Widgets/Views/TracksView.vala:160
+#, fuzzy
+msgid "Choose a Track"
+msgstr "Trieu una caràtula"
+
+#: src/Widgets/Views/TracksView.vala:160
+msgid "No track selected"
+msgstr ""
+
+#: src/Widgets/Views/TracksView.vala:186
+msgid "Nr"
+msgstr "Núm."
+
+#: src/Widgets/Views/TracksView.vala:193
+msgid "Title"
+msgstr "Títol"
+
+#: src/Widgets/Views/TracksView.vala:200
+msgid "Album"
+msgstr "Àlbum"
+
+#: src/Widgets/Views/TracksView.vala:202
+msgid "Artist"
+msgstr "Artista"
+
+#: src/Widgets/Views/TracksView.vala:207
+msgid "Duration"
+msgstr "Durada"
+
+#~ msgid "Add Playlist"
+#~ msgstr "Afegeix una llista"
 
 #~ msgid "Merge selected Artists"
 #~ msgstr "Combina els artistes seleccionats"
