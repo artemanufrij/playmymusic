@@ -70,326 +70,328 @@ msgstr "Musik importieren"
 
 #: ../src/Widgets/Views/AlbumsView.vala:121
 msgid "Import music from a source into your library."
-msgstr ""
+msgstr "Importiere Musik aus einer Quelle in deine Sammlung"
 
 #: ../src/Widgets/Views/AlbumsView.vala:140
 #: ../src/Widgets/Views/ArtistsView.vala:110
 #: ../src/Widgets/Views/RadiosView.vala:205
 #: ../src/Widgets/Views/PlaylistsView.vala:154
 msgid "No results"
-msgstr ""
+msgstr "Kein Ergebnis"
 
 #: ../src/Widgets/Views/AlbumsView.vala:140
 #: ../src/Widgets/Views/ArtistsView.vala:110
 #: ../src/Widgets/Views/RadiosView.vala:205
 #: ../src/Widgets/Views/PlaylistsView.vala:154
 msgid "Try another search"
-msgstr ""
+msgstr "Versuche mit einer anderen Suche"
 
 #: ../src/Widgets/Views/RadiosView.vala:113
 msgid "Add a radio station"
-msgstr ""
+msgstr "Füge eine Radiostaion hinzu"
 
 #: ../src/Widgets/Views/RadiosView.vala:123
 msgid "Station Name"
-msgstr ""
+msgstr "Name"
 
 #: ../src/Widgets/Views/RadiosView.vala:131
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: ../src/Widgets/Views/RadiosView.vala:150
 msgid "Choose a Cover"
-msgstr ""
+msgstr "Ein Cover auswählen"
 
 #: ../src/Widgets/Views/RadiosView.vala:187
 msgid "No Radio Stations"
-msgstr ""
+msgstr "Keine Radiostationen"
 
 #: ../src/Widgets/Views/RadiosView.vala:187
 msgid "Add radio stations to your library."
-msgstr ""
+msgstr "Füge Radiostationen deiner Sammlung hinzu."
 
 #: ../src/Widgets/Views/RadiosView.vala:188
 msgid "Add Radio Station"
-msgstr ""
+msgstr "Radiostation hinzufügen"
 
 #: ../src/Widgets/Views/RadiosView.vala:188
 msgid "Add a Stream URL like .pls or .m3u."
-msgstr ""
+msgstr "Füge eine URL wie .pls oder .m3u hinzu."
 
 #: ../src/Widgets/Views/RadiosView.vala:241
 #: ../src/Widgets/Views/PlaylistsView.vala:114
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 #: ../src/Widgets/Views/RadiosView.vala:243
 #: ../src/Dialogs/ArtistEditor.vala:114 ../src/Dialogs/AlbumEditor.vala:121
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: ../src/Widgets/Views/TracksView.vala:160
 msgid "Choose a Track"
-msgstr ""
+msgstr "Track auswählen"
 
 #: ../src/Widgets/Views/TracksView.vala:160
 msgid "No track selected"
-msgstr ""
+msgstr "Kein Track ausgewählt"
 
 #: ../src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
-msgstr ""
+msgstr "Nr"
 
 #: ../src/Widgets/Views/TracksView.vala:193
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: ../src/Widgets/Views/TracksView.vala:200
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: ../src/Widgets/Views/TracksView.vala:202
 msgid "Artist"
-msgstr ""
+msgstr "Artist"
 
 #: ../src/Widgets/Views/TracksView.vala:207
 msgid "Duration"
-msgstr ""
+msgstr "Dauer"
 
 #: ../src/Widgets/Views/TracksView.vala:278 ../src/MainWindow.vala:725
 #: ../src/MainWindow.vala:733
 msgid "<b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> von <b>%s</b>"
 
 #: ../src/Widgets/Views/PlaylistView.vala:101
 msgid "Rename"
-msgstr ""
+msgstr "Umbenennen"
 
 #: ../src/Widgets/Views/PlaylistView.vala:122
 msgid "Rename Playlist"
-msgstr ""
+msgstr "Playliste umbenennen"
 
 #: ../src/Widgets/Views/PlaylistView.vala:132
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Playliste löschen"
 
 #: ../src/Widgets/Views/ArtistView.vala:110
 msgid "Choose an Artist"
-msgstr ""
+msgstr "Einen Artisten auswählen"
 
 #: ../src/Widgets/Views/ArtistView.vala:110
 msgid "No Artist selected"
-msgstr ""
+msgstr "Kein Artist ausgewählt"
 
 #: ../src/Widgets/Views/ArtistView.vala:163
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr ""
+msgstr "<b>%d Tracks</b> in <b>%d Album</b>(s)"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:95
 msgid "Add a playlist"
-msgstr ""
+msgstr "Eine Playlist hinzufügen"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:137
 msgid "No Playlists"
-msgstr ""
+msgstr "Keine Playlists"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:137
 msgid "Add playlist to your library."
-msgstr ""
+msgstr "Füge eine Playlist deiner Sammlung hinzu."
 
 #: ../src/Widgets/Views/PlaylistsView.vala:138
 msgid "Add Playlist"
-msgstr ""
+msgstr "Playliste hinzufügen"
 
 #: ../src/Widgets/Views/PlaylistsView.vala:138
 msgid "Add a playlist for manage your favorite songs."
-msgstr ""
+msgstr "Eine Playliste zum verwalten deiner Lieblingslieder hinzufügen."
 
 #: ../src/Widgets/Views/MobilePhone.vala:108
 msgid "Hide Mobile Panel"
-msgstr ""
+msgstr "Verstecke Mobile Ansicht"
 
 #: ../src/Widgets/Track.vala:69
 msgid ""
 "File couldn't be found\n"
 "%s"
 msgstr ""
+"Datei konnte nicht gefunden werden\n"
+"%s"
 
 #: ../src/Widgets/Track.vala:199
 msgid "Remove from Playlist"
-msgstr ""
+msgstr "Entferne von der Playlist"
 
 #: ../src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
-msgstr ""
+msgstr "Radiostation bearbeiten…"
 
 #: ../src/Widgets/Radio.vala:103
 msgid "Remove Radio Station"
-msgstr ""
+msgstr "Radiostation entfernen"
 
 #: ../src/Services/LibraryManager.vala:295
 msgid "New Playlist"
-msgstr ""
+msgstr "Neue Playlist"
 
 #: ../src/Services/LibraryManager.vala:353
 msgid "Choose an image…"
-msgstr ""
+msgstr "Bild auswählen…"
 
 #: ../src/Services/LibraryManager.vala:355
 #: ../src/Services/LibraryManager.vala:376
 msgid "_Cancel"
-msgstr ""
+msgstr "_Abbrechen"
 
 #: ../src/Services/LibraryManager.vala:356
 #: ../src/Services/LibraryManager.vala:377
 msgid "_Open"
-msgstr ""
+msgstr "_Öffnen"
 
 #: ../src/Services/LibraryManager.vala:359
 msgid "Images"
-msgstr ""
+msgstr "Bilder"
 
 #: ../src/Services/LibraryManager.vala:375
 msgid "Select a folder."
-msgstr ""
+msgstr "Ein Verzeichnis auswählen."
 
 #: ../src/Services/LibraryManager.vala:380
 msgid "Folder"
-msgstr ""
+msgstr "Verzeichnis"
 
 #: ../src/Services/TagManager.vala:48 ../src/Objects/AudioCD.vala:67
 #: ../src/Objects/AudioCD.vala:68
 msgid "Unknown"
-msgstr ""
+msgstr "Unbekannt"
 
 #: ../src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
-msgstr ""
+msgstr "löschen…"
 
 #: ../src/Objects/AudioCD.vala:105
 msgid "Track %d"
-msgstr ""
+msgstr "Track %d"
 
 #: ../src/Objects/MobilePhone.vala:45
 msgid "No Music Files found"
-msgstr ""
+msgstr "Keine Musikdateien gefunden"
 
 #: ../src/MainWindow.vala:146
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 #: ../src/MainWindow.vala:166 ../src/MainWindow.vala:308
 msgid "Melody"
-msgstr ""
+msgstr "Melody"
 
 #: ../src/MainWindow.vala:169 ../src/MainWindow.vala:330
 msgid "Play"
-msgstr ""
+msgstr "Abspielen"
 
 #: ../src/MainWindow.vala:320
 msgid "Previous"
-msgstr ""
+msgstr "Vorheriges"
 
 #: ../src/MainWindow.vala:339
 msgid "Next"
-msgstr ""
+msgstr "Nächstes"
 
 #: ../src/MainWindow.vala:390
 msgid "Change Music Folder…"
-msgstr ""
+msgstr "Musikverzeichnis ändern…"
 
 #: ../src/MainWindow.vala:400
 msgid "Import Music…"
-msgstr ""
+msgstr "Musik importieren…"
 
 #: ../src/MainWindow.vala:409
 msgid "Reset all views"
-msgstr ""
+msgstr "Alle sichten zurücksetzen"
 
 #: ../src/MainWindow.vala:416
 msgid "Resync Library"
-msgstr ""
+msgstr "Sammlung abgleichen"
 
 #: ../src/MainWindow.vala:422
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellungen"
 
 #: ../src/MainWindow.vala:443
 msgid "Search Music"
-msgstr ""
+msgstr "Musik suchen"
 
 #: ../src/MainWindow.vala:485
 msgid "Shuffle"
-msgstr ""
+msgstr "Zufall"
 
 #: ../src/MainWindow.vala:498
 msgid "Repeat"
-msgstr ""
+msgstr "Wiederholung"
 
 #: ../src/MainWindow.vala:536
 msgid "Loading…"
-msgstr ""
+msgstr "Laden…"
 
 #: ../src/MainWindow.vala:536
 msgid "Reading out database content"
-msgstr ""
+msgstr "Datenbank wird ausgelesen"
 
 #: ../src/MainWindow.vala:574
 msgid "Albums"
-msgstr ""
+msgstr "Albums"
 
 #: ../src/MainWindow.vala:578
 msgid "Artists"
-msgstr ""
+msgstr "Artisten"
 
 #: ../src/MainWindow.vala:583
 msgid "Tracks"
-msgstr ""
+msgstr "Tracks"
 
 #: ../src/MainWindow.vala:588
 msgid "Playlists"
-msgstr ""
+msgstr "Playlisten"
 
 #: ../src/MainWindow.vala:593
 msgid "Radio Stations"
-msgstr ""
+msgstr "Radiostationen"
 
 #: ../src/MainWindow.vala:600
 msgid "Audio CD"
-msgstr ""
+msgstr "Audio CD"
 
 #: ../src/Dialogs/Preferences.vala:61
 msgid "Use Dark Theme"
-msgstr ""
+msgstr "Dunkles Theme benutzen"
 
 #: ../src/Dialogs/Preferences.vala:69
 msgid "Play in background if closed"
-msgstr ""
+msgstr "Im Hintergrund abspielen, wenn geschlossen"
 
 #: ../src/Dialogs/Preferences.vala:77
 msgid "Sync files on start up"
-msgstr ""
+msgstr "Beim Starten Sammlung abgleichen"
 
 #: ../src/Dialogs/Preferences.vala:85
 msgid "Load Content from MusicBrainz"
-msgstr ""
+msgstr "Inhalten von MusicBrainz laden"
 
 #: ../src/Dialogs/Preferences.vala:93
 msgid "Save custom Covers in Library folder"
-msgstr ""
+msgstr "Speichere geänderte Covers im Verzeichnis"
 
 #: ../src/Dialogs/Preferences.vala:101
 msgid "Save changes into ID3-Tag"
-msgstr ""
+msgstr "Speichere Änderungen in die ID3-Tags"
 
 #: ../src/Dialogs/Preferences.vala:126
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: ../src/Dialogs/ArtistEditor.vala:82 ../src/Dialogs/AlbumEditor.vala:83
 msgid "Click to choose a new cover…"
-msgstr ""
+msgstr "Klicke, um ein neues Cover auszuwählen…"
 
 #: ../src/Dialogs/AlbumEditor.vala:110
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
