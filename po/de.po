@@ -343,7 +343,7 @@ msgstr "Füge Musik in deine Sammlung hinzu."
 
 #: src/Widgets/Views/AlbumsView.vala:120
 msgid "Change Music Folder"
-msgstr "Musikordner ändern"
+msgstr "Musikverzeichnis ändern"
 
 #: src/Widgets/Views/AlbumsView.vala:120
 msgid "Load music from a folder, a network or an external disk."
