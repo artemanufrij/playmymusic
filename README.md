@@ -37,7 +37,7 @@ git clone https://github.com/artemanufrij/playmymusic.git
 cd playmymusic
 ```
 
-Compile, install and start Play My Music on your system
+Compile, install and start Melody on your system
 ```
 meson build --prefix=/usr
 cd build
