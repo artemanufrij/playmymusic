@@ -49,6 +49,10 @@
     <releases>
         <release version="1.0.2" date="2018-04-15">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>[optional] Copy imported music files into library</li>
+                </ul>
                 <p>Translation:</p>
                 <ul>
                     <li>German</li>
