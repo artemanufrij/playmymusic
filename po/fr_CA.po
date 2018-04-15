@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-08 14:43+0200\n"
+"POT-Creation-Date: 2018-04-15 18:54+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
@@ -191,31 +191,35 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:61
+#: src/Dialogs/Preferences.vala:90
 msgid "Use Dark Theme"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:69
+#: src/Dialogs/Preferences.vala:93
 msgid "Play in background if closed"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:77
+#: src/Dialogs/Preferences.vala:95
 msgid "Sync files on start up"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:85
+#: src/Dialogs/Preferences.vala:98
 msgid "Load Content from MusicBrainz"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:93
+#: src/Dialogs/Preferences.vala:100
 msgid "Save custom Covers in Library folder"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:101
+#: src/Dialogs/Preferences.vala:102
 msgid "Save changes into ID3-Tag"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:126
+#: src/Dialogs/Preferences.vala:105
+msgid "Copy Imported Files into Library"
+msgstr ""
+
+#: src/Dialogs/Preferences.vala:110
 msgid "Close"
 msgstr ""
 
@@ -237,31 +241,31 @@ msgstr ""
 msgid "deleting…"
 msgstr ""
 
-#: src/Services/LibraryManager.vala:295
+#: src/Services/LibraryManager.vala:332
 msgid "New Playlist"
 msgstr ""
 
-#: src/Services/LibraryManager.vala:353
+#: src/Services/LibraryManager.vala:390
 msgid "Choose an image…"
 msgstr ""
 
-#: src/Services/LibraryManager.vala:355 src/Services/LibraryManager.vala:376
+#: src/Services/LibraryManager.vala:392 src/Services/LibraryManager.vala:413
 msgid "_Cancel"
 msgstr ""
 
-#: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:377
+#: src/Services/LibraryManager.vala:393 src/Services/LibraryManager.vala:414
 msgid "_Open"
 msgstr ""
 
-#: src/Services/LibraryManager.vala:359
+#: src/Services/LibraryManager.vala:396
 msgid "Images"
 msgstr ""
 
-#: src/Services/LibraryManager.vala:375
+#: src/Services/LibraryManager.vala:412
 msgid "Select a folder."
 msgstr ""
 
-#: src/Services/LibraryManager.vala:380
+#: src/Services/LibraryManager.vala:417
 msgid "Folder"
 msgstr ""
 

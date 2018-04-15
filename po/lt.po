@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-08 14:43+0200\n"
+"POT-Creation-Date: 2018-04-15 18:54+0200\n"
 "PO-Revision-Date: 2017-10-18 22:34+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: \n"
@@ -211,33 +211,37 @@ msgstr ""
 msgid "Save"
 msgstr "Įrašyti"
 
-#: src/Dialogs/Preferences.vala:61
+#: src/Dialogs/Preferences.vala:90
 msgid "Use Dark Theme"
 msgstr "Naudoti tamsią temą"
 
-#: src/Dialogs/Preferences.vala:69
+#: src/Dialogs/Preferences.vala:93
 msgid "Play in background if closed"
 msgstr "Užvėrus, groti fone"
 
-#: src/Dialogs/Preferences.vala:77
+#: src/Dialogs/Preferences.vala:95
 #, fuzzy
 msgid "Sync files on start up"
 msgstr "Paleidus programą, ieškoti naujų failų"
 
-#: src/Dialogs/Preferences.vala:85
+#: src/Dialogs/Preferences.vala:98
 #, fuzzy
 msgid "Load Content from MusicBrainz"
 msgstr "Įkelti atlikėjo duomenis iš MusicBrainz"
 
-#: src/Dialogs/Preferences.vala:93
+#: src/Dialogs/Preferences.vala:100
 msgid "Save custom Covers in Library folder"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:101
+#: src/Dialogs/Preferences.vala:102
 msgid "Save changes into ID3-Tag"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:126
+#: src/Dialogs/Preferences.vala:105
+msgid "Copy Imported Files into Library"
+msgstr ""
+
+#: src/Dialogs/Preferences.vala:110
 msgid "Close"
 msgstr ""
 
@@ -259,31 +263,31 @@ msgstr "Nerasta jokių muzikos failų"
 msgid "deleting…"
 msgstr "ištrinama…"
 
-#: src/Services/LibraryManager.vala:295
+#: src/Services/LibraryManager.vala:332
 msgid "New Playlist"
 msgstr "Naujas grojaraštis"
 
-#: src/Services/LibraryManager.vala:353
+#: src/Services/LibraryManager.vala:390
 msgid "Choose an image…"
 msgstr "Pasirinkti paveikslą…"
 
-#: src/Services/LibraryManager.vala:355 src/Services/LibraryManager.vala:376
+#: src/Services/LibraryManager.vala:392 src/Services/LibraryManager.vala:413
 msgid "_Cancel"
 msgstr "_Atsisakyti"
 
-#: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:377
+#: src/Services/LibraryManager.vala:393 src/Services/LibraryManager.vala:414
 msgid "_Open"
 msgstr "A_tverti"
 
-#: src/Services/LibraryManager.vala:359
+#: src/Services/LibraryManager.vala:396
 msgid "Images"
 msgstr "Paveikslai"
 
-#: src/Services/LibraryManager.vala:375
+#: src/Services/LibraryManager.vala:412
 msgid "Select a folder."
 msgstr "Pasirinkti aplanką."
 
-#: src/Services/LibraryManager.vala:380
+#: src/Services/LibraryManager.vala:417
 msgid "Folder"
 msgstr "Aplankas"
 
