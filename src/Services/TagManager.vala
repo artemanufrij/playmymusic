@@ -68,7 +68,6 @@ namespace PlayMyMusic.Services {
                     var tags = info.get_tags ();
                     if (tags != null) {
                         uint64 duration = info.get_duration ();
-                        File f = File.new_for_uri (uri);
                         string o;
                         GLib.Date? d;
                         Gst.DateTime? dt;
@@ -83,7 +82,7 @@ namespace PlayMyMusic.Services {
                             track.title = o;
                         }
                         if (track.title.strip () == "") {
-                            track.title = f.get_basename ();
+                            track.title = Path.get_basename (uri);
                         }
                         if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out u)) {
                             track.track = (int)u;
@@ -105,9 +104,9 @@ namespace PlayMyMusic.Services {
                         }
 
                         if (album.title.strip () == "") {
-                            f = f.get_parent ();
-                            if (f != null) {
-                                album.title = f.get_basename ();
+                            var dir = Path.get_dirname (uri);
+                            if (dir != null) {
+                                album.title = Path.get_basename (dir);
                             } else {
                                 album.title = unknown;
                             }
@@ -132,14 +131,14 @@ namespace PlayMyMusic.Services {
                         }
 
                         if (artist.name.strip () == "") {
-                            f = f.get_parent ();
-                            if (f != null) {
-                                artist.name = f.get_basename ();
+                            var dir = Path.get_dirname (Path.get_dirname (uri));
+                            if (dir != null) {
+                                artist.name = Path.get_basename (dir);
                             } else {
                                 artist.name = unknown;
                             }
                         }
-                        f.dispose ();
+
                         discovered_new_item (artist, album, track);
                     }
                 }

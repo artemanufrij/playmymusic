@@ -38,16 +38,17 @@ namespace PlayMyMusic.Dialogs {
                 transient_for: parent,
                 deletable: false,
                 resizable: false
-            );
+                );
             build_ui ();
 
-            this.response.connect ((source, response_id) => {
-                switch (response_id) {
-                    case Gtk.ResponseType.CLOSE:
+            this.response.connect (
+                (source, response_id) => {
+                    switch (response_id) {
+                    case Gtk.ResponseType.CLOSE :
                         destroy ();
-                    break;
-                }
-            });
+                        break;
+                    }
+                });
         }
 
         private void build_ui () {
@@ -58,73 +59,63 @@ namespace PlayMyMusic.Dialogs {
             grid.row_spacing = 12;
             grid.margin = 12;
 
-            var use_dark_theme_label = new Gtk.Label (_("Use Dark Theme"));
-            use_dark_theme_label.halign = Gtk.Align.START;
             var use_dark_theme = new Gtk.Switch ();
             use_dark_theme.active = settings.use_dark_theme;
-            use_dark_theme.notify["active"].connect (() => {
-                settings.use_dark_theme = use_dark_theme.active;
-            });
+            use_dark_theme.notify["active"].connect (() => { settings.use_dark_theme = use_dark_theme.active; });
 
-            var play_in_background_label = new Gtk.Label (_("Play in background if closed"));
-            play_in_background_label.halign = Gtk.Align.START;
             var play_in_background = new Gtk.Switch ();
             play_in_background.active = settings.play_in_background;
-            play_in_background.notify["active"].connect (() => {
-                settings.play_in_background = play_in_background.active;
-            });
+            play_in_background.notify["active"].connect (() => { settings.play_in_background = play_in_background.active; });
 
-            var sync_files_label = new Gtk.Label (_("Sync files on start up"));
-            sync_files_label.halign = Gtk.Align.START;
             var sync_files = new Gtk.Switch ();
             sync_files.active = settings.sync_files;
-            sync_files.notify["active"].connect (() => {
-                settings.sync_files = sync_files.active;
-            });
+            sync_files.notify["active"].connect (() => { settings.sync_files = sync_files.active; });
 
-            var load_content_label = new Gtk.Label (_("Load Content from MusicBrainz"));
-            load_content_label.halign = Gtk.Align.START;
             var load_content = new Gtk.Switch ();
             load_content.active = settings.load_content_from_musicbrainz;
-            load_content.notify["active"].connect (() => {
-                settings.load_content_from_musicbrainz = load_content.active;
-            });
+            load_content.notify["active"].connect (() => { settings.load_content_from_musicbrainz = load_content.active; });
 
-            var save_custom_covers_label = new Gtk.Label (_("Save custom Covers in Library folder"));
-            save_custom_covers_label.halign = Gtk.Align.START;
             var save_custom_covers = new Gtk.Switch ();
             save_custom_covers.active = settings.save_custom_covers;
-            save_custom_covers.notify["active"].connect (() => {
-                settings.save_custom_covers = save_custom_covers.active;
-            });
+            save_custom_covers.notify["active"].connect (() => { settings.save_custom_covers = save_custom_covers.active; });
 
-            var save_id3_tags_label = new Gtk.Label (_("Save changes into ID3-Tag"));
-            save_id3_tags_label.halign = Gtk.Align.START;
             var save_id3_tags = new Gtk.Switch ();
             save_id3_tags.active = settings.save_id3_tags;
-            save_id3_tags.notify["active"].connect (() => {
-                settings.save_id3_tags = save_id3_tags.active;
-            });
+            save_id3_tags.notify["active"].connect (() => { settings.save_id3_tags = save_id3_tags.active; });
 
-            grid.attach (use_dark_theme_label, 0, 0);
+            var import_into_library = new Gtk.Switch ();
+            import_into_library.active = settings.import_into_library;
+            import_into_library.notify["active"].connect (() => { settings.import_into_library = import_into_library.active; });
+
+            grid.attach (label_generator (_ ("Use Dark Theme")), 0, 0);
             grid.attach (use_dark_theme, 1, 0);
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1, 2, 1);
-            grid.attach (play_in_background_label, 0, 2);
+            grid.attach (label_generator (_ ("Play in background if closed")), 0, 2);
             grid.attach (play_in_background, 1, 2);
-            grid.attach (sync_files_label, 0, 3);
+            grid.attach (label_generator (_ ("Sync files on start up")), 0, 3);
             grid.attach (sync_files, 1, 3);
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 4, 2, 1);
-            grid.attach (load_content_label, 0, 5);
+            grid.attach (label_generator (_ ("Load Content from MusicBrainz")), 0, 5);
             grid.attach (load_content, 1, 5);
-            grid.attach (save_custom_covers_label, 0, 6);
+            grid.attach (label_generator (_ ("Save custom Covers in Library folder")), 0, 6);
             grid.attach (save_custom_covers, 1, 6);
-            grid.attach (save_id3_tags_label, 0, 7);
+            grid.attach (label_generator (_ ("Save changes into ID3-Tag")), 0, 7);
             grid.attach (save_id3_tags, 1, 7);
+            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 8, 2, 1);
+            grid.attach (label_generator (_ ("Copy Imported Files into Library")), 0, 9);
+            grid.attach (import_into_library, 1, 9);
 
             content.pack_start (grid, false, false, 0);
 
-            this.add_button (_("Close"), Gtk.ResponseType.CLOSE);
+            this.add_button (_ ("Close"), Gtk.ResponseType.CLOSE);
             this.show_all ();
+        }
+
+        private Gtk.Label label_generator (string content) {
+            return new Gtk.Label (content) {
+                       halign = Gtk.Align.START,
+                       hexpand = true
+            };
         }
     }
 }

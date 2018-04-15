@@ -97,12 +97,13 @@ namespace PlayMyMusic.Services {
             db_manager.artist_removed.connect ((artist) =>  { artist_removed (artist); });
             db_manager.removed_playlist.connect ((playlist) => { removed_playlist (playlist); });
             db_manager.added_new_radio.connect ((radio) => { added_new_radio (radio); });
-            db_manager.removed_radio.connect ((radio) => {
-                if (player.current_radio == radio) {
-                    player.reset_playing ();
-                }
-                removed_radio (radio);
-            });
+            db_manager.removed_radio.connect (
+                (radio) => {
+                    if (player.current_radio == radio) {
+                        player.reset_playing ();
+                    }
+                    removed_radio (radio);
+                });
 
             lf_manager = Services.LocalFilesManager.instance;
             lf_manager.found_music_file.connect (found_local_music_file);
@@ -111,28 +112,34 @@ namespace PlayMyMusic.Services {
             player.state_changed.connect ((state) => { player_state_changed (state); });
 
             device_manager = Services.DeviceManager.instance;
-            device_manager.audio_cd_added.connect ((volume) => {
-                var audio_cd = new Objects.AudioCD (volume);
-                audio_cd.mb_disc_id_calculated.connect (() => {
-                    mb_disc_id_calculated (audio_cd);
+            device_manager.audio_cd_added.connect (
+                (volume) => {
+                    var audio_cd = new Objects.AudioCD (volume);
+                    audio_cd.mb_disc_id_calculated.connect (
+                        () => {
+                            mb_disc_id_calculated (audio_cd);
+                        });
+                    audio_cd_connected (audio_cd);
                 });
-                audio_cd_connected (audio_cd);
-            });
-            device_manager.audio_cd_removed.connect ((volume) => {
-                audio_cd_disconnected (volume);
-            });
-            device_manager.mtp_added.connect ((volume) => {
-                var mobile_phone = new Objects.MobilePhone (volume);
-                mobile_phone_connected (mobile_phone);
-            });
-            device_manager.mtp_removed.connect ((volume) => {
-                mobile_phone_disconnected (volume);
-            });
+            device_manager.audio_cd_removed.connect (
+                (volume) => {
+                    audio_cd_disconnected (volume);
+                });
+            device_manager.mtp_added.connect (
+                (volume) => {
+                    var mobile_phone = new Objects.MobilePhone (volume);
+                    mobile_phone_connected (mobile_phone);
+                });
+            device_manager.mtp_removed.connect (
+                (volume) => {
+                    mobile_phone_disconnected (volume);
+                });
         }
 
-        private LibraryManager () { }
+        private LibraryManager () {
+        }
 
-        public Objects.Artist? get_artist_by_id (int id) {
+        public Objects.Artist ? get_artist_by_id (int id) {
             foreach (var artist in artists) {
                 if (artist.ID == id) {
                     return artist;
@@ -141,7 +148,7 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
-        public Objects.Album? get_album_by_id (int id) {
+        public Objects.Album ? get_album_by_id (int id) {
             foreach (var artist in artists) {
                 foreach (var album in artist.albums) {
                     if (album.ID == id) {
@@ -154,13 +161,15 @@ namespace PlayMyMusic.Services {
 
         // LOCAL FILES REGION
         public async void sync_library_content () {
-            new Thread <void*> (null, () => {
-                sync_started ();
-                remove_non_existent_items ();
-                scan_local_library_for_new_files (settings.library_location);
-                finish_timeout ();
-                return null;
-            });
+            new Thread <void*> (
+                "sync_library_content",
+                () => {
+                    sync_started ();
+                    remove_non_existent_items ();
+                    scan_local_library_for_new_files (settings.library_location);
+                    finish_timeout ();
+                    return null;
+                });
         }
 
         public void remove_non_existent_items () {
@@ -216,7 +225,7 @@ namespace PlayMyMusic.Services {
                         cancel_finish_timeout ();
                         return false;
                     });
-                }
+            }
         }
 
         private void cancel_finish_timeout () {
@@ -235,12 +244,41 @@ namespace PlayMyMusic.Services {
 
         // DATABASE REGION
         public void discovered_new_local_item (Objects.Artist artist, Objects.Album album, Objects.Track track) {
-            new Thread<void*> (null, () => {
-                var db_artist = db_manager.insert_artist_if_not_exists (artist);
-                var db_album = db_artist.add_album_if_not_exists (album);
-                db_album.add_track_if_not_exists (track);
-                return null;
-            });
+            new Thread<void*> (
+                "discovered_new_local_item",
+                () => {
+                    if (settings.import_into_library && !track.uri.has_prefix (settings.library_location)) {
+                        var target_dir = settings.library_location + "/" + artist.name + "/" + album.title;
+                        var target_file = target_dir + "/" + Path.get_basename (track.uri);
+
+                        File target_folder = File.new_for_uri (target_dir);
+                        if (!target_folder.query_exists ()) {
+                            DirUtils.create_with_parents (target_folder.get_path (), 0755);
+                        }
+                        target_folder.dispose ();
+
+                        File target = File.new_for_uri (target_file);
+
+                        if (!target.query_exists ()) {
+                            File source = File.new_for_uri (track.uri);
+                            try {
+                                source.copy (target, FileCopyFlags.NONE);
+                                track.uri = target.get_uri ();
+                            } catch (Error err) {
+                                warning (err.message);
+                            }
+
+                            source.dispose ();
+                        } else {
+                            return null;
+                        }
+                        target.dispose ();
+                    }
+                    var db_artist = db_manager.insert_artist_if_not_exists (artist);
+                    var db_album = db_artist.add_album_if_not_exists (album);
+                    db_album.add_track_if_not_exists (track);
+                    return null;
+                });
         }
 
         public void reset_library () {
@@ -251,13 +289,12 @@ namespace PlayMyMusic.Services {
                 var children = directory.enumerate_children ("", 0);
                 FileInfo file_info;
                 while ((file_info = children.next_file ()) != null) {
-                     var file = File.new_for_path (GLib.Path.build_filename (PlayMyMusicApp.instance.COVER_FOLDER, file_info.get_name ()));
-                     file.delete ();
+                    FileUtils.remove (GLib.Path.build_filename (PlayMyMusicApp.instance.COVER_FOLDER, file_info.get_name ()));
                 }
                 children.close ();
                 children.dispose ();
             } catch (Error err) {
-                warning (err.message);
+                                warning (err.message);
             }
             directory.dispose ();
         }
@@ -292,7 +329,7 @@ namespace PlayMyMusic.Services {
         }
 
         public Objects.Playlist create_new_playlist () {
-            string new_title = _("New Playlist");
+            string new_title = _ ("New Playlist");
 
             string next_title = new_title;
 
@@ -347,16 +384,16 @@ namespace PlayMyMusic.Services {
         }
 
         //PIXBUF
-        public string? choose_new_cover () {
-            string? return_value = null;
+        public string ? choose_new_cover () {
+            string ? return_value = null;
             var cover = new Gtk.FileChooserDialog (
-                _("Choose an image…"), PlayMyMusicApp.instance.mainwindow,
+                _ ("Choose an image…"), PlayMyMusicApp.instance.mainwindow,
                 Gtk.FileChooserAction.OPEN,
-                _("_Cancel"), Gtk.ResponseType.CANCEL,
-                _("_Open"), Gtk.ResponseType.ACCEPT);
+                _ ("_Cancel"), Gtk.ResponseType.CANCEL,
+                _ ("_Open"), Gtk.ResponseType.ACCEPT);
 
             var filter = new Gtk.FileFilter ();
-            filter.set_filter_name (_("Images"));
+            filter.set_filter_name (_ ("Images"));
             filter.add_mime_type ("image/*");
 
             cover.add_filter (filter);
@@ -365,19 +402,19 @@ namespace PlayMyMusic.Services {
                 return_value = cover.get_filename ();
             }
 
-            cover.destroy();
+            cover.destroy ();
             return return_value;
         }
 
-        public string? choose_folder () {
-            string? return_value = null;
+        public string ? choose_folder () {
+            string ? return_value = null;
             Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
-                _("Select a folder."), PlayMyMusicApp.instance.mainwindow, Gtk.FileChooserAction.SELECT_FOLDER,
-                _("_Cancel"), Gtk.ResponseType.CANCEL,
-                _("_Open"), Gtk.ResponseType.ACCEPT);
+                _ ("Select a folder."), PlayMyMusicApp.instance.mainwindow, Gtk.FileChooserAction.SELECT_FOLDER,
+                _ ("_Cancel"), Gtk.ResponseType.CANCEL,
+                _ ("_Open"), Gtk.ResponseType.ACCEPT);
 
             var filter = new Gtk.FileFilter ();
-            filter.set_filter_name (_("Folder"));
+            filter.set_filter_name (_ ("Folder"));
             filter.add_mime_type ("inode/directory");
 
             chooser.add_filter (filter);
@@ -390,8 +427,8 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
-        public Gdk.Pixbuf? align_and_scale_pixbuf (Gdk.Pixbuf p, int size) {
-            Gdk.Pixbuf? pixbuf = p;
+        public Gdk.Pixbuf ? align_and_scale_pixbuf (Gdk.Pixbuf p, int size) {
+            Gdk.Pixbuf ? pixbuf = p;
             if (pixbuf.width != pixbuf.height) {
                 if (pixbuf.width > pixbuf.height) {
                     int dif = (pixbuf.width - pixbuf.height) / 2;

@@ -63,6 +63,7 @@ namespace PlayMyMusic {
         public bool use_dark_theme { get; set; }
         public bool save_custom_covers { get; set; }
         public bool save_id3_tags { get; set; }
+        public bool import_into_library { get; set; }
 
         private Settings () {
             base ("com.github.artemanufrij.playmymusic");
