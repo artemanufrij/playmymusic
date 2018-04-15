@@ -140,7 +140,7 @@ msgstr "Musik importieren…"
 
 #: src/MainWindow.vala:409
 msgid "Reset all views"
-msgstr "Alle sichten zurücksetzen"
+msgstr "Alle Sichten zurücksetzen"
 
 #: src/MainWindow.vala:416
 msgid "Resync Library"
