@@ -82,7 +82,7 @@ namespace PlayMyMusic.Services {
                     children.close ();
                     children.dispose ();
                 } catch (Error err) {
-                    warning (err.message);
+                    warning ("%s\n%s", err.message, uri);
                 }
                 directory.dispose ();
                 return null;
