@@ -84,15 +84,15 @@ namespace PlayMyMusic.Widgets {
 
         public void set_playing_file (File file) {
             current_track = null;
-            playing_track.label = file.get_basename ().replace ("&", "&amp;");
+            playing_track.label = Utils.markdown_format (file.get_basename ());
         }
 
         public void set_playing_track (PlayMyMusic.Objects.Track track) {
             current_track = track;
             if (track.album != null) {
-                playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title.replace ("&", "&amp;"),
-                    track.album.title.replace ("&", "&amp;"),
-                    track.album.artist.name.replace ("&", "&amp;"));
+                playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (Utils.markdown_format (track.title),
+                    Utils.markdown_format (track.album.title),
+                    Utils.markdown_format (track.album.artist.name));
             } else if (track.audio_cd != null) {
                 playing_track.label = _("<b>%s</b> from <b>%s</b> by <b>%s</b>").printf (track.title, track.audio_cd.title, track.audio_cd.artist);
             }

@@ -64,6 +64,10 @@ namespace PlayMyMusic.Utils {
         }
     }
 
+    public static string markdown_format (string input) {
+        return input.replace ("&", "&amp;").replace ("<", "&#60;").replace (">", "&#62;");
+    }
+
     public static void set_custom_css_style (Gdk.Screen screen) {
         Granite.Widgets.Utils.set_theming_for_screen (
             screen,
