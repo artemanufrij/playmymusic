@@ -49,7 +49,8 @@ namespace PlayMyMusic.Services {
 
         private void scan_local_files (string uri) {
             new Thread<void*> (null, () => {
-                File directory = File.new_for_uri (Uri.escape_string (uri, "/"));
+                File directory = File.new_for_uri (Uri.escape_string (uri, "/:"));
+                stdout.printf ("%s", directory.get_uri ());
                 try {
                     var children = directory.enumerate_children ("standard::*," + FileAttribute.STANDARD_CONTENT_TYPE + "," + FileAttribute.STANDARD_IS_HIDDEN + "," + FileAttribute.STANDARD_IS_SYMLINK + "," + FileAttribute.STANDARD_SYMLINK_TARGET, GLib.FileQueryInfoFlags.NONE);
                     FileInfo file_info = null;
@@ -75,7 +76,7 @@ namespace PlayMyMusic.Services {
                         } else {
                             string mime_type = file_info.get_content_type ();
                             if (Utils.is_audio_file (mime_type)) {
-                                found_music_file (directory.get_uri () + "/" + Uri.escape_string (file_info.get_name ()));
+                                found_music_file (directory.get_uri () + "/" + Uri.escape_string (file_info.get_name (), "/:"));
                             }
                         }
                     }
