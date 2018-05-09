@@ -48,7 +48,7 @@ namespace PlayMyMusic.Services {
         }
 
         private void scan_local_files (string uri) {
-            new Thread<void*> (null, () => {
+            new Thread<void*> ("scan_local_files", () => {
                 File directory = File.new_for_uri (Uri.escape_string (uri, "/:"));
                 stdout.printf ("%s\n", directory.get_uri ());
                 try {
