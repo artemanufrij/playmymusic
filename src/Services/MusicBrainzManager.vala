@@ -90,10 +90,17 @@ namespace PlayMyMusic.Services {
 
                     while (albums.length () > 0) {
                         lock (albums) {
-                            first = albums.first ().data;
-                            if (first != null) {
-                                albums.remove (first);
+                            var f = album.first ();
+                            if (f == null) {
+                                continue;
                             }
+
+                            first = f.data;
+                            if (first == null) {
+                                continue;
+                            }
+
+                            albums.remove (first);
                         }
                         Thread.usleep (1000000);
                         string url = "https://musicbrainz.org/ws/2/release/?query=release:%s AND artist:%s&fmt=json".printf (first.title.replace ("&", "%26").replace ("/", "_"), first.artist.name.replace ("&", "%26").replace ("/", "_"));
