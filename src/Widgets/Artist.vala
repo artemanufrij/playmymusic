@@ -193,7 +193,7 @@ namespace PlayMyMusic.Widgets {
                     if (new_cover != null) {
                         try {
                             var pixbuf = new Gdk.Pixbuf.from_file (new_cover);
-                            artist.set_new_cover (pixbuf, 128);
+                            artist.set_new_cover (pixbuf, 256);
                             if (settings.save_custom_covers) {
                                 artist.set_custom_cover_file (new_cover);
                             }
