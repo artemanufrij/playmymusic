@@ -167,8 +167,8 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void set_values () {
-            this.tooltip_markup = ("<b>%s</b>%s\n%s").printf (album.title.replace ("&", "&amp;"), year > 0 ? (" (%d)").printf (year) : "", album.artist.name.replace ("&", "&amp;"));
-            title_label.label = ("<b>%s</b>").printf (this.title.replace ("&", "&amp;"));
+            this.tooltip_markup = ("<b>%s</b>%s\n%s").printf (Utils.markdown_format (album.title), year > 0 ? (" (%d)").printf (year) : "", Utils.markdown_format (album.artist.name));
+            title_label.label = ("<b>%s</b>").printf (Utils.markdown_format (this.title));
             this.changed ();
         }
 

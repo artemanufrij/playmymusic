@@ -156,7 +156,7 @@ namespace PlayMyMusic.Widgets {
 
         private void set_values () {
             this.tooltip_text = this.artist.name;
-            name_label.label = ("<b>%s</b>").printf (this.name.replace ("&", "&amp;"));
+            name_label.label = ("<b>%s</b>").printf (Utils.markdown_format (this.name));
             this.changed ();
         }
 

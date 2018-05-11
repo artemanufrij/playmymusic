@@ -86,7 +86,7 @@ namespace PlayMyMusic.Widgets {
             }
             content.attach (cover, 0, 0);
 
-            station_title = new Gtk.Label (("<b>%s</b>").printf(radio.title));
+            station_title = new Gtk.Label (("<b>%s</b>").printf(Utils.markdown_format (radio.title)));
             station_title.use_markup = true;
             station_title.halign = Gtk.Align.CENTER;
             content.attach (station_title, 0, 1);

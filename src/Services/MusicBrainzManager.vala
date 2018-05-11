@@ -90,7 +90,7 @@ namespace PlayMyMusic.Services {
 
                     while (albums.length () > 0) {
                         lock (albums) {
-                            var f = album.first ();
+                            unowned GLib.List<Objects.Album>? f = albums.first ();
                             if (f == null) {
                                 continue;
                             }
