@@ -452,10 +452,12 @@ namespace PlayMyMusic.Widgets.Views {
                 return true;
             }
 
+            var filter_elements = filter.strip ().down ();
+
             Value val;
             listmodel.get_value (iter, 0, out val);
             var track = val as Objects.Track;
-            if (!track.title.down ().contains (filter) && !track.album.title.down ().contains (filter) && !track.album.artist.name.down ().contains (filter)) {
+            if (!track.title.down ().contains (filter_elements) && !track.album.title.down ().contains (filter_elements) && !track.album.artist.name.down ().contains (filter_elements)) {
                 return false;
             }
             return true;
