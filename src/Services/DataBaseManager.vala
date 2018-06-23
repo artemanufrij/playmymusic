@@ -666,7 +666,7 @@ namespace PlayMyMusic.Services {
                     SELECT id, title, genre, track, disc, duration, path
                     FROM tracks
                     WHERE album_id=$CONTAINER_ID
-                    ORDER BY disc, track;
+                    ORDER BY disc, track, title;
                 """;
             } else {
                 sql = """
