@@ -191,9 +191,8 @@ namespace PlayMyMusic.Widgets {
 
         private void edit_album () {
             var editor = new Dialogs.AlbumEditor (PlayMyMusicApp.instance.mainwindow, this.album);
-            if (editor.run () == Gtk.ResponseType.ACCEPT) {
-                editor.destroy ();
-            }
+            editor.run ();
+            editor.destroy ();
         }
 
         private void build_context_menu () {

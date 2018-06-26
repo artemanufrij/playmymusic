@@ -179,9 +179,8 @@ namespace PlayMyMusic.Widgets {
 
         private void edit_artist () {
             var editor = new Dialogs.ArtistEditor (PlayMyMusicApp.instance.mainwindow, this.artist);
-            if (editor.run () == Gtk.ResponseType.ACCEPT) {
-                editor.destroy ();
-            }
+            editor.run ();
+            editor.destroy ();
         }
 
         private void build_context_menu () {
