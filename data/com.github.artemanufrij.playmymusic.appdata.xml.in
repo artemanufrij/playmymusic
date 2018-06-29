@@ -53,9 +53,18 @@
                 <ul>
                     <li>[optional] Copy imported music files into library</li>
                 </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Show correct artist at sound indicator</li>
+                    <li>Search in Track View</li>
+                    <li>Order for Tracks without Track No in ID3 Tag</li>
+                    <li>Close behaviour for Artist and Album dialogs (by Sergii Fesenko)
+                </ul>
                 <p>Translation:</p>
                 <ul>
                     <li>German</li>
+                    <li>French (by papou84)</li>
+                    <li>Russian (by Camellan)</li>
                 </ul>
             </description>
         </release>
