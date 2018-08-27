@@ -630,6 +630,8 @@ namespace PlayMyMusic {
         public override bool key_press_event (Gdk.EventKey e) {
             if (!search_entry.is_focus && e.str.strip ().length > 0) {
                 search_entry.grab_focus ();
+            } else if (!search_entry.is_focus && e.keyval == Gdk.Key.space) {
+                toggle_playing ();
             }
             return base.key_press_event (e);
         }
