@@ -166,14 +166,11 @@ namespace PlayMyMusic.Widgets.Views {
             overlay.add_overlay (header);
             overlay.add_overlay (alert_view);
 
-            modelfilter = new Gtk.TreeModelFilter (listmodel, null);
-            modelfilter.set_visible_func (tracks_filter_func);
 
-            modelsort = new Gtk.TreeModelSort.with_model (modelfilter);
 
             view = new Gtk.TreeView ();
             view.activate_on_single_click = true;
-            view.set_model (modelsort);
+
             view.row_activated.connect (
                 (path, column) => {
                     show_track (get_track_by_path (path));
@@ -217,6 +214,14 @@ namespace PlayMyMusic.Widgets.Views {
             this.attach (overlay, 0, 0);
             this.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1);
             this.attach (scroll, 0, 2);
+        }
+
+        public void init_end () {
+            modelfilter = new Gtk.TreeModelFilter (listmodel, null);
+            modelfilter.set_visible_func (tracks_filter_func);
+
+            modelsort = new Gtk.TreeModelSort.with_model (modelfilter);
+            view.set_model (modelsort);
         }
 
         private void setup_columns () {

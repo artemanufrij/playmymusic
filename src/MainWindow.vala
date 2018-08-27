@@ -771,6 +771,7 @@ namespace PlayMyMusic {
                     }
                 }
             }
+            tracks_view.init_end ();
         }
 
         private void reset_all_views () {
