@@ -374,7 +374,9 @@ namespace PlayMyMusic.Widgets.Views {
 
         public int activate_by_track (Objects.Track track) {
             int i = 0;
-            view.grab_focus ();
+            if (PlayMyMusicApp.instance.mainwindow.content.visible_child_name == "tracks") {
+                view.grab_focus ();
+            }
             modelfilter.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);

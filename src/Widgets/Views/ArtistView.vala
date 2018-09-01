@@ -213,6 +213,9 @@ namespace PlayMyMusic.Widgets.Views {
                 if ((child as Widgets.Track).track.ID == track.ID) {
                     only_mark = true;
                     child.activate ();
+                    if (PlayMyMusicApp.instance.mainwindow.content.visible_child_name == "artists") {
+                        child.grab_focus ();
+                    }
                     only_mark = false;
                     return;
                 }

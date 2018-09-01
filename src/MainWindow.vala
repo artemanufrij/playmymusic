@@ -44,7 +44,7 @@ namespace PlayMyMusic {
         Gtk.MenuItem menu_item_reset;
         Gtk.Image icon_play;
         Gtk.Image icon_pause;
-        Gtk.Stack content;
+        public Gtk.Stack content;
         Gtk.MenuButton app_menu;
 
         Gtk.Widget audio_cd_widget;
