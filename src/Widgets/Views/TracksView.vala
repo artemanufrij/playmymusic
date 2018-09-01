@@ -374,6 +374,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         public int activate_by_track (Objects.Track track) {
             int i = 0;
+            view.grab_focus ();
             modelfilter.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);
@@ -381,6 +382,7 @@ namespace PlayMyMusic.Widgets.Views {
                         only_mark = true;
                         view.get_selection ().select_path (path);
                         view.scroll_to_cell (path, null, false, 0, 0);
+                        view.set_cursor (path, null, false);
                         show_track (track);
                         only_mark = false;
                         return true;
