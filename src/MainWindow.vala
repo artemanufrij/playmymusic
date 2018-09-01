@@ -317,6 +317,7 @@ namespace PlayMyMusic {
 
             previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             previous_button.valign = Gtk.Align.CENTER;
+            previous_button.can_focus = false;
             previous_button.tooltip_text = _ ("Previous");
             previous_button.sensitive = false;
             previous_button.clicked.connect (
@@ -325,6 +326,7 @@ namespace PlayMyMusic {
                 });
 
             play_button = new Gtk.Button ();
+            play_button.can_focus = false;
             play_button.valign = Gtk.Align.CENTER;
             play_button.image = icon_play;
             play_button.tooltip_text = _ ("Play");
@@ -336,6 +338,7 @@ namespace PlayMyMusic {
 
             next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             next_button.valign = Gtk.Align.CENTER;
+            next_button.can_focus = false;
             next_button.tooltip_text = _ ("Next");
             next_button.sensitive = false;
             next_button.clicked.connect (
