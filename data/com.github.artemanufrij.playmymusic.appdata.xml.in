@@ -47,6 +47,22 @@
         </screenshot>
     </screenshots>
     <releases>
+         <release version="1.1.1" date="2018-09-05">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>[optional] Delete Playlist if last Track was removed</li>
+                    <li>Toggle playing by Space Key</li>
+                    <li>Add Track into Playlist from Trackview</li>
+                    <li>RadioView: [Ctrl]+[Enter] for accept changes in editor</li>
+                </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Player doesn't show '0' it the timeline if playing is paused</li>
+                    <li>Better focus grabing</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.1.0" date="2018-07-24">
             <description>
                 Prepare for JUNO
