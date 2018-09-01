@@ -39,6 +39,8 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Image album;
         Gtk.Grid header;
         Granite.Widgets.AlertView alert_view;
+        Gtk.Menu menu = null;
+        Gtk.Menu playlists;
 
         Gtk.Label title_name;
         Gtk.Label album_title;
@@ -157,7 +159,7 @@ namespace PlayMyMusic.Widgets.Views {
             album_title.use_markup = true;
             header.attach (album_title, 1, 1);
 
-            alert_view = new Granite.Widgets.AlertView (_("Choose a Track"), _("No track selected"), "view-list-symbolic");
+            alert_view = new Granite.Widgets.AlertView (_ ("Choose a Track"), _ ("No track selected"), "view-list-symbolic");
             alert_view.vexpand = false;
 
             var overlay = new Gtk.Overlay ();
@@ -166,8 +168,6 @@ namespace PlayMyMusic.Widgets.Views {
             overlay.add_overlay (header);
             overlay.add_overlay (alert_view);
 
-
-
             view = new Gtk.TreeView ();
             view.activate_on_single_click = true;
 
@@ -175,6 +175,7 @@ namespace PlayMyMusic.Widgets.Views {
                 (path, column) => {
                     show_track (get_track_by_path (path));
                 });
+            view.button_press_event.connect (show_context_menu);
 
             view.insert_column_with_attributes (-1, "object", new Gtk.CellRendererText ());
 
@@ -251,6 +252,68 @@ namespace PlayMyMusic.Widgets.Views {
             view.get_column (columns.ALBUM).sort_column_id = columns.ALBUM;
             view.get_column (columns.ARTIST).sort_column_id = columns.ARTIST;
             view.get_column (columns.DURATION).sort_column_id = columns.DURATION_SORT;
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                if (menu == null) {
+                    build_context_menu ();
+                }
+
+                // GET SELECTED TRACK
+                Gtk.TreePath path = null;
+                PlayMyMusic.Objects.Track? track = null;
+                int cell_x, cell_y;
+                view.get_path_at_pos ((int)evt.x, (int)evt.y, out path, null, out cell_x, out cell_y);
+
+                if (path == null) {
+                    return false;
+                }
+
+                track = get_track_by_path (path);
+
+                if (track == null) {
+                    return false;
+                }
+
+                foreach (var child in playlists.get_children ()) {
+                    child.destroy ();
+                }
+                var item = new Gtk.MenuItem.with_label (_ ("Create New Playlist"));
+                item.activate.connect (
+                    () => {
+                        var new_playlist = library_manager.create_new_playlist ();
+                        library_manager.add_track_into_playlist (new_playlist, track.ID);
+                    });
+                playlists.add (item);
+                if (library_manager.playlists.length () > 0) {
+                    playlists.add (new Gtk.SeparatorMenuItem ());
+                }
+                foreach (var playlist in library_manager.playlists) {
+                    item = new Gtk.MenuItem.with_label (playlist.title);
+                    item.activate.connect (
+                        () => {
+                            library_manager.add_track_into_playlist (playlist, track.ID);
+                        });
+                    playlists.add (item);
+                }
+                playlists.show_all ();
+
+
+                menu.popup (null, null, null, evt.button, evt.time);
+            }
+            return false;
+        }
+
+        private void build_context_menu () {
+            menu = new Gtk.Menu ();
+            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_ ("Add into Playlist"));
+            menu.add (menu_add_into_playlist);
+
+            playlists = new Gtk.Menu ();
+            menu_add_into_playlist.set_submenu (playlists);
+
+            menu.show_all ();
         }
 
         public void add_track (Objects.Track track) {
