@@ -45,7 +45,7 @@ namespace PlayMyMusic.Objects {
         construct {
             track_removed.connect ((track) => {
                 this._tracks.remove (track);
-                if (this.tracks.length () == 0) {
+                if (this.tracks.length () == 0 && settings.remove_playlist_if_empty) {
                     db_manager.remove_playlist (this);
                 }
             });

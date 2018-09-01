@@ -64,6 +64,7 @@ namespace PlayMyMusic {
         public bool save_custom_covers { get; set; }
         public bool save_id3_tags { get; set; }
         public bool import_into_library { get; set; }
+        public bool remove_playlist_if_empty { get; set; }
 
         private Settings () {
             base ("com.github.artemanufrij.playmymusic");

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2017-2017 Artem Anufrij <artem.anufrij@live.de>
+ * Copyright (c) 2017-2018 Artem Anufrij <artem.anufrij@live.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -87,6 +87,10 @@ namespace PlayMyMusic.Dialogs {
             import_into_library.active = settings.import_into_library;
             import_into_library.notify["active"].connect (() => { settings.import_into_library = import_into_library.active; });
 
+            var remove_playlist_if_empty = new Gtk.Switch();
+            remove_playlist_if_empty.active = settings.remove_playlist_if_empty;
+            remove_playlist_if_empty.notify["active"].connect (() => { settings.remove_playlist_if_empty = remove_playlist_if_empty.active; });
+
             grid.attach (label_generator (_ ("Use Dark Theme")), 0, 0);
             grid.attach (use_dark_theme, 1, 0);
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1, 2, 1);
@@ -104,6 +108,8 @@ namespace PlayMyMusic.Dialogs {
             grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 8, 2, 1);
             grid.attach (label_generator (_ ("Copy Imported Files into Library")), 0, 9);
             grid.attach (import_into_library, 1, 9);
+            grid.attach (label_generator (_ ("Remove Playlist if last Track was removed")), 0, 10);
+            grid.attach (remove_playlist_if_empty, 1, 10);
 
             content.pack_start (grid, false, false, 0);
 
