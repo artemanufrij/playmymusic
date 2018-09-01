@@ -365,8 +365,12 @@ namespace PlayMyMusic {
                             view_mode.set_active (1);
                             artists_view.activate_by_track (track);
                             break;
-                        case PlayMyMusic.Services.PlayMode.PLAYLIST :
+                        case PlayMyMusic.Services.PlayMode.TRACKS :
                             view_mode.set_active (2);
+                            tracks_view.activate_by_track (track);
+                            break;
+                        case PlayMyMusic.Services.PlayMode.PLAYLIST :
+                            view_mode.set_active (3);
                             playlists_view.activate_by_track (track);
                             break;
                         case PlayMyMusic.Services.PlayMode.AUDIO_CD :

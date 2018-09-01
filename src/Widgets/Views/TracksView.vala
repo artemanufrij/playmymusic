@@ -262,7 +262,7 @@ namespace PlayMyMusic.Widgets.Views {
 
                 // GET SELECTED TRACK
                 Gtk.TreePath path = null;
-                PlayMyMusic.Objects.Track? track = null;
+                PlayMyMusic.Objects.Track ? track = null;
                 int cell_x, cell_y;
                 view.get_path_at_pos ((int)evt.x, (int)evt.y, out path, null, out cell_x, out cell_y);
 
@@ -363,14 +363,24 @@ namespace PlayMyMusic.Widgets.Views {
                 return;
             }
 
-            int i = 0;
+            var i = activate_by_track (track);
 
+            if (settings.shuffle_mode) {
+                shuffle_index.append (i);
+            } else if (shuffle_index.length () > 0) {
+                shuffle_index = new GLib.List<int> ();
+            }
+        }
+
+        public int activate_by_track (Objects.Track track) {
+            int i = 0;
             modelfilter.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);
                     if (item_track.ID == track.ID) {
                         only_mark = true;
                         view.get_selection ().select_path (path);
+                        view.scroll_to_cell (path, null, false, 0, 0);
                         show_track (track);
                         only_mark = false;
                         return true;
@@ -378,12 +388,7 @@ namespace PlayMyMusic.Widgets.Views {
                     i++;
                     return false;
                 });
-
-            if (settings.shuffle_mode) {
-                shuffle_index.append (i);
-            } else if (shuffle_index.length () > 0) {
-                shuffle_index = new GLib.List<int> ();
-            }
+            return i;
         }
 
         private void change_cover () {
