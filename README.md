@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/artemanufrij/playmymusic.svg?branch=master)](https://travis-ci.org/artemanufrij/playmymusic)
+
 <div>
   <h1 align="center">Melody</h1>
   <h3 align="center"><img src="data/icons/64/com.github.artemanufrij.playmymusic.svg"/><br>A music player for listening to local music files, online radios, and Audio CD's</h3>
