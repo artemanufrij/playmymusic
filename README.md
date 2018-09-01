@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/artemanufrij/playmymusic.svg?branch=master)](https://travis-ci.org/artemanufrij/playmymusic)
-
 <div>
   <h1 align="center">Melody</h1>
   <h3 align="center"><img src="data/icons/64/com.github.artemanufrij.playmymusic.svg"/><br>A music player for listening to local music files, online radios, and Audio CD's</h3>
   <p align="center">Designed for <a href="https://elementary.io">elementary OS</a></p>
 </div>
+
+[![Build Status](https://travis-ci.org/artemanufrij/playmymusic.svg?branch=master)](https://travis-ci.org/artemanufrij/playmymusic)
 
 ### Donate
 <a href="https://www.paypal.me/ArtemAnufrij">PayPal</a> | <a href="https://liberapay.com/Artem/donate">LiberaPay</a> | <a href="https://www.patreon.com/ArtemAnufrij">Patreon</a>
