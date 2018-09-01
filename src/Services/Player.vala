@@ -112,7 +112,7 @@ namespace PlayMyMusic.Services {
                         Interfaces.Inhibitor.instance.inhibit ();
                         break;
                     case Gst.State.READY:
-                        stop_progress_signal ();
+                        stop_progress_signal (true);
                         Interfaces.Inhibitor.instance.uninhibit ();
                         break;
                     case Gst.State.PAUSED:
@@ -130,9 +130,11 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public void stop_progress_signal () {
+        public void stop_progress_signal (bool reset_timer = false) {
             pause_progress_signal ();
-            current_progress_changed (0);
+            if (reset_timer) {
+                current_progress_changed (0);
+            }
         }
 
         public void start_progress_signal () {
