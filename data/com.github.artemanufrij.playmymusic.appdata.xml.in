@@ -61,6 +61,10 @@
                     <li>Player doesn't show '0' it the timeline if playing is paused</li>
                     <li>Better focus grabing</li>
                 </ul>
+                <p>Improved:</p>
+                <ul>
+                    <li>Faster start up behaviour</li>
+                </ul>
             </description>
         </release>
         <release version="1.1.0" date="2018-07-24">
