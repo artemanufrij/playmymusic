@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-04-15 18:54+0200\n"
-"PO-Revision-Date: 2017-10-29 10:39+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2018-10-02 23:26+0200\n"
+"Last-Translator: Papou84 <pacome.heuze@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -23,54 +23,51 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.desktop.in:4
 #: src/MainWindow.vala:166 src/MainWindow.vala:308
 msgid "Melody"
-msgstr ""
+msgstr "Melody"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
-msgid ""
-"A music player for listening local music files, online radios and Audio CD's."
-msgstr ""
+msgid "A music player for listening local music files, online radios and Audio CD's."
+msgstr "Un lecteur multimédia pour écouter la musique sur votre ordinateur, des radio en ligne et vos CD Audio."
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
 msgid "A very fast music player designed extra for large local libraries."
-msgstr ""
+msgstr "Un lecteur très rapide conçu pour des grandes bibliothèques musicales."
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
-msgstr ""
+msgstr "Caractéristiques"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
-#, fuzzy
 msgid "Show all Albums from your library"
-msgstr "Ajouter une liste de lecture pour gérer vos morceaux favoris"
+msgstr "Afficher tous les albums de votre bibliothèque"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
 msgid "Group tracks by Artists"
-msgstr ""
+msgstr "Triers les pistes par Artistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
-#, fuzzy
 msgid "Manage your Playlists"
-msgstr "Listes de lecture"
+msgstr "Gérer vos listes de lecture"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
 msgid "Listen to online Radio"
-msgstr ""
+msgstr "Ecoutez les radio en ligne"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
 msgid "Audio CD support"
-msgstr ""
+msgstr "Support du CD Audio"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
 msgid "Manage your MTP device"
-msgstr ""
+msgstr "Gérer vos dispositifs MTP"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
 msgid "ID3-Tag support"
-msgstr ""
+msgstr "Support ID3-Tag"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:30
 msgid "Artem Anufrij"
-msgstr ""
+msgstr "Artem Anufrij"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:37
 #: src/MainWindow.vala:574
@@ -85,24 +82,23 @@ msgstr "Artistes"
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
 #: src/MainWindow.vala:583
 msgid "Tracks"
-msgstr ""
+msgstr "Pistes"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:5
 msgid "Listen your music"
-msgstr ""
+msgstr "Ecouter votre musique"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
-msgstr ""
+msgstr "musique;radio;playlist;"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:8
 msgid "com.github.artemanufrij.playmymusic"
-msgstr ""
+msgstr "com.github.artemanufrij.playmymusic"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:18
-#, fuzzy
 msgid "Play/Pause"
-msgstr "Pause"
+msgstr "Lecture/Pause"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:20
 msgid "media-playback-start-symbolic"
@@ -144,12 +140,11 @@ msgstr "Importer de la musique..."
 
 #: src/MainWindow.vala:409
 msgid "Reset all views"
-msgstr ""
+msgstr "Remettre les vues de pochettes à jours"
 
 #: src/MainWindow.vala:416
-#, fuzzy
 msgid "Resync Library"
-msgstr "Ré-indexer la bibliothèque"
+msgstr "Resynchroniser la bibliothèque"
 
 #: src/MainWindow.vala:422
 msgid "Preferences"
@@ -170,11 +165,11 @@ msgstr "Répéter"
 
 #: src/MainWindow.vala:536
 msgid "Loading…"
-msgstr ""
+msgstr "Chargement"
 
 #: src/MainWindow.vala:536
 msgid "Reading out database content"
-msgstr ""
+msgstr "Lecture du contenu de la base de donnée"
 
 #: src/MainWindow.vala:588
 msgid "Playlists"
@@ -186,7 +181,7 @@ msgstr "Stations radio"
 
 #: src/MainWindow.vala:600
 msgid "Audio CD"
-msgstr ""
+msgstr "CD audio"
 
 #: src/MainWindow.vala:725 src/MainWindow.vala:733
 #: src/Widgets/Views/TracksView.vala:278
@@ -196,11 +191,11 @@ msgstr "<b>%s</b> par <b>%s</b>"
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 msgid "Click to choose a new cover…"
-msgstr ""
+msgstr "Cliquer pour choisir une nouvelle pochette"
 
 #: src/Dialogs/AlbumEditor.vala:110
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
 #: src/Dialogs/AlbumEditor.vala:121 src/Dialogs/ArtistEditor.vala:114
 #: src/Widgets/Views/RadiosView.vala:243
@@ -209,7 +204,7 @@ msgstr "Enregistrer"
 
 #: src/Dialogs/Preferences.vala:90
 msgid "Use Dark Theme"
-msgstr ""
+msgstr "Utiliser un thème sombre"
 
 #: src/Dialogs/Preferences.vala:93
 msgid "Play in background if closed"
@@ -217,27 +212,27 @@ msgstr "Poursuivre la lecture en arrière-plan"
 
 #: src/Dialogs/Preferences.vala:95
 msgid "Sync files on start up"
-msgstr ""
+msgstr "Synchroniser les fichiers au démarrage"
 
 #: src/Dialogs/Preferences.vala:98
 msgid "Load Content from MusicBrainz"
-msgstr ""
+msgstr "Charger les contenus depuis MusicBrainz"
 
 #: src/Dialogs/Preferences.vala:100
 msgid "Save custom Covers in Library folder"
-msgstr ""
+msgstr "Sauvegarder les pochettes dans le dossier de la bibliothèque"
 
 #: src/Dialogs/Preferences.vala:102
 msgid "Save changes into ID3-Tag"
-msgstr ""
+msgstr "Sauvegarder les changements dans les Tag ID3"
 
 #: src/Dialogs/Preferences.vala:105
 msgid "Copy Imported Files into Library"
-msgstr ""
+msgstr "Copier les fichiers importer dans la bibliothèque"
 
 #: src/Dialogs/Preferences.vala:110
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #: src/Objects/AudioCD.vala:67 src/Objects/AudioCD.vala:68
 #: src/Services/TagManager.vala:48
@@ -247,15 +242,15 @@ msgstr "Inconnu"
 #: src/Objects/AudioCD.vala:105
 #, c-format
 msgid "Track %d"
-msgstr ""
+msgstr "Piste %d"
 
 #: src/Objects/MobilePhone.vala:45
 msgid "No Music Files found"
-msgstr ""
+msgstr "Aucun fichier de musique trouvé"
 
 #: src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
-msgstr ""
+msgstr "Effacement"
 
 #: src/Services/LibraryManager.vala:332
 msgid "New Playlist"
@@ -292,7 +287,7 @@ msgstr "Changer la pochette..."
 
 #: src/Widgets/Album.vala:219
 msgid "Edit Album properties…"
-msgstr ""
+msgstr "Editer les propriétés de l'album"
 
 #: src/Widgets/Album.vala:226 src/Widgets/Track.vala:195
 msgid "Add into Playlist"
@@ -301,7 +296,7 @@ msgstr "Ajouter à la liste de lecture"
 #: src/Widgets/Album.vala:231 src/Widgets/Artist.vala:214
 #: src/Widgets/Track.vala:210
 msgid "Send to"
-msgstr ""
+msgstr "Envoyer à"
 
 #: src/Widgets/Album.vala:257 src/Widgets/Track.vala:227
 msgid "Create New Playlist"
@@ -310,11 +305,11 @@ msgstr "Créer une nouvelle liste de lecture"
 #: src/Widgets/Album.vala:306 src/Widgets/Artist.vala:261
 #, c-format
 msgid "Merge %u selected Albums"
-msgstr ""
+msgstr "Fusionner %u les Albums sélectionnés"
 
 #: src/Widgets/Artist.vala:207
 msgid "Edit Artist properties…"
-msgstr ""
+msgstr "Editer les propriété de l'Artist"
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -344,12 +339,11 @@ msgstr "<b>%s</b> de <b>%s</b> par <b>%s</b>"
 
 #: src/Widgets/Views/AlbumsView.vala:119
 msgid "Get Some Tunes"
-msgstr ""
+msgstr "Obtenirs des morceaux"
 
 #: src/Widgets/Views/AlbumsView.vala:119
-#, fuzzy
 msgid "Add music to your library."
-msgstr "Importer de la musique depuis votre bibliothèque"
+msgstr "Ajouter de la musique depuis votre bibliothèque"
 
 #: src/Widgets/Views/AlbumsView.vala:120
 msgid "Change Music Folder"
@@ -357,8 +351,7 @@ msgstr "Modifier le dossier musique"
 
 #: src/Widgets/Views/AlbumsView.vala:120
 msgid "Load music from a folder, a network or an external disk."
-msgstr ""
-"Charger de la musique depuis un dossier, le réseau ou un disque externe"
+msgstr "Charger de la musique depuis un dossier, le réseau ou un disque externe"
 
 #: src/Widgets/Views/AlbumsView.vala:121
 msgid "Import Music"
@@ -372,22 +365,21 @@ msgstr "Importer de la musique depuis votre bibliothèque"
 #: src/Widgets/Views/PlaylistsView.vala:154
 #: src/Widgets/Views/RadiosView.vala:205
 msgid "No results"
-msgstr ""
+msgstr "Aucun résultat"
 
 #: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:154
 #: src/Widgets/Views/RadiosView.vala:205
 msgid "Try another search"
-msgstr ""
+msgstr "Modifiez votre recherche"
 
 #: src/Widgets/Views/ArtistView.vala:110
-#, fuzzy
 msgid "Choose an Artist"
-msgstr "Choisir une pochette"
+msgstr "Choisir un artiste"
 
 #: src/Widgets/Views/ArtistView.vala:110
 msgid "No Artist selected"
-msgstr ""
+msgstr "aucun artiste choisi"
 
 #: src/Widgets/Views/ArtistView.vala:163
 #, c-format
@@ -396,7 +388,7 @@ msgstr "<b>%d pistes</b> dans <b>%d album</b>(s)"
 
 #: src/Widgets/Views/MobilePhone.vala:108
 msgid "Hide Mobile Panel"
-msgstr ""
+msgstr "Cacher le panneau du téléphone Portable"
 
 #: src/Widgets/Views/PlaylistsView.vala:95
 msgid "Add a playlist"
@@ -408,24 +400,20 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: src/Widgets/Views/PlaylistsView.vala:137
-#, fuzzy
 msgid "No Playlists"
-msgstr "Listes de lecture"
+msgstr "Aucune Listes de lecture"
 
 #: src/Widgets/Views/PlaylistsView.vala:137
-#, fuzzy
 msgid "Add playlist to your library."
-msgstr "Ajouter une liste de lecture pour gérer vos morceaux favoris"
+msgstr "Ajouter une liste de lecture à votre bibliothèque"
 
 #: src/Widgets/Views/PlaylistsView.vala:138
-#, fuzzy
 msgid "Create Playlist"
-msgstr "Créer une nouvelle liste de lecture"
+msgstr "Créer une liste de lecture"
 
 #: src/Widgets/Views/PlaylistsView.vala:138
-#, fuzzy
 msgid "Create a playlist for manage your favorite songs."
-msgstr "Ajouter une liste de lecture pour gérer vos morceaux favoris"
+msgstr "Ajouter une liste de lecture pour gérer vos morceaux favoris."
 
 #: src/Widgets/Views/PlaylistView.vala:101
 msgid "Rename"
@@ -446,11 +434,11 @@ msgstr "Ajouter une radio"
 
 #: src/Widgets/Views/RadiosView.vala:123
 msgid "Station Name"
-msgstr ""
+msgstr "Nom de la Station"
 
 #: src/Widgets/Views/RadiosView.vala:131
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/Widgets/Views/RadiosView.vala:150
 msgid "Choose a Cover"
@@ -458,14 +446,12 @@ msgstr "Choisir une pochette"
 
 #. NEW STATION POPOVER END
 #: src/Widgets/Views/RadiosView.vala:187
-#, fuzzy
 msgid "No Radio Stations"
-msgstr "Stations radio"
+msgstr "Aucune Station de radio"
 
 #: src/Widgets/Views/RadiosView.vala:187
-#, fuzzy
 msgid "Add radio stations to your library."
-msgstr "Ajouter une radio"
+msgstr "Ajouter une radio à votre bibliothèque"
 
 #: src/Widgets/Views/RadiosView.vala:188
 msgid "Add Radio Station"
@@ -476,35 +462,32 @@ msgid "Add a Stream URL like .pls or .m3u."
 msgstr "Ajouter une URL de streaming en .pls ou .m3u"
 
 #: src/Widgets/Views/TracksView.vala:160
-#, fuzzy
 msgid "Choose a Track"
-msgstr "Choisir une pochette"
+msgstr "Choisir une piste"
 
 #: src/Widgets/Views/TracksView.vala:160
 msgid "No track selected"
-msgstr ""
+msgstr "Aucune piste sélectionnée"
 
 #: src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
-msgstr ""
+msgstr "N°"
 
 #: src/Widgets/Views/TracksView.vala:193
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: src/Widgets/Views/TracksView.vala:200
-#, fuzzy
 msgid "Album"
-msgstr "Albums"
+msgstr "Album"
 
 #: src/Widgets/Views/TracksView.vala:202
-#, fuzzy
 msgid "Artist"
-msgstr "Artistes"
+msgstr "Artiste"
 
 #: src/Widgets/Views/TracksView.vala:207
 msgid "Duration"
-msgstr ""
+msgstr "Durée"
 
 #~ msgid "Add Playlist"
 #~ msgstr "Ajouter une liste de lecture"
