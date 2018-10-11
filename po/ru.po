@@ -31,10 +31,10 @@ msgstr "Melody"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
 msgid ""
-"A music player for listening local music files, online radios and Audio CD's."
+"A music player for listening local music files, online radios and Audio CD's"
 msgstr ""
 "Музыкальный плеер для прослушивания локальной музыки, онлайн радио и аудио "
-"CD."
+"CD"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
 msgid "A very fast music player designed extra for large local libraries."

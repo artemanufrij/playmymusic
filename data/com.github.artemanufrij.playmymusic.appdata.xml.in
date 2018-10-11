@@ -5,9 +5,9 @@
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0+</project_license>
     <name>Melody</name>
-    <summary>A music player for listening local music files, online radios and Audio CD's.</summary>
+    <summary>A music player for listening local music files, online radios and Audio CD's</summary>
     <description>
-        <p>A very fast music player designed extra for large local libraries.</p>
+        <p>A very fast music player designed extra for large local libraries which also supports online radios and downloading album covers</p>
         <p>Features:</p>
         <ul>
             <li>Show all Albums from your library</li>
