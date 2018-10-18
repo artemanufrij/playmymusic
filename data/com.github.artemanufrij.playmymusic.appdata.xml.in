@@ -47,7 +47,15 @@
         </screenshot>
     </screenshots>
     <releases>
-         <release version="1.1.1" date="2018-09-05">
+        <release version="1.1.2" date="2018-10-25">
+            <description>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Restore correct window size</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.1.1" date="2018-09-05">
             <description>
                 <p>New:</p>
                 <ul>
