@@ -250,8 +250,6 @@ namespace PlayMyMusic {
                 });
             this.configure_event.connect (
                 (event) => {
-                    settings.window_width = event.width;
-                    settings.window_height = event.height;
                     artists_view.load_background ();
                     audio_cd_view.load_background ();
                     tracks_view.load_background ();
@@ -984,6 +982,11 @@ namespace PlayMyMusic {
                 this.get_position (out x, out y);
                 settings.window_x = x;
                 settings.window_y = y;
+
+                int width, height;
+                this.get_size (out width, out height);
+                settings.window_width = width;
+                settings.window_height = height;
             }
         }
     }
