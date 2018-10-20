@@ -10,24 +10,25 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.desktop.in:4
 #: src/MainWindow.vala:166 src/MainWindow.vala:308
 msgid "Melody"
-msgstr ""
+msgstr "Melodiya"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
 msgid ""
 "A music player for listening local music files, online radios and Audio CD's."
 msgstr ""
+"Yerli musiqi faylları, onlayn radiolar və Audio CD-ləri dinləmək üçün bir Musiqi Pleyer."
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
 msgid "A very fast music player designed extra for large local libraries."
-msgstr ""
+msgstr "Böyük yerli kitabxanalar üçün hazırlanmış çox sürətli bir Musiqi PLeyer."
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
-msgstr ""
+msgstr "Xüsusiyyətləri:"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
 msgid "Show all Albums from your library"
-msgstr ""
+msgstr "Kitabxanadan bütün albomları göstərin"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
 msgid "Group tracks by Artists"
@@ -35,23 +36,23 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
 msgid "Manage your Playlists"
-msgstr ""
+msgstr "PlayList'i idarə edin"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
 msgid "Listen to online Radio"
-msgstr ""
+msgstr "Online Radio qulaq asın"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
 msgid "Audio CD support"
-msgstr ""
+msgstr "Audio CD dəstəyi"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
 msgid "Manage your MTP device"
-msgstr ""
+msgstr "MTP cihazınızı idarə edin"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
 msgid "ID3-Tag support"
-msgstr ""
+msgstr "ID3-Tag dəstəyi"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:30
 msgid "Artem Anufrij"
@@ -60,12 +61,12 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:37
 #: src/MainWindow.vala:574
 msgid "Albums"
-msgstr ""
+msgstr "Albomlar"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
 #: src/MainWindow.vala:578
 msgid "Artists"
-msgstr ""
+msgstr "Sənətçilər"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
 #: src/MainWindow.vala:583
@@ -74,11 +75,11 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:5
 msgid "Listen your music"
-msgstr ""
+msgstr "Musiqiinizi dinləyin"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
-msgstr ""
+msgstr "musiqi;radio;pleylist"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:8
 msgid "com.github.artemanufrij.playmymusic"
