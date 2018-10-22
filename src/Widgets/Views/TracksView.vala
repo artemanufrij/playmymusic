@@ -299,7 +299,6 @@ namespace PlayMyMusic.Widgets.Views {
                 }
                 playlists.show_all ();
 
-
                 menu.popup (null, null, null, evt.button, evt.time);
             }
             return false;
