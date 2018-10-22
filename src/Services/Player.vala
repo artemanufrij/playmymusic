@@ -171,7 +171,7 @@ namespace PlayMyMusic.Services {
                 playbin.uri = current_track.uri;
             }
 
-            play ();
+            playbin.set_state (Gst.State.PLAYING);
             while (duration == 0) {};
             pause ();
             current_duration_changed (duration);

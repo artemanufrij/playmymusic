@@ -859,6 +859,7 @@ namespace PlayMyMusic {
         }
 
         private void load_last_played_track () {
+            send_desktop_notification = false;
             switch (settings.track_source) {
                 case "albums" :
                     view_mode.set_active (0);
@@ -901,6 +902,7 @@ namespace PlayMyMusic {
                     }
                     break;
             }
+            send_desktop_notification = true;
         }
 
         public void search_reset () {
