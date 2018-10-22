@@ -203,7 +203,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
-                menu.popup (null, null, null, evt.button, evt.time);
+                menu.popup_at_pointer (null);
                 return true;
             } if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
                 if (library_manager.player.play_mode != Services.PlayMode.PLAYLIST || library_manager.player.current_track.playlist.ID != playlist.ID) {

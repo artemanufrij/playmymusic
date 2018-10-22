@@ -266,7 +266,7 @@ namespace PlayMyMusic.Widgets {
                     menu_send_to.show_all ();
                 }
 
-                menu.popup (null, null, null, evt.button, evt.time);
+                menu.popup_at_pointer (null);
                 return true;
             } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
                 this.activate ();
