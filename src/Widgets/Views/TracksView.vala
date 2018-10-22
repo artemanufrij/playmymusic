@@ -357,7 +357,6 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void mark_playing_track (Objects.Track ? track) {
-            view.get_selection ().unselect_all ();
             if (track == null || track == current_track) {
                 return;
             }
