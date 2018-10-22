@@ -164,6 +164,9 @@ namespace PlayMyMusic {
                         if (state != Gst.State.PAUSED) {
                             headerbar.set_custom_title (null);
                             headerbar.title = _ ("Melody");
+                        } else {
+                            timeline.set_playing_track (library_manager.player.current_track);
+                            headerbar.set_custom_title (timeline);
                         }
                         play_button.image = icon_play;
                         play_button.tooltip_text = _ ("Play");
@@ -857,46 +860,46 @@ namespace PlayMyMusic {
 
         private void load_last_played_track () {
             switch (settings.track_source) {
-            case "albums" :
-                view_mode.set_active (0);
-                var album = albums_view.activate_by_id (settings.last_album_id);
-                if (album != null) {
-                    var track = album.get_track_by_id (settings.last_track_id);
-                    if (track != null) {
-                        library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.ALBUM);
-                    }
-                }
-                break;
-            case "artists" :
-                view_mode.set_active (1);
-                var artist = artists_view.activate_by_id (settings.last_artist_id);
-                if (artist != null) {
-                    var track = artist.get_track_by_id (settings.last_track_id);
-                    if (track != null) {
-                        library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.ARTIST);
-                    }
-                }
-                break;
-            case "tracks" :
-                view_mode.set_active (2);
-                break;
-            case "playlists" :
-                view_mode.set_active (3);
-                var playlist = playlists_view.activate_by_id (settings.last_playlist_id);
-                if (playlist != null) {
-                    var track = playlist.get_track_by_id (settings.last_track_id);
-                    if (track != null) {
-                        library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.PLAYLIST);
-                    }
-                }
-                break;
-            default :
-                if (settings.view_index != 5 || audio_cd_view.current_audio_cd != null) {
-                    view_mode.set_active (settings.view_index);
-                } else {
+                case "albums" :
                     view_mode.set_active (0);
-                }
-                break;
+                    var album = albums_view.activate_by_id (settings.last_album_id);
+                    if (album != null) {
+                        var track = album.get_track_by_id (settings.last_track_id);
+                        if (track != null) {
+                            library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.ALBUM, settings.track_progress);
+                        }
+                    }
+                    break;
+                case "artists" :
+                    view_mode.set_active (1);
+                    var artist = artists_view.activate_by_id (settings.last_artist_id);
+                    if (artist != null) {
+                        var track = artist.get_track_by_id (settings.last_track_id);
+                        if (track != null) {
+                            library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.ARTIST, settings.track_progress);
+                        }
+                    }
+                    break;
+                case "tracks" :
+                    view_mode.set_active (2);
+                    break;
+                case "playlists" :
+                    view_mode.set_active (3);
+                    var playlist = playlists_view.activate_by_id (settings.last_playlist_id);
+                    if (playlist != null) {
+                        var track = playlist.get_track_by_id (settings.last_track_id);
+                        if (track != null) {
+                            library_manager.player.load_track (track, PlayMyMusic.Services.PlayMode.PLAYLIST, settings.track_progress);
+                        }
+                    }
+                    break;
+                default :
+                    if (settings.view_index != 5 || audio_cd_view.current_audio_cd != null) {
+                        view_mode.set_active (settings.view_index);
+                    } else {
+                        view_mode.set_active (0);
+                    }
+                    break;
             }
         }
 
@@ -947,7 +950,7 @@ namespace PlayMyMusic {
             settings.view_index = view_mode.selected;
             var current_track = library_manager.player.current_track;
 
-            if (current_track != null && library_manager.player.get_state () == Gst.State.PLAYING &&
+            if (current_track != null && (library_manager.player.get_state () == Gst.State.PLAYING || library_manager.player.get_state () == Gst.State.PAUSED) &&
                 (library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.ALBUM
                  || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.ARTIST
                  || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.TRACKS

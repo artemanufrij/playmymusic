@@ -74,9 +74,6 @@ namespace PlayMyMusic.Services {
             get {
                 int64 d = 0;
                 this.playbin.query_duration (fmt, out d);
-                if (d == 0 && current_track != null) {
-                    d = (int64)current_track.duration;
-                }
                 return d;
             }
         }
@@ -156,7 +153,7 @@ namespace PlayMyMusic.Services {
             play ();
         }
 
-        public bool load_track (Objects.Track? track, PlayMode play_mode) {
+        public bool load_track (Objects.Track? track, PlayMode play_mode, double progress = 0) {
             if (track == current_track || track == null) {
                 return false;
             }
@@ -173,14 +170,26 @@ namespace PlayMyMusic.Services {
             } else {
                 playbin.uri = current_track.uri;
             }
+
+            play ();
+            while (duration == 0) {};
+            pause ();
+            current_duration_changed (duration);
+
+            if (progress > 0) {
+                seek_to_progress (progress);
+                current_progress_changed (progress);
+            }
+
             return true;
         }
 
         public void set_track (Objects.Track? track, PlayMode play_mode) {
-            current_duration_changed (0);
+            if (track == null) {
+                current_duration_changed (0);
+            }
             if (load_track (track, play_mode)) {
                 play ();
-                current_duration_changed (duration);
             }
         }
 
