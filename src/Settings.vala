@@ -59,6 +59,7 @@ namespace PlayMyMusic {
         public string [] covers { get; set; }
         public string library_location { get; set; }
         public int view_index { get; set; }
+        public string [] hidden_tracks_columns { get; set; }
         public bool load_content_from_musicbrainz { get; set; }
         public bool use_dark_theme { get; set; }
         public bool save_custom_covers { get; set; }

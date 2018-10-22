@@ -309,6 +309,19 @@ namespace PlayMyMusic.Widgets.Views {
             var menu_add_into_playlist = new Gtk.MenuItem.with_label (_ ("Add into Playlist"));
             menu.add (menu_add_into_playlist);
 
+            var menu_visibility_columns = new Gtk.MenuItem.with_label ( _("Columns Visibility"));
+            var menu_columns = new Gtk.Menu ();
+            menu_visibility_columns.set_submenu (menu_columns);
+            string[] col_names = {_("Nr"), _("Title"), _("Album"), _("Artist"), _("Duration")};
+            foreach (var col_name in col_names) {
+                var menu_column = new Gtk.MenuItem.with_label (col_name);
+                menu_column.activate.connect (() => {
+
+                });
+                menu_columns.add (menu_column);
+            }
+            menu.add (menu_visibility_columns);
+
             playlists = new Gtk.Menu ();
             menu_add_into_playlist.set_submenu (playlists);
 
