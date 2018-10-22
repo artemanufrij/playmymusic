@@ -176,6 +176,14 @@ namespace PlayMyMusic.Services {
                 warning (errormsg);
             }
 
+             q = """CREATE TABLE IF NOT EXISTS settings_tracks_hidden_columns (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                column      TEXT        NOT NULL
+                );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
+
             q = """PRAGMA foreign_keys = ON;""";
             if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                 warning (errormsg);
@@ -914,6 +922,65 @@ namespace PlayMyMusic.Services {
             }
             stmt.reset ();
         }
+
+// SETTINGS REGION
+        public GLib.List<string> settings_get_hidde_columns () {
+            GLib.List<string> return_value = new GLib.List<string> ();
+
+            Sqlite.Statement stmt;
+            string sql = """
+                SELECT id, column FROM settings_tracks_hidden_columns ORDER BY column;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+
+            while (stmt.step () == Sqlite.ROW) {
+                return_value.append (stmt.column_text (1));
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
+        public bool settings_delete_hidden_column (string column) {
+            var return_value = false;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                DELETE FROM settings_tracks_hidden_columns WHERE column=$COLUMN;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$COLUMN", column);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                return_value = true;
+            }
+            stmt.reset ();
+
+            return return_value;
+        }
+
+        public bool settings_insert_hidden_column (string column) {
+            var return_value = false;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                INSERT INTO settings_tracks_hidden_columns (column) VALUES ($COLUMN);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$COLUMN", column);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                return_value = true;
+            }
+            stmt.reset ();
+
+            return return_value;
+        }
+
 
 // UTILITIES REGION
         public bool music_file_exists (string uri) {

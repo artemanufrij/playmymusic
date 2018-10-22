@@ -47,6 +47,8 @@ namespace PlayMyMusic.Widgets.Views {
 
         Objects.Track current_track;
 
+        string[] col_names = {_("Nr"), _("Title"), _("Album"), _("Artist"), _("Duration")};
+
         bool only_mark = false;
 
         private string _filter = "";
@@ -243,7 +245,25 @@ namespace PlayMyMusic.Widgets.Views {
             col = view.get_column (columns.DURATION_SORT);
             col.visible = false;
 
+            set_custom_visibility ();
             setup_column_sort ();
+        }
+
+        private void set_custom_visibility () {
+            var hidden_columns = library_manager.db_manager.settings_get_hidde_columns ();
+            foreach (var col in view.get_columns ()) {
+                foreach (var col_name in col_names) {
+                    if (col.title == col_name) {
+                        foreach (var hidden_col in hidden_columns) {
+                            if (hidden_col == col_name) {
+                                col.visible = false;
+                                break;
+                            }
+                            col.visible = true;
+                        }
+                    }
+                }
+            }
         }
 
         private void setup_column_sort () {
@@ -312,11 +332,34 @@ namespace PlayMyMusic.Widgets.Views {
             var menu_visibility_columns = new Gtk.MenuItem.with_label ( _("Columns Visibility"));
             var menu_columns = new Gtk.Menu ();
             menu_visibility_columns.set_submenu (menu_columns);
-            string[] col_names = {_("Nr"), _("Title"), _("Album"), _("Artist"), _("Duration")};
-            foreach (var col_name in col_names) {
-                var menu_column = new Gtk.MenuItem.with_label (col_name);
-                menu_column.activate.connect (() => {
 
+            var hidden_columns = library_manager.db_manager.settings_get_hidde_columns ();
+            foreach (var col_name in col_names) {
+                var menu_column = new Gtk.CheckMenuItem.with_label (col_name);
+                menu_column.active = true;
+                foreach (var hidden_col in hidden_columns) {
+                    if (hidden_col == col_name) {
+                        menu_column.active = false;
+                    }
+                }
+                menu_column.toggled.connect (() => {
+                    if (menu_column.active) {
+                        if (library_manager.db_manager.settings_delete_hidden_column (col_name)) {
+                            foreach (var col in view.get_columns ()) {
+                                if (col.title == col_name) {
+                                    col.visible = true;
+                                }
+                            }
+                        }
+                    } else {
+                        if (library_manager.db_manager.settings_insert_hidden_column (col_name)) {
+                            foreach (var col in view.get_columns ()) {
+                                if (col.title == col_name) {
+                                    col.visible = false;
+                                }
+                            }
+                        }
+                    }
                 });
                 menu_columns.add (menu_column);
             }
