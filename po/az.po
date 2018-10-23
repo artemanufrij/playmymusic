@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-15 18:54+0200\n"
+"POT-Creation-Date: 2018-10-23 20:16+0200\n"
 "Last-Translator: manymous <many.mous.hacking@gmail.com>\n"
 "Language-Team: \n"
 "Language: az\n"
@@ -11,19 +11,25 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
 #: data/com.github.artemanufrij.playmymusic.desktop.in:3
 #: data/com.github.artemanufrij.playmymusic.desktop.in:4
-#: src/MainWindow.vala:166 src/MainWindow.vala:308
+#: src/MainWindow.vala:152 src/MainWindow.vala:279
 msgid "Melody"
 msgstr "Melodiya"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
+#, fuzzy
 msgid ""
-"A music player for listening local music files, online radios and Audio CD's."
+"A music player for listening local music files, online radios and Audio CD's"
 msgstr ""
-"Yerli musiqi faylları, onlayn radiolar və Audio CD-ləri dinləmək üçün bir Musiqi Pleyer."
+"Yerli musiqi faylları, onlayn radiolar və Audio CD-ləri dinləmək üçün bir "
+"Musiqi Pleyer."
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
-msgid "A very fast music player designed extra for large local libraries."
-msgstr "Böyük yerli kitabxanalar üçün hazırlanmış çox sürətli bir Musiqi PLeyer."
+#, fuzzy
+msgid ""
+"A very fast music player designed extra for large local libraries which also "
+"supports online radios and downloading album covers"
+msgstr ""
+"Böyük yerli kitabxanalar üçün hazırlanmış çox sürətli bir Musiqi PLeyer."
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
@@ -62,17 +68,17 @@ msgid "Artem Anufrij"
 msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:37
-#: src/MainWindow.vala:574
+#: src/MainWindow.vala:448
 msgid "Albums"
 msgstr "Albomlar"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
-#: src/MainWindow.vala:578
+#: src/MainWindow.vala:452
 msgid "Artists"
 msgstr "Sənətkar'lar"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
-#: src/MainWindow.vala:583
+#: src/MainWindow.vala:457
 msgid "Tracks"
 msgstr "Parça'lar"
 
@@ -97,7 +103,7 @@ msgid "media-playback-start-symbolic"
 msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:23
-#: src/MainWindow.vala:339
+#: src/MainWindow.vala:393
 msgid "Next"
 msgstr "İrəli"
 
@@ -106,7 +112,7 @@ msgid "media-skip-forward-symbolic"
 msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:28
-#: src/MainWindow.vala:320
+#: src/MainWindow.vala:374
 msgid "Previous"
 msgstr "Əvvəlki"
 
@@ -114,74 +120,74 @@ msgstr "Əvvəlki"
 msgid "media-skip-backward-symbolic"
 msgstr "media-skip-backward-symbolic"
 
-#: src/MainWindow.vala:146
+#: src/MainWindow.vala:132
 msgid "Pause"
 msgstr "Pauza"
 
-#: src/MainWindow.vala:169 src/MainWindow.vala:330
+#: src/MainWindow.vala:158 src/MainWindow.vala:384
 msgid "Play"
 msgstr "Play"
 
-#: src/MainWindow.vala:390
-msgid "Change Music Folder…"
-msgstr "Musiqi qovluğunu dəyişin…"
-
-#: src/MainWindow.vala:400
-msgid "Import Music…"
-msgstr "Musiqi əlavə et…"
-
-#: src/MainWindow.vala:409
-msgid "Reset all views"
-msgstr "Bütün görünüşləri sıfırlayın"
-
-#: src/MainWindow.vala:416
-msgid "Resync Library"
-msgstr "Resync Kitabxanası"
-
-#: src/MainWindow.vala:422
-msgid "Preferences"
-msgstr "Seçimlər"
-
-#. SEARCH ENTRY
-#: src/MainWindow.vala:443
-msgid "Search Music"
-msgstr "Musiqi axtarın"
-
-#: src/MainWindow.vala:485
-msgid "Shuffle"
-msgstr "Qarışdır"
-
-#: src/MainWindow.vala:498
-msgid "Repeat"
-msgstr "Təkrarlamaq"
-
-#: src/MainWindow.vala:536
+#: src/MainWindow.vala:334
 msgid "Loading…"
 msgstr "Yüklənir…"
 
-#: src/MainWindow.vala:536
+#: src/MainWindow.vala:334
 msgid "Reading out database content"
 msgstr "Verilənlər bazasının məzmununu oxu"
 
-#: src/MainWindow.vala:588
+#: src/MainWindow.vala:414
+msgid "Shuffle"
+msgstr "Qarışdır"
+
+#: src/MainWindow.vala:426
+msgid "Repeat"
+msgstr "Təkrarlamaq"
+
+#: src/MainWindow.vala:462
 msgid "Playlists"
 msgstr "Pleylist'lər"
 
-#: src/MainWindow.vala:593
+#: src/MainWindow.vala:467
 msgid "Radio Stations"
 msgstr "Radio stansiyaları"
 
-#: src/MainWindow.vala:600
+#: src/MainWindow.vala:474
 msgid "Audio CD"
 msgstr ""
 
-#: src/MainWindow.vala:725 src/MainWindow.vala:733
-#: src/Widgets/Views/TracksView.vala:278
+#: src/MainWindow.vala:539
+msgid "Change Music Folder…"
+msgstr "Musiqi qovluğunu dəyişin…"
+
+#: src/MainWindow.vala:548
+msgid "Import Music…"
+msgstr "Musiqi əlavə et…"
+
+#: src/MainWindow.vala:556
+msgid "Reset all views"
+msgstr "Bütün görünüşləri sıfırlayın"
+
+#: src/MainWindow.vala:562
+msgid "Resync Library"
+msgstr "Resync Kitabxanası"
+
+#: src/MainWindow.vala:567
+msgid "Preferences"
+msgstr "Seçimlər"
+
+#: src/MainWindow.vala:598
+msgid "Search Music"
+msgstr "Musiqi axtarın"
+
+#: src/MainWindow.vala:723 src/MainWindow.vala:731
+#: src/Widgets/Views/TracksView.vala:412
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
+#: src/Widgets/Views/RadiosView.vala:153
 msgid "Click to choose a new cover…"
 msgstr "Yeni bir Cover seçmək üçün basın"
 
@@ -190,39 +196,39 @@ msgid "Year"
 msgstr "İl"
 
 #: src/Dialogs/AlbumEditor.vala:121 src/Dialogs/ArtistEditor.vala:114
-#: src/Widgets/Views/RadiosView.vala:243
+#: src/Widgets/Views/RadiosView.vala:251
 msgid "Save"
 msgstr "Yadda saxla"
 
-#: src/Dialogs/Preferences.vala:90
-msgid "Use Dark Theme"
-msgstr "Dark Theme istifadə edin"
-
-#: src/Dialogs/Preferences.vala:93
+#: src/Dialogs/Preferences.vala:89
 msgid "Play in background if closed"
 msgstr "Bağlandığı təqdirdə arxa planda çalınsın"
 
-#: src/Dialogs/Preferences.vala:95
+#: src/Dialogs/Preferences.vala:91
 msgid "Sync files on start up"
 msgstr "Başladığınız faylları sinxronlaşdırın"
 
-#: src/Dialogs/Preferences.vala:98
+#: src/Dialogs/Preferences.vala:94
 msgid "Load Content from MusicBrainz"
 msgstr "MusicBrainz-dən məzmun yükləyin"
 
-#: src/Dialogs/Preferences.vala:100
+#: src/Dialogs/Preferences.vala:96
 msgid "Save custom Covers in Library folder"
 msgstr "Kitabxana qovluğunda xüsusi Cover'ləri saxla"
 
-#: src/Dialogs/Preferences.vala:102
+#: src/Dialogs/Preferences.vala:98
 msgid "Save changes into ID3-Tag"
 msgstr "Dəyişiklikləri ID3-Tag'a qeyd edin"
 
-#: src/Dialogs/Preferences.vala:105
+#: src/Dialogs/Preferences.vala:101
 msgid "Copy Imported Files into Library"
 msgstr "Əlavə olunmuş faylları kitabxanaya kopyalayın"
 
-#: src/Dialogs/Preferences.vala:110
+#: src/Dialogs/Preferences.vala:103
+msgid "Remove Playlist if last Track was removed"
+msgstr ""
+
+#: src/Dialogs/Preferences.vala:108
 msgid "Close"
 msgstr "Bağla"
 
@@ -272,34 +278,36 @@ msgstr "Bir qovluq seçin."
 msgid "Folder"
 msgstr "Qovluq"
 
-#: src/Widgets/Album.vala:201 src/Widgets/Artist.vala:189
+#: src/Widgets/Album.vala:200 src/Widgets/Artist.vala:188
 #: src/Widgets/Views/AlbumView.vala:65 src/Widgets/Views/AudioCDView.vala:98
 msgid "Set new Cover…"
 msgstr "Yeni Cover seçin…"
 
-#: src/Widgets/Album.vala:219
+#: src/Widgets/Album.vala:218
 msgid "Edit Album properties…"
 msgstr "Albom xüsusiyyətlərini redaktə edin…"
 
-#: src/Widgets/Album.vala:226 src/Widgets/Track.vala:195
+#: src/Widgets/Album.vala:225 src/Widgets/Track.vala:195
+#: src/Widgets/Views/TracksView.vala:325
 msgid "Add into Playlist"
 msgstr "Pleylistə əlavə edin"
 
-#: src/Widgets/Album.vala:231 src/Widgets/Artist.vala:214
+#: src/Widgets/Album.vala:230 src/Widgets/Artist.vala:213
 #: src/Widgets/Track.vala:210
 msgid "Send to"
 msgstr "Göndər"
 
-#: src/Widgets/Album.vala:257 src/Widgets/Track.vala:227
+#: src/Widgets/Album.vala:256 src/Widgets/Track.vala:227
+#: src/Widgets/Views/TracksView.vala:300
 msgid "Create New Playlist"
 msgstr "Yeni Pleylist yaradın"
 
-#: src/Widgets/Album.vala:306 src/Widgets/Artist.vala:261
+#: src/Widgets/Album.vala:305 src/Widgets/Artist.vala:260
 #, c-format
 msgid "Merge %u selected Albums"
 msgstr "%u seçilmiş albomları birləşdirin"
 
-#: src/Widgets/Artist.vala:207
+#: src/Widgets/Artist.vala:206
 msgid "Edit Artist properties…"
 msgstr "Sənətkar xüsusiyyətlərini redaktə edin…"
 
@@ -324,7 +332,7 @@ msgstr ""
 msgid "Remove from Playlist"
 msgstr "Pleylist'dən çıxarın(sil)"
 
-#: src/Widgets/TrackTimeLine.vala:93 src/Widgets/TrackTimeLine.vala:97
+#: src/Widgets/TrackTimeLine.vala:95 src/Widgets/TrackTimeLine.vala:99
 #, c-format
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
 msgstr ""
@@ -355,13 +363,13 @@ msgstr ""
 
 #: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:154
-#: src/Widgets/Views/RadiosView.vala:205
+#: src/Widgets/Views/RadiosView.vala:213
 msgid "No results"
 msgstr "Nəticə yoxdur"
 
 #: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:154
-#: src/Widgets/Views/RadiosView.vala:205
+#: src/Widgets/Views/RadiosView.vala:213
 msgid "Try another search"
 msgstr "Başqa bir axtarış edin"
 
@@ -387,7 +395,7 @@ msgid "Add a playlist"
 msgstr "Pleylist əlavə edin"
 
 #: src/Widgets/Views/PlaylistsView.vala:114
-#: src/Widgets/Views/RadiosView.vala:241
+#: src/Widgets/Views/RadiosView.vala:249
 msgid "Add"
 msgstr "Əlavə et"
 
@@ -432,51 +440,61 @@ msgstr "Stansiya adı"
 msgid "URL"
 msgstr "URL"
 
-#: src/Widgets/Views/RadiosView.vala:150
-msgid "Choose a Cover"
-msgstr "Cover seçin"
-
 #. NEW STATION POPOVER END
-#: src/Widgets/Views/RadiosView.vala:187
+#: src/Widgets/Views/RadiosView.vala:195
 msgid "No Radio Stations"
 msgstr "Radio stansiyaları yoxdur"
 
-#: src/Widgets/Views/RadiosView.vala:187
+#: src/Widgets/Views/RadiosView.vala:195
 msgid "Add radio stations to your library."
 msgstr "Kitabxananıza radio stansiyaları əlavə edin."
 
-#: src/Widgets/Views/RadiosView.vala:188
+#: src/Widgets/Views/RadiosView.vala:196
 msgid "Add Radio Station"
 msgstr "Radio stansiyasını əlavə edin"
 
-#: src/Widgets/Views/RadiosView.vala:188
+#: src/Widgets/Views/RadiosView.vala:196
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr ".pls və ya .m3u kimi bir Stream URL əlavə edin."
 
-#: src/Widgets/Views/TracksView.vala:160
-msgid "Choose a Track"
-msgstr "Bir Parça seçin"
-
-#: src/Widgets/Views/TracksView.vala:160
-msgid "No track selected"
-msgstr "Parça seçilməyib"
-
-#: src/Widgets/Views/TracksView.vala:186
+#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:183
 msgid "Nr"
 msgstr ""
 
-#: src/Widgets/Views/TracksView.vala:193
+#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:190
 msgid "Title"
 msgstr "Başlıq"
 
-#: src/Widgets/Views/TracksView.vala:200
+#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:197
 msgid "Album"
 msgstr "Albom"
 
-#: src/Widgets/Views/TracksView.vala:202
+#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:199
 msgid "Artist"
 msgstr "Sənətçi"
 
-#: src/Widgets/Views/TracksView.vala:207
+#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:204
 msgid "Duration"
 msgstr "Müddəti"
+
+#: src/Widgets/Views/TracksView.vala:162
+msgid "Choose a Track"
+msgstr "Bir Parça seçin"
+
+#: src/Widgets/Views/TracksView.vala:162
+msgid "No track selected"
+msgstr "Parça seçilməyib"
+
+#: src/Widgets/Views/TracksView.vala:328
+msgid "Columns Visibility"
+msgstr ""
+
+#: src/Widgets/Views/TracksView.vala:361
+msgid "You can't hide all columns"
+msgstr ""
+
+#~ msgid "Use Dark Theme"
+#~ msgstr "Dark Theme istifadə edin"
+
+#~ msgid "Choose a Cover"
+#~ msgstr "Cover seçin"
