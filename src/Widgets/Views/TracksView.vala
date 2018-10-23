@@ -72,44 +72,39 @@ namespace PlayMyMusic.Widgets.Views {
         construct {
             settings = Settings.get_default ();
             library_manager = Services.LibraryManager.instance;
-            library_manager.added_new_track.connect (
-                (track) => {
-                    Idle.add (
-                        () => {
-                            add_track (track);
-                            return false;
-                        });
+            library_manager.added_new_track.connect ((track) => {
+                Idle.add (() => {
+                    add_track (track);
+                    return false;
                 });
+            });
 
             player = Services.Player.instance;
-            player.state_changed.connect (
-                (state) => {
-                    if (state == Gst.State.PLAYING) {
-                        mark_playing_track (player.current_track);
-                    }
-                });
-            player.next_track_request.connect (
-                () => {
-                    Objects.Track next_track = null;
+            player.state_changed.connect ((state) => {
+                if (state == Gst.State.PLAYING) {
+                    mark_playing_track (player.current_track);
+                }
+            });
+            player.next_track_request.connect (() => {
+                Objects.Track next_track = null;
+                if (settings.shuffle_mode) {
+                    next_track = get_shuffle_track ();
+                } else {
+                    next_track = get_next_track ();
+                }
+
+                if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
                     if (settings.shuffle_mode) {
                         next_track = get_shuffle_track ();
                     } else {
-                        next_track = get_next_track ();
+                        next_track = get_first_track ();
                     }
-
-                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
-                        if (settings.shuffle_mode) {
-                            next_track = get_shuffle_track ();
-                        } else {
-                            next_track = get_first_track ();
-                        }
-                    }
-                    return next_track;
-                });
-            player.prev_track_request.connect (
-                () => {
-                    return get_prev_track ();
-                });
+                }
+                return next_track;
+            });
+            player.prev_track_request.connect (() => {
+                return get_prev_track ();
+            });
         }
 
         public TracksView () {
@@ -173,10 +168,9 @@ namespace PlayMyMusic.Widgets.Views {
             view = new Gtk.TreeView ();
             view.activate_on_single_click = true;
 
-            view.row_activated.connect (
-                (path, column) => {
-                    show_track (get_track_by_path (path));
-                });
+            view.row_activated.connect ((path, column) => {
+                show_track (get_track_by_path (path));
+            });
             view.button_press_event.connect (show_context_menu);
 
             view.insert_column_with_attributes (-1, "object", new Gtk.CellRendererText ());
@@ -300,21 +294,19 @@ namespace PlayMyMusic.Widgets.Views {
                     child.destroy ();
                 }
                 var item = new Gtk.MenuItem.with_label (_ ("Create New Playlist"));
-                item.activate.connect (
-                    () => {
-                        var new_playlist = library_manager.create_new_playlist ();
-                        library_manager.add_track_into_playlist (new_playlist, track.ID);
-                    });
+                item.activate.connect ( () => {
+                    var new_playlist = library_manager.create_new_playlist ();
+                    library_manager.add_track_into_playlist (new_playlist, track.ID);
+                });
                 playlists.add (item);
                 if (library_manager.playlists.length () > 0) {
                     playlists.add (new Gtk.SeparatorMenuItem ());
                 }
                 foreach (var playlist in library_manager.playlists) {
                     item = new Gtk.MenuItem.with_label (playlist.title);
-                    item.activate.connect (
-                        () => {
-                            library_manager.add_track_into_playlist (playlist, track.ID);
-                        });
+                    item.activate.connect (() => {
+                        library_manager.add_track_into_playlist (playlist, track.ID);
+                    });
                     playlists.add (item);
                 }
                 playlists.show_all ();
@@ -496,20 +488,19 @@ namespace PlayMyMusic.Widgets.Views {
 
             Objects.Track ? return_value = null;
 
-            modelsort.@foreach (
-                (model, path, iter) => {
-                    var item_track = get_track_by_path (path);
-                    if (item_track.ID == current_track.ID) {
-                        Gtk.TreeIter next_iter = iter;
-                        if (modelsort.iter_next (ref next_iter)) {
-                            Value val;
-                            modelsort.get_value (next_iter, 0, out val);
-                            return_value = val.get_object () as Objects.Track;
-                        }
-                        return true;
+            modelsort.@foreach ((model, path, iter) => {
+                var item_track = get_track_by_path (path);
+                if (item_track.ID == current_track.ID) {
+                    Gtk.TreeIter next_iter = iter;
+                    if (modelsort.iter_next (ref next_iter)) {
+                        Value val;
+                        modelsort.get_value (next_iter, 0, out val);
+                        return_value = val.get_object () as Objects.Track;
                     }
-                    return false;
-                });
+                    return true;
+                }
+                return false;
+            });
 
             return return_value;
         }
@@ -543,16 +534,15 @@ namespace PlayMyMusic.Widgets.Views {
             Objects.Track ? return_value = null;
 
             int i = 0;
-            modelsort.@foreach (
-                (model, path, iter) => {
-                    var item_track = get_track_by_path (path);
-                    if (i == r) {
-                        return_value = item_track;
-                        return true;
-                    }
-                    i++;
-                    return false;
-                });
+            modelsort.@foreach ((model, path, iter) => {
+                var item_track = get_track_by_path (path);
+                if (i == r) {
+                    return_value = item_track;
+                    return true;
+                }
+                i++;
+                return false;
+            });
 
             return return_value;
         }
@@ -560,20 +550,19 @@ namespace PlayMyMusic.Widgets.Views {
         public Objects.Track ? get_prev_track () {
             Objects.Track ? return_value = null;
 
-            modelsort.@foreach (
-                (model, path, iter) => {
-                    var item_track = get_track_by_path (path);
-                    if (item_track.ID == current_track.ID) {
-                        Gtk.TreeIter prev_iter = iter;
-                        if (modelsort.iter_previous (ref prev_iter)) {
-                            Value val;
-                            modelsort.get_value (prev_iter, 0, out val);
-                            return_value = val.get_object () as Objects.Track;
-                        }
-                        return true;
+            modelsort.@foreach ((model, path, iter) => {
+                var item_track = get_track_by_path (path);
+                if (item_track.ID == current_track.ID) {
+                    Gtk.TreeIter prev_iter = iter;
+                    if (modelsort.iter_previous (ref prev_iter)) {
+                        Value val;
+                        modelsort.get_value (prev_iter, 0, out val);
+                        return_value = val.get_object () as Objects.Track;
                     }
-                    return false;
-                });
+                    return true;
+                }
+                return false;
+            });
 
             return return_value;
         }
