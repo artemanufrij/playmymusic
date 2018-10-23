@@ -27,6 +27,8 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class TracksView : Gtk.Grid {
+        public signal void app_message (string message);
+
         Services.LibraryManager library_manager;
         PlayMyMusic.Settings settings;
         Services.Player player;
@@ -40,7 +42,8 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Grid header;
         Granite.Widgets.AlertView alert_view;
         Gtk.Menu menu = null;
-        Gtk.Menu playlists;
+        Gtk.Menu menu_playlists;
+        Gtk.Menu menu_columns;
 
         Gtk.Label title_name;
         Gtk.Label album_title;
@@ -204,6 +207,7 @@ namespace PlayMyMusic.Widgets.Views {
             setup_columns ();
 
             var scroll = new Gtk.ScrolledWindow (null, null);
+            scroll.button_press_event.connect (show_context_menu);
             scroll.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
             scroll.expand = true;
             scroll.add (view);
@@ -290,7 +294,7 @@ namespace PlayMyMusic.Widgets.Views {
                     return false;
                 }
 
-                foreach (var child in playlists.get_children ()) {
+                foreach (var child in menu_playlists.get_children ()) {
                     child.destroy ();
                 }
                 var item = new Gtk.MenuItem.with_label (_ ("Create New Playlist"));
@@ -298,18 +302,18 @@ namespace PlayMyMusic.Widgets.Views {
                     var new_playlist = library_manager.create_new_playlist ();
                     library_manager.add_track_into_playlist (new_playlist, track.ID);
                 });
-                playlists.add (item);
+                menu_playlists.add (item);
                 if (library_manager.playlists.length () > 0) {
-                    playlists.add (new Gtk.SeparatorMenuItem ());
+                    menu_playlists.add (new Gtk.SeparatorMenuItem ());
                 }
                 foreach (var playlist in library_manager.playlists) {
                     item = new Gtk.MenuItem.with_label (playlist.title);
                     item.activate.connect (() => {
                         library_manager.add_track_into_playlist (playlist, track.ID);
                     });
-                    playlists.add (item);
+                    menu_playlists.add (item);
                 }
-                playlists.show_all ();
+                menu_playlists.show_all ();
 
                 menu.popup_at_pointer (null);
             }
@@ -322,7 +326,7 @@ namespace PlayMyMusic.Widgets.Views {
             menu.add (menu_add_into_playlist);
 
             var menu_visibility_columns = new Gtk.MenuItem.with_label ( _("Columns Visibility"));
-            var menu_columns = new Gtk.Menu ();
+            menu_columns = new Gtk.Menu ();
             menu_visibility_columns.set_submenu (menu_columns);
 
             var hidden_columns = library_manager.db_manager.settings_get_hidde_columns ();
@@ -344,12 +348,17 @@ namespace PlayMyMusic.Widgets.Views {
                             }
                         }
                     } else {
-                        if (library_manager.db_manager.settings_insert_hidden_column (col_name)) {
-                            foreach (var col in view.get_columns ()) {
-                                if (col.title == col_name) {
-                                    col.visible = false;
+                        if (get_visible_columns () > 0) {
+                            if (library_manager.db_manager.settings_insert_hidden_column (col_name)) {
+                                foreach (var col in view.get_columns ()) {
+                                    if (col.title == col_name) {
+                                        col.visible = false;
+                                    }
                                 }
                             }
+                        } else {
+                            menu_column.active = true;
+                            app_message (_("You can't hide all columns"));
                         }
                     }
                 });
@@ -357,10 +366,20 @@ namespace PlayMyMusic.Widgets.Views {
             }
             menu.add (menu_visibility_columns);
 
-            playlists = new Gtk.Menu ();
-            menu_add_into_playlist.set_submenu (playlists);
+            menu_playlists = new Gtk.Menu ();
+            menu_add_into_playlist.set_submenu (menu_playlists);
 
             menu.show_all ();
+        }
+
+        private uint get_visible_columns () {
+            uint return_value = 0;
+            foreach (var child in menu_columns.get_children ()) {
+                if ((child as Gtk.CheckMenuItem).active) {
+                    return_value ++;
+                }
+            }
+            return return_value;
         }
 
         public void add_track (Objects.Track track) {

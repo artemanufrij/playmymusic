@@ -61,6 +61,7 @@ namespace PlayMyMusic {
         Gtk.Box mode_buttons;
 
         Granite.Widgets.ModeButton view_mode;
+        Granite.Widgets.Toast toast;
 
         Widgets.Views.AlbumsView albums_view;
         Widgets.Views.ArtistsView artists_view;
@@ -298,6 +299,9 @@ namespace PlayMyMusic {
             spinner = new Gtk.Spinner ();
             headerbar.pack_end (spinner);
 
+            // TOAST
+            toast = new Granite.Widgets.Toast ("");
+
             // VIEWES
             mobile_phone_view = new Widgets.Views.MobilePhone ();
 
@@ -322,6 +326,10 @@ namespace PlayMyMusic {
             audio_cd_view = new Widgets.Views.AudioCDView ();
 
             tracks_view = new Widgets.Views.TracksView ();
+            tracks_view.app_message.connect ((message) => {
+                toast.title = message;
+                toast.send_notification ();
+            });
 
             var splash_message = new Granite.Widgets.AlertView (_ ("Loading…"), _ ("Reading out database content"), "audio-x-generic-symbolic");
 
@@ -337,7 +345,11 @@ namespace PlayMyMusic {
             box.pack_start (mobile_phone_view, false, false, 0);
             box.pack_end (content, true, true, 0);
 
-            this.add (box);
+            var overlay = new Gtk.Overlay ();
+            overlay.add_overlay (box);
+            overlay.add_overlay (toast);
+
+            this.add (overlay);
             this.show_all ();
 
             audio_cd_widget.hide ();
@@ -698,7 +710,7 @@ namespace PlayMyMusic {
             next_button.sensitive = true;
             content.visible_child_name = "audiocd";
             search_entry.text = audio_cd_view.filter;
-                adjust_background_images ();
+            adjust_background_images ();
         }
 
         private void send_notification (Objects.Track track) {
