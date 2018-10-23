@@ -25,7 +25,7 @@
     <custom>
         <value key="x-appcenter-color-primary">#004988</value>
         <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
-        <value key="x-appcenter-suggested-price">3</value>
+        <value key="x-appcenter-suggested-price">5</value>
     </custom>
     <developer_name>Artem Anufrij</developer_name>
     <url type="homepage">http://anufrij.org/melody/</url>
@@ -58,6 +58,10 @@
                 <ul>
                     <li>Click on headerbar choose current track</li>
                     <li>UI: select current track in tracks view</li>
+                </ul>
+                <p>Improved:</p>
+                <ul>
+                    <li>Reorder controls on header bar</li>
                 </ul>
             </description>
         </release>

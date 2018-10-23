@@ -41,14 +41,13 @@ namespace PlayMyMusic.Dialogs {
                 );
             build_ui ();
 
-            this.response.connect (
-                (source, response_id) => {
-                    switch (response_id) {
-                    case Gtk.ResponseType.CLOSE :
+            this.response.connect ((source, response_id) => {
+                switch (response_id) {
+                    case Gtk.ResponseType.CLOSE:
                         destroy ();
                         break;
-                    }
-                });
+                }
+            });
         }
 
         private void build_ui () {
@@ -58,10 +57,6 @@ namespace PlayMyMusic.Dialogs {
             grid.column_spacing = 12;
             grid.row_spacing = 12;
             grid.margin = 12;
-
-            var use_dark_theme = new Gtk.Switch ();
-            use_dark_theme.active = settings.use_dark_theme;
-            use_dark_theme.notify["active"].connect (() => { settings.use_dark_theme = use_dark_theme.active; });
 
             var play_in_background = new Gtk.Switch ();
             play_in_background.active = settings.play_in_background;
@@ -91,25 +86,22 @@ namespace PlayMyMusic.Dialogs {
             remove_playlist_if_empty.active = settings.remove_playlist_if_empty;
             remove_playlist_if_empty.notify["active"].connect (() => { settings.remove_playlist_if_empty = remove_playlist_if_empty.active; });
 
-            grid.attach (label_generator (_ ("Use Dark Theme")), 0, 0);
-            grid.attach (use_dark_theme, 1, 0);
-            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1, 2, 1);
-            grid.attach (label_generator (_ ("Play in background if closed")), 0, 2);
-            grid.attach (play_in_background, 1, 2);
-            grid.attach (label_generator (_ ("Sync files on start up")), 0, 3);
-            grid.attach (sync_files, 1, 3);
-            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 4, 2, 1);
-            grid.attach (label_generator (_ ("Load Content from MusicBrainz")), 0, 5);
-            grid.attach (load_content, 1, 5);
-            grid.attach (label_generator (_ ("Save custom Covers in Library folder")), 0, 6);
-            grid.attach (save_custom_covers, 1, 6);
-            grid.attach (label_generator (_ ("Save changes into ID3-Tag")), 0, 7);
-            grid.attach (save_id3_tags, 1, 7);
-            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 8, 2, 1);
-            grid.attach (label_generator (_ ("Copy Imported Files into Library")), 0, 9);
-            grid.attach (import_into_library, 1, 9);
-            grid.attach (label_generator (_ ("Remove Playlist if last Track was removed")), 0, 10);
-            grid.attach (remove_playlist_if_empty, 1, 10);
+            grid.attach (label_generator (_ ("Play in background if closed")), 0, 0);
+            grid.attach (play_in_background, 1, 0);
+            grid.attach (label_generator (_ ("Sync files on start up")), 0, 1);
+            grid.attach (sync_files, 1, 1);
+            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 2, 2, 1);
+            grid.attach (label_generator (_ ("Load Content from MusicBrainz")), 0, 3);
+            grid.attach (load_content, 1, 3);
+            grid.attach (label_generator (_ ("Save custom Covers in Library folder")), 0, 4);
+            grid.attach (save_custom_covers, 1, 4);
+            grid.attach (label_generator (_ ("Save changes into ID3-Tag")), 0, 5);
+            grid.attach (save_id3_tags, 1, 5);
+            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 6, 2, 1);
+            grid.attach (label_generator (_ ("Copy Imported Files into Library")), 0, 7);
+            grid.attach (import_into_library, 1, 7);
+            grid.attach (label_generator (_ ("Remove Playlist if last Track was removed")), 0, 8);
+            grid.attach (remove_playlist_if_empty, 1, 8);
 
             content.pack_start (grid, false, false, 0);
 
@@ -119,8 +111,8 @@ namespace PlayMyMusic.Dialogs {
 
         private Gtk.Label label_generator (string content) {
             return new Gtk.Label (content) {
-                       halign = Gtk.Align.START,
-                       hexpand = true
+                halign = Gtk.Align.START,
+                hexpand = true
             };
         }
     }

@@ -45,7 +45,6 @@ namespace PlayMyMusic {
         Gtk.Image icon_play;
         Gtk.Image icon_pause;
         public Gtk.Stack content;
-        Gtk.MenuButton app_menu;
 
         Gtk.Widget audio_cd_widget;
         Gtk.Image artist_button;
@@ -86,6 +85,9 @@ namespace PlayMyMusic {
 
         construct {
             settings = PlayMyMusic.Settings.get_default ();
+            settings.notify["use-dark-theme"].connect (() => {
+                Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
+            });
             settings.notify["repeat-mode"].connect (() => {
                 set_repeat_symbol ();
             });
@@ -275,199 +277,30 @@ namespace PlayMyMusic {
             headerbar = new Gtk.HeaderBar ();
             headerbar.title = _ ("Melody");
             headerbar.show_close_button = true;
-            headerbar.get_style_context ().add_class ("custom_titlebar");
             headerbar.get_style_context ().add_class ("default-decoration");
             this.set_titlebar (headerbar);
 
-            // PLAY BUTTONS
-            icon_play = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            icon_pause = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            header_build_play_buttons ();
 
-            previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            previous_button.valign = Gtk.Align.CENTER;
-            previous_button.can_focus = false;
-            previous_button.tooltip_text = _ ("Previous");
-            previous_button.sensitive = false;
-            previous_button.clicked.connect (() => {
-                library_manager.player.prev ();
-            });
+            header_build_playmode_buttons ();
 
-            play_button = new Gtk.Button ();
-            play_button.can_focus = false;
-            play_button.valign = Gtk.Align.CENTER;
-            play_button.image = icon_play;
-            play_button.tooltip_text = _ ("Play");
-            play_button.sensitive = false;
-            play_button.clicked.connect (() => {
-                toggle_playing ();
-            });
+            header_build_views_buttons ();
 
-            next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            next_button.valign = Gtk.Align.CENTER;
-            next_button.can_focus = false;
-            next_button.tooltip_text = _ ("Next");
-            next_button.sensitive = false;
-            next_button.clicked.connect (() => {
-                library_manager.player.next ();
-            });
+            header_build_timeline ();
 
-            headerbar.pack_start (previous_button);
-            headerbar.pack_start (play_button);
-            headerbar.pack_start (next_button);
+            header_build_app_menu ();
 
-            build_mode_buttons ();
+            header_build_style_switcher ();
 
-            mobile_phone_view = new Widgets.Views.MobilePhone ();
-
-            // TIMELINE
-            timeline = new Widgets.TrackTimeLine ();
-            timeline.goto_current_track.connect ((track) => {
-                if (track != null) {
-                    switch (library_manager.player.play_mode) {
-                    case PlayMyMusic.Services.PlayMode.ALBUM :
-                        view_mode.set_active (0);
-                        albums_view.activate_by_track (track);
-                        break;
-                    case PlayMyMusic.Services.PlayMode.ARTIST :
-                        view_mode.set_active (1);
-                        artists_view.activate_by_track (track);
-                        break;
-                    case PlayMyMusic.Services.PlayMode.TRACKS :
-                        view_mode.set_active (2);
-                        tracks_view.activate_by_track (track);
-                        break;
-                    case PlayMyMusic.Services.PlayMode.PLAYLIST :
-                        view_mode.set_active (3);
-                        playlists_view.activate_by_track (track);
-                        break;
-                    case PlayMyMusic.Services.PlayMode.AUDIO_CD :
-                        view_mode.set_active (4);
-                        break;
-                    }
-                }
-            });
-
-            // SETTINGS MENU
-            app_menu = new Gtk.MenuButton ();
-            app_menu.valign = Gtk.Align.CENTER;
-            app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
-
-            var settings_menu = new Gtk.Menu ();
-
-            var menu_item_library = new Gtk.MenuItem.with_label (_ ("Change Music Folder…"));
-            menu_item_library.activate.connect (() => {
-                var folder = library_manager.choose_folder ();
-                if (folder != null) {
-                    settings.library_location = folder;
-                    library_manager.scan_local_library_for_new_files (folder);
-                }
-            });
-
-            var menu_item_import = new Gtk.MenuItem.with_label (_ ("Import Music…"));
-            menu_item_import.activate.connect (() => {
-                var folder = library_manager.choose_folder ();
-                if (folder != null) {
-                    library_manager.scan_local_library_for_new_files (folder);
-                }
-            });
-
-            menu_item_reset = new Gtk.MenuItem.with_label (_ ("Reset all views"));
-            menu_item_reset.activate.connect (() => {
-                reset_all_views ();
-                library_manager.reset_library ();
-            });
-
-            menu_item_resync = new Gtk.MenuItem.with_label (_ ("Resync Library"));
-            menu_item_resync.activate.connect (() => {
-                library_manager.sync_library_content.begin ();
-            });
-
-            var menu_item_preferences = new Gtk.MenuItem.with_label (_ ("Preferences"));
-            menu_item_preferences.activate.connect (() => {
-                var preferences = new Dialogs.Preferences (this);
-                preferences.run ();
-            });
-
-            settings_menu.append (menu_item_library);
-            settings_menu.append (menu_item_import);
-            settings_menu.append (new Gtk.SeparatorMenuItem ());
-            settings_menu.append (menu_item_resync);
-            settings_menu.append (menu_item_reset);
-            settings_menu.append (new Gtk.SeparatorMenuItem ());
-            settings_menu.append (menu_item_preferences);
-            settings_menu.show_all ();
-
-            app_menu.popup = settings_menu;
-            headerbar.pack_end (app_menu);
-
-            // SEARCH ENTRY
-            search_entry = new Gtk.SearchEntry ();
-            search_entry.placeholder_text = _ ("Search Music");
-            search_entry.margin_end = 5;
-            search_entry.valign = Gtk.Align.CENTER;
-            search_entry.search_changed.connect (() => {
-                switch (view_mode.selected) {
-                    case 1 :
-                        artists_view.filter = search_entry.text;
-                        break;
-                    case 2 :
-                        tracks_view.filter = search_entry.text;
-                        break;
-                    case 3 :
-                        playlists_view.filter = search_entry.text;
-                        break;
-                    case 4 :
-                        radios_view.filter = search_entry.text;
-                        break;
-                    case 5 :
-                        audio_cd_view.filter = search_entry.text;
-                        break;
-                    default :
-                        albums_view.filter = search_entry.text;
-                        break;
-                }
-            });
-            headerbar.pack_end (search_entry);
+            header_build_search_entry ();
 
             // SPINNER
             spinner = new Gtk.Spinner ();
             headerbar.pack_end (spinner);
 
-            // MODE BUTTONS
-            icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
-            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
-
-            shuffle_button = new Gtk.Button ();
-            if (settings.shuffle_mode) {
-                shuffle_button.set_image (icon_shuffle_on);
-            } else {
-                shuffle_button.set_image (icon_shuffle_off);
-            }
-            shuffle_button.tooltip_text = _ ("Shuffle");
-            shuffle_button.can_focus = false;
-            shuffle_button.clicked.connect (() => {
-                settings.shuffle_mode = !settings.shuffle_mode;
-            });
-
-            icon_repeat_one = new Gtk.Image.from_icon_name ("media-playlist-repeat-one-symbolic", Gtk.IconSize.BUTTON);
-            icon_repeat_all = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
-            icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
-
-            repeat_button = new Gtk.Button ();
-            set_repeat_symbol ();
-            repeat_button.tooltip_text = _ ("Repeat");
-            repeat_button.can_focus = false;
-            repeat_button.clicked.connect (() => {
-                settings.switch_repeat_mode ();
-            });
-
-            mode_buttons = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            mode_buttons.pack_start (shuffle_button);
-            mode_buttons.pack_start (repeat_button);
-
-            headerbar.pack_end (mode_buttons);
-
             // VIEWES
+            mobile_phone_view = new Widgets.Views.MobilePhone ();
+
             albums_view = new Widgets.Views.AlbumsView (this);
             albums_view.album_selected.connect (() => {
                 previous_button.sensitive = true;
@@ -519,9 +352,81 @@ namespace PlayMyMusic {
             content.visible_child_name = "splash";
         }
 
-        private void build_mode_buttons () {
+        private void header_build_play_buttons () {
+            icon_play = new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            icon_pause = new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+
+            previous_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            previous_button.valign = Gtk.Align.CENTER;
+            previous_button.can_focus = false;
+            previous_button.tooltip_text = _ ("Previous");
+            previous_button.sensitive = false;
+            previous_button.clicked.connect (() => {
+                library_manager.player.prev ();
+            });
+
+            play_button = new Gtk.Button ();
+            play_button.can_focus = false;
+            play_button.valign = Gtk.Align.CENTER;
+            play_button.image = icon_play;
+            play_button.tooltip_text = _ ("Play");
+            play_button.sensitive = false;
+            play_button.clicked.connect (() => {
+                toggle_playing ();
+            });
+
+            next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            next_button.valign = Gtk.Align.CENTER;
+            next_button.can_focus = false;
+            next_button.tooltip_text = _ ("Next");
+            next_button.sensitive = false;
+            next_button.clicked.connect (() => {
+                library_manager.player.next ();
+            });
+
+            headerbar.pack_start (previous_button);
+            headerbar.pack_start (play_button);
+            headerbar.pack_start (next_button);
+        }
+
+        private void header_build_playmode_buttons () {
+            icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
+
+            shuffle_button = new Gtk.Button ();
+            if (settings.shuffle_mode) {
+                shuffle_button.set_image (icon_shuffle_on);
+            } else {
+                shuffle_button.set_image (icon_shuffle_off);
+            }
+            shuffle_button.tooltip_text = _ ("Shuffle");
+            shuffle_button.can_focus = false;
+            shuffle_button.clicked.connect (() => {
+                settings.shuffle_mode = !settings.shuffle_mode;
+            });
+
+            icon_repeat_one = new Gtk.Image.from_icon_name ("media-playlist-repeat-one-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_all = new Gtk.Image.from_icon_name ("media-playlist-repeat-symbolic", Gtk.IconSize.BUTTON);
+            icon_repeat_off = new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.BUTTON);
+
+            repeat_button = new Gtk.Button ();
+            set_repeat_symbol ();
+            repeat_button.tooltip_text = _ ("Repeat");
+            repeat_button.can_focus = false;
+            repeat_button.clicked.connect (() => {
+                settings.switch_repeat_mode ();
+            });
+
+            mode_buttons = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            mode_buttons.pack_start (shuffle_button);
+            mode_buttons.pack_start (repeat_button);
+
+            headerbar.pack_start (mode_buttons);
+        }
+
+        private void header_build_views_buttons () {
             bool has_artists = library_manager.artists.length () > 0;
-            // VIEW BUTTONS
+
             view_mode = new Granite.Widgets.ModeButton ();
             view_mode.homogeneous = false;
             view_mode.valign = Gtk.Align.CENTER;
@@ -581,6 +486,129 @@ namespace PlayMyMusic {
                 }
             });
             headerbar.pack_start (view_mode);
+        }
+
+        private void header_build_timeline () {
+            timeline = new Widgets.TrackTimeLine ();
+            timeline.goto_current_track.connect ((track) => {
+                if (track != null) {
+                    switch (library_manager.player.play_mode) {
+                    case PlayMyMusic.Services.PlayMode.ALBUM :
+                        view_mode.set_active (0);
+                        albums_view.activate_by_track (track);
+                        break;
+                    case PlayMyMusic.Services.PlayMode.ARTIST :
+                        view_mode.set_active (1);
+                        artists_view.activate_by_track (track);
+                        break;
+                    case PlayMyMusic.Services.PlayMode.TRACKS :
+                        view_mode.set_active (2);
+                        tracks_view.activate_by_track (track);
+                        break;
+                    case PlayMyMusic.Services.PlayMode.PLAYLIST :
+                        view_mode.set_active (3);
+                        playlists_view.activate_by_track (track);
+                        break;
+                    case PlayMyMusic.Services.PlayMode.AUDIO_CD :
+                        view_mode.set_active (4);
+                        break;
+                    }
+                }
+            });
+        }
+
+        private void header_build_app_menu () {
+            var app_menu = new Gtk.MenuButton ();
+            app_menu.valign = Gtk.Align.CENTER;
+            app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+
+            var settings_menu = new Gtk.Menu ();
+
+            var menu_item_library = new Gtk.MenuItem.with_label (_ ("Change Music Folder…"));
+            menu_item_library.activate.connect (() => {
+                var folder = library_manager.choose_folder ();
+                if (folder != null) {
+                    settings.library_location = folder;
+                    library_manager.scan_local_library_for_new_files (folder);
+                }
+            });
+
+            var menu_item_import = new Gtk.MenuItem.with_label (_ ("Import Music…"));
+            menu_item_import.activate.connect (() => {
+                var folder = library_manager.choose_folder ();
+                if (folder != null) {
+                    library_manager.scan_local_library_for_new_files (folder);
+                }
+            });
+
+            menu_item_reset = new Gtk.MenuItem.with_label (_ ("Reset all views"));
+            menu_item_reset.activate.connect (() => {
+                reset_all_views ();
+                library_manager.reset_library ();
+            });
+
+            menu_item_resync = new Gtk.MenuItem.with_label (_ ("Resync Library"));
+            menu_item_resync.activate.connect (() => {
+                library_manager.sync_library_content.begin ();
+            });
+
+            var menu_item_preferences = new Gtk.MenuItem.with_label (_ ("Preferences"));
+            menu_item_preferences.activate.connect (() => {
+                var preferences = new Dialogs.Preferences (this);
+                preferences.run ();
+            });
+
+            settings_menu.append (menu_item_library);
+            settings_menu.append (menu_item_import);
+            settings_menu.append (new Gtk.SeparatorMenuItem ());
+            settings_menu.append (menu_item_resync);
+            settings_menu.append (menu_item_reset);
+            settings_menu.append (new Gtk.SeparatorMenuItem ());
+            settings_menu.append (menu_item_preferences);
+            settings_menu.show_all ();
+
+            app_menu.popup = settings_menu;
+            headerbar.pack_end (app_menu);
+        }
+
+        private void header_build_style_switcher () {
+            var mode_switch = new Granite.ModeSwitch.from_icon_name ("display-brightness-symbolic", "weather-clear-night-symbolic");
+            mode_switch.valign = Gtk.Align.CENTER;
+            mode_switch.active = settings.use_dark_theme;
+            mode_switch.notify["active"].connect (() => {
+                settings.use_dark_theme = mode_switch.active;
+            });
+            headerbar.pack_end (mode_switch);
+        }
+
+        private void header_build_search_entry () {
+            search_entry = new Gtk.SearchEntry ();
+            search_entry.placeholder_text = _ ("Search Music");
+            search_entry.margin_end = 5;
+            search_entry.valign = Gtk.Align.CENTER;
+            search_entry.search_changed.connect (() => {
+                switch (view_mode.selected) {
+                    case 1 :
+                        artists_view.filter = search_entry.text;
+                        break;
+                    case 2 :
+                        tracks_view.filter = search_entry.text;
+                        break;
+                    case 3 :
+                        playlists_view.filter = search_entry.text;
+                        break;
+                    case 4 :
+                        radios_view.filter = search_entry.text;
+                        break;
+                    case 5 :
+                        audio_cd_view.filter = search_entry.text;
+                        break;
+                    default :
+                        albums_view.filter = search_entry.text;
+                        break;
+                }
+            });
+            headerbar.pack_end (search_entry);
         }
 
         public override bool key_press_event (Gdk.EventKey e) {
