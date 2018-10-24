@@ -76,7 +76,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
 
             var button_create_playlist = new Gtk.Button.from_icon_name ("playlist");
-            button_create_playlist.tooltip_text = _("Create new Playlist based on Queue");
+            button_create_playlist.tooltip_text = _("Create new Playlist based on this Queue");
             button_create_playlist.margin = 6;
             button_create_playlist.clicked.connect (() => {
                 var new_playlist = library_manager.create_new_playlist ();
