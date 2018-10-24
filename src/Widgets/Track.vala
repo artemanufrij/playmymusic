@@ -218,10 +218,9 @@ namespace PlayMyMusic.Widgets {
                     label_string = _ ("Remove from Queue");
                 }
                 var menu_remove_from_playlist = new Gtk.MenuItem.with_label (label_string);
-                menu_remove_from_playlist.activate.connect (
-                    () => {
-                        library_manager.remove_track_from_playlist (track);
-                    });
+                menu_remove_from_playlist.activate.connect (() => {
+                    library_manager.remove_track_from_playlist (track);
+                });
                 menu.add (menu_remove_from_playlist);
             }
 
