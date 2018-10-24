@@ -26,7 +26,7 @@
  */
 
 namespace PlayMyMusic.Widgets {
-    public enum TrackStyle { ALBUM, ARTIST, PLAYLIST, AUDIO_CD }
+    public enum TrackStyle { ALBUM, ARTIST, PLAYLIST, AUDIO_CD, QUEUE }
 
     public class Track : Gtk.ListBoxRow {
         PlayMyMusic.Services.LibraryManager library_manager;
@@ -89,18 +89,19 @@ namespace PlayMyMusic.Widgets {
                     if (event.type == Gdk.EventType.@2BUTTON_PRESS) {
                         library_manager.player.reset_playing ();
                         switch (track_style) {
-                        case TrackStyle.ARTIST :
-                            library_manager.player.set_track (track, Services.PlayMode.ARTIST);
-                            break;
-                        case TrackStyle.PLAYLIST :
-                            library_manager.player.set_track (track, Services.PlayMode.PLAYLIST);
-                            break;
-                        case TrackStyle.AUDIO_CD :
-                            library_manager.player.set_track (track, Services.PlayMode.AUDIO_CD);
-                            break;
-                        default :
-                            library_manager.player.set_track (track, Services.PlayMode.ALBUM);
-                            break;
+                            case TrackStyle.ARTIST :
+                                library_manager.player.set_track (track, Services.PlayMode.ARTIST);
+                                break;
+                            case TrackStyle.QUEUE:
+                            case TrackStyle.PLAYLIST :
+                                library_manager.player.set_track (track, Services.PlayMode.PLAYLIST);
+                                break;
+                            case TrackStyle.AUDIO_CD :
+                                library_manager.player.set_track (track, Services.PlayMode.AUDIO_CD);
+                                break;
+                            default :
+                                library_manager.player.set_track (track, Services.PlayMode.ALBUM);
+                                break;
                         }
 
                         return true;
@@ -109,7 +110,10 @@ namespace PlayMyMusic.Widgets {
                 });
 
             content = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST || this.track_style == TrackStyle.AUDIO_CD) {
+            if (this.track_style == TrackStyle.PLAYLIST
+                || this.track_style == TrackStyle.ARTIST
+                || this.track_style == TrackStyle.AUDIO_CD
+                || this.track_style == TrackStyle.QUEUE) {
                 content.spacing = 12;
                 content.margin = 12;
             } else {
@@ -122,7 +126,8 @@ namespace PlayMyMusic.Widgets {
             event_box.add (content);
 
             if (this.track_style != TrackStyle.AUDIO_CD) {
-                if (this.track_style == TrackStyle.PLAYLIST) {
+                if (this.track_style == TrackStyle.PLAYLIST
+                    || this.track_style == TrackStyle.QUEUE) {
                     const Gtk.TargetEntry[] targetentries = {{ "STRING", 0, 0 }};
 
                     Gtk.drag_source_set (event_box, Gdk.ModifierType.BUTTON1_MASK, targetentries, Gdk.DragAction.MOVE);
@@ -150,7 +155,9 @@ namespace PlayMyMusic.Widgets {
                 event_box.button_press_event.connect (show_context_menu);
             }
 
-            if (this.track_style == TrackStyle.PLAYLIST || this.track_style == TrackStyle.ARTIST) {
+            if (this.track_style == TrackStyle.PLAYLIST
+                || this.track_style == TrackStyle.ARTIST
+                || this.track_style == TrackStyle.QUEUE) {
                 cover = new Gtk.Image ();
                 cover.get_style_context ().add_class ("card");
                 cover.tooltip_text = this.track.album.title;
@@ -193,18 +200,24 @@ namespace PlayMyMusic.Widgets {
         private void build_context_menu () {
             menu = new Gtk.Menu ();
 
-            var menu_add_to_queue = new Gtk.MenuItem.with_label (_("Add to Queue"));
-            menu_add_to_queue.activate.connect (() => {
-                var queue = library_manager.db_manager.get_queue ();
-                library_manager.add_track_into_playlist (queue, track.ID);
-            });
-            menu.add (menu_add_to_queue);
+            if (this.track_style != TrackStyle.QUEUE) {
+                var menu_add_to_queue = new Gtk.MenuItem.with_label (_("Add to Queue"));
+                menu_add_to_queue.activate.connect (() => {
+                    var queue = library_manager.db_manager.get_queue ();
+                    library_manager.add_track_into_playlist (queue, track.ID);
+                });
+                menu.add (menu_add_to_queue);
+            }
 
             var menu_add_into_playlist = new Gtk.MenuItem.with_label (_ ("Add into Playlist"));
             menu.add (menu_add_into_playlist);
 
             if (track.playlist != null) {
-                var menu_remove_from_playlist = new Gtk.MenuItem.with_label (_ ("Remove from Playlist"));
+                var label_string = _ ("Remove from Playlist");
+                if (this.track_style == TrackStyle.QUEUE) {
+                    label_string = _ ("Remove from Queue");
+                }
+                var menu_remove_from_playlist = new Gtk.MenuItem.with_label (label_string);
                 menu_remove_from_playlist.activate.connect (
                     () => {
                         library_manager.remove_track_from_playlist (track);

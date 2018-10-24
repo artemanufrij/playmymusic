@@ -60,7 +60,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void build_ui () {
-            queue = new Widgets.Playlist (playlist, false);
+            queue = new Widgets.Playlist (playlist, TrackStyle.QUEUE);
             queue.height_request = 320;
 
             var controls = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);

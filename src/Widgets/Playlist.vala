@@ -32,6 +32,8 @@ namespace PlayMyMusic.Widgets {
         public Objects.Playlist playlist { get; private set; }
         public string title { get { return playlist.title; } }
 
+        TrackStyle track_style;
+
         Gtk.Label playlist_title;
         Gtk.ListBox tracks;
         Gtk.Menu menu;
@@ -51,7 +53,8 @@ namespace PlayMyMusic.Widgets {
             });
         }
 
-        public Playlist (Objects.Playlist playlist, bool show_title = true) {
+        public Playlist (Objects.Playlist playlist, TrackStyle track_style = TrackStyle.PLAYLIST) {
+            this.track_style = track_style;
             this.playlist = playlist;
 
             this.playlist.track_added.connect ((track) => {
@@ -65,18 +68,18 @@ namespace PlayMyMusic.Widgets {
                 tracks.invalidate_sort ();
             });
 
-            build_ui (show_title);
+            build_ui ();
             show_tracks ();
         }
 
-        private void build_ui (bool show_title) {
+        private void build_ui () {
             this.can_focus = false;
             this.width_request = 256;
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.spacing = 6;
 
-            if (show_title) {
+            if (track_style == TrackStyle.PLAYLIST) {
                 var event_box = new Gtk.EventBox ();
                 event_box.button_press_event.connect (show_context_menu);
 
@@ -175,7 +178,7 @@ namespace PlayMyMusic.Widgets {
         }
 
         private void add_track (Objects.Track track) {
-            var item = new Widgets.Track (track, TrackStyle.PLAYLIST);
+            var item = new Widgets.Track (track, track_style);
             tracks.add (item);
             item.show_all ();
         }
