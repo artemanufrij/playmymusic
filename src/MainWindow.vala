@@ -405,8 +405,7 @@ namespace PlayMyMusic {
             icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
             icon_shuffle_off = new Gtk.Image();
 
-            var themed_icon_shuffle_off = new ThemedIcon.with_default_fallbacks ( "media-playlist-shuffle-symbolic");
-            themed_icon_shuffle_off.append_name ("media-playlist-no-shuffle-symbolic");
+            var themed_icon_shuffle_off = new ThemedIcon.from_names ({"media-playlist-no-shuffle-symbolic", "media-playlist-shuffle-symbolic"});
             icon_shuffle_off.gicon = themed_icon_shuffle_off;
             icon_shuffle_off.pixel_size = 16;
             //FALLBACK
