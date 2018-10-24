@@ -403,15 +403,7 @@ namespace PlayMyMusic {
 
         private void header_build_playmode_buttons () {
             icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
-            icon_shuffle_off = new Gtk.Image();
-
-            var themed_icon_shuffle_off = new ThemedIcon.from_names ({"media-playlist-no-shuffle-symbolic", "media-playlist-shuffle-symbolic"});
-            icon_shuffle_off.gicon = themed_icon_shuffle_off;
-            icon_shuffle_off.pixel_size = 16;
-            //FALLBACK
-            if (themed_icon_shuffle_off.use_default_fallbacks) {
-                icon_shuffle_off.opacity = 0.5;
-            }
+            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
 
             shuffle_button = new Gtk.Button ();
             if (settings.shuffle_mode) {
@@ -467,10 +459,6 @@ namespace PlayMyMusic {
             tracks_button.sensitive = has_artists;
 
             playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
-            //FALLBACK
-            if (playlist_button.gicon == null) {
-                playlist_button = new Gtk.Image.from_icon_name ("format-justify-fill-symbolic", Gtk.IconSize.BUTTON);
-            }
             playlist_button.tooltip_text = _ ("Playlists");
             view_mode.append (playlist_button);
             playlist_button.sensitive = has_artists;
