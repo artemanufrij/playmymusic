@@ -403,10 +403,12 @@ namespace PlayMyMusic {
 
         private void header_build_playmode_buttons () {
             icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
-            icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            icon_shuffle_off = new Gtk.Image();
+            icon_shuffle_off.gicon = new ThemedIcon ("media-playlist-no-shuffle-symbolic");
+            icon_shuffle_off.pixel_size = 16;
             //FALLBACK
             if (icon_shuffle_off.gicon == null) {
-                icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+                icon_shuffle_off.gicon = new ThemedIcon ("media-playlist-shuffle-symbolic");
                 icon_shuffle_off.opacity = 0.5;
             }
 
