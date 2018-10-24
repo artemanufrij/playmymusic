@@ -51,6 +51,7 @@ namespace PlayMyMusic.Dialogs {
         }
 
         private void build_ui () {
+            title = _("Preferences");
             var content = get_content_area () as Gtk.Box;
 
             var grid = new Gtk.Grid ();

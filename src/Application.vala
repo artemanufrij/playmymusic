@@ -226,6 +226,28 @@ namespace PlayMyMusic {
 
             activate ();
         }
+
+        public string get_os_info (string field) {
+            string return_value = "";
+            var file = File.new_for_path ("/etc/os-release");
+            try {
+                var osrel = new Gee.HashMap<string, string> ();
+                var dis = new DataInputStream (file.read ());
+                string line;
+                // Read lines until end of file (null) is reached
+                while ((line = dis.read_line (null)) != null) {
+                    var osrel_component = line.split ("=", 2);
+                    if (osrel_component.length == 2) {
+                        osrel[osrel_component[0]] = osrel_component[1].replace ("\"", "");
+                    }
+                }
+
+                return_value = osrel[field];
+            } catch (Error e) {
+                warning ("Couldn't read os-release file, assuming elementary OS");
+            }
+            return return_value;
+        }
     }
 }
 

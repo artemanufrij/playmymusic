@@ -404,6 +404,11 @@ namespace PlayMyMusic {
         private void header_build_playmode_buttons () {
             icon_shuffle_on = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
             icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-no-shuffle-symbolic", Gtk.IconSize.BUTTON);
+            //FALLBACK
+            if (icon_shuffle_off.gicon == null) {
+                icon_shuffle_off = new Gtk.Image.from_icon_name ("media-playlist-shuffle-symbolic", Gtk.IconSize.BUTTON);
+                icon_shuffle_off.opacity = 0.5;
+            }
 
             shuffle_button = new Gtk.Button ();
             if (settings.shuffle_mode) {
@@ -459,6 +464,10 @@ namespace PlayMyMusic {
             tracks_button.sensitive = has_artists;
 
             playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            //FALLBACK
+            if (playlist_button.gicon == null) {
+                playlist_button = new Gtk.Image.from_icon_name ("format-justify-fill-symbolic", Gtk.IconSize.BUTTON);
+            }
             playlist_button.tooltip_text = _ ("Playlists");
             view_mode.append (playlist_button);
             playlist_button.sensitive = has_artists;
@@ -584,6 +593,10 @@ namespace PlayMyMusic {
         }
 
         private void header_build_style_switcher () {
+            if (PlayMyMusicApp.instance.get_os_info ("PRETTY_NAME").index_of ("elementary") == -1) {
+                return;
+            }
+
             var mode_switch = new Granite.ModeSwitch.from_icon_name ("display-brightness-symbolic", "weather-clear-night-symbolic");
             mode_switch.valign = Gtk.Align.CENTER;
             mode_switch.active = settings.use_dark_theme;
