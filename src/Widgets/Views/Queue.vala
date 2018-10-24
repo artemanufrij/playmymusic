@@ -80,6 +80,10 @@ namespace PlayMyMusic.Widgets.Views {
             button_create_playlist.margin = 6;
             button_create_playlist.clicked.connect (() => {
                 var new_playlist = library_manager.create_new_playlist ();
+                var date_time = new GLib.DateTime.now_local ().format ("%Y-%m-%d %H:%M:%S");
+                new_playlist.title = _ ("Queue from %s").printf (date_time);
+                library_manager.db_manager.update_playlist (new_playlist);
+
                 foreach (var track in playlist.tracks) {
                     library_manager.add_track_into_playlist (new_playlist, track.ID);
                 }
