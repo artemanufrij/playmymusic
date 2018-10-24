@@ -192,6 +192,14 @@ namespace PlayMyMusic.Widgets {
 
         private void build_context_menu () {
             menu = new Gtk.Menu ();
+
+            var menu_add_to_queue = new Gtk.MenuItem.with_label (_("Add to Queue"));
+            menu_add_to_queue.activate.connect (() => {
+                var queue = library_manager.db_manager.get_queue ();
+                library_manager.add_track_into_playlist (queue, track.ID);
+            });
+            menu.add (menu_add_to_queue);
+
             var menu_add_into_playlist = new Gtk.MenuItem.with_label (_ ("Add into Playlist"));
             menu.add (menu_add_into_playlist);
 

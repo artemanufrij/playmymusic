@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Widgets.Views {
     public class PlaylistsView : Gtk.Grid {
         Services.LibraryManager library_manager;
+        Services.Player player;
         Settings settings;
 
         private string _filter = "";
@@ -53,21 +54,22 @@ namespace PlayMyMusic.Widgets.Views {
         construct {
             settings = Settings.get_default ();
             library_manager = Services.LibraryManager.instance;
-            library_manager.added_new_playlist.connect (
-                (playlist) => {
-                    add_playlist (playlist);
-                    stack.set_visible_child_name ("content");
-                });
-            library_manager.removed_playlist.connect (
-                (playlist) => {
-                    remove_playlist (playlist);
-                });
-            library_manager.player_state_changed.connect (
-                (state) => {
-                    if (state == Gst.State.PLAYING && library_manager.player.play_mode == Services.PlayMode.PLAYLIST) {
-                        activate_by_track (library_manager.player.current_track);
-                    }
-                });
+            player = library_manager.player;
+
+            library_manager.added_new_playlist.connect ((playlist) => {
+                add_playlist (playlist);
+                stack.set_visible_child_name ("content");
+            });
+            library_manager.removed_playlist.connect ((playlist) => {
+                remove_playlist (playlist);
+            });
+            player.state_changed.connect ((state) => {
+                if (state == Gst.State.PLAYING
+                    && player.play_mode == Services.PlayMode.PLAYLIST
+                    && player.current_track.playlist.ID != library_manager.db_manager.get_queue ().ID) {
+                    activate_by_track (player.current_track);
+                }
+            });
         }
 
         public PlaylistsView () {
@@ -219,7 +221,9 @@ namespace PlayMyMusic.Widgets.Views {
 
         private async void show_playlists_from_database () {
             foreach (var playlist in library_manager.playlists) {
-                add_playlist (playlist);
+                if (playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
+                    add_playlist (playlist);
+                }
             }
 
             if (playlists.get_children ().length () > 0) {

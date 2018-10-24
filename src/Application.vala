@@ -30,6 +30,7 @@ namespace PlayMyMusic {
         public string DB_PATH { get; private set; }
         public string COVER_FOLDER { get; private set; }
         public string CACHE_FOLDER { get; private set; }
+        public string QUEUE_SYS_NAME { get; default = "__queue__";}
 
         PlayMyMusic.Settings settings;
 

@@ -188,15 +188,14 @@ namespace PlayMyMusic {
             });
             library_manager.cache_loaded.connect (() => {
                 Idle.add (()=> {
-                    load_content_from_database.begin (
-                        (obj, res) => {
-                            if (settings.sync_files) {
-                                library_manager.sync_library_content.begin ();
-                            }
-                            albums_view.activate_by_id (settings.last_album_id);
-                            load_last_played_track ();
-                            content.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
-                        });
+                    load_content_from_database.begin ((obj, res) => {
+                        if (settings.sync_files) {
+                            library_manager.sync_library_content.begin ();
+                        }
+                        albums_view.activate_by_id (settings.last_album_id);
+                        load_last_played_track ();
+                        content.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+                    });
                     return false;
                 });
             });
@@ -294,6 +293,8 @@ namespace PlayMyMusic {
             header_build_style_switcher ();
 
             header_build_search_entry ();
+
+            header_build_playlist_control ();
 
             // SPINNER
             spinner = new Gtk.Spinner ();
@@ -627,6 +628,27 @@ namespace PlayMyMusic {
             headerbar.pack_end (search_entry);
         }
 
+        private void header_build_playlist_control () {
+            var queue_popover = new Gtk.Popover (null);
+
+            var queue = new Widgets.Views.Queue ();
+            queue_popover.add (queue);
+
+            var queue_button = new Gtk.Button.from_icon_name ("playlist-queue");
+            queue_button.valign = Gtk.Align.CENTER;
+            queue_button.tooltip_text = _("Queue");
+
+            queue_button.clicked.connect (() => {
+                //WORKAROUND: Don't know how to avoid focus grabing of 'queue' object
+                queue.sensitive = false;
+                queue_popover.show ();
+                queue.sensitive = true;
+            });
+            queue_popover.set_relative_to (queue_button);
+
+            headerbar.pack_end (queue_button);
+        }
+
         public override bool key_press_event (Gdk.EventKey e) {
             if (!search_entry.is_focus && e.str.strip ().length > 0) {
                 search_entry.grab_focus ();
@@ -875,7 +897,11 @@ namespace PlayMyMusic {
                     view_mode.set_active (2);
                     break;
                 case "playlists" :
-                    view_mode.set_active (3);
+                    if (settings.last_playlist_id != library_manager.db_manager.get_queue ().ID) {
+                        view_mode.set_active (3);
+                    } else {
+                        view_mode.set_active (0);
+                    }
                     var playlist = playlists_view.activate_by_id (settings.last_playlist_id);
                     if (playlist != null) {
                         var track = playlist.get_track_by_id (settings.last_track_id);

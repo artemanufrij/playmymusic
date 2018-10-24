@@ -29,6 +29,7 @@ executable(
     'Utils/Utils.vala',
     'Widgets/Album.vala',
     'Widgets/Artist.vala',
+    'Widgets/Playlist.vala',
     'Widgets/Radio.vala',
     'Widgets/Track.vala',
     'Widgets/TrackTimeLine.vala',
@@ -42,6 +43,7 @@ executable(
     'Widgets/Views/PlaylistView.vala',
     'Widgets/Views/RadiosView.vala',
     'Widgets/Views/TracksView.vala',
+    'Widgets/Views/Queue.vala',
     c_args: c_args,
     dependencies: [
         dependency('gio-2.0'),

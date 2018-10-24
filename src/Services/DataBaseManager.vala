@@ -161,6 +161,11 @@ namespace PlayMyMusic.Services {
                 warning (errormsg);
             }
 
+            q = """INSERT OR IGNORE INTO playlists (title) VALUES ('""" + PlayMyMusicApp.instance.QUEUE_SYS_NAME + """');""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
+
             q = """CREATE TABLE IF NOT EXISTS playlist_tracks (
                 ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
                 playlist_id INT         NOT NULL,
@@ -176,7 +181,7 @@ namespace PlayMyMusic.Services {
                 warning (errormsg);
             }
 
-             q = """CREATE TABLE IF NOT EXISTS settings_tracks_hidden_columns (
+            q = """CREATE TABLE IF NOT EXISTS settings_tracks_hidden_columns (
                 ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
                 column      TEXT        NOT NULL
                 );""";
@@ -509,6 +514,10 @@ namespace PlayMyMusic.Services {
             return null;
         }
 
+        public Objects.Playlist? get_queue () {
+            return get_playlist_by_title (PlayMyMusicApp.instance.QUEUE_SYS_NAME);
+        }
+
         public void update_playlist (Objects.Playlist playlist) {
             Sqlite.Statement stmt;
             string sql = """
@@ -646,6 +655,10 @@ namespace PlayMyMusic.Services {
         }
 
         public void remove_playlist (Objects.Playlist playlist) {
+            if (playlist.title == PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
+                return;
+            }
+
             Sqlite.Statement stmt;
 
             string sql = """
