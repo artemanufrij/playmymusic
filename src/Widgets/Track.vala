@@ -210,7 +210,7 @@ namespace PlayMyMusic.Widgets {
                     }
                     library_manager.add_track_into_playlist (queue, track.ID);
 
-                    if (player.get_state () == Gst.State.PLAYING
+                    if ((player.get_state () == Gst.State.PLAYING || player.get_state () == Gst.State.PAUSED)
                         && (player.current_track.playlist == null || player.current_track.playlist.ID != queue.ID)) {
                         player.current_track = queue.get_first_track ();
                         player.set_playmode (Services.PlayMode.PLAYLIST);
