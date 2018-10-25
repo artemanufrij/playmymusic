@@ -184,7 +184,7 @@ namespace PlayMyMusic.Widgets.Views {
                 playlists.invalidate_sort ();
             });
             p.show_all ();
-            playlists.min_children_per_line = library_manager.playlists.length ();
+            playlists.min_children_per_line = library_manager.playlists.length () - 1; // 1 FOR QUEUE
             playlists.max_children_per_line = playlists.min_children_per_line;
             playlists.add (p);
         }

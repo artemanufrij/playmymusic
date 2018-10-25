@@ -193,29 +193,6 @@ namespace PlayMyMusic.Widgets {
                 content.pack_end (duration, false, false, 0);
             }
 
-            if (this.track_style != TrackStyle.AUDIO_CD) {
-                var menu_button = new Gtk.Button.from_icon_name ("view-more-symbolic", Gtk.IconSize.BUTTON);
-
-                menu_button.opacity = 0.25;
-                menu_button.clicked.connect (() => {
-                    show_context_menu ();
-                });
-                menu_button.enter_notify_event.connect (() => {
-                    menu_button.opacity = 1;
-                    return true;
-                });
-                content.pack_end (menu_button, false, false, 0);
-                event_box.enter_notify_event.connect (() => {
-                    menu_button.opacity = 1;
-                    return true;
-                });
-
-                event_box.leave_notify_event.connect (() => {
-                    menu_button.opacity = 0.25;
-                    return true;
-                });
-            }
-
             this.add (event_box);
             this.halign = Gtk.Align.FILL;
             this.show_all ();
@@ -288,11 +265,13 @@ namespace PlayMyMusic.Widgets {
                 playlists.add (new Gtk.SeparatorMenuItem ());
             }
             foreach (var playlist in library_manager.playlists) {
-                item = new Gtk.MenuItem.with_label (playlist.title);
-                item.activate.connect (() => {
-                    library_manager.add_track_into_playlist (playlist, track.ID);
-                });
-                playlists.add (item);
+                if (playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
+                    item = new Gtk.MenuItem.with_label (playlist.title);
+                    item.activate.connect (() => {
+                        library_manager.add_track_into_playlist (playlist, track.ID);
+                    });
+                    playlists.add (item);
+                }
             }
             playlists.show_all ();
 

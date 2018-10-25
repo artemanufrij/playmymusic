@@ -50,6 +50,9 @@ namespace PlayMyMusic.Widgets.Views {
 
         Objects.Track current_track;
 
+        // FOR CONTEXT MENU
+        Objects.Track ? track;
+
         string[] col_names = {_("Nr"), _("Title"), _("Album"), _("Artist"), _("Duration")};
 
         bool only_mark = false;
@@ -280,7 +283,7 @@ namespace PlayMyMusic.Widgets.Views {
 
                 // GET SELECTED TRACK
                 Gtk.TreePath path = null;
-                PlayMyMusic.Objects.Track ? track = null;
+                track = null;
                 int cell_x, cell_y;
                 view.get_path_at_pos ((int)evt.x, (int)evt.y, out path, null, out cell_x, out cell_y);
 
@@ -307,11 +310,13 @@ namespace PlayMyMusic.Widgets.Views {
                     menu_playlists.add (new Gtk.SeparatorMenuItem ());
                 }
                 foreach (var playlist in library_manager.playlists) {
-                    item = new Gtk.MenuItem.with_label (playlist.title);
-                    item.activate.connect (() => {
-                        library_manager.add_track_into_playlist (playlist, track.ID);
-                    });
-                    menu_playlists.add (item);
+                    if (playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
+                        item = new Gtk.MenuItem.with_label (playlist.title);
+                        item.activate.connect (() => {
+                            library_manager.add_track_into_playlist (playlist, track.ID);
+                        });
+                        menu_playlists.add (item);
+                    }
                 }
                 menu_playlists.show_all ();
 
@@ -322,6 +327,24 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void build_context_menu () {
             menu = new Gtk.Menu ();
+            var menu_add_to_queue = new Gtk.MenuItem.with_label (_("Add to Queue"));
+            menu_add_to_queue.activate.connect (() => {
+                var queue = library_manager.db_manager.get_queue ();
+                if (!queue.has_tracks () && player.current_track != null) {
+                    library_manager.add_track_into_playlist (queue, player.current_track.ID);
+                }
+                library_manager.add_track_into_playlist (queue, track.ID);
+
+                if (player.get_state () == Gst.State.PLAYING
+                    && (player.current_track.playlist == null || player.current_track.playlist.ID != queue.ID)) {
+                    player.current_track = queue.get_first_track ();
+                    player.set_playmode (Services.PlayMode.PLAYLIST);
+
+                    queue.started_init_playing ();
+                }
+            });
+            menu.add (menu_add_to_queue);
+
             var menu_add_into_playlist = new Gtk.MenuItem.with_label (_ ("Add into Playlist"));
             menu.add (menu_add_into_playlist);
 
