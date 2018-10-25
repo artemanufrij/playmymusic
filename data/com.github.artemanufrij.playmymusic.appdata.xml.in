@@ -64,6 +64,10 @@
                 <ul>
                     <li>Reorder controls on header bar</li>
                 </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Danish (by rasmus91)</li>
+                </ul>
             </description>
         </release>
         <release version="1.1.2" date="2018-10-25">
