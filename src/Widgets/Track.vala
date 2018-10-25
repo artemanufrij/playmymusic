@@ -56,28 +56,24 @@ namespace PlayMyMusic.Widgets {
         public Track (Objects.Track track, TrackStyle track_style = TrackStyle.ALBUM) {
             this.track_style = track_style;
             this.track = track;
-            this.track.removed.connect (
-                () => {
-                    Idle.add (
-                        () => {
-                            this.destroy ();
-                            return false;
-                        });
+            this.track.removed.connect (() => {
+                Idle.add (() => {
+                    this.destroy ();
+                    return false;
                 });
-            this.track.path_not_found.connect (
-                () => {
-                    if (warning == null) {
-                        warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
-                        warning.tooltip_text = _ ("File couldn't be found\n%s").printf (track.uri);
-                        warning.halign = Gtk.Align.END;
-                        content.pack_end (warning);
-                        warning.show_all ();
-                    }
-                });
-            this.track.notify ["title"].connect (
-                () => {
-                    track_title.label = track.title;
-                });
+            });
+            this.track.path_not_found.connect (() => {
+                if (warning == null) {
+                    warning = new Gtk.Image.from_icon_name ("process-error-symbolic", Gtk.IconSize.MENU);
+                    warning.tooltip_text = _ ("File couldn't be found\n%s").printf (track.uri);
+                    warning.halign = Gtk.Align.END;
+                    content.pack_end (warning);
+                    warning.show_all ();
+                }
+            });
+            this.track.notify ["title"].connect (() => {
+                track_title.label = track.title;
+            });
 
             build_ui ();
         }
@@ -137,24 +133,30 @@ namespace PlayMyMusic.Widgets {
                     event_box.drag_begin.connect (on_drag_begin);
 
                     Gtk.drag_dest_set (event_box, Gtk.DestDefaults.ALL, targetentries, Gdk.DragAction.MOVE);
-                    event_box.drag_leave.connect (
-                        (context, time) => {
-                            content.margin_top = 6;
-                            this.get_style_context ().remove_class ("track-drag-begin");
-                        });
-                    event_box.drag_motion.connect (
-                        (context, x, y, time) => {
-                            content.margin_top = 5;
-                            Gtk.drag_unhighlight (event_box);
-                            this.get_style_context ().add_class ("track-drag-begin");
-                            return false;
-                        });
-                    event_box.drag_data_received.connect (
-                        (drag_context, x, y, data, info, time) => {
-                            on_drag_data_received (data.get_text ());
-                        });
+                    event_box.drag_leave.connect ((context, time) => {
+                        content.margin_top = 6;
+                        this.get_style_context ().remove_class ("track-drag-begin");
+                    });
+                    event_box.drag_motion.connect ((context, x, y, time) => {
+                        content.margin_top = 5;
+                        Gtk.drag_unhighlight (event_box);
+                        this.get_style_context ().add_class ("track-drag-begin");
+                        return false;
+                    });
+                    event_box.drag_data_received.connect ((drag_context, x, y, data, info, time) => {
+                        on_drag_data_received (data.get_text ());
+                    });
                 }
-                event_box.button_press_event.connect (show_context_menu);
+                event_box.button_press_event.connect ((sender, evt) => {
+                    if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                        show_context_menu ();
+                        return true;
+                    } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                        this.activate ();
+                        return true;
+                    }
+                    return false;
+                });
             }
 
             if (this.track_style == TrackStyle.PLAYLIST
@@ -169,18 +171,15 @@ namespace PlayMyMusic.Widgets {
                     cover.pixbuf = this.track.album.cover_32;
                 }
                 content.pack_start (cover, false, false, 0);
-                this.track.album.cover_changed.connect (
-                    () => {
-                        Idle.add (
-                            () => {
-                                cover.pixbuf = this.track.album.cover_32;
-                                return false;
-                            });
+                this.track.album.cover_changed.connect (() => {
+                    Idle.add (() => {
+                        cover.pixbuf = this.track.album.cover_32;
+                        return false;
                     });
-                track.album_changed.connect (
-                    (album) => {
-                        cover.tooltip_text = album.title;
-                    });
+                });
+                track.album_changed.connect ((album) => {
+                    cover.tooltip_text = album.title;
+                });
             }
 
             track_title = new Gtk.Label (this.track.title);
@@ -192,6 +191,29 @@ namespace PlayMyMusic.Widgets {
                 var duration = new Gtk.Label (PlayMyMusic.Utils.get_formated_duration (this.track.duration));
                 duration.halign = Gtk.Align.END;
                 content.pack_end (duration, false, false, 0);
+            }
+
+            if (this.track_style != TrackStyle.AUDIO_CD) {
+                var menu_button = new Gtk.Button.from_icon_name ("view-more-symbolic", Gtk.IconSize.BUTTON);
+
+                menu_button.opacity = 0.25;
+                menu_button.clicked.connect (() => {
+                    show_context_menu ();
+                });
+                menu_button.enter_notify_event.connect (() => {
+                    menu_button.opacity = 1;
+                    return true;
+                });
+                content.pack_end (menu_button, false, false, 0);
+                event_box.enter_notify_event.connect (() => {
+                    menu_button.opacity = 1;
+                    return true;
+                });
+
+                event_box.leave_notify_event.connect (() => {
+                    menu_button.opacity = 0.25;
+                    return true;
+                });
             }
 
             this.add (event_box);
@@ -248,64 +270,54 @@ namespace PlayMyMusic.Widgets {
             menu.show_all ();
         }
 
-        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
-            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
-                if (menu == null) {
-                    build_context_menu ();
-                }
-
-                foreach (var child in playlists.get_children ()) {
-                    child.destroy ();
-                }
-                var item = new Gtk.MenuItem.with_label (_ ("Create New Playlist"));
-                item.activate.connect (
-                    () => {
-                        var new_playlist = library_manager.create_new_playlist ();
-                        library_manager.add_track_into_playlist (new_playlist, track.ID);
-                    });
-                playlists.add (item);
-                if (library_manager.playlists.length () > 0) {
-                    playlists.add (new Gtk.SeparatorMenuItem ());
-                }
-                foreach (var playlist in library_manager.playlists) {
-                    item = new Gtk.MenuItem.with_label (playlist.title);
-                    item.activate.connect (
-                        () => {
-                            library_manager.add_track_into_playlist (playlist, track.ID);
-                        });
-                    playlists.add (item);
-                }
-                playlists.show_all ();
-
-                // SEND TO
-                foreach (var child in send_to.get_children ()) {
-                    child.destroy ();
-                }
-
-                var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
-                if (current_mobile_phone != null) {
-                    foreach (var music_folder in current_mobile_phone.music_folders) {
-                        item = new Gtk.MenuItem.with_label (music_folder.name);
-                        item.activate.connect (
-                            () => {
-                                current_mobile_phone.add_track (track, music_folder);
-                            });
-                        send_to.add (item);
-                    }
-                }
-                if (send_to.get_children ().length () == 0) {
-                    menu_send_to.hide ();
-                } else {
-                    menu_send_to.show_all ();
-                }
-
-                menu.popup_at_pointer (null);
-                return true;
-            } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
-                this.activate ();
-                return true;
+        private void show_context_menu () {
+            if (menu == null) {
+                build_context_menu ();
             }
-            return false;
+
+            foreach (var child in playlists.get_children ()) {
+                child.destroy ();
+            }
+            var item = new Gtk.MenuItem.with_label (_ ("Create New Playlist"));
+            item.activate.connect (() => {
+                var new_playlist = library_manager.create_new_playlist ();
+                library_manager.add_track_into_playlist (new_playlist, track.ID);
+            });
+            playlists.add (item);
+            if (library_manager.playlists.length () > 0) {
+                playlists.add (new Gtk.SeparatorMenuItem ());
+            }
+            foreach (var playlist in library_manager.playlists) {
+                item = new Gtk.MenuItem.with_label (playlist.title);
+                item.activate.connect (() => {
+                    library_manager.add_track_into_playlist (playlist, track.ID);
+                });
+                playlists.add (item);
+            }
+            playlists.show_all ();
+
+            // SEND TO
+            foreach (var child in send_to.get_children ()) {
+                child.destroy ();
+            }
+
+            var current_mobile_phone = PlayMyMusicApp.instance.mainwindow.mobile_phone_view.current_mobile_phone;
+            if (current_mobile_phone != null) {
+                foreach (var music_folder in current_mobile_phone.music_folders) {
+                    item = new Gtk.MenuItem.with_label (music_folder.name);
+                    item.activate.connect (() => {
+                        current_mobile_phone.add_track (track, music_folder);
+                    });
+                    send_to.add (item);
+                }
+            }
+            if (send_to.get_children ().length () == 0) {
+                menu_send_to.hide ();
+            } else {
+                menu_send_to.show_all ();
+            }
+
+            menu.popup_at_pointer (null);
         }
 
         private void on_drag_data_get (Gdk.DragContext context, Gtk.SelectionData selection_data, uint target_type, uint time) {
