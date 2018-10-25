@@ -86,7 +86,7 @@ msgstr "Lyt til musik"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
-msgstr "musik;radio;playlister"
+msgstr "musik;radio;playlister;"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:8
 msgid "com.github.artemanufrij.playmymusic"
