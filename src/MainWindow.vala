@@ -632,6 +632,9 @@ namespace PlayMyMusic {
             var queue_popover = new Gtk.Popover (null);
 
             var queue = new Widgets.Views.Queue ();
+            queue.moved_to_playlist.connect (() => {
+                show_playlists ();
+            });
             queue_popover.add (queue);
 
             var queue_button = new Gtk.Button.from_icon_name ("playlist-queue");

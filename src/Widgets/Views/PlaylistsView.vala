@@ -180,10 +180,9 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
             var p = new Widgets.Views.PlaylistView (playlist);
-            playlist.updated.connect (
-                () => {
-                    playlists.invalidate_sort ();
-                });
+            playlist.updated.connect (() => {
+                playlists.invalidate_sort ();
+            });
             p.show_all ();
             playlists.min_children_per_line = library_manager.playlists.length ();
             playlists.max_children_per_line = playlists.min_children_per_line;

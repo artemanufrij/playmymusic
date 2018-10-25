@@ -27,6 +27,7 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class Queue : Gtk.Grid {
+        public signal void moved_to_playlist ();
         Services.LibraryManager library_manager;
         Services.Player player;
 
@@ -55,6 +56,9 @@ namespace PlayMyMusic.Widgets.Views {
             });
             playlist.track_removed.connect (() => {
                 set_visibility ();
+            });
+            playlist.started_init_playing.connect (() => {
+                queue.mark_playing_track (playlist.get_first_track ());
             });
             build_ui ();
         }
@@ -87,6 +91,8 @@ namespace PlayMyMusic.Widgets.Views {
                 foreach (var track in playlist.tracks) {
                     library_manager.add_track_into_playlist (new_playlist, track.ID);
                 }
+
+                moved_to_playlist ();
             });
 
             controls.pack_end (button_create_playlist);

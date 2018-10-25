@@ -53,7 +53,7 @@ namespace PlayMyMusic.Services {
         dynamic Gst.Element playbin;
         Gst.Bus bus;
 
-        public Objects.Track? current_track { get; private set; }
+        public Objects.Track? current_track { get; set; }
         public Objects.Radio? current_radio { get; private set; }
         public File? current_file { get; private set; }
 
@@ -342,6 +342,10 @@ namespace PlayMyMusic.Services {
             Gst.State pending;
             playbin.get_state (out state, out pending, (Gst.ClockTime) (Gst.SECOND));
             return state;
+        }
+
+        public void set_playmode (PlayMode play_mode) {
+            _play_mode = play_mode;
         }
 
         private bool bus_callback (Gst.Bus bus, Gst.Message message) {

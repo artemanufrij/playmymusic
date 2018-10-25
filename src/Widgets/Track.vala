@@ -29,9 +29,10 @@ namespace PlayMyMusic.Widgets {
     public enum TrackStyle { ALBUM, ARTIST, PLAYLIST, AUDIO_CD, QUEUE }
 
     public class Track : Gtk.ListBoxRow {
-        PlayMyMusic.Services.LibraryManager library_manager;
+        Services.LibraryManager library_manager;
+        Services.Player player;
 
-        public PlayMyMusic.Objects.Track track { get; private set; }
+        public Objects.Track track { get; private set; }
         public string title { get { return track.title; } }
         public int track_number { get { return track.track; } }
         public int disc_number { get { return track.disc; } }
@@ -48,10 +49,11 @@ namespace PlayMyMusic.Widgets {
         TrackStyle track_style;
 
         construct {
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
+            player = library_manager.player;
         }
 
-        public Track (PlayMyMusic.Objects.Track track, TrackStyle track_style = TrackStyle.ALBUM) {
+        public Track (Objects.Track track, TrackStyle track_style = TrackStyle.ALBUM) {
             this.track_style = track_style;
             this.track = track;
             this.track.removed.connect (
@@ -204,7 +206,18 @@ namespace PlayMyMusic.Widgets {
                 var menu_add_to_queue = new Gtk.MenuItem.with_label (_("Add to Queue"));
                 menu_add_to_queue.activate.connect (() => {
                     var queue = library_manager.db_manager.get_queue ();
+                    if (!queue.has_tracks () && player.current_track != null) {
+                        library_manager.add_track_into_playlist (queue, player.current_track.ID);
+                    }
                     library_manager.add_track_into_playlist (queue, track.ID);
+
+                    if (player.get_state () == Gst.State.PLAYING
+                        && (player.current_track.playlist == null || player.current_track.playlist.ID != queue.ID)) {
+                        player.current_track = queue.get_first_track ();
+                        player.set_playmode (Services.PlayMode.PLAYLIST);
+
+                        queue.started_init_playing ();
+                    }
                 });
                 menu.add (menu_add_to_queue);
             }
