@@ -258,14 +258,14 @@ namespace PlayMyMusic.Services {
                         }
                     }
                 } else if (play_mode == PlayMode.PLAYLIST) {
-                    if (settings.shuffle_mode) {
+                    if (settings.shuffle_mode && current_track.playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
                         next_track = current_track.playlist.get_shuffle_track (current_track);
                     } else {
                         next_track = current_track.playlist.get_next_track (current_track);
                     }
 
                     if (next_track == null && settings.repeat_mode != RepeatMode.OFF && current_track.playlist.has_available_tracks ()) {
-                        if (settings.shuffle_mode) {
+                        if (settings.shuffle_mode && current_track.playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
                             next_track = current_track.playlist.get_shuffle_track (null);
                         } else {
                             next_track = current_track.playlist.get_first_track ();
