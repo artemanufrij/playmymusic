@@ -459,12 +459,12 @@ namespace PlayMyMusic {
             view_mode.append (tracks_button);
             tracks_button.sensitive = has_artists;
 
-            playlist_button = new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.BUTTON);
+            playlist_button = new Gtk.Image.from_icon_name ("playlist-symbolic", Gtk.IconSize.BUTTON);
             playlist_button.tooltip_text = _ ("Playlists");
             view_mode.append (playlist_button);
             playlist_button.sensitive = has_artists;
 
-            var radio_button = new Gtk.Image.from_icon_name ("com.github.artemanufrij.playmymusic-symbolic", Gtk.IconSize.BUTTON);
+            var radio_button = new Gtk.Image.from_icon_name ("internet-radio-symbolic", Gtk.IconSize.BUTTON);
             radio_button.tooltip_text = _ ("Radio Stations");
             view_mode.append (radio_button);
             var wid = view_mode.get_children ().last ().data;
@@ -637,7 +637,7 @@ namespace PlayMyMusic {
             });
             queue_popover.add (queue);
 
-            var queue_button = new Gtk.Button.from_icon_name ("playlist-queue");
+            var queue_button = new Gtk.Button.from_icon_name ("playlist-queue-symbolic");
             queue_button.valign = Gtk.Align.CENTER;
             queue_button.tooltip_text = _("Queue");
 

@@ -79,7 +79,7 @@ namespace PlayMyMusic.Widgets.Views {
                 }
             });
 
-            var button_create_playlist = new Gtk.Button.from_icon_name ("playlist");
+            var button_create_playlist = new Gtk.Button.from_icon_name ("playlist-symbolic");
             button_create_playlist.tooltip_text = _("Create new Playlist based on this Queue");
             button_create_playlist.margin = 6;
             button_create_playlist.clicked.connect (() => {
