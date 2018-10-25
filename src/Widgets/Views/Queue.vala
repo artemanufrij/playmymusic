@@ -31,7 +31,7 @@ namespace PlayMyMusic.Widgets.Views {
         Services.LibraryManager library_manager;
         Services.Player player;
 
-        Objects.Playlist playlist { get; private set; }
+        public Objects.Playlist playlist { get; private set; }
         Widgets.Playlist queue;
 
         Gtk.Grid content;

@@ -630,15 +630,25 @@ namespace PlayMyMusic {
 
         private void header_build_playlist_control () {
             var queue_popover = new Gtk.Popover (null);
-
+            var queue_button = new Gtk.Button.from_icon_name ("playlist-queue-symbolic");
             var queue = new Widgets.Views.Queue ();
+            queue.playlist.track_added.connect (() => {
+                if (queue_button.opacity != 1) {
+                    queue_button.opacity = 1;
+                }
+            });
+            queue.playlist.track_removed.connect (() => {
+                if (!queue.playlist.has_tracks ()) {
+                    queue_button.opacity = 0.5;
+                }
+            });
             queue.moved_to_playlist.connect (() => {
                 show_playlists ();
             });
             queue_popover.add (queue);
 
-            var queue_button = new Gtk.Button.from_icon_name ("playlist-queue-symbolic");
             queue_button.valign = Gtk.Align.CENTER;
+            queue_button.opacity = queue.playlist.has_tracks () ? 1 : 0.5;
             queue_button.tooltip_text = _("Queue");
 
             queue_button.clicked.connect (() => {
