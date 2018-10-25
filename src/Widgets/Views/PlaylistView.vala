@@ -34,6 +34,7 @@ namespace PlayMyMusic.Widgets.Views {
         Widgets.Playlist content;
 
         public PlaylistView (Objects.Playlist playlist) {
+            this.can_focus = false;
             this.playlist = playlist;
             content = new Widgets.Playlist (playlist);
             this.add (content);
