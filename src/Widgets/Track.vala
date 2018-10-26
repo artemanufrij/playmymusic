@@ -75,6 +75,10 @@ namespace PlayMyMusic.Widgets {
                 track_title.label = track.title;
             });
 
+            this.activate.connect (() => {
+                this.opacity = 1;
+            });
+
             build_ui ();
         }
 
@@ -139,7 +143,6 @@ namespace PlayMyMusic.Widgets {
                     });
                     event_box.drag_motion.connect ((context, x, y, time) => {
                         content.margin_top = 5;
-                        Gtk.drag_unhighlight (event_box);
                         this.get_style_context ().add_class ("track-drag-begin");
                         return false;
                     });
@@ -147,13 +150,16 @@ namespace PlayMyMusic.Widgets {
                         on_drag_data_received (data.get_text ());
                     });
                 }
+
                 event_box.button_press_event.connect ((sender, evt) => {
                     if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
                         show_context_menu ();
                         return true;
-                    } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                    } else if (evt.type == Gdk.EventType.BUTTON_RELEASE && evt.button == 1) {
                         this.activate ();
                         return true;
+                    } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
+                        return false;
                     }
                     return false;
                 });

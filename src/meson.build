@@ -40,7 +40,6 @@ executable(
     'Widgets/Views/AudioCDView.vala',
     'Widgets/Views/MobilePhone.vala',
     'Widgets/Views/PlaylistsView.vala',
-    'Widgets/Views/PlaylistView.vala',
     'Widgets/Views/RadiosView.vala',
     'Widgets/Views/TracksView.vala',
     'Widgets/Views/Queue.vala',

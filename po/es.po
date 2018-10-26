@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-25 00:39+0200\n"
+"POT-Creation-Date: 2018-10-26 18:18+0200\n"
 "PO-Revision-Date: 2018-02-24 03:59-0600\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: \n"
@@ -191,12 +191,12 @@ msgstr "Preferencias"
 msgid "Search Music"
 msgstr "Buscar música"
 
-#: src/MainWindow.vala:639
+#: src/MainWindow.vala:652
 msgid "Queue"
 msgstr ""
 
-#: src/MainWindow.vala:749 src/MainWindow.vala:757
-#: src/Widgets/Views/TracksView.vala:412
+#: src/MainWindow.vala:762 src/MainWindow.vala:770
+#: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> por <b>%s</b>"
@@ -302,18 +302,18 @@ msgstr "Establecer una carátula nueva…"
 msgid "Edit Album properties…"
 msgstr "Editar propiedades del álbum…"
 
-#: src/Widgets/Album.vala:225 src/Widgets/Track.vala:212
-#: src/Widgets/Views/TracksView.vala:325
+#: src/Widgets/Album.vala:225 src/Widgets/Track.vala:230
+#: src/Widgets/Views/TracksView.vala:348
 msgid "Add into Playlist"
 msgstr "Añadir a la lista"
 
 #: src/Widgets/Album.vala:230 src/Widgets/Artist.vala:213
-#: src/Widgets/Track.vala:230
+#: src/Widgets/Track.vala:248
 msgid "Send to"
 msgstr "Enviar a"
 
-#: src/Widgets/Album.vala:256 src/Widgets/Track.vala:247
-#: src/Widgets/Views/TracksView.vala:300
+#: src/Widgets/Album.vala:256 src/Widgets/Track.vala:264
+#: src/Widgets/Views/TracksView.vala:303
 msgid "Create New Playlist"
 msgstr "Crear lista nueva"
 
@@ -347,7 +347,7 @@ msgstr "Editar estación de radio…"
 msgid "Remove Radio Station"
 msgstr "Eliminar estación de radio"
 
-#: src/Widgets/Track.vala:69
+#: src/Widgets/Track.vala:68
 #, c-format
 msgid ""
 "File couldn't be found\n"
@@ -356,15 +356,15 @@ msgstr ""
 "No se pudo encontrar el archivo\n"
 "%s"
 
-#: src/Widgets/Track.vala:204
+#: src/Widgets/Track.vala:211 src/Widgets/Views/TracksView.vala:330
 msgid "Add to Queue"
 msgstr ""
 
-#: src/Widgets/Track.vala:216
+#: src/Widgets/Track.vala:234
 msgid "Remove from Playlist"
 msgstr "Quitar de la lista"
 
-#: src/Widgets/Track.vala:218
+#: src/Widgets/Track.vala:236
 #, fuzzy
 msgid "Remove from Queue"
 msgstr "Quitar de la lista"
@@ -399,13 +399,13 @@ msgid "Import music from a source into your library."
 msgstr "Importe música a partir de un origen a la fonoteca."
 
 #: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:156
+#: src/Widgets/Views/PlaylistsView.vala:148
 #: src/Widgets/Views/RadiosView.vala:213
 msgid "No results"
 msgstr "No hay resultados"
 
 #: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:156
+#: src/Widgets/Views/PlaylistsView.vala:148
 #: src/Widgets/Views/RadiosView.vala:213
 msgid "Try another search"
 msgstr "Pruebe con otro término de búsqueda"
@@ -428,48 +428,48 @@ msgstr "<b>%d pistas</b> en <b>%d álbum</b>(es)"
 msgid "Hide Mobile Panel"
 msgstr ""
 
-#: src/Widgets/Views/PlaylistsView.vala:97
+#: src/Widgets/Views/PlaylistsView.vala:94
 msgid "Add a playlist"
 msgstr "Añadir lista"
 
-#: src/Widgets/Views/PlaylistsView.vala:116
+#: src/Widgets/Views/PlaylistsView.vala:112
 #: src/Widgets/Views/RadiosView.vala:249
 msgid "Add"
 msgstr "Añadir"
 
-#: src/Widgets/Views/PlaylistsView.vala:139
+#: src/Widgets/Views/PlaylistsView.vala:132
 msgid "No Playlists"
 msgstr "No hay listas"
 
-#: src/Widgets/Views/PlaylistsView.vala:139
+#: src/Widgets/Views/PlaylistsView.vala:132
 msgid "Add playlist to your library."
 msgstr "Añada listas a la fonoteca."
 
-#: src/Widgets/Views/PlaylistsView.vala:140
+#: src/Widgets/Views/PlaylistsView.vala:133
 #, fuzzy
 msgid "Create Playlist"
 msgstr "Crear lista nueva"
 
-#: src/Widgets/Views/PlaylistsView.vala:140
+#: src/Widgets/Views/PlaylistsView.vala:133
 #, fuzzy
 msgid "Create a playlist for manage your favorite songs."
 msgstr "Añada una lista para organizar sus canciones favoritas."
 
-#: src/Widgets/Views/Queue.vala:69
+#: src/Widgets/Views/Queue.vala:73
 msgid "Clear the Queue"
 msgstr ""
 
-#: src/Widgets/Views/Queue.vala:79
+#: src/Widgets/Views/Queue.vala:83
 #, fuzzy
 msgid "Create new Playlist based on this Queue"
 msgstr "Crear lista nueva"
 
-#: src/Widgets/Views/Queue.vala:84
+#: src/Widgets/Views/Queue.vala:88
 #, c-format
 msgid "Queue from %s"
 msgstr ""
 
-#: src/Widgets/Views/Queue.vala:101
+#: src/Widgets/Views/Queue.vala:107
 msgid "Queue is empty"
 msgstr ""
 
@@ -502,40 +502,41 @@ msgstr "Añadir estación de radio"
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "Añada un URL de flujo de datos, como .pls o .m3u."
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:183
+#. FOR CONTEXT MENU
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
 msgstr "N.º"
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:190
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:193
 msgid "Title"
 msgstr "Título"
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:197
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:200
 msgid "Album"
 msgstr "Álbum"
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:199
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:202
 msgid "Artist"
 msgstr "Artista"
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:204
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:207
 msgid "Duration"
 msgstr "Duración"
 
-#: src/Widgets/Views/TracksView.vala:162
+#: src/Widgets/Views/TracksView.vala:165
 #, fuzzy
 msgid "Choose a Track"
 msgstr "Seleccione una carátula"
 
-#: src/Widgets/Views/TracksView.vala:162
+#: src/Widgets/Views/TracksView.vala:165
 msgid "No track selected"
 msgstr ""
 
-#: src/Widgets/Views/TracksView.vala:328
+#: src/Widgets/Views/TracksView.vala:351
 msgid "Columns Visibility"
 msgstr ""
 
-#: src/Widgets/Views/TracksView.vala:361
+#: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
 msgstr ""
 
