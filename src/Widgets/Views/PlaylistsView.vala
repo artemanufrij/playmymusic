@@ -158,7 +158,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void save_new_playlist () {
-            var playlist = new PlayMyMusic.Objects.Playlist ();
+            var playlist = new Objects.Playlist ();
             playlist.title = new_playlist_entry.text.strip ();
             library_manager.db_manager.insert_playlist (playlist);
             new_playlist_popover.hide ();
@@ -169,8 +169,8 @@ namespace PlayMyMusic.Widgets.Views {
             return new_title != "" && library_manager.db_manager.get_playlist_by_title (new_title) == null;
         }
 
-        private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
-            var p = new Widgets.Views.PlaylistView (playlist);
+        private void add_playlist (Objects.Playlist playlist) {
+            var p = new Widgets.Playlist (playlist);
             playlist.updated.connect (() => {
                 playlists_sort_func ();
             });
@@ -178,9 +178,9 @@ namespace PlayMyMusic.Widgets.Views {
             playlists.add (p);
         }
 
-        private void remove_playlist (PlayMyMusic.Objects.Playlist playlist) {
+        private void remove_playlist (Objects.Playlist playlist) {
             foreach (var child in playlists.get_children ()) {
-                if ((child as Widgets.Views.PlaylistView).playlist.ID == playlist.ID) {
+                if ((child as Widgets.Playlist).playlist.ID == playlist.ID) {
                     playlists.remove (child);
                     child.destroy ();
                 }
@@ -197,9 +197,9 @@ namespace PlayMyMusic.Widgets.Views {
 
         public Objects.Playlist ? activate_by_id (int id) {
             foreach (var child in playlists.get_children ()) {
-                if ((child as Widgets.Views.PlaylistView).playlist.ID == id) {
-                    (child as Widgets.Views.PlaylistView).mark_playing_track (library_manager.player.current_track);
-                    return (child as Widgets.Views.PlaylistView).playlist;
+                if ((child as Widgets.Playlist).playlist.ID == id) {
+                    (child as Widgets.Playlist).mark_playing_track (library_manager.player.current_track);
+                    return (child as Widgets.Playlist).playlist;
                 }
             }
             return null;
@@ -234,8 +234,8 @@ namespace PlayMyMusic.Widgets.Views {
         private void playlists_sort_func () {
             for (int i = 0; i < playlists.get_children ().length (); i ++) {
                 for (int j = i + 1; j < playlists.get_children ().length (); j++) {
-                    var item1 = (PlayMyMusic.Widgets.Views.PlaylistView) playlists.get_children ().nth_data(i);
-                    var item2 = (PlayMyMusic.Widgets.Views.PlaylistView) playlists.get_children ().nth_data(j);
+                    var item1 = (Widgets.Playlist) playlists.get_children ().nth_data(i);
+                    var item2 = (Widgets.Playlist) playlists.get_children ().nth_data(j);
 
                     if (item1.title.down ().collate (item2.title.down ()) > 0) {
                         playlists.reorder_child (item2, i);
@@ -256,7 +256,7 @@ namespace PlayMyMusic.Widgets.Views {
             string[] filter_elements = filter.strip ().down ().split (" ");
             foreach (var child in playlists.get_children ()) {
                 child.show ();
-                var playlist = (child as PlayMyMusic.Widgets.Views.PlaylistView).playlist;
+                var playlist = (child as Widgets.Playlist).playlist;
 
                 bool findings = true;
 
