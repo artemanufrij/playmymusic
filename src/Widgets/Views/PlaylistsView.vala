@@ -49,6 +49,7 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Entry new_playlist_entry;
         Gtk.Button new_playlist_save;
 
+        uint timer_sort = 0;
         uint items_found = 0;
 
         construct {
@@ -176,6 +177,7 @@ namespace PlayMyMusic.Widgets.Views {
             });
             p.show_all ();
             playlists.add (p);
+            do_sort ();
         }
 
         private void remove_playlist (Objects.Playlist playlist) {
@@ -229,6 +231,20 @@ namespace PlayMyMusic.Widgets.Views {
             } else {
                 stack.visible_child_name = "content";
             }
+        }
+
+        private void do_sort () {
+            if (timer_sort != 0) {
+                Source.remove (timer_sort);
+                timer_sort = 0;
+            }
+
+            timer_sort = Timeout.add (250, () => {
+                playlists_sort_func ();
+                Source.remove (timer_sort);
+                timer_sort = 0;
+                return false;
+            });
         }
 
         private void playlists_sort_func () {
