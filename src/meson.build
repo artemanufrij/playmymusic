@@ -58,9 +58,6 @@ executable(
         dependency('gstreamer-tag-1.0'),
         dependency('taglib_c'),
     ],
-    vala_args: [
-        meson.source_root() + '/vapi/config.vapi'
-    ],
     link_args: ['-lm'],
     install : true
 )
