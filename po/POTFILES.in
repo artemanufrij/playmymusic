@@ -40,7 +40,6 @@ src/Widgets/Views/ArtistView.vala
 src/Widgets/Views/AudioCDView.vala
 src/Widgets/Views/MobilePhone.vala
 src/Widgets/Views/PlaylistsView.vala
-src/Widgets/Views/PlaylistView.vala
 src/Widgets/Views/Queue.vala
 src/Widgets/Views/RadiosView.vala
 src/Widgets/Views/TracksView.vala

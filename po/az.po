@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-25 00:39+0200\n"
+"POT-Creation-Date: 2018-10-26 18:18+0200\n"
 "Last-Translator: manymous <many.mous.hacking@gmail.com>\n"
 "Language-Team: \n"
 "Language: az\n"
@@ -180,12 +180,12 @@ msgstr "Seçimlər"
 msgid "Search Music"
 msgstr "Musiqi axtarın"
 
-#: src/MainWindow.vala:639
+#: src/MainWindow.vala:652
 msgid "Queue"
 msgstr ""
 
-#: src/MainWindow.vala:749 src/MainWindow.vala:757
-#: src/Widgets/Views/TracksView.vala:412
+#: src/MainWindow.vala:762 src/MainWindow.vala:770
+#: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr ""
@@ -291,18 +291,18 @@ msgstr "Yeni Cover seçin…"
 msgid "Edit Album properties…"
 msgstr "Albom xüsusiyyətlərini redaktə edin…"
 
-#: src/Widgets/Album.vala:225 src/Widgets/Track.vala:212
-#: src/Widgets/Views/TracksView.vala:325
+#: src/Widgets/Album.vala:225 src/Widgets/Track.vala:230
+#: src/Widgets/Views/TracksView.vala:348
 msgid "Add into Playlist"
 msgstr "Pleylistə əlavə edin"
 
 #: src/Widgets/Album.vala:230 src/Widgets/Artist.vala:213
-#: src/Widgets/Track.vala:230
+#: src/Widgets/Track.vala:248
 msgid "Send to"
 msgstr "Göndər"
 
-#: src/Widgets/Album.vala:256 src/Widgets/Track.vala:247
-#: src/Widgets/Views/TracksView.vala:300
+#: src/Widgets/Album.vala:256 src/Widgets/Track.vala:264
+#: src/Widgets/Views/TracksView.vala:303
 msgid "Create New Playlist"
 msgstr "Yeni Pleylist yaradın"
 
@@ -336,7 +336,7 @@ msgstr "Radio stansiyasını redaktə edin…"
 msgid "Remove Radio Station"
 msgstr "Radio stansiyasını sil"
 
-#: src/Widgets/Track.vala:69
+#: src/Widgets/Track.vala:68
 #, c-format
 msgid ""
 "File couldn't be found\n"
@@ -345,15 +345,15 @@ msgstr ""
 "Fayl tapıla bilmədi\n"
 "%s"
 
-#: src/Widgets/Track.vala:204
+#: src/Widgets/Track.vala:211 src/Widgets/Views/TracksView.vala:330
 msgid "Add to Queue"
 msgstr ""
 
-#: src/Widgets/Track.vala:216
+#: src/Widgets/Track.vala:234
 msgid "Remove from Playlist"
 msgstr "Pleylist'dən çıxarın(sil)"
 
-#: src/Widgets/Track.vala:218
+#: src/Widgets/Track.vala:236
 #, fuzzy
 msgid "Remove from Queue"
 msgstr "Pleylist'dən çıxarın(sil)"
@@ -388,13 +388,13 @@ msgid "Import music from a source into your library."
 msgstr ""
 
 #: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:156
+#: src/Widgets/Views/PlaylistsView.vala:148
 #: src/Widgets/Views/RadiosView.vala:213
 msgid "No results"
 msgstr "Nəticə yoxdur"
 
 #: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:156
+#: src/Widgets/Views/PlaylistsView.vala:148
 #: src/Widgets/Views/RadiosView.vala:213
 msgid "Try another search"
 msgstr "Başqa bir axtarış edin"
@@ -416,46 +416,46 @@ msgstr "<b>%d Parça</b> <b>%d Albom</b>(lar) içində"
 msgid "Hide Mobile Panel"
 msgstr "Mobil Paneli Gizlə"
 
-#: src/Widgets/Views/PlaylistsView.vala:97
+#: src/Widgets/Views/PlaylistsView.vala:94
 msgid "Add a playlist"
 msgstr "Pleylist əlavə edin"
 
-#: src/Widgets/Views/PlaylistsView.vala:116
+#: src/Widgets/Views/PlaylistsView.vala:112
 #: src/Widgets/Views/RadiosView.vala:249
 msgid "Add"
 msgstr "Əlavə et"
 
-#: src/Widgets/Views/PlaylistsView.vala:139
+#: src/Widgets/Views/PlaylistsView.vala:132
 msgid "No Playlists"
 msgstr "Pleylist yoxdur"
 
-#: src/Widgets/Views/PlaylistsView.vala:139
+#: src/Widgets/Views/PlaylistsView.vala:132
 msgid "Add playlist to your library."
 msgstr "Kitabxanaya pleylist əlavə edin."
 
-#: src/Widgets/Views/PlaylistsView.vala:140
+#: src/Widgets/Views/PlaylistsView.vala:133
 msgid "Create Playlist"
 msgstr "Pleylist yaradın"
 
-#: src/Widgets/Views/PlaylistsView.vala:140
+#: src/Widgets/Views/PlaylistsView.vala:133
 msgid "Create a playlist for manage your favorite songs."
 msgstr "Sevdiyiniz mahnıları idarə etmək üçün bir pleylist yaradın."
 
-#: src/Widgets/Views/Queue.vala:69
+#: src/Widgets/Views/Queue.vala:73
 msgid "Clear the Queue"
 msgstr ""
 
-#: src/Widgets/Views/Queue.vala:79
+#: src/Widgets/Views/Queue.vala:83
 #, fuzzy
 msgid "Create new Playlist based on this Queue"
 msgstr "Yeni Pleylist yaradın"
 
-#: src/Widgets/Views/Queue.vala:84
+#: src/Widgets/Views/Queue.vala:88
 #, c-format
 msgid "Queue from %s"
 msgstr ""
 
-#: src/Widgets/Views/Queue.vala:101
+#: src/Widgets/Views/Queue.vala:107
 msgid "Queue is empty"
 msgstr ""
 
@@ -488,39 +488,40 @@ msgstr "Radio stansiyasını əlavə edin"
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr ".pls və ya .m3u kimi bir Stream URL əlavə edin."
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:183
+#. FOR CONTEXT MENU
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
 msgstr ""
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:190
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:193
 msgid "Title"
 msgstr "Başlıq"
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:197
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:200
 msgid "Album"
 msgstr "Albom"
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:199
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:202
 msgid "Artist"
 msgstr "Sənətçi"
 
-#: src/Widgets/Views/TracksView.vala:53 src/Widgets/Views/TracksView.vala:204
+#: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:207
 msgid "Duration"
 msgstr "Müddəti"
 
-#: src/Widgets/Views/TracksView.vala:162
+#: src/Widgets/Views/TracksView.vala:165
 msgid "Choose a Track"
 msgstr "Bir Parça seçin"
 
-#: src/Widgets/Views/TracksView.vala:162
+#: src/Widgets/Views/TracksView.vala:165
 msgid "No track selected"
 msgstr "Parça seçilməyib"
 
-#: src/Widgets/Views/TracksView.vala:328
+#: src/Widgets/Views/TracksView.vala:351
 msgid "Columns Visibility"
 msgstr ""
 
-#: src/Widgets/Views/TracksView.vala:361
+#: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
 msgstr ""
 
