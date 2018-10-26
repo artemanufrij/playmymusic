@@ -293,8 +293,8 @@ namespace PlayMyMusic.Widgets.Views {
                 }
                 if (findings) {
                     child.show ();
+                    items_found++;
                 }
-                items_found++;
             }
         }
     }
