@@ -43,7 +43,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        Gtk.FlowBox playlists;
+        Gtk.Box playlists;
         Gtk.Stack stack;
         Gtk.Popover new_playlist_popover;
         Gtk.Entry new_playlist_entry;
@@ -77,14 +77,10 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void build_ui () {
-            playlists = new Gtk.FlowBox ();
+            playlists = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 24);
             playlists.margin = 24;
             playlists.margin_bottom = 0;
             playlists.halign = Gtk.Align.START;
-            playlists.selection_mode = Gtk.SelectionMode.NONE;
-            playlists.column_spacing = 24;
-            playlists.set_sort_func (playlists_sort_func);
-            playlists.set_filter_func (playlists_filter_func);
             playlists.homogeneous = true;
 
             var playlists_scroll = new Gtk.ScrolledWindow (null, null);
@@ -95,13 +91,12 @@ namespace PlayMyMusic.Widgets.Views {
 
             var add_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
             add_button.tooltip_text = _ ("Add a playlist");
-            add_button.clicked.connect (
-                () => {
-                    new_playlist_popover.set_relative_to (add_button);
-                    new_playlist_entry.text = "";
-                    new_playlist_save.sensitive = false;
-                    new_playlist_popover.show_all ();
-                });
+            add_button.clicked.connect (() => {
+                new_playlist_popover.set_relative_to (add_button);
+                new_playlist_entry.text = "";
+                new_playlist_save.sensitive = false;
+                new_playlist_popover.show_all ();
+            });
             action_toolbar.pack_start (add_button);
 
             new_playlist_popover = new Gtk.Popover (null);
@@ -117,36 +112,32 @@ namespace PlayMyMusic.Widgets.Views {
             new_playlist_save.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             new_playlist_save.sensitive = false;
 
-            new_playlist_entry.changed.connect (
-                () => {
-                    new_playlist_save.sensitive = valid_new_playlist ();
-                });
-            new_playlist_entry.key_press_event.connect (
-                (key) => {
-                    if ((key.keyval == Gdk.Key.Return || key.keyval == Gdk.Key.KP_Enter) && Gdk.ModifierType.CONTROL_MASK in key.state && valid_new_playlist ()) {
-                        save_new_playlist ();
-                    }
-                    return false;
-                });
+            new_playlist_entry.changed.connect (() => {
+                new_playlist_save.sensitive = valid_new_playlist ();
+            });
+            new_playlist_entry.key_press_event.connect ((key) => {
+                if ((key.keyval == Gdk.Key.Return || key.keyval == Gdk.Key.KP_Enter) && Gdk.ModifierType.CONTROL_MASK in key.state && valid_new_playlist ()) {
+                    save_new_playlist ();
+                }
+                return false;
+            });
             new_playlist.attach (new_playlist_entry, 0, 0);
 
-            new_playlist_save.clicked.connect (
-                () => {
-                        save_new_playlist ();
-                });
+            new_playlist_save.clicked.connect (() => {
+                save_new_playlist ();
+            });
             new_playlist.attach (new_playlist_save, 0, 1);
 
             var welcome = new Granite.Widgets.Welcome (_ ("No Playlists"), _ ("Add playlist to your library."));
             welcome.append ("document-new", _ ("Create Playlist"), _ ("Create a playlist for manage your favorite songs."));
-            welcome.activated.connect (
-                (index) => {
-                    switch (index) {
+            welcome.activated.connect ((index) => {
+                switch (index) {
                     case 0 :
                         new_playlist_popover.set_relative_to (welcome.get_button_from_index (index));
                         new_playlist_popover.show_all ();
                         break;
-                    }
-                });
+                }
+            });
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
@@ -181,11 +172,9 @@ namespace PlayMyMusic.Widgets.Views {
         private void add_playlist (PlayMyMusic.Objects.Playlist playlist) {
             var p = new Widgets.Views.PlaylistView (playlist);
             playlist.updated.connect (() => {
-                playlists.invalidate_sort ();
+                playlists_sort_func ();
             });
             p.show_all ();
-            playlists.min_children_per_line = library_manager.playlists.length () - 1; // 1 FOR QUEUE
-            playlists.max_children_per_line = playlists.min_children_per_line;
             playlists.add (p);
         }
 
@@ -194,8 +183,6 @@ namespace PlayMyMusic.Widgets.Views {
                 if ((child as Widgets.Views.PlaylistView).playlist.ID == playlist.ID) {
                     playlists.remove (child);
                     child.destroy ();
-                    playlists.min_children_per_line = library_manager.playlists.length ();
-                    playlists.max_children_per_line = playlists.min_children_per_line;
                 }
             }
 
@@ -236,7 +223,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
 
             items_found = 0;
-            playlists.invalidate_filter ();
+            playlists_filter_func ();
             if (items_found == 0) {
                 stack.visible_child_name = "alert";
             } else {
@@ -244,39 +231,55 @@ namespace PlayMyMusic.Widgets.Views {
             }
         }
 
-        private int playlists_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
-            var item1 = (PlayMyMusic.Widgets.Views.PlaylistView)child1;
-            var item2 = (PlayMyMusic.Widgets.Views.PlaylistView)child2;
-            if (item1 != null && item2 != null) {
-                return item1.title.collate (item2.title);
+        private void playlists_sort_func () {
+            for (int i = 0; i < playlists.get_children ().length (); i ++) {
+                for (int j = i + 1; j < playlists.get_children ().length (); j++) {
+                    var item1 = (PlayMyMusic.Widgets.Views.PlaylistView) playlists.get_children ().nth_data(i);
+                    var item2 = (PlayMyMusic.Widgets.Views.PlaylistView) playlists.get_children ().nth_data(j);
+
+                    if (item1.title.down ().collate (item2.title.down ()) > 0) {
+                        playlists.reorder_child (item2, i);
+                    }
+                }
             }
-            return 0;
         }
 
-        private bool playlists_filter_func (Gtk.FlowBoxChild child) {
+        private void playlists_filter_func () {
             if (filter.strip ().length == 0) {
                 items_found++;
-                return true;
+                foreach (var child in playlists.get_children ()) {
+                    child.show ();
+                }
+                return;
             }
 
             string[] filter_elements = filter.strip ().down ().split (" ");
-            var playlist = (child as PlayMyMusic.Widgets.Views.PlaylistView).playlist;
-            foreach (string filter_element in filter_elements) {
-                if (!playlist.title.down ().contains (filter_element)) {
-                    bool track_title = false;
-                    foreach (var track in playlist.tracks) {
-                        if (track.title.down ().contains (filter_element) || track.album.title.down ().contains (filter_element) || track.album.artist.name.down ().contains (filter_element)) {
-                            track_title = true;
+            foreach (var child in playlists.get_children ()) {
+                child.show ();
+                var playlist = (child as PlayMyMusic.Widgets.Views.PlaylistView).playlist;
+
+                bool findings = true;
+
+                foreach (string filter_element in filter_elements) {
+                    if (!playlist.title.down ().contains (filter_element)) {
+                        bool track_title = false;
+                        foreach (var track in playlist.tracks) {
+                            if (track.title.down ().contains (filter_element) || track.album.title.down ().contains (filter_element) || track.album.artist.name.down ().contains (filter_element)) {
+                                track_title = true;
+                            }
                         }
+                        if (track_title) {
+                            continue;
+                        }
+                        findings = false;
+                        child.hide ();
                     }
-                    if (track_title) {
-                        continue;
-                    }
-                    return false;
                 }
+                if (findings) {
+                    child.show ();
+                }
+                items_found++;
             }
-            items_found++;
-            return true;
         }
     }
 }

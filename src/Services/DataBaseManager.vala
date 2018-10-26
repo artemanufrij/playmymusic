@@ -482,7 +482,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT id, title FROM playlists ORDER BY title;
+                SELECT id, title FROM playlists ORDER BY LOWER(title);
             """;
             db.prepare_v2 (sql, sql.length, out stmt);
 
