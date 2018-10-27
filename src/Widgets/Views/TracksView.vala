@@ -306,7 +306,7 @@ namespace PlayMyMusic.Widgets.Views {
                     library_manager.add_track_into_playlist (new_playlist, track.ID);
                 });
                 menu_playlists.add (item);
-                if (library_manager.playlists.length () > 0) {
+                if (library_manager.playlists.length () > 1) {  // 1: Because QUEUE is the first Playlist
                     menu_playlists.add (new Gtk.SeparatorMenuItem ());
                 }
                 foreach (var playlist in library_manager.playlists) {
