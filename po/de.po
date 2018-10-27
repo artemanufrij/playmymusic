@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
 #: data/com.github.artemanufrij.playmymusic.desktop.in:3
@@ -93,7 +93,7 @@ msgstr "Anhören von Musik"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
-msgstr ""
+msgstr "music;radio;playlist;"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:8
 msgid "com.github.artemanufrij.playmymusic"
@@ -187,7 +187,7 @@ msgstr "Musik suchen"
 
 #: src/MainWindow.vala:652
 msgid "Queue"
-msgstr ""
+msgstr "Wiedergabe"
 
 #: src/MainWindow.vala:762 src/MainWindow.vala:770
 #: src/Widgets/Views/TracksView.vala:435
@@ -235,7 +235,7 @@ msgstr "Importierte Dateien in die Sammlung kopieren"
 
 #: src/Dialogs/Preferences.vala:104
 msgid "Remove Playlist if last Track was removed"
-msgstr ""
+msgstr "Playlist löschen, wenn letzter Track entfernt wurde"
 
 #: src/Dialogs/Preferences.vala:109
 msgid "Close"
@@ -352,16 +352,15 @@ msgstr ""
 
 #: src/Widgets/Track.vala:211 src/Widgets/Views/TracksView.vala:330
 msgid "Add to Queue"
-msgstr ""
+msgstr "Zur Wiedergabe hinzufügen"
 
 #: src/Widgets/Track.vala:234
 msgid "Remove from Playlist"
 msgstr "Entferne von der Playlist"
 
 #: src/Widgets/Track.vala:236
-#, fuzzy
 msgid "Remove from Queue"
-msgstr "Entferne von der Playlist"
+msgstr "Entferne von der Wiedergabe"
 
 #: src/Widgets/TrackTimeLine.vala:95 src/Widgets/TrackTimeLine.vala:99
 #, c-format
@@ -370,7 +369,7 @@ msgstr "<b>%s</b> aus <b>%s</b> von <b>%s</b>"
 
 #: src/Widgets/Views/AlbumsView.vala:119
 msgid "Get Some Tunes"
-msgstr ""
+msgstr "Hol dir ein paar Songs"
 
 #: src/Widgets/Views/AlbumsView.vala:119
 msgid "Add music to your library."
@@ -450,7 +449,7 @@ msgstr "Eine Playliste zum verwalten deiner Lieblingslieder erstellen."
 
 #: src/Widgets/Views/Queue.vala:73
 msgid "Clear the Queue"
-msgstr ""
+msgstr "Wiedergabe leeren."
 
 #: src/Widgets/Views/Queue.vala:83
 #, fuzzy
@@ -460,11 +459,11 @@ msgstr "Neue Playlist erstellen"
 #: src/Widgets/Views/Queue.vala:88
 #, c-format
 msgid "Queue from %s"
-msgstr ""
+msgstr "Wiedergabe vom %s"
 
 #: src/Widgets/Views/Queue.vala:107
 msgid "Queue is empty"
-msgstr ""
+msgstr "Wiedergabe ist leer"
 
 #: src/Widgets/Views/RadiosView.vala:113
 msgid "Add a radio station"
@@ -526,11 +525,11 @@ msgstr "Kein Track ausgewählt"
 
 #: src/Widgets/Views/TracksView.vala:351
 msgid "Columns Visibility"
-msgstr ""
+msgstr "Spaltensichtbarkeit"
 
 #: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
-msgstr ""
+msgstr "Du kannst nicht alle Spalten ausblenden"
 
 #~ msgid "Use Dark Theme"
 #~ msgstr "Dunkles Theme benutzen"
