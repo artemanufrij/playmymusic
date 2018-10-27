@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-26 18:18+0200\n"
-"PO-Revision-Date: 2018-05-11 23:50+0400\n"
+"PO-Revision-Date: 2018-10-27 20:58+0400\n"
 "Last-Translator: Andrey Kultyapov <camellan@yandex.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -36,12 +36,12 @@ msgstr ""
 "Музыкальный плеер для прослушивания локальной музыки, онлайн радио и аудио CD"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
-#, fuzzy
 msgid ""
 "A very fast music player designed extra for large local libraries which also "
 "supports online radios and downloading album covers"
 msgstr ""
-"Очень быстрый музыкальный плеер, созданный для больших локальных медиатек."
+"Очень быстрый музыкальный плеер, созданный для больших локальных медиатек с "
+"поддержкой онлайн-радио и загрузкой обложек альбомов"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
@@ -194,7 +194,7 @@ msgstr "Поиск музыки"
 
 #: src/MainWindow.vala:652
 msgid "Queue"
-msgstr ""
+msgstr "Очередь"
 
 #: src/MainWindow.vala:762 src/MainWindow.vala:770
 #: src/Widgets/Views/TracksView.vala:435
@@ -242,7 +242,7 @@ msgstr "Копировать импортированные файлы в мед
 
 #: src/Dialogs/Preferences.vala:104
 msgid "Remove Playlist if last Track was removed"
-msgstr ""
+msgstr "Удалять плейлист, если последний трек был удален"
 
 #: src/Dialogs/Preferences.vala:109
 msgid "Close"
@@ -359,16 +359,15 @@ msgstr ""
 
 #: src/Widgets/Track.vala:211 src/Widgets/Views/TracksView.vala:330
 msgid "Add to Queue"
-msgstr ""
+msgstr "Добавить в очередь"
 
 #: src/Widgets/Track.vala:234
 msgid "Remove from Playlist"
 msgstr "Удалить из плейлиста"
 
 #: src/Widgets/Track.vala:236
-#, fuzzy
 msgid "Remove from Queue"
-msgstr "Удалить из плейлиста"
+msgstr "Удалить из очереди"
 
 #: src/Widgets/TrackTimeLine.vala:95 src/Widgets/TrackTimeLine.vala:99
 #, c-format
@@ -455,21 +454,20 @@ msgstr "Добавьте плейлист для управления своим
 
 #: src/Widgets/Views/Queue.vala:73
 msgid "Clear the Queue"
-msgstr ""
+msgstr "Очистить очередь"
 
 #: src/Widgets/Views/Queue.vala:83
-#, fuzzy
 msgid "Create new Playlist based on this Queue"
-msgstr "Создать новый плейлист"
+msgstr "Создать новый плейлист на основе этой очереди"
 
 #: src/Widgets/Views/Queue.vala:88
 #, c-format
 msgid "Queue from %s"
-msgstr ""
+msgstr "Очередь из %s"
 
 #: src/Widgets/Views/Queue.vala:107
 msgid "Queue is empty"
-msgstr ""
+msgstr "Очередь очищена"
 
 #: src/Widgets/Views/RadiosView.vala:113
 msgid "Add a radio station"
@@ -531,11 +529,11 @@ msgstr "Ни один трек не выбран"
 
 #: src/Widgets/Views/TracksView.vala:351
 msgid "Columns Visibility"
-msgstr ""
+msgstr "Видимость столбцов"
 
 #: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
-msgstr ""
+msgstr "Вы не можете скрыть все столбцы"
 
 #~ msgid "Use Dark Theme"
 #~ msgstr "Использовать тёмную тему"
