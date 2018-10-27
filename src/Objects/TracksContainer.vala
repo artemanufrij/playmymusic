@@ -244,6 +244,10 @@ namespace PlayMyMusic.Objects {
             return false;
         }
 
+        public bool has_tracks () {
+            return _tracks.length () > 0;
+        }
+
         protected void create_background () {
             if (this.cover == null || is_background_loading || this.ID == 0) {
                 return;

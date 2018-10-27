@@ -8,6 +8,11 @@ foreach i : icon_sizes
 endforeach
 
 install_data(
-    join_paths('symbolic', meson.project_name() + '-symbolic.svg'),
+    join_paths('symbolic', 'playlist-queue-symbolic.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons/hicolor/symbolic/apps')
+)
+
+install_data(
+    join_paths('symbolic', 'playlist-symbolic.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons/hicolor/symbolic/apps')
 )

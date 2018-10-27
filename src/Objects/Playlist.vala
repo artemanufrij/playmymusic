@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Objects {
     public class Playlist : TracksContainer {
         public signal void tracks_resorted ();
+        public signal void started_init_playing ();
         public new GLib.List<Track> tracks {
             get {
                 if (_tracks == null) {
@@ -45,7 +46,7 @@ namespace PlayMyMusic.Objects {
         construct {
             track_removed.connect ((track) => {
                 this._tracks.remove (track);
-                if (this.tracks.length () == 0) {
+                if (this.tracks.length () == 0 && settings.remove_playlist_if_empty) {
                     db_manager.remove_playlist (this);
                 }
             });

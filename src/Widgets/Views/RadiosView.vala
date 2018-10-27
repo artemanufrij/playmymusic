@@ -135,21 +135,9 @@ namespace PlayMyMusic.Widgets.Views {
                 });
             new_station.attach (new_station_url, 1, 1);
 
-            new_station_cover = new Gtk.Image ();
-            new_station_cover.get_style_context ().add_class ("card");
-            new_station_cover.width_request = 64;
-            new_station_cover.height_request = 64;
-            new_station.attach (new_station_cover, 0, 0, 1, 2);
 
-            var new_station_controls = new Gtk.Grid ();
-            new_station_controls.column_spacing = 6;
-            new_station_controls.margin_top = 6;
-            new_station_controls.column_homogeneous = true;
-            new_station_controls.hexpand = true;
-
-            var new_station_choose_cover = new Gtk.Button.with_label (_ ("Choose a Cover"));
-            new_station_choose_cover.hexpand = true;
-            new_station_choose_cover.clicked.connect (
+            var new_station_cover_event_box = new Gtk.EventBox ();
+            new_station_cover_event_box.button_press_event.connect (
                 () => {
                     var new_cover = library_manager.choose_new_cover ();
                     if (new_cover != null) {
@@ -159,12 +147,26 @@ namespace PlayMyMusic.Widgets.Views {
                             warning (err.message);
                         }
                     }
+                    return false;
                 });
-            new_station_controls.attach (new_station_choose_cover, 0, 0);
+            new_station_cover = new Gtk.Image ();
+            new_station_cover.tooltip_text = _("Click to choose a new cover…");
+            new_station_cover.get_style_context ().add_class ("card");
+            new_station_cover.width_request = 64;
+            new_station_cover.height_request = 64;
+            new_station_cover.margin = 8;
+            new_station_cover_event_box.add (new_station_cover);
+            new_station.attach (new_station_cover_event_box, 0, 0, 1, 2);
+
+            var new_station_controls = new Gtk.Grid ();
+            new_station_controls.column_spacing = 6;
+            new_station_controls.margin_top = 6;
+            new_station_controls.column_homogeneous = true;
+            new_station_controls.hexpand = true;
 
             new_station_save = new Gtk.Button ();
             new_station_save.sensitive = false;
-            new_station_save.hexpand = true;
+            new_station_save.halign = Gtk.Align.END;
             new_station_save.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             new_station_save.clicked.connect (
                 () => {
@@ -176,6 +178,12 @@ namespace PlayMyMusic.Widgets.Views {
 
             add_new_station_popover = new Gtk.Popover (null);
             add_new_station_popover.add (new_station);
+            add_new_station_popover.key_press_event.connect ((event) => {
+                if ((event.keyval == Gdk.Key.Return || event.keyval == Gdk.Key.KP_Enter) && Gdk.ModifierType.CONTROL_MASK in event.state && valid_new_station ()) {
+                    save_new_station ();
+                }
+                return false;
+            });
             add_button.clicked.connect (
                 () => {
                     add_new_station_popover.set_relative_to (add_button);

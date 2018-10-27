@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2017 Artem Anufrij <artem.anufrij@live.de> -->
 <component type="desktop">
-    <id>com.github.artemanufrij.playmymusic.desktop</id>
+    <id>com.github.artemanufrij.playmymusic</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0+</project_license>
     <name>Melody</name>
-    <summary>A music player for listening local music files, online radios and Audio CD's.</summary>
+    <summary>A music player for listening local music files, online radios and Audio CD's</summary>
     <description>
-        <p>A very fast music player designed extra for large local libraries.</p>
+        <p>A very fast music player designed extra for large local libraries which also supports online radios and downloading album covers</p>
         <p>Features:</p>
         <ul>
             <li>Show all Albums from your library</li>
@@ -25,7 +25,7 @@
     <custom>
         <value key="x-appcenter-color-primary">#004988</value>
         <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
-        <value key="x-appcenter-suggested-price">3</value>
+        <value key="x-appcenter-suggested-price">5</value>
     </custom>
     <developer_name>Artem Anufrij</developer_name>
     <url type="homepage">http://anufrij.org/melody/</url>
@@ -47,15 +47,94 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="1.0.2" date="2018-04-15">
+        <release version="2.0.1" date="2018-11-15">
+            <description>
+                <p>Translation:</p>
+                <ul>
+                    <li>German</li>
+                </ul>
+            </description>
+        </release>
+        <release version="2.0.0" date="2018-10-30">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>Queue functionality</li>
+                    <li>Save and restore last played song and progress</li>
+                    <li>Switch columns visibility for tracks view</li>
+                </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Click on headerbar choose current track</li>
+                    <li>UI: select current track in tracks view</li>
+                </ul>
+                <p>Improved:</p>
+                <ul>
+                    <li>Reorder controls on header bar</li>
+                    <li>Drag and Drop behavior for Playlists</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Danish (by rasmus91)</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.1.2" date="2018-10-25">
+            <description>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Restore correct window size</li>
+                </ul>
+                <p>Translation:</p>
+                <ul>
+                    <li>Dutch (by Heimen Stoffels)</li>
+                    <li>Italian (by papou84)</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.1.1" date="2018-09-05">
+            <description>
+                <p>New:</p>
+                <ul>
+                    <li>[optional] Delete Playlist if last Track was removed</li>
+                    <li>Toggle playing by Space Key</li>
+                    <li>Add Track into Playlist from Trackview</li>
+                    <li>RadioView: [Ctrl]+[Enter] for accept changes in editor</li>
+                </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Player doesn't show '0' it the timeline if playing is paused</li>
+                    <li>Better focus grabing</li>
+                </ul>
+                <p>Improved:</p>
+                <ul>
+                    <li>Faster start up behaviour</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.1.0" date="2018-07-24">
+            <description>
+                Prepare for JUNO
+            </description>
+        </release>
+        <release version="1.0.3" date="2018-04-15">
             <description>
                 <p>New:</p>
                 <ul>
                     <li>[optional] Copy imported music files into library</li>
                 </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Show correct artist at sound indicator</li>
+                    <li>Search in Track View</li>
+                    <li>Order for Tracks without Track No in ID3 Tag</li>
+                    <li>Close behaviour for Artist and Album dialogs (by Sergii Fesenko)</li>
+                </ul>
                 <p>Translation:</p>
                 <ul>
                     <li>German</li>
+                    <li>French (by papou84)</li>
+                    <li>Russian (by Camellan)</li>
                 </ul>
             </description>
         </release>
@@ -464,7 +543,7 @@
         <content_attribute id="language-humor">none</content_attribute>
         <content_attribute id="language-discrimination">none</content_attribute>
         <content_attribute id="social-chat">none</content_attribute>
-        <content_attribute id="social-info">none</content_attribute>
+        <content_attribute id="social-info">mild</content_attribute>
         <content_attribute id="social-audio">none</content_attribute>
         <content_attribute id="social-location">none</content_attribute>
         <content_attribute id="social-contacts">none</content_attribute>

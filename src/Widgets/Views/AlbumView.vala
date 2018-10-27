@@ -104,6 +104,9 @@ namespace PlayMyMusic.Widgets.Views {
                 if ((child as Widgets.Track).track.ID == track.ID) {
                     only_mark = true;
                     child.activate ();
+                    if (PlayMyMusicApp.instance.mainwindow.content.visible_child_name == "albums") {
+                        child.grab_focus ();
+                    }
                     only_mark = false;
                     return;
                 }
@@ -181,7 +184,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
             if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
-                menu.popup (null, null, null, evt.button, evt.time);
+                menu.popup_at_pointer (null);
                 return true;
             }
             return false;

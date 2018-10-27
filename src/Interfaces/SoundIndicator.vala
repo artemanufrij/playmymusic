@@ -61,7 +61,7 @@ namespace PlayMyMusic.Interfaces {
                 player = new SoundIndicatorPlayer (connection);
                 player_id = connection.register_object ("/org/mpris/MediaPlayer2", player);
             }
-            catch(IOError e) {
+            catch(Error e) {
                 warning ("could not create MPRIS player: %s\n", e.message);
             }
         }
@@ -139,15 +139,15 @@ namespace PlayMyMusic.Interfaces {
 
         public bool CanPause { get { return true; } }
 
-        public void PlayPause () {
+        public void PlayPause () throws Error {
             app.mainwindow.toggle_playing ();
         }
 
-        public void Next () {
+        public void Next () throws Error {
             app.mainwindow.next ();
         }
 
-        public void Previous() {
+        public void Previous() throws Error {
             app.mainwindow.prev ();
         }
 

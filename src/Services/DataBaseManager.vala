@@ -161,6 +161,11 @@ namespace PlayMyMusic.Services {
                 warning (errormsg);
             }
 
+            q = """INSERT OR IGNORE INTO playlists (title) VALUES ('""" + PlayMyMusicApp.instance.QUEUE_SYS_NAME + """');""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
+
             q = """CREATE TABLE IF NOT EXISTS playlist_tracks (
                 ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
                 playlist_id INT         NOT NULL,
@@ -171,6 +176,14 @@ namespace PlayMyMusic.Services {
                     ON DELETE CASCADE,
                 FOREIGN KEY (playlist_id) REFERENCES playlists (ID)
                     ON DELETE CASCADE
+                );""";
+            if (db.exec (q, null, out errormsg) != Sqlite.OK) {
+                warning (errormsg);
+            }
+
+            q = """CREATE TABLE IF NOT EXISTS settings_tracks_hidden_columns (
+                ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+                column      TEXT        NOT NULL
                 );""";
             if (db.exec (q, null, out errormsg) != Sqlite.OK) {
                 warning (errormsg);
@@ -469,7 +482,7 @@ namespace PlayMyMusic.Services {
             Sqlite.Statement stmt;
 
             string sql = """
-                SELECT id, title FROM playlists ORDER BY title;
+                SELECT id, title FROM playlists ORDER BY LOWER(title);
             """;
             db.prepare_v2 (sql, sql.length, out stmt);
 
@@ -499,6 +512,10 @@ namespace PlayMyMusic.Services {
                 }
             }
             return null;
+        }
+
+        public Objects.Playlist? get_queue () {
+            return get_playlist_by_title (PlayMyMusicApp.instance.QUEUE_SYS_NAME);
         }
 
         public void update_playlist (Objects.Playlist playlist) {
@@ -638,6 +655,10 @@ namespace PlayMyMusic.Services {
         }
 
         public void remove_playlist (Objects.Playlist playlist) {
+            if (playlist.title == PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
+                return;
+            }
+
             Sqlite.Statement stmt;
 
             string sql = """
@@ -666,7 +687,7 @@ namespace PlayMyMusic.Services {
                     SELECT id, title, genre, track, disc, duration, path
                     FROM tracks
                     WHERE album_id=$CONTAINER_ID
-                    ORDER BY disc, track;
+                    ORDER BY disc, track, title;
                 """;
             } else {
                 sql = """
@@ -914,6 +935,65 @@ namespace PlayMyMusic.Services {
             }
             stmt.reset ();
         }
+
+// SETTINGS REGION
+        public GLib.List<string> settings_get_hidde_columns () {
+            GLib.List<string> return_value = new GLib.List<string> ();
+
+            Sqlite.Statement stmt;
+            string sql = """
+                SELECT id, column FROM settings_tracks_hidden_columns ORDER BY column;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+
+            while (stmt.step () == Sqlite.ROW) {
+                return_value.append (stmt.column_text (1));
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
+        public bool settings_delete_hidden_column (string column) {
+            var return_value = false;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                DELETE FROM settings_tracks_hidden_columns WHERE column=$COLUMN;
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$COLUMN", column);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                return_value = true;
+            }
+            stmt.reset ();
+
+            return return_value;
+        }
+
+        public bool settings_insert_hidden_column (string column) {
+            var return_value = false;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                INSERT INTO settings_tracks_hidden_columns (column) VALUES ($COLUMN);
+            """;
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$COLUMN", column);
+
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            } else {
+                return_value = true;
+            }
+            stmt.reset ();
+
+            return return_value;
+        }
+
 
 // UTILITIES REGION
         public bool music_file_exists (string uri) {

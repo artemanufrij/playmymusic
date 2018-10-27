@@ -29,6 +29,7 @@ executable(
     'Utils/Utils.vala',
     'Widgets/Album.vala',
     'Widgets/Artist.vala',
+    'Widgets/Playlist.vala',
     'Widgets/Radio.vala',
     'Widgets/Track.vala',
     'Widgets/TrackTimeLine.vala',
@@ -39,9 +40,9 @@ executable(
     'Widgets/Views/AudioCDView.vala',
     'Widgets/Views/MobilePhone.vala',
     'Widgets/Views/PlaylistsView.vala',
-    'Widgets/Views/PlaylistView.vala',
     'Widgets/Views/RadiosView.vala',
     'Widgets/Views/TracksView.vala',
+    'Widgets/Views/Queue.vala',
     c_args: c_args,
     dependencies: [
         dependency('gio-2.0'),
@@ -55,9 +56,6 @@ executable(
         dependency('gstreamer-pbutils-1.0'),
         dependency('gstreamer-tag-1.0'),
         dependency('taglib_c'),
-    ],
-    vala_args: [
-        meson.source_root() + '/vapi/config.vapi'
     ],
     link_args: ['-lm'],
     install : true

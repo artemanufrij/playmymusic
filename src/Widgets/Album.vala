@@ -191,9 +191,8 @@ namespace PlayMyMusic.Widgets {
 
         private void edit_album () {
             var editor = new Dialogs.AlbumEditor (PlayMyMusicApp.instance.mainwindow, this.album);
-            if (editor.run () == Gtk.ResponseType.ACCEPT) {
-                editor.destroy ();
-            }
+            editor.run ();
+            editor.destroy ();
         }
 
         private void build_context_menu () {
@@ -309,7 +308,7 @@ namespace PlayMyMusic.Widgets {
                     menu_merge.hide ();
                 }
 
-                menu.popup (null, null, null, evt.button, evt.time);
+                menu.popup_at_pointer (null);
                 return true;
             } else if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 1) {
                 this.activate ();

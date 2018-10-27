@@ -27,6 +27,8 @@
 
 namespace PlayMyMusic.Widgets.Views {
     public class TracksView : Gtk.Grid {
+        public signal void app_message (string message);
+
         Services.LibraryManager library_manager;
         PlayMyMusic.Settings settings;
         Services.Player player;
@@ -39,11 +41,19 @@ namespace PlayMyMusic.Widgets.Views {
         Gtk.Image album;
         Gtk.Grid header;
         Granite.Widgets.AlertView alert_view;
+        Gtk.Menu menu = null;
+        Gtk.Menu menu_playlists;
+        Gtk.Menu menu_columns;
 
         Gtk.Label title_name;
         Gtk.Label album_title;
 
         Objects.Track current_track;
+
+        // FOR CONTEXT MENU
+        Objects.Track ? track;
+
+        string[] col_names = {_("Nr"), _("Title"), _("Album"), _("Artist"), _("Duration")};
 
         bool only_mark = false;
 
@@ -68,44 +78,39 @@ namespace PlayMyMusic.Widgets.Views {
         construct {
             settings = Settings.get_default ();
             library_manager = Services.LibraryManager.instance;
-            library_manager.added_new_track.connect (
-                (track) => {
-                    Idle.add (
-                        () => {
-                            add_track (track);
-                            return false;
-                        });
+            library_manager.added_new_track.connect ((track) => {
+                Idle.add (() => {
+                    add_track (track);
+                    return false;
                 });
+            });
 
             player = Services.Player.instance;
-            player.state_changed.connect (
-                (state) => {
-                    if (state == Gst.State.PLAYING) {
-                        mark_playing_track (player.current_track);
-                    }
-                });
-            player.next_track_request.connect (
-                () => {
-                    Objects.Track next_track = null;
+            player.state_changed.connect ((state) => {
+                if (state == Gst.State.PLAYING) {
+                    mark_playing_track (player.current_track);
+                }
+            });
+            player.next_track_request.connect (() => {
+                Objects.Track next_track = null;
+                if (settings.shuffle_mode) {
+                    next_track = get_shuffle_track ();
+                } else {
+                    next_track = get_next_track ();
+                }
+
+                if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
                     if (settings.shuffle_mode) {
                         next_track = get_shuffle_track ();
                     } else {
-                        next_track = get_next_track ();
+                        next_track = get_first_track ();
                     }
-
-                    if (next_track == null && settings.repeat_mode != RepeatMode.OFF) {
-                        if (settings.shuffle_mode) {
-                            next_track = get_shuffle_track ();
-                        } else {
-                            next_track = get_first_track ();
-                        }
-                    }
-                    return next_track;
-                });
-            player.prev_track_request.connect (
-                () => {
-                    return get_prev_track ();
-                });
+                }
+                return next_track;
+            });
+            player.prev_track_request.connect (() => {
+                return get_prev_track ();
+            });
         }
 
         public TracksView () {
@@ -157,7 +162,7 @@ namespace PlayMyMusic.Widgets.Views {
             album_title.use_markup = true;
             header.attach (album_title, 1, 1);
 
-            alert_view = new Granite.Widgets.AlertView (_("Choose a Track"), _("No track selected"), "view-list-symbolic");
+            alert_view = new Granite.Widgets.AlertView (_ ("Choose a Track"), _ ("No track selected"), "view-list-symbolic");
             alert_view.vexpand = false;
 
             var overlay = new Gtk.Overlay ();
@@ -166,18 +171,13 @@ namespace PlayMyMusic.Widgets.Views {
             overlay.add_overlay (header);
             overlay.add_overlay (alert_view);
 
-            modelfilter = new Gtk.TreeModelFilter (listmodel, null);
-            modelfilter.set_visible_func (tracks_filter_func);
-
-            modelsort = new Gtk.TreeModelSort.with_model (modelfilter);
-
             view = new Gtk.TreeView ();
             view.activate_on_single_click = true;
-            view.set_model (modelsort);
-            view.row_activated.connect (
-                (path, column) => {
-                    show_track (get_track_by_path (path));
-                });
+
+            view.row_activated.connect ((path, column) => {
+                show_track (get_track_by_path (path));
+            });
+            view.button_press_event.connect (show_context_menu);
 
             view.insert_column_with_attributes (-1, "object", new Gtk.CellRendererText ());
 
@@ -210,6 +210,7 @@ namespace PlayMyMusic.Widgets.Views {
             setup_columns ();
 
             var scroll = new Gtk.ScrolledWindow (null, null);
+            scroll.button_press_event.connect (show_context_menu);
             scroll.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
             scroll.expand = true;
             scroll.add (view);
@@ -217,6 +218,14 @@ namespace PlayMyMusic.Widgets.Views {
             this.attach (overlay, 0, 0);
             this.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 1);
             this.attach (scroll, 0, 2);
+        }
+
+        public void init_end () {
+            modelfilter = new Gtk.TreeModelFilter (listmodel, null);
+            modelfilter.set_visible_func (tracks_filter_func);
+
+            modelsort = new Gtk.TreeModelSort.with_model (modelfilter);
+            view.set_model (modelsort);
         }
 
         private void setup_columns () {
@@ -237,7 +246,25 @@ namespace PlayMyMusic.Widgets.Views {
             col = view.get_column (columns.DURATION_SORT);
             col.visible = false;
 
+            set_custom_visibility ();
             setup_column_sort ();
+        }
+
+        private void set_custom_visibility () {
+            var hidden_columns = library_manager.db_manager.settings_get_hidde_columns ();
+            foreach (var col in view.get_columns ()) {
+                foreach (var col_name in col_names) {
+                    if (col.title == col_name) {
+                        foreach (var hidden_col in hidden_columns) {
+                            if (hidden_col == col_name) {
+                                col.visible = false;
+                                break;
+                            }
+                            col.visible = true;
+                        }
+                    }
+                }
+            }
         }
 
         private void setup_column_sort () {
@@ -246,6 +273,136 @@ namespace PlayMyMusic.Widgets.Views {
             view.get_column (columns.ALBUM).sort_column_id = columns.ALBUM;
             view.get_column (columns.ARTIST).sort_column_id = columns.ARTIST;
             view.get_column (columns.DURATION).sort_column_id = columns.DURATION_SORT;
+        }
+
+        private bool show_context_menu (Gtk.Widget sender, Gdk.EventButton evt) {
+            if (evt.type == Gdk.EventType.BUTTON_PRESS && evt.button == 3) {
+                if (menu == null) {
+                    build_context_menu ();
+                }
+
+                // GET SELECTED TRACK
+                Gtk.TreePath path = null;
+                track = null;
+                int cell_x, cell_y;
+                view.get_path_at_pos ((int)evt.x, (int)evt.y, out path, null, out cell_x, out cell_y);
+
+                if (path == null) {
+                    return false;
+                }
+
+                track = get_track_by_path (path);
+
+                if (track == null) {
+                    return false;
+                }
+
+                foreach (var child in menu_playlists.get_children ()) {
+                    child.destroy ();
+                }
+                var item = new Gtk.MenuItem.with_label (_ ("Create New Playlist"));
+                item.activate.connect ( () => {
+                    var new_playlist = library_manager.create_new_playlist ();
+                    library_manager.add_track_into_playlist (new_playlist, track.ID);
+                });
+                menu_playlists.add (item);
+                if (library_manager.playlists.length () > 1) {  // 1: Because QUEUE is the first Playlist
+                    menu_playlists.add (new Gtk.SeparatorMenuItem ());
+                }
+                foreach (var playlist in library_manager.playlists) {
+                    if (playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
+                        item = new Gtk.MenuItem.with_label (playlist.title);
+                        item.activate.connect (() => {
+                            library_manager.add_track_into_playlist (playlist, track.ID);
+                        });
+                        menu_playlists.add (item);
+                    }
+                }
+                menu_playlists.show_all ();
+
+                menu.popup_at_pointer (null);
+            }
+            return false;
+        }
+
+        private void build_context_menu () {
+            menu = new Gtk.Menu ();
+            var menu_add_to_queue = new Gtk.MenuItem.with_label (_("Add to Queue"));
+            menu_add_to_queue.activate.connect (() => {
+                var queue = library_manager.db_manager.get_queue ();
+                if (!queue.has_tracks () && player.current_track != null) {
+                    library_manager.add_track_into_playlist (queue, player.current_track.ID);
+                }
+                library_manager.add_track_into_playlist (queue, track.ID);
+
+                if (player.get_state () == Gst.State.PLAYING
+                    && (player.current_track.playlist == null || player.current_track.playlist.ID != queue.ID)) {
+                    player.current_track = queue.get_first_track ();
+                    player.set_playmode (Services.PlayMode.PLAYLIST);
+
+                    queue.started_init_playing ();
+                }
+            });
+            menu.add (menu_add_to_queue);
+
+            var menu_add_into_playlist = new Gtk.MenuItem.with_label (_ ("Add into Playlist"));
+            menu.add (menu_add_into_playlist);
+
+            var menu_visibility_columns = new Gtk.MenuItem.with_label ( _("Columns Visibility"));
+            menu_columns = new Gtk.Menu ();
+            menu_visibility_columns.set_submenu (menu_columns);
+
+            var hidden_columns = library_manager.db_manager.settings_get_hidde_columns ();
+            foreach (var col_name in col_names) {
+                var menu_column = new Gtk.CheckMenuItem.with_label (col_name);
+                menu_column.active = true;
+                foreach (var hidden_col in hidden_columns) {
+                    if (hidden_col == col_name) {
+                        menu_column.active = false;
+                    }
+                }
+                menu_column.toggled.connect (() => {
+                    if (menu_column.active) {
+                        if (library_manager.db_manager.settings_delete_hidden_column (col_name)) {
+                            foreach (var col in view.get_columns ()) {
+                                if (col.title == col_name) {
+                                    col.visible = true;
+                                }
+                            }
+                        }
+                    } else {
+                        if (get_visible_columns () > 0) {
+                            if (library_manager.db_manager.settings_insert_hidden_column (col_name)) {
+                                foreach (var col in view.get_columns ()) {
+                                    if (col.title == col_name) {
+                                        col.visible = false;
+                                    }
+                                }
+                            }
+                        } else {
+                            menu_column.active = true;
+                            app_message (_("You can't hide all columns"));
+                        }
+                    }
+                });
+                menu_columns.add (menu_column);
+            }
+            menu.add (menu_visibility_columns);
+
+            menu_playlists = new Gtk.Menu ();
+            menu_add_into_playlist.set_submenu (menu_playlists);
+
+            menu.show_all ();
+        }
+
+        private uint get_visible_columns () {
+            uint return_value = 0;
+            foreach (var child in menu_columns.get_children ()) {
+                if ((child as Gtk.CheckMenuItem).active) {
+                    return_value ++;
+                }
+            }
+            return return_value;
         }
 
         public void add_track (Objects.Track track) {
@@ -290,19 +447,32 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         public void mark_playing_track (Objects.Track ? track) {
-            view.get_selection ().unselect_all ();
             if (track == null || track == current_track) {
                 return;
             }
 
-            int i = 0;
+            var i = activate_by_track (track);
 
+            if (settings.shuffle_mode) {
+                shuffle_index.append (i);
+            } else if (shuffle_index.length () > 0) {
+                shuffle_index = new GLib.List<int> ();
+            }
+        }
+
+        public int activate_by_track (Objects.Track track) {
+            int i = 0;
+            if (PlayMyMusicApp.instance.mainwindow.content.visible_child_name == "tracks") {
+                view.grab_focus ();
+            }
             modelfilter.@foreach (
                 (model, path, iter) => {
                     var item_track = get_track_by_path (path);
                     if (item_track.ID == track.ID) {
                         only_mark = true;
                         view.get_selection ().select_path (path);
+                        view.scroll_to_cell (path, null, false, 0, 0);
+                        view.set_cursor (path, null, false);
                         show_track (track);
                         only_mark = false;
                         return true;
@@ -310,12 +480,7 @@ namespace PlayMyMusic.Widgets.Views {
                     i++;
                     return false;
                 });
-
-            if (settings.shuffle_mode) {
-                shuffle_index.append (i);
-            } else if (shuffle_index.length () > 0) {
-                shuffle_index = new GLib.List<int> ();
-            }
+            return i;
         }
 
         private void change_cover () {
@@ -365,20 +530,19 @@ namespace PlayMyMusic.Widgets.Views {
 
             Objects.Track ? return_value = null;
 
-            modelsort.@foreach (
-                (model, path, iter) => {
-                    var item_track = get_track_by_path (path);
-                    if (item_track.ID == current_track.ID) {
-                        Gtk.TreeIter next_iter = iter;
-                        if (modelsort.iter_next (ref next_iter)) {
-                            Value val;
-                            modelsort.get_value (next_iter, 0, out val);
-                            return_value = val.get_object () as Objects.Track;
-                        }
-                        return true;
+            modelsort.@foreach ((model, path, iter) => {
+                var item_track = get_track_by_path (path);
+                if (item_track.ID == current_track.ID) {
+                    Gtk.TreeIter next_iter = iter;
+                    if (modelsort.iter_next (ref next_iter)) {
+                        Value val;
+                        modelsort.get_value (next_iter, 0, out val);
+                        return_value = val.get_object () as Objects.Track;
                     }
-                    return false;
-                });
+                    return true;
+                }
+                return false;
+            });
 
             return return_value;
         }
@@ -412,16 +576,15 @@ namespace PlayMyMusic.Widgets.Views {
             Objects.Track ? return_value = null;
 
             int i = 0;
-            modelsort.@foreach (
-                (model, path, iter) => {
-                    var item_track = get_track_by_path (path);
-                    if (i == r) {
-                        return_value = item_track;
-                        return true;
-                    }
-                    i++;
-                    return false;
-                });
+            modelsort.@foreach ((model, path, iter) => {
+                var item_track = get_track_by_path (path);
+                if (i == r) {
+                    return_value = item_track;
+                    return true;
+                }
+                i++;
+                return false;
+            });
 
             return return_value;
         }
@@ -429,20 +592,19 @@ namespace PlayMyMusic.Widgets.Views {
         public Objects.Track ? get_prev_track () {
             Objects.Track ? return_value = null;
 
-            modelsort.@foreach (
-                (model, path, iter) => {
-                    var item_track = get_track_by_path (path);
-                    if (item_track.ID == current_track.ID) {
-                        Gtk.TreeIter prev_iter = iter;
-                        if (modelsort.iter_previous (ref prev_iter)) {
-                            Value val;
-                            modelsort.get_value (prev_iter, 0, out val);
-                            return_value = val.get_object () as Objects.Track;
-                        }
-                        return true;
+            modelsort.@foreach ((model, path, iter) => {
+                var item_track = get_track_by_path (path);
+                if (item_track.ID == current_track.ID) {
+                    Gtk.TreeIter prev_iter = iter;
+                    if (modelsort.iter_previous (ref prev_iter)) {
+                        Value val;
+                        modelsort.get_value (prev_iter, 0, out val);
+                        return_value = val.get_object () as Objects.Track;
                     }
-                    return false;
-                });
+                    return true;
+                }
+                return false;
+            });
 
             return return_value;
         }
@@ -452,10 +614,12 @@ namespace PlayMyMusic.Widgets.Views {
                 return true;
             }
 
+            var filter_elements = filter.strip ().down ();
+
             Value val;
             listmodel.get_value (iter, 0, out val);
             var track = val as Objects.Track;
-            if (!track.title.down ().contains (filter) && !track.album.title.down ().contains (filter) && !track.album.artist.name.down ().contains (filter)) {
+            if (!track.title.down ().contains (filter_elements) && !track.album.title.down ().contains (filter_elements) && !track.album.artist.name.down ().contains (filter_elements)) {
                 return false;
             }
             return true;

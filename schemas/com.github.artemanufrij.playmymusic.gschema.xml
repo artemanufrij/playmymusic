@@ -100,6 +100,11 @@
 			<summary>Last choosed view.</summary>
 			<description>Last choosed view.</description>
 		</key>
+		<key name="hidden-tracks-columns" type="as">
+			<default>[]</default>
+			<summary>Hidden columns inside tracks view.</summary>
+			<description>Hidden columns inside tracks view.</description>
+		</key>
 		<key name="load-content-from-musicbrainz" type="b">
 			<default>true</default>
 			<summary>Load Artwork and Cover from MusicBrainz.</summary>
@@ -124,6 +129,11 @@
 			<default>false</default>
 			<summary>Import content into library.</summary>
 			<description>Import content into library.</description>
+		</key>
+		<key name="remove-playlist-if-empty" type="b">
+			<default>true</default>
+			<summary>Remove Playlist if last Track was removed.</summary>
+			<description>Remove Playlist if last Track was removed.</description>
 		</key>
 	</schema>
 </schemalist>

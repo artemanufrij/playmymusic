@@ -29,6 +29,7 @@ src/Utils/MusicBrainz.vala
 src/Utils/Utils.vala
 src/Widgets/Album.vala
 src/Widgets/Artist.vala
+src/Widgets/Playlist.vala
 src/Widgets/Radio.vala
 src/Widgets/Track.vala
 src/Widgets/TrackTimeLine.vala
@@ -39,6 +40,6 @@ src/Widgets/Views/ArtistView.vala
 src/Widgets/Views/AudioCDView.vala
 src/Widgets/Views/MobilePhone.vala
 src/Widgets/Views/PlaylistsView.vala
-src/Widgets/Views/PlaylistView.vala
+src/Widgets/Views/Queue.vala
 src/Widgets/Views/RadiosView.vala
 src/Widgets/Views/TracksView.vala

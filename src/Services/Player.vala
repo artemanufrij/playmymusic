@@ -53,7 +53,7 @@ namespace PlayMyMusic.Services {
         dynamic Gst.Element playbin;
         Gst.Bus bus;
 
-        public Objects.Track? current_track { get; private set; }
+        public Objects.Track? current_track { get; set; }
         public Objects.Radio? current_radio { get; private set; }
         public File? current_file { get; private set; }
 
@@ -74,9 +74,6 @@ namespace PlayMyMusic.Services {
             get {
                 int64 d = 0;
                 this.playbin.query_duration (fmt, out d);
-                if (d == 0 && current_track != null) {
-                    d = (int64)current_track.duration;
-                }
                 return d;
             }
         }
@@ -112,7 +109,7 @@ namespace PlayMyMusic.Services {
                         Interfaces.Inhibitor.instance.inhibit ();
                         break;
                     case Gst.State.READY:
-                        stop_progress_signal ();
+                        stop_progress_signal (true);
                         Interfaces.Inhibitor.instance.uninhibit ();
                         break;
                     case Gst.State.PAUSED:
@@ -130,9 +127,11 @@ namespace PlayMyMusic.Services {
             }
         }
 
-        public void stop_progress_signal () {
+        public void stop_progress_signal (bool reset_timer = false) {
             pause_progress_signal ();
-            current_progress_changed (0);
+            if (reset_timer) {
+                current_progress_changed (0);
+            }
         }
 
         public void start_progress_signal () {
@@ -154,7 +153,7 @@ namespace PlayMyMusic.Services {
             play ();
         }
 
-        public bool load_track (Objects.Track? track, PlayMode play_mode) {
+        public bool load_track (Objects.Track? track, PlayMode play_mode, double progress = 0) {
             if (track == current_track || track == null) {
                 return false;
             }
@@ -171,14 +170,26 @@ namespace PlayMyMusic.Services {
             } else {
                 playbin.uri = current_track.uri;
             }
+
+            playbin.set_state (Gst.State.PLAYING);
+            while (duration == 0) {};
+            pause ();
+            current_duration_changed (duration);
+
+            if (progress > 0) {
+                seek_to_progress (progress);
+                current_progress_changed (progress);
+            }
+
             return true;
         }
 
         public void set_track (Objects.Track? track, PlayMode play_mode) {
-            current_duration_changed (0);
+            if (track == null) {
+                current_duration_changed (0);
+            }
             if (load_track (track, play_mode)) {
                 play ();
-                current_duration_changed (duration);
             }
         }
 
@@ -247,14 +258,14 @@ namespace PlayMyMusic.Services {
                         }
                     }
                 } else if (play_mode == PlayMode.PLAYLIST) {
-                    if (settings.shuffle_mode) {
+                    if (settings.shuffle_mode && current_track.playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
                         next_track = current_track.playlist.get_shuffle_track (current_track);
                     } else {
                         next_track = current_track.playlist.get_next_track (current_track);
                     }
 
                     if (next_track == null && settings.repeat_mode != RepeatMode.OFF && current_track.playlist.has_available_tracks ()) {
-                        if (settings.shuffle_mode) {
+                        if (settings.shuffle_mode && current_track.playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
                             next_track = current_track.playlist.get_shuffle_track (null);
                         } else {
                             next_track = current_track.playlist.get_first_track ();
@@ -331,6 +342,10 @@ namespace PlayMyMusic.Services {
             Gst.State pending;
             playbin.get_state (out state, out pending, (Gst.ClockTime) (Gst.SECOND));
             return state;
+        }
+
+        public void set_playmode (PlayMode play_mode) {
+            _play_mode = play_mode;
         }
 
         private bool bus_callback (Gst.Bus bus, Gst.Message message) {
