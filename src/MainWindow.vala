@@ -93,12 +93,7 @@ namespace PlayMyMusic {
                 set_repeat_symbol ();
             });
             settings.notify["shuffle-mode"].connect (() => {
-                if (settings.shuffle_mode) {
-                    shuffle_button.set_image (icon_shuffle_on);
-                } else {
-                    shuffle_button.set_image (icon_shuffle_off);
-                }
-                repeat_button.show_all ();
+                set_shuffle_symbol ();
             });
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.sync_started.connect (() => {
@@ -956,6 +951,15 @@ namespace PlayMyMusic {
             default :
                 repeat_button.set_image (icon_repeat_off);
                 break;
+            }
+            repeat_button.show_all ();
+        }
+
+        private void set_shuffle_symbol () {
+            if (settings.shuffle_mode) {
+                shuffle_button.set_image (icon_shuffle_on);
+            } else {
+                shuffle_button.set_image (icon_shuffle_off);
             }
             repeat_button.show_all ();
         }
