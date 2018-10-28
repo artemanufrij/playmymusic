@@ -120,14 +120,13 @@ namespace PlayMyMusic {
                     return false;
                 });
             });
-            library_manager.added_new_artist.connect (
-                () => {
-                    if (!artist_button.sensitive) {
-                        artist_button.sensitive = true;
-                        playlist_button.sensitive = true;
-                        tracks_button.sensitive = true;
-                    }
-                });
+            library_manager.added_new_artist.connect (() => {
+                if (!artist_button.sensitive) {
+                    artist_button.sensitive = true;
+                    playlist_button.sensitive = true;
+                    tracks_button.sensitive = true;
+                }
+            });
             library_manager.player_state_changed.connect ((state) => {
                 play_button.sensitive = true;
                 if (state == Gst.State.PLAYING) {
