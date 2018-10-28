@@ -103,7 +103,9 @@ namespace PlayMyMusic {
             library_manager = PlayMyMusic.Services.LibraryManager.instance;
             library_manager.sync_started.connect (() => {
                 Idle.add (() => {
+                    headerbar.pack_end (spinner);
                     spinner.active = true;
+                    spinner.show ();
                     menu_item_resync.sensitive = false;
                     menu_item_reset.sensitive = false;
                     return false;
@@ -112,6 +114,7 @@ namespace PlayMyMusic {
             library_manager.sync_finished.connect (() => {
                 Idle.add (() => {
                     spinner.active = false;
+                    headerbar.remove (spinner);
                     menu_item_resync.sensitive = true;
                     menu_item_reset.sensitive = true;
                     return false;
@@ -298,7 +301,6 @@ namespace PlayMyMusic {
 
             // SPINNER
             spinner = new Gtk.Spinner ();
-            headerbar.pack_end (spinner);
 
             // TOAST
             toast = new Granite.Widgets.Toast ("");
