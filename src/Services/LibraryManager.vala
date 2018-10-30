@@ -398,25 +398,25 @@ namespace PlayMyMusic.Services {
 
             cover.add_filter (filter);
 
-	        Gtk.Image preview_area = new Gtk.Image ();
-		    cover.set_preview_widget (preview_area);
+            Gtk.Image preview_area = new Gtk.Image ();
+            cover.set_preview_widget (preview_area);
             cover.set_use_preview_label (false);
             cover.set_select_multiple (false);
             
-		    cover.update_preview.connect (() => {
-			    string filename = cover.get_preview_filename ();
+            cover.update_preview.connect (() => {
+                string filename = cover.get_preview_filename ();
                 if (filename != null) {
-				    try {
-					    Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file_at_scale (filename, 150, 150, true);
-					    preview_area.set_from_pixbuf (pixbuf);
-					    preview_area.show ();
-				    } catch (Error e) {
-					    preview_area.hide ();
-				    }
-			    } else {
-				    preview_area.hide ();
-			    }
-		    });
+                    try {
+            	        Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file_at_scale (filename, 150, 150, true);
+            	        preview_area.set_from_pixbuf (pixbuf);
+            	        preview_area.show ();
+                    } catch (Error e) {
+            	        preview_area.hide ();
+                    }
+                } else {
+                    preview_area.hide ();
+                }
+            });
 
             if (cover.run () == Gtk.ResponseType.ACCEPT) {
                 return_value = cover.get_filename ();
