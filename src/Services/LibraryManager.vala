@@ -391,8 +391,7 @@ namespace PlayMyMusic.Services {
                 Gtk.FileChooserAction.OPEN,
                 _ ("_Cancel"), Gtk.ResponseType.CANCEL,
                 _ ("_Open"), Gtk.ResponseType.ACCEPT);
-            
-
+     
             var filter = new Gtk.FileFilter ();
             filter.set_filter_name (_ ("Images"));
             filter.add_mime_type ("image/*");
