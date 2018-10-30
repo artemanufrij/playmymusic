@@ -252,7 +252,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
 
             if (radio.cover == null) {
-                new_station_cover.set_from_icon_name ("com.github.artemanufrij.playmymusic-symbolic", Gtk.IconSize.DIALOG);
+                new_station_cover.set_from_icon_name ("internet-radio-symbolic", Gtk.IconSize.DIALOG);
             } else {
                 new_station_cover.pixbuf = radio.cover;
             }
