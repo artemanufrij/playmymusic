@@ -78,7 +78,7 @@ namespace PlayMyMusic.Widgets.Views {
 
             progress = new Gtk.ProgressBar ();
 
-            message = new Gtk.Label ("Enable MTP on your mobile phone");
+            message = new Gtk.Label (_("Enable MTP on your mobile phone"));
             message.wrap = true;
             message.max_width_chars = 0;
             message.justify = Gtk.Justification.CENTER;
