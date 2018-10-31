@@ -1,562 +1,564 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2017 Artem Anufrij <artem.anufrij@live.de> -->
-<component type="desktop">
-    <id>com.github.artemanufrij.playmymusic</id>
-    <metadata_license>CC0-1.0</metadata_license>
-    <project_license>GPL-3.0+</project_license>
-    <name>Melody</name>
-    <summary>A music player for listening local music files, online radios and Audio CD's</summary>
-    <description>
-        <p>A very fast music player designed extra for large local libraries which also supports online radios and downloading album covers</p>
-        <p>Features:</p>
+<component type="desktop-application">
+  <id>com.github.artemanufrij.playmymusic</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>Melody</name>
+  <summary>A music player for listening local music files, online radios and Audio CD's</summary>
+  <description>
+    <p>A very fast music player designed extra for large local libraries which also supports online radios and downloading album covers</p>
+    <p>Features:</p>
+    <ul>
+      <li>Show all Albums from your library</li>
+      <li>Group tracks by Artists</li>
+      <li>Manage your Playlists</li>
+      <li>Listen to online Radio</li>
+      <li>Audio CD support</li>
+      <li>Manage your MTP device</li>
+      <li>ID3-Tag support</li>
+    </ul>
+  </description>
+  <custom>
+    <value key="x-appcenter-color-primary">#004988</value>
+    <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
+    <value key="x-appcenter-suggested-price">5</value>
+  </custom>
+  <translation type="gettext">com.github.artemanufrij.playmymusic</translation>
+  <developer_name>Artem Anufrij</developer_name>
+  <url type="homepage">http://anufrij.org/melody/</url>
+  <url type="bugtracker">https://github.com/artemanufrij/playmymusic/issues</url>
+  <url type="help">https://github.com/artemanufrij/playmymusic/issues</url>
+  <url type="donation">https://www.paypal.me/ArtemAnufrij</url>
+  <url type="translate">https://github.com/artemanufrij/playmymusic</url>
+  <update_contact>artem.anufrij@live.de</update_contact>
+  ​<launchable type="desktop-id">com.github.artemanufrij.playmymusic.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Albums</caption>
+      <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Artists</caption>
+      <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Artists.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Tracks</caption>
+      <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Tracks.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release date="2018-11-15" version="2.0.1">
+      <description>
+        <p>New:</p>
         <ul>
-            <li>Show all Albums from your library</li>
-            <li>Group tracks by Artists</li>
-            <li>Manage your Playlists</li>
-            <li>Listen to online Radio</li>
-            <li>Audio CD support</li>
-            <li>Manage your MTP device</li>
-            <li>ID3-Tag support</li>
+          <li>Image preview in cover/artist chooser dialog (by kaiman)</li>
         </ul>
-    </description>
-    <categories>
-        <category>Music</category>
-    </categories>
-    <custom>
-        <value key="x-appcenter-color-primary">#004988</value>
-        <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
-        <value key="x-appcenter-suggested-price">5</value>
-    </custom>
-    <developer_name>Artem Anufrij</developer_name>
-    <url type="homepage">http://anufrij.org/melody/</url>
-    <url type="bugtracker">https://github.com/artemanufrij/playmymusic/issues</url>
-    <url type="help">https://github.com/artemanufrij/playmymusic/issues</url>
-    <update_contact>artem.anufrij@live.de</update_contact>
-    <screenshots>
-        <screenshot type="default">
-            <caption>Albums</caption>
-            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot.png</image>
-        </screenshot>
-        <screenshot>
-            <caption>Artists</caption>
-            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Artists.png</image>
-        </screenshot>
-        <screenshot>
-            <caption>Tracks</caption>
-            <image>https://raw.githubusercontent.com/artemanufrij/playmymusic/master/screenshots/Screenshot_Tracks.png</image>
-        </screenshot>
-    </screenshots>
-    <releases>
-        <release version="2.0.1" date="2018-11-15">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Image preview in cover/artist chooser dialog (by kaiman)</li>
-                </ul>
-                <p>Fixed:</p>
-                <ul>
-                    <li>Radio icon inside "new radio" popup</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Chinese (by kaiman)</li>
-                    <li>German</li>
-                </ul>
-            </description>
-        </release>
-        <release version="2.0.0" date="2018-10-30">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Queue functionality</li>
-                    <li>Save and restore last played song and progress</li>
-                    <li>Switch columns visibility for tracks view</li>
-                </ul>
-                <p>Fixed:</p>
-                <ul>
-                    <li>Click on headerbar choose current track</li>
-                    <li>UI: select current track in tracks view</li>
-                </ul>
-                <p>Improved:</p>
-                <ul>
-                    <li>Reorder controls on header bar</li>
-                    <li>Drag and Drop behavior for Playlists</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Danish (by rasmus91)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="1.1.2" date="2018-10-25">
-            <description>
-                <p>Fixed:</p>
-                <ul>
-                    <li>Restore correct window size</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Dutch (by Heimen Stoffels)</li>
-                    <li>Italian (by papou84)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="1.1.1" date="2018-09-05">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>[optional] Delete Playlist if last Track was removed</li>
-                    <li>Toggle playing by Space Key</li>
-                    <li>Add Track into Playlist from Trackview</li>
-                    <li>RadioView: [Ctrl]+[Enter] for accept changes in editor</li>
-                </ul>
-                <p>Fixed:</p>
-                <ul>
-                    <li>Player doesn't show '0' it the timeline if playing is paused</li>
-                    <li>Better focus grabing</li>
-                </ul>
-                <p>Improved:</p>
-                <ul>
-                    <li>Faster start up behaviour</li>
-                </ul>
-            </description>
-        </release>
-        <release version="1.1.0" date="2018-07-24">
-            <description>
+        <p>Fixed:</p>
+        <ul>
+          <li>Radio icon inside "new radio" popup</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Chinese (by kaiman)</li>
+          <li>German</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-10-30" version="2.0.0">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Queue functionality</li>
+          <li>Save and restore last played song and progress</li>
+          <li>Switch columns visibility for tracks view</li>
+        </ul>
+        <p>Fixed:</p>
+        <ul>
+          <li>Click on headerbar choose current track</li>
+          <li>UI: select current track in tracks view</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Reorder controls on header bar</li>
+          <li>Drag and Drop behavior for Playlists</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Danish (by rasmus91)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-10-25" version="1.1.2">
+      <description>
+        <p>Fixed:</p>
+        <ul>
+          <li>Restore correct window size</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Dutch (by Heimen Stoffels)</li>
+          <li>Italian (by papou84)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-09-05" version="1.1.1">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>[optional] Delete Playlist if last Track was removed</li>
+          <li>Toggle playing by Space Key</li>
+          <li>Add Track into Playlist from Trackview</li>
+          <li>RadioView: [Ctrl]+[Enter] for accept changes in editor</li>
+        </ul>
+        <p>Fixed:</p>
+        <ul>
+          <li>Player doesn't show '0' it the timeline if playing is paused</li>
+          <li>Better focus grabing</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Faster start up behaviour</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-07-24" version="1.1.0">
+      <description>
                 Prepare for JUNO
             </description>
-        </release>
-        <release version="1.0.3" date="2018-04-15">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>[optional] Copy imported music files into library</li>
-                </ul>
-                <p>Fixed:</p>
-                <ul>
-                    <li>Show correct artist at sound indicator</li>
-                    <li>Search in Track View</li>
-                    <li>Order for Tracks without Track No in ID3 Tag</li>
-                    <li>Close behaviour for Artist and Album dialogs (by Sergii Fesenko)</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>German</li>
-                    <li>French (by papou84)</li>
-                    <li>Russian (by Camellan)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="1.0.1" date="2018-04-07">
-            <description>
-                <p>Fixed:</p>
-                <ul>
-                    <li>Meson Errors</li>
-                </ul>
-            </description>
-        </release>
-        <release version="1.0.0" date="2018-04-07">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Switch to meson</li>
-                </ul>
-                <p>Improved:</p>
-                <ul>
-                    <li>Tooltip for album cover</li>
-                    <li>Fetching of Artist Art from MusicBrainz</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Danish (by Rasmus Lindegaard)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.9" date="2018-03-30">
-            <description>
-                <p>Fixed:</p>
-                <ul>
-                    <li>'and' char in Tracks View</li>
-                </ul>
-                <p>Improved:</p>
-                <ul>
-                    <li>Context menu behaviour</li>
-                    <li>Removed multi selection button</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.7" date="2018-03-20">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Double click on Album/Artist starts playing first track</li>
-                    <li>Double click on Track starts playing from begining</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Portuguese - Brazil (by Gustavo Marques)</li>
-                    <li>Polish (by Michał Węglowski-Hodur)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.6" date="2018-03-10">
-            <description>
-                <p>Improved:</p>
-                <ul>
-                    <li>Desktop Action Menu</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.5" date="2018-03-06">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Shuffle and Repeat mode for Tracks View</li>
-                </ul>
-                <p>Fixed:</p>
-                <ul>
-                    <li>Remove cover cache file if album or artist was deleted</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                   <li>Russian (by Camellan)</li>
-                </ul>
-                <p>Misc:</p>
-                <ul>
-                    <li>Prepare for JUNO</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.4" date="2018-02-28">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Hide button for Mobile Panel</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Catalan (by Adolfo Jayme-Barrientos)</li>
-                    <li>Spanish (by Adolfo Jayme-Barrientos)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.2" date="2018-02-25">
-            <description>
-                <p>Improved:</p>
-                <ul>
-                    <li>Speed up start behavior</li>
-                    <li>Small design changes in list view</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Catalan (by Adolfo Jayme-Barrientos)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.1" date="2018-02-21">
-            <description>
-                <p>Fixed:</p>
-                <ul>
-                    <li>List View: sorting and small design changes</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.6.0" date="2018-02-20">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>List View for all music content</li>
-                    <li>Grab album cover from MusicBrainz</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.5.3" date="2018-02-12">
-            <description>
-                <p>Fix:</p>
-                <ul>
-                    <li>Endless spinner on first start (if no music files exist)</li>
-                </ul>
-                <p>Improved:</p>
-                <ul>
-                    <li>Mounting MTP-Devices</li>
-                    <li>Show "No Result" message if search term hasn't any results</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.5.1" date="2018-02-05">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Desktop Actions: Next, Previous, Play/Pause</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.5.0" date="2018-01-30">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Saving changes directly into file (ID3-tags)</li>
-                </ul>
-                <p>Changes:</p>
-                <ul>
-                    <li>Generic name "PlayMyMusic" -> "Melody"</li>
-                    <li>Lazy cover loading -> less memory on startup</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Simplified Chinese (by trampover)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.4.4" date="2018-01-15">
-            <description>
-                <p>Fix:</p>
-                <ul>
-                    <li>Endless spinner</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.4.3" date="2018-01-15">
-            <description>
-                <p>Fix:</p>
-                <ul>
-                    <li>Spinner visibility while library is being scanned</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Spanish (by Alain)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.4.2" date="2018-01-07">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Show song title from online radio in audio indicator</li>
-                    <li>Save/restore window position</li>
-                </ul>
-                <p>Improved:</p>
-                <ul>
-                    <li>Start searching instand on key press</li>
-                    <li>Playlist Editor: Accept changes on press CTRL+Enter</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.4.1" date="2017-12-30">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Reorder Playlist items by Drag an Drop</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>Playlist behavior</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Russian (by Camellan)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.4.0" date="2017-12-15">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Option for saving custom covers into library</li>
-                    <li>Merge Albums</li>
-                    <li>Album Editor [F2]</li>
-                    <li>Merge Artists</li>
-                    <li>Artist Editor [F2]</li>
-                    <li>Multiple selection [CTRL]</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.3.4" date="2017-12-08">
-            <description>
-                <p>Changes:</p>
-                <ul>
-                    <li>Moved 'Shuffle' and 'Repeat' buttons into header bar</li>
-                    <li>Hide MTP-View if playlists, radios or audio cd is choosed</li>
-                    <li>Switched from 'search for new files' to 'resync library'</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>[MusicBrainz] fetch artist cover if name of artist contains '/' (like AC/DC)</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Russian (by Camellan)</li>
-                    <li>Lithuanian (by welaq)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.3.3" date="2017-12-03">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Hotkeys for switching between views: Alt+1,2,3,4,5</li>
-                    <li>[MTP] Copy Albums or Artists to your device by Drag and Drop</li>
-                    <li>[MTP] Sort music content in the mobile view</li>
-                    <li>[MTP] Don't expand all music content in the mobile view</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>Shuffle Mode and Repeat behavior</li>
-                    <li>URI includes # inside location path</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Spanish (by Adolfo Jayme-Barrientos)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.3.2" date="2017-11-25">
-            <description>
-                <p>Changes:</p>
-                <ul>
-                    <li>Icon (by Alexey Varfolomeev)</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>Enable screensaver again after playing finished</li>
-                    <li>Improved MTP for UbuntuPhone</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.3.1" date="2017-11-20">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Option for Dark Theme</li>
-                    <li>Repeat function for one song</li>
-                    <li>Online Radio Icon (by Alexey Varfolomeev)</li>
-                    <li>Moved from 'path' to 'uri' for GVFS support</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>Sorting Playlist inside context menu</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Russian (by Alexey Varfolomeev)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.3.0" date="2017-11-18">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>MTP-Support (Tested on Android)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.2.2" date="2017-11-12">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Disable screensaver while playing</li>
-                    <li>Import files by Drag and Drop</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.2.1" date="2017-11-05">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Audio CD support</li>
-                    <li>[artist view] Download artwork from MusicBrainz if exists</li>
-                    <li>A lot of improvements</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>[online radio] Freeze on 'audio/aacp' stream</li>
-                    <li>Critical error when external file playing</li>
-                    <li>Crash if music files are not exist and play mode is 'repeat'</li>
-                    <li>Crash if you scan a NFS-mounted directory</li>
-                </ul>
-                <p>Change:</p>
-                <ul>
-                    <li>Moved to Granite SeekBar</li>
-                </ul>
-                <p>Translation:</p>
-                <ul>
-                    <li>Lithuanian (by welaq)</li>
-                    <li>French (by nvivant)</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.1.6" date="2017-10-16">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>[option] Look for new music files on start up [on/off]</li>
-                    <li>Added 16px icon</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>Crash while importing files</li>
-                    <li>[artist view] Don't show track twice</li>
-                </ul>
-                <p>Change:</p>
-                <ul>
-                    <li>App icon</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.1.5" date="2017-10-15">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Playlist support</li>
-                    <li>Play in Backgound</li>
-                    <li>Translation: Portuguese (by Rafael Campos Nunes)</li>
-                </ul>
-                <p>Fix:</p>
-                <ul>
-                    <li>Crash on trying to stream online radio</li>
-                </ul>
-            </description>
-        </release>
-        <release version="0.1.4" date="2017-10-09">
-            <description>
-                <p>New:</p>
-                <ul>
-                    <li>Sound Indicator</li>
-                </ul>
-                <p>Miscellaneous:</p>
-                <ul>
-                    <li>Small style improvements</li>
-                </ul>
-            </description>
-        </release>
-    </releases>
-    <content_rating type="oars-1.1">
-        <content_attribute id="violence-cartoon">none</content_attribute>
-        <content_attribute id="violence-fantasy">none</content_attribute>
-        <content_attribute id="violence-realistic">none</content_attribute>
-        <content_attribute id="violence-bloodshed">none</content_attribute>
-        <content_attribute id="violence-sexual">none</content_attribute>
-        <content_attribute id="violence-desecration">none</content_attribute>
-        <content_attribute id="violence-slavery">none</content_attribute>
-        <content_attribute id="violence-worship">none</content_attribute>
-        <content_attribute id="drugs-alcohol">none</content_attribute>
-        <content_attribute id="drugs-narcotics">none</content_attribute>
-        <content_attribute id="drugs-tobacco">none</content_attribute>
-        <content_attribute id="sex-nudity">none</content_attribute>
-        <content_attribute id="sex-themes">none</content_attribute>
-        <content_attribute id="sex-homosexuality">none</content_attribute>
-        <content_attribute id="sex-prostitution">none</content_attribute>
-        <content_attribute id="sex-adultery">none</content_attribute>
-        <content_attribute id="sex-appearance">none</content_attribute>
-        <content_attribute id="language-profanity">none</content_attribute>
-        <content_attribute id="language-humor">none</content_attribute>
-        <content_attribute id="language-discrimination">none</content_attribute>
-        <content_attribute id="social-chat">none</content_attribute>
-        <content_attribute id="social-info">mild</content_attribute>
-        <content_attribute id="social-audio">none</content_attribute>
-        <content_attribute id="social-location">none</content_attribute>
-        <content_attribute id="social-contacts">none</content_attribute>
-        <content_attribute id="money-purchasing">none</content_attribute>
-        <content_attribute id="money-gambling">none</content_attribute>
-    </content_rating>
+    </release>
+    <release date="2018-04-15" version="1.0.3">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>[optional] Copy imported music files into library</li>
+        </ul>
+        <p>Fixed:</p>
+        <ul>
+          <li>Show correct artist at sound indicator</li>
+          <li>Search in Track View</li>
+          <li>Order for Tracks without Track No in ID3 Tag</li>
+          <li>Close behaviour for Artist and Album dialogs (by Sergii Fesenko)</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>German</li>
+          <li>French (by papou84)</li>
+          <li>Russian (by Camellan)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-04-07" version="1.0.1">
+      <description>
+        <p>Fixed:</p>
+        <ul>
+          <li>Meson Errors</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-04-07" version="1.0.0">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Switch to meson</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Tooltip for album cover</li>
+          <li>Fetching of Artist Art from MusicBrainz</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Danish (by Rasmus Lindegaard)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-03-30" version="0.6.9">
+      <description>
+        <p>Fixed:</p>
+        <ul>
+          <li>'and' char in Tracks View</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Context menu behaviour</li>
+          <li>Removed multi selection button</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-03-20" version="0.6.7">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Double click on Album/Artist starts playing first track</li>
+          <li>Double click on Track starts playing from begining</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Portuguese - Brazil (by Gustavo Marques)</li>
+          <li>Polish (by Michał Węglowski-Hodur)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-03-10" version="0.6.6">
+      <description>
+        <p>Improved:</p>
+        <ul>
+          <li>Desktop Action Menu</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-03-06" version="0.6.5">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Shuffle and Repeat mode for Tracks View</li>
+        </ul>
+        <p>Fixed:</p>
+        <ul>
+          <li>Remove cover cache file if album or artist was deleted</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Russian (by Camellan)</li>
+        </ul>
+        <p>Misc:</p>
+        <ul>
+          <li>Prepare for JUNO</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-02-28" version="0.6.4">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Hide button for Mobile Panel</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Catalan (by Adolfo Jayme-Barrientos)</li>
+          <li>Spanish (by Adolfo Jayme-Barrientos)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-02-25" version="0.6.2">
+      <description>
+        <p>Improved:</p>
+        <ul>
+          <li>Speed up start behavior</li>
+          <li>Small design changes in list view</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Catalan (by Adolfo Jayme-Barrientos)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-02-21" version="0.6.1">
+      <description>
+        <p>Fixed:</p>
+        <ul>
+          <li>List View: sorting and small design changes</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-02-20" version="0.6.0">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>List View for all music content</li>
+          <li>Grab album cover from MusicBrainz</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-02-12" version="0.5.3">
+      <description>
+        <p>Fix:</p>
+        <ul>
+          <li>Endless spinner on first start (if no music files exist)</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Mounting MTP-Devices</li>
+          <li>Show "No Result" message if search term hasn't any results</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-02-05" version="0.5.1">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Desktop Actions: Next, Previous, Play/Pause</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-01-30" version="0.5.0">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Saving changes directly into file (ID3-tags)</li>
+        </ul>
+        <p>Changes:</p>
+        <ul>
+          <li>Generic name "PlayMyMusic" -&gt; "Melody"</li>
+          <li>Lazy cover loading -&gt; less memory on startup</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Simplified Chinese (by trampover)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-01-15" version="0.4.4">
+      <description>
+        <p>Fix:</p>
+        <ul>
+          <li>Endless spinner</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-01-15" version="0.4.3">
+      <description>
+        <p>Fix:</p>
+        <ul>
+          <li>Spinner visibility while library is being scanned</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Spanish (by Alain)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-01-07" version="0.4.2">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Show song title from online radio in audio indicator</li>
+          <li>Save/restore window position</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Start searching instand on key press</li>
+          <li>Playlist Editor: Accept changes on press CTRL+Enter</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-12-30" version="0.4.1">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Reorder Playlist items by Drag an Drop</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Playlist behavior</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Russian (by Camellan)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-12-15" version="0.4.0">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Option for saving custom covers into library</li>
+          <li>Merge Albums</li>
+          <li>Album Editor [F2]</li>
+          <li>Merge Artists</li>
+          <li>Artist Editor [F2]</li>
+          <li>Multiple selection [CTRL]</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-12-08" version="0.3.4">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Moved 'Shuffle' and 'Repeat' buttons into header bar</li>
+          <li>Hide MTP-View if playlists, radios or audio cd is choosed</li>
+          <li>Switched from 'search for new files' to 'resync library'</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>[MusicBrainz] fetch artist cover if name of artist contains '/' (like AC/DC)</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Russian (by Camellan)</li>
+          <li>Lithuanian (by welaq)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-12-03" version="0.3.3">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Hotkeys for switching between views: Alt+1,2,3,4,5</li>
+          <li>[MTP] Copy Albums or Artists to your device by Drag and Drop</li>
+          <li>[MTP] Sort music content in the mobile view</li>
+          <li>[MTP] Don't expand all music content in the mobile view</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Shuffle Mode and Repeat behavior</li>
+          <li>URI includes # inside location path</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Spanish (by Adolfo Jayme-Barrientos)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-11-25" version="0.3.2">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Icon (by Alexey Varfolomeev)</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Enable screensaver again after playing finished</li>
+          <li>Improved MTP for UbuntuPhone</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-11-20" version="0.3.1">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Option for Dark Theme</li>
+          <li>Repeat function for one song</li>
+          <li>Online Radio Icon (by Alexey Varfolomeev)</li>
+          <li>Moved from 'path' to 'uri' for GVFS support</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Sorting Playlist inside context menu</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Russian (by Alexey Varfolomeev)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-11-18" version="0.3.0">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>MTP-Support (Tested on Android)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-11-12" version="0.2.2">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Disable screensaver while playing</li>
+          <li>Import files by Drag and Drop</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-11-05" version="0.2.1">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Audio CD support</li>
+          <li>[artist view] Download artwork from MusicBrainz if exists</li>
+          <li>A lot of improvements</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>[online radio] Freeze on 'audio/aacp' stream</li>
+          <li>Critical error when external file playing</li>
+          <li>Crash if music files are not exist and play mode is 'repeat'</li>
+          <li>Crash if you scan a NFS-mounted directory</li>
+        </ul>
+        <p>Change:</p>
+        <ul>
+          <li>Moved to Granite SeekBar</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Lithuanian (by welaq)</li>
+          <li>French (by nvivant)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-10-16" version="0.1.6">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>[option] Look for new music files on start up [on/off]</li>
+          <li>Added 16px icon</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Crash while importing files</li>
+          <li>[artist view] Don't show track twice</li>
+        </ul>
+        <p>Change:</p>
+        <ul>
+          <li>App icon</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-10-15" version="0.1.5">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Playlist support</li>
+          <li>Play in Backgound</li>
+          <li>Translation: Portuguese (by Rafael Campos Nunes)</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Crash on trying to stream online radio</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2017-10-09" version="0.1.4">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Sound Indicator</li>
+        </ul>
+        <p>Miscellaneous:</p>
+        <ul>
+          <li>Small style improvements</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">mild</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+
 </component>
