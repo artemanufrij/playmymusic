@@ -116,12 +116,12 @@ namespace PlayMyMusic {
                 });
             });
             library_manager.added_new_artist.connect (() => {
-                if (!artist_button.sensitive) {
-                    artist_button.sensitive = true;
-                    playlist_button.sensitive = true;
-                    tracks_button.sensitive = true;
-                }
-            });
+                    if (!artist_button.sensitive) {
+                        artist_button.sensitive = true;
+                        playlist_button.sensitive = true;
+                        tracks_button.sensitive = true;
+                    }
+                });
             library_manager.player_state_changed.connect ((state) => {
                 play_button.sensitive = true;
                 if (state == Gst.State.PLAYING) {
@@ -405,10 +405,11 @@ namespace PlayMyMusic {
             shuffle_button = new Gtk.Button ();
             if (settings.shuffle_mode) {
                 shuffle_button.set_image (icon_shuffle_on);
+                shuffle_button.tooltip_text = _ ("Shuffle On");
             } else {
                 shuffle_button.set_image (icon_shuffle_off);
+                shuffle_button.tooltip_text = _ ("Shuffle Off");
             }
-            shuffle_button.tooltip_text = _ ("Shuffle");
             shuffle_button.can_focus = false;
             shuffle_button.clicked.connect (() => {
                 settings.shuffle_mode = !settings.shuffle_mode;
@@ -420,7 +421,6 @@ namespace PlayMyMusic {
 
             repeat_button = new Gtk.Button ();
             set_repeat_symbol ();
-            repeat_button.tooltip_text = _ ("Repeat");
             repeat_button.can_focus = false;
             repeat_button.clicked.connect (() => {
                 settings.switch_repeat_mode ();
@@ -944,12 +944,15 @@ namespace PlayMyMusic {
             switch (settings.repeat_mode) {
             case RepeatMode.ALL :
                 repeat_button.set_image (icon_repeat_all);
+                repeat_button.tooltip_text = _ ("Repeat All");
                 break;
             case RepeatMode.ONE :
                 repeat_button.set_image (icon_repeat_one);
+                repeat_button.tooltip_text = _ ("Repeat One");
                 break;
             default :
                 repeat_button.set_image (icon_repeat_off);
+                repeat_button.tooltip_text = _ ("Repeat Off");
                 break;
             }
             repeat_button.show_all ();
@@ -958,8 +961,10 @@ namespace PlayMyMusic {
         private void set_shuffle_symbol () {
             if (settings.shuffle_mode) {
                 shuffle_button.set_image (icon_shuffle_on);
+                shuffle_button.tooltip_text = _ ("Shuffle On");
             } else {
                 shuffle_button.set_image (icon_shuffle_off);
+                shuffle_button.tooltip_text = _ ("Shuffle Off");
             }
             repeat_button.show_all ();
         }

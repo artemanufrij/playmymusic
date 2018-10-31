@@ -1,3 +1,43 @@
+com.github.artemanufrij.playmymusic (2.0.0) bionic; urgency=low
+
+[NEW]
+ * Queue functionality
+ * Save and restore last played song and progress
+ * Switch columns visibility for tracks view
+[FIXED]
+ * Click on headerbar choose current track
+ * UI: select current track in tracks view
+[IMPROVED]
+ * Reorder controls on header bar
+ * Drag and Drop behavior for Playlists
+
+ -- Artem Anufrij <artem.anufrij@live.de>  Tue, 30 Oct 2018 04:53:39 +0100
+
+com.github.artemanufrij.playmymusic (1.1.2) bionic; urgency=low
+
+[FIXED]
+ * Restore correct window size
+[TRANSLATION]
+ * Dutch (by Heimen Stoffels)
+ * Italian (by papou84)
+
+ -- Artem Anufrij <artem.anufrij@live.de>  Thu, 25 Oct 2018 04:53:39 +0100
+
+com.github.artemanufrij.playmymusic (1.1.1) bionic; urgency=low
+
+[NEW]
+ * [optional] Delete Playlist if last Track was removed
+ * Toggle playing by Space Key
+ * Add Track into Playlist from Trackview
+ * RadioView: [Ctrl]+[Enter] for accept changes in editor
+[FIXED]
+ * Player doesn't show '0' it the timeline if playing is paused
+ * Better focus grabing
+[IMPROVED]
+ * Faster start up behaviour
+ 
+ -- Artem Anufrij <artem.anufrij@live.de>  Wed, 05 Sep 2018 04:53:39 +0100
+
 com.github.artemanufrij.playmymusic (0.1.3) xenial; urgency=low
 [FIXED]
  * Handling with empty ID3 Tags
