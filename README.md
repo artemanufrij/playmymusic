@@ -13,6 +13,9 @@
   <a href="https://appcenter.elementary.io/com.github.artemanufrij.playmymusic">
     <img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter">
   </a>
+  <a href="https://flathub.org/apps/details/com.github.artemanufrij.playmymusic">
+    <img src="https://flathub.org/assets/badges/flathub-badge-i-en.svg" width="150px" alt="Download On Flathub">
+  </a>
 </p>
 
 <br/>
@@ -20,6 +23,19 @@
 ![screenshot](screenshots/Screenshot.png)
 ![screenshot](screenshots/Screenshot_Artists.png)
 ![screenshot](screenshots/Screenshot_Tracks.png)
+
+## Install from Flatpak
+Melody on Flathub: https://flathub.org/apps/details/com.github.artemanufrij.playmymusic
+
+Install
+```
+flatpak install flathub com.github.artemanufrij.playmymusic
+```
+
+Run
+```
+flatpak run com.github.artemanufrij.playmymusic
+```
 
 ## Install from Github.
 
