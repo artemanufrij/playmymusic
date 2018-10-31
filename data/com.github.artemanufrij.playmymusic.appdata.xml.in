@@ -32,6 +32,7 @@
   <url type="donation">https://www.paypal.me/ArtemAnufrij</url>
   <url type="translate">https://github.com/artemanufrij/playmymusic</url>
   <update_contact>artem.anufrij@live.de</update_contact>
+  ​<launchable type="desktop-id">com.github.artemanufrij.playmymusic.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <caption>Albums</caption>
