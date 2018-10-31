@@ -138,13 +138,25 @@ msgstr "加载中..."
 msgid "Reading out database content"
 msgstr "读出数据库内容"
 
-#: src/MainWindow.vala:415
-msgid "Shuffle"
-msgstr "不循环播放"
+#: src/MainWindow.vala:412
+msgid "Shuffle On"
+msgstr "随机播放"
 
-#: src/MainWindow.vala:427
-msgid "Repeat"
+#: src/MainWindow.vala:415
+msgid "Shuffle Off"
+msgstr "顺序播放"
+
+#: src/MainWindow.vala:952
+msgid "Repeat All"
 msgstr "循环播放"
+
+#: src/MainWindow.vala:956
+msgid "Repeat One"
+msgstr "反复播放单曲"
+
+#: src/MainWindow.vala:960
+msgid "Repeat Off"
+msgstr "循环播放关闭"
 
 #: src/MainWindow.vala:463
 msgid "Playlists"
@@ -457,7 +469,7 @@ msgstr "基于播放队列建立新播放列表"
 #: src/Widgets/Views/Queue.vala:88
 #, c-format
 msgid "Queue from %s"
-msgstr "从播放队列 %s"
+msgstr "将 %s 的播放队列转换成的播放列表"
 
 #: src/Widgets/Views/Queue.vala:107
 msgid "Queue is empty"
