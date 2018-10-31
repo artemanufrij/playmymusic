@@ -22,6 +22,8 @@
 ![screenshot](screenshots/Screenshot_Tracks.png)
 
 ## Install from Flatpak
+Melody on Flathub: https://flathub.org/apps/details/com.github.artemanufrij.playmymusic
+
 Install
 ```
 flatpak install flathub com.github.artemanufrij.playmymusic
