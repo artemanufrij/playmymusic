@@ -21,6 +21,17 @@
 ![screenshot](screenshots/Screenshot_Artists.png)
 ![screenshot](screenshots/Screenshot_Tracks.png)
 
+## Install from Flatpak
+Install
+```
+flatpak install flathub com.github.artemanufrij.playmymusic
+```
+
+Run
+```
+flatpak run com.github.artemanufrij.playmymusic
+```
+
 ## Install from Github.
 
 As first you need elementary SDK
