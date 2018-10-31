@@ -49,8 +49,17 @@
     <releases>
         <release version="2.0.1" date="2018-11-15">
             <description>
+                <p>New:</p>
+                <ul>
+                    <li>Image preview in cover/artist chooser dialog (by kaiman)</li>
+                </ul>
+                <p>Fixed:</p>
+                <ul>
+                    <li>Radio icon inside "new radio" popup</li>
+                </ul>
                 <p>Translation:</p>
                 <ul>
+                    <li>Chinese (by kaiman)</li>
                     <li>German</li>
                 </ul>
             </description>
