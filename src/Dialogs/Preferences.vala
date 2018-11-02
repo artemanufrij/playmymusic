@@ -87,6 +87,10 @@ namespace PlayMyMusic.Dialogs {
             remove_playlist_if_empty.active = settings.remove_playlist_if_empty;
             remove_playlist_if_empty.notify["active"].connect (() => { settings.remove_playlist_if_empty = remove_playlist_if_empty.active; });
 
+            var remember_track_progress = new Gtk.Switch ();
+            remember_track_progress.active = settings.remember_track_progress;
+            remember_track_progress.notify["active"].connect (() => { settings.remember_track_progress = remember_track_progress.active; });
+
             grid.attach (label_generator (_ ("Play in background if closed")), 0, 0);
             grid.attach (play_in_background, 1, 0);
             grid.attach (label_generator (_ ("Sync files on start up")), 0, 1);
@@ -103,6 +107,9 @@ namespace PlayMyMusic.Dialogs {
             grid.attach (import_into_library, 1, 7);
             grid.attach (label_generator (_ ("Remove Playlist if last Track was removed")), 0, 8);
             grid.attach (remove_playlist_if_empty, 1, 8);
+            grid.attach (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), 0, 9, 2, 1);
+            grid.attach (label_generator (_ ("Remember Track progress")), 0, 10);
+            grid.attach (remember_track_progress, 1, 10);
 
             content.pack_start (grid, false, false, 0);
 

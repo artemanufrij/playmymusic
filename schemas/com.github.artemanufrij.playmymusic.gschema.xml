@@ -55,6 +55,11 @@
 			<summary>Track source album or artist</summary>
 			<description>Track source album or artist.</description>
 		</key>
+		<key name="remember-track-progress" type="b">
+			<default>true</default>
+			<summary>Remember Track progress</summary>
+			<description>Remember Track progress.</description>
+		</key>
 		<key name="window-maximized" type="b">
 			<default>false</default>
 			<summary>Maximized window.</summary>

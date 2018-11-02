@@ -53,6 +53,7 @@ namespace PlayMyMusic {
         public int last_track_id { get; set; }
         public double track_progress { get; set; }
         public string track_source { get; set; }
+        public bool remember_track_progress { get; set; }
         public bool play_in_background { get; set; }
         public bool sync_files { get; set; }
         public string [] artists { get; set; }

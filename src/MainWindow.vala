@@ -997,7 +997,11 @@ namespace PlayMyMusic {
                  || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.TRACKS
                  || library_manager.player.play_mode == PlayMyMusic.Services.PlayMode.PLAYLIST)) {
                 settings.last_track_id = library_manager.player.current_track.ID;
-                settings.track_progress = library_manager.player.get_position_progress ();
+                if (settings.remember_track_progress) {
+                    settings.track_progress = library_manager.player.get_position_progress ();
+                } else {
+                    settings.track_progress = 0;
+                }
                 switch (library_manager.player.play_mode) {
                     case PlayMyMusic.Services.PlayMode.ALBUM :
                         settings.last_album_id = current_track.album.ID;
