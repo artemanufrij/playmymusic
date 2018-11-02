@@ -63,6 +63,9 @@ namespace PlayMyMusic.Widgets.Views {
 
         construct {
             settings = Settings.get_default ();
+            settings.notify["sort-mode-album-view"].connect (() => {
+                do_sort ();
+            });
             library_manager = Services.LibraryManager.instance;
             library_manager.added_new_album.connect ((album) => {
                 Idle.add (() => {
@@ -165,20 +168,25 @@ namespace PlayMyMusic.Widgets.Views {
             do_sort ();
         }
 
-        private void do_sort () {
-            lock (timer_sort) {
-                if (timer_sort != 0) {
-                    Source.remove (timer_sort);
-                    timer_sort = 0;
-                }
+        public void do_sort (bool instand = false) {
+            if (instand) {
+                albums.set_sort_func (albums_sort_func);
+                albums.set_sort_func (null);
+            } else {
+                lock (timer_sort) {
+                    if (timer_sort != 0) {
+                        Source.remove (timer_sort);
+                        timer_sort = 0;
+                    }
 
-                timer_sort = Timeout.add (500, () => {
-                    albums.set_sort_func (albums_sort_func);
-                    albums.set_sort_func (null);
-                    Source.remove (timer_sort);
-                    timer_sort = 0;
-                    return false;
-                });
+                    timer_sort = Timeout.add (500, () => {
+                        albums.set_sort_func (albums_sort_func);
+                        albums.set_sort_func (null);
+                        Source.remove (timer_sort);
+                        timer_sort = 0;
+                        return false;
+                    });
+                }
             }
         }
 
@@ -300,16 +308,34 @@ namespace PlayMyMusic.Widgets.Views {
         private int albums_sort_func (Gtk.FlowBoxChild child1, Gtk.FlowBoxChild child2) {
             var item1 = (Widgets.Album)child1;
             var item2 = (Widgets.Album)child2;
-            if (item1 != null && item2 != null) {
-                if (item1.album.artist.name == item2.album.artist.name) {
-                    if (item1.year != item2.year) {
-                        return item1.year - item2.year;
+
+            if (item1 == null || item2 == null) {
+                return 0;
+            }
+
+            switch (settings.sort_mode_album_view) {
+                case 2:
+                    // Album - Artist
+                    if (item1.title == item2.title) {
+                        return item1.album.artist.name.collate (item2.album.artist.name);
                     }
                     return item1.title.collate (item2.title);
-                }
-                return item1.album.artist.name.collate (item2.album.artist.name);
+                case 3:
+                    // Artist - Album
+                    if (item1.album.artist.name == item2.album.artist.name) {
+                        return item1.title.collate (item2.title);
+                    }
+                    return item1.album.artist.name.collate (item2.album.artist.name);
+                default:
+                    // Artist - Year - Album
+                    if (item1.album.artist.name == item2.album.artist.name) {
+                        if (item1.year != item2.year) {
+                            return item1.year - item2.year;
+                        }
+                        return item1.title.collate (item2.title);
+                    }
+                    return item1.album.artist.name.collate (item2.album.artist.name);
             }
-            return 0;
         }
     }
 }

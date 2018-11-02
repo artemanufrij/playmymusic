@@ -140,5 +140,10 @@
 			<summary>Remove Playlist if last Track was removed.</summary>
 			<description>Remove Playlist if last Track was removed.</description>
 		</key>
+		<key name="sort-mode-album-view" type="i">
+			<default>1</default>
+			<summary>Sort Mode for Album view.</summary>
+			<description>Sort Mode for Album view.</description>
+		</key>
 	</schema>
 </schemalist>
