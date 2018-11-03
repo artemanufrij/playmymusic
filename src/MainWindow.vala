@@ -567,7 +567,7 @@ namespace PlayMyMusic {
                 library_manager.sync_library_content.begin ();
             });
 
-            var menu_sort = new Gtk.MenuItem.with_label (_("Sorting"));
+            var menu_sort = new Gtk.MenuItem.with_label (_("Sort by"));
             var menu_sort_sub = new Gtk.Menu ();
             menu_sort.set_submenu (menu_sort_sub);
             menu_sort_1 = new Gtk.CheckMenuItem.with_label (_("Artist - Year - Album"));
@@ -844,7 +844,9 @@ namespace PlayMyMusic {
                 }
             }
             tracks_view.init_end ();
-            albums_view.do_sort (true);
+            if (settings.sort_mode_album_view != 1) {
+                albums_view.do_sort (true);
+            }
         }
 
         private void reset_all_views () {

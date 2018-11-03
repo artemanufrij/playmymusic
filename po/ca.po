@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-26 18:18+0200\n"
+"POT-Creation-Date: 2018-11-03 15:58+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: \n"
@@ -15,7 +15,7 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
 #: data/com.github.artemanufrij.playmymusic.desktop.in:3
 #: data/com.github.artemanufrij.playmymusic.desktop.in:4
-#: src/MainWindow.vala:152 src/MainWindow.vala:278
+#: src/MainWindow.vala:155 src/MainWindow.vala:281
 msgid "Melody"
 msgstr "Melodia"
 
@@ -65,22 +65,22 @@ msgstr ""
 msgid "ID3-Tag support"
 msgstr ""
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:30
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
 msgid "Artem Anufrij"
 msgstr ""
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:37
-#: src/MainWindow.vala:449
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
+#: src/MainWindow.vala:451
 msgid "Albums"
 msgstr "Àlbums"
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
-#: src/MainWindow.vala:453
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
+#: src/MainWindow.vala:455
 msgid "Artists"
 msgstr "Artistes"
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
-#: src/MainWindow.vala:458
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:49
+#: src/MainWindow.vala:460
 msgid "Tracks"
 msgstr "Peces"
 
@@ -106,7 +106,7 @@ msgid "media-playback-start-symbolic"
 msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:23
-#: src/MainWindow.vala:394
+#: src/MainWindow.vala:396
 msgid "Next"
 msgstr "Següent"
 
@@ -115,7 +115,7 @@ msgid "media-skip-forward-symbolic"
 msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:28
-#: src/MainWindow.vala:375
+#: src/MainWindow.vala:377
 msgid "Previous"
 msgstr "Anterior"
 
@@ -123,76 +123,111 @@ msgstr "Anterior"
 msgid "media-skip-backward-symbolic"
 msgstr ""
 
-#: src/MainWindow.vala:132
+#: src/MainWindow.vala:135
 msgid "Pause"
 msgstr "Posa en pausa"
 
-#: src/MainWindow.vala:158 src/MainWindow.vala:385
+#: src/MainWindow.vala:161 src/MainWindow.vala:387
 msgid "Play"
 msgstr "Reprodueix"
 
-#: src/MainWindow.vala:335
+#: src/MainWindow.vala:337
 #, fuzzy
 msgid "Loading…"
 msgstr "s’està suprimint…"
 
-#: src/MainWindow.vala:335
+#: src/MainWindow.vala:337
 msgid "Reading out database content"
 msgstr ""
 
-#: src/MainWindow.vala:415
-msgid "Shuffle"
+#: src/MainWindow.vala:414 src/MainWindow.vala:1010
+#, fuzzy
+msgid "Shuffle On"
 msgstr "Mescla"
 
-#: src/MainWindow.vala:427
-msgid "Repeat"
-msgstr "Repeteix"
+#: src/MainWindow.vala:417 src/MainWindow.vala:1013
+#, fuzzy
+msgid "Shuffle Off"
+msgstr "Mescla"
 
-#: src/MainWindow.vala:463
+#: src/MainWindow.vala:465
 msgid "Playlists"
 msgstr "Llistes"
 
-#: src/MainWindow.vala:468
+#: src/MainWindow.vala:470
 msgid "Radio Stations"
 msgstr "Estacions de ràdio"
 
-#: src/MainWindow.vala:475
+#: src/MainWindow.vala:477
 msgid "Audio CD"
 msgstr "CD d’àudio"
 
-#: src/MainWindow.vala:540
+#: src/MainWindow.vala:542
 msgid "Change Music Folder…"
 msgstr "Canvia la carpeta de música…"
 
-#: src/MainWindow.vala:549
+#: src/MainWindow.vala:551
 msgid "Import Music…"
 msgstr "Importa música…"
 
-#: src/MainWindow.vala:557
+#: src/MainWindow.vala:559
 msgid "Reset all views"
 msgstr "Reinicialitza totes les vistes"
 
-#: src/MainWindow.vala:563
+#: src/MainWindow.vala:565
 msgid "Resync Library"
 msgstr "Resincronitza la fonoteca"
 
-#: src/MainWindow.vala:568 src/Dialogs/Preferences.vala:54
+#: src/MainWindow.vala:570
+msgid "Sort by"
+msgstr ""
+
+#: src/MainWindow.vala:573
+msgid "Artist - Year - Album"
+msgstr ""
+
+#: src/MainWindow.vala:574
+#, fuzzy
+msgid "Album - Artist"
+msgstr "Artista"
+
+#: src/MainWindow.vala:575
+#, fuzzy
+msgid "Artist - Album"
+msgstr "Artista"
+
+#: src/MainWindow.vala:598 src/Dialogs/Preferences.vala:54
 msgid "Preferences"
 msgstr "Preferències"
 
-#: src/MainWindow.vala:603
+#: src/MainWindow.vala:642
 msgid "Search Music"
 msgstr "Cerca música"
 
-#: src/MainWindow.vala:652
+#: src/MainWindow.vala:691
 msgid "Queue"
 msgstr ""
 
-#: src/MainWindow.vala:762 src/MainWindow.vala:770
+#: src/MainWindow.vala:801 src/MainWindow.vala:809
 #: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> per <b>%s</b>"
+
+#: src/MainWindow.vala:993
+#, fuzzy
+msgid "Repeat All"
+msgstr "Repeteix"
+
+#: src/MainWindow.vala:997
+#, fuzzy
+msgid "Repeat One"
+msgstr "Repeteix"
+
+#: src/MainWindow.vala:1001
+#, fuzzy
+msgid "Repeat Off"
+msgstr "Repeteix"
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 #: src/Widgets/Views/RadiosView.vala:153
@@ -208,35 +243,39 @@ msgstr "Any"
 msgid "Save"
 msgstr "Desa"
 
-#: src/Dialogs/Preferences.vala:90
+#: src/Dialogs/Preferences.vala:94
 msgid "Play in background if closed"
 msgstr "Reprodueix en segon pla en tancar"
 
-#: src/Dialogs/Preferences.vala:92
+#: src/Dialogs/Preferences.vala:96
 msgid "Sync files on start up"
 msgstr "Sincronitza els fitxers en arrencar"
 
-#: src/Dialogs/Preferences.vala:95
+#: src/Dialogs/Preferences.vala:99
 msgid "Load Content from MusicBrainz"
 msgstr "Carrega continguts des del MusicBrainz"
 
-#: src/Dialogs/Preferences.vala:97
+#: src/Dialogs/Preferences.vala:101
 msgid "Save custom Covers in Library folder"
 msgstr "Desa les caràtules personalitzades a la carpeta de la fonoteca"
 
-#: src/Dialogs/Preferences.vala:99
+#: src/Dialogs/Preferences.vala:103
 msgid "Save changes into ID3-Tag"
 msgstr "Desa els canvis en l’etiqueta ID3"
 
-#: src/Dialogs/Preferences.vala:102
+#: src/Dialogs/Preferences.vala:106
 msgid "Copy Imported Files into Library"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:104
+#: src/Dialogs/Preferences.vala:108
 msgid "Remove Playlist if last Track was removed"
 msgstr ""
 
-#: src/Dialogs/Preferences.vala:109
+#: src/Dialogs/Preferences.vala:111
+msgid "Remember Track progress"
+msgstr ""
+
+#: src/Dialogs/Preferences.vala:116
 msgid "Close"
 msgstr "Tanca"
 
@@ -266,11 +305,11 @@ msgstr "Llista nova"
 msgid "Choose an image…"
 msgstr "Trieu una imatge…"
 
-#: src/Services/LibraryManager.vala:392 src/Services/LibraryManager.vala:413
+#: src/Services/LibraryManager.vala:392 src/Services/LibraryManager.vala:433
 msgid "_Cancel"
 msgstr "_Cancel·la"
 
-#: src/Services/LibraryManager.vala:393 src/Services/LibraryManager.vala:414
+#: src/Services/LibraryManager.vala:393 src/Services/LibraryManager.vala:434
 msgid "_Open"
 msgstr "_Obre"
 
@@ -278,11 +317,11 @@ msgstr "_Obre"
 msgid "Images"
 msgstr "Imatges"
 
-#: src/Services/LibraryManager.vala:412
+#: src/Services/LibraryManager.vala:432
 msgid "Select a folder."
 msgstr "Seleccioneu una carpeta."
 
-#: src/Services/LibraryManager.vala:417
+#: src/Services/LibraryManager.vala:437
 msgid "Folder"
 msgstr "Carpeta"
 
@@ -367,37 +406,37 @@ msgstr "Treu de la llista"
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> de <b>%s</b> per <b>%s</b>"
 
-#: src/Widgets/Views/AlbumsView.vala:119
+#: src/Widgets/Views/AlbumsView.vala:122
 msgid "Get Some Tunes"
 msgstr "Conseguiu-vos algunes melodies"
 
-#: src/Widgets/Views/AlbumsView.vala:119
+#: src/Widgets/Views/AlbumsView.vala:122
 msgid "Add music to your library."
 msgstr "Afegiu música a la vostra fonoteca."
 
-#: src/Widgets/Views/AlbumsView.vala:120
+#: src/Widgets/Views/AlbumsView.vala:123
 msgid "Change Music Folder"
 msgstr "Canvia la carpeta de música"
 
-#: src/Widgets/Views/AlbumsView.vala:120
+#: src/Widgets/Views/AlbumsView.vala:123
 msgid "Load music from a folder, a network or an external disk."
 msgstr "Carregueu música des d’una carpeta, una xarxa o un disc extern."
 
-#: src/Widgets/Views/AlbumsView.vala:121
+#: src/Widgets/Views/AlbumsView.vala:124
 msgid "Import Music"
 msgstr "Importa música"
 
-#: src/Widgets/Views/AlbumsView.vala:121
+#: src/Widgets/Views/AlbumsView.vala:124
 msgid "Import music from a source into your library."
 msgstr "Importeu música des d’un origen en la vostra fonoteca."
 
-#: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
+#: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:148
 #: src/Widgets/Views/RadiosView.vala:213
 msgid "No results"
 msgstr "No hi ha cap resultat"
 
-#: src/Widgets/Views/AlbumsView.vala:140 src/Widgets/Views/ArtistsView.vala:110
+#: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:148
 #: src/Widgets/Views/RadiosView.vala:213
 msgid "Try another search"
@@ -416,6 +455,10 @@ msgstr ""
 #, c-format
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
 msgstr "<b>%d peces</b> a <b>%d àlbum</b>(s)"
+
+#: src/Widgets/Views/MobilePhone.vala:81
+msgid "Enable MTP on your mobile phone"
+msgstr ""
 
 #: src/Widgets/Views/MobilePhone.vala:108
 msgid "Hide Mobile Panel"
