@@ -19,6 +19,9 @@
       <li>ID3-Tag support</li>
     </ul>
   </description>
+  <categories>
+    <category>Music</category>
+  </categories>
   <custom>
     <value key="x-appcenter-color-primary">#004988</value>
     <value key="x-appcenter-color-primary-text">rgb(255,255,255)</value>
@@ -560,5 +563,4 @@
     <content_attribute id="money-purchasing">none</content_attribute>
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
-
 </component>
