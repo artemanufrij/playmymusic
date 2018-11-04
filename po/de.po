@@ -28,13 +28,13 @@ msgstr ""
 "Audio CD's"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
-#, fuzzy
 msgid ""
 "A very fast music player designed extra for large local libraries which also "
 "supports online radios and downloading album covers"
 msgstr ""
-"Ein sehr schneller Musik Player. Erstellt für die Verwaltung von großen "
-"lokalen Sammlungen."
+"Ein sehr schneller Musikplayer, der speziell für große lokale Bibliotheken "
+"entwickelt wurde, welcher auch Online-Radios unterstützt und Albumcover "
+"herunterlädt"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
@@ -70,7 +70,7 @@ msgstr "Unterstützung von ID3-Tags"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
 msgid "Artem Anufrij"
-msgstr ""
+msgstr "Artem Anufrij"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
 #: src/MainWindow.vala:451
@@ -123,7 +123,7 @@ msgstr "Vorheriges"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:30
 msgid "media-skip-backward-symbolic"
-msgstr ""
+msgstr "Fortschritt des zuletzt gespielten Tracks speichern"
 
 #: src/MainWindow.vala:135
 msgid "Pause"
@@ -142,14 +142,12 @@ msgid "Reading out database content"
 msgstr "Datenbank wird ausgelesen"
 
 #: src/MainWindow.vala:414 src/MainWindow.vala:1010
-#, fuzzy
 msgid "Shuffle On"
-msgstr "Zufall"
+msgstr "Zufällige Wiedergabe an"
 
 #: src/MainWindow.vala:417 src/MainWindow.vala:1013
-#, fuzzy
 msgid "Shuffle Off"
-msgstr "Zufall"
+msgstr "Zufällige Wiedergabe aus"
 
 #: src/MainWindow.vala:465
 msgid "Playlists"
@@ -181,21 +179,19 @@ msgstr "Sammlung abgleichen"
 
 #: src/MainWindow.vala:570
 msgid "Sort by"
-msgstr ""
+msgstr "Sortieren nach"
 
 #: src/MainWindow.vala:573
 msgid "Artist - Year - Album"
-msgstr ""
+msgstr "Artist - Jahr - Album"
 
 #: src/MainWindow.vala:574
-#, fuzzy
 msgid "Album - Artist"
-msgstr "Artist"
+msgstr "Album - Artist"
 
 #: src/MainWindow.vala:575
-#, fuzzy
 msgid "Artist - Album"
-msgstr "Artist"
+msgstr "Artist - Album"
 
 #: src/MainWindow.vala:598 src/Dialogs/Preferences.vala:54
 msgid "Preferences"
@@ -216,19 +212,16 @@ msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> von <b>%s</b>"
 
 #: src/MainWindow.vala:993
-#, fuzzy
 msgid "Repeat All"
-msgstr "Wiederholung"
+msgstr "Alle wiederholen"
 
 #: src/MainWindow.vala:997
-#, fuzzy
 msgid "Repeat One"
-msgstr "Wiederholung"
+msgstr "Einen wiederholen"
 
 #: src/MainWindow.vala:1001
-#, fuzzy
 msgid "Repeat Off"
-msgstr "Wiederholung"
+msgstr "Wiederholung aus"
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 #: src/Widgets/Views/RadiosView.vala:153
@@ -274,7 +267,7 @@ msgstr "Playlist löschen, wenn letzter Track entfernt wurde"
 
 #: src/Dialogs/Preferences.vala:111
 msgid "Remember Track progress"
-msgstr ""
+msgstr "Fortschritt des zuletzt gespielten Tracks speichern"
 
 #: src/Dialogs/Preferences.vala:116
 msgid "Close"
@@ -459,7 +452,7 @@ msgstr "<b>%d Tracks</b> in <b>%d Album</b>(s)"
 
 #: src/Widgets/Views/MobilePhone.vala:81
 msgid "Enable MTP on your mobile phone"
-msgstr ""
+msgstr "Aktiviere MTP auf deinem Smartphone"
 
 #: src/Widgets/Views/MobilePhone.vala:108
 msgid "Hide Mobile Panel"
@@ -495,9 +488,8 @@ msgid "Clear the Queue"
 msgstr "Wiedergabe leeren."
 
 #: src/Widgets/Views/Queue.vala:83
-#, fuzzy
 msgid "Create new Playlist based on this Queue"
-msgstr "Neue Playlist erstellen"
+msgstr "Neue Playlist auf Basis von dieser Wiedergabenliste erstellen"
 
 #: src/Widgets/Views/Queue.vala:88
 #, c-format
