@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2017 Artem Anufrij <artem.anufrij@live.de> -->
+<!-- Copyright 2017-2018 Artem Anufrij <artem.anufrij@live.de> -->
 <component type="desktop-application">
   <id>com.github.artemanufrij.playmymusic</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -51,12 +51,12 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release date="2018-11-15" version="2.0.1">
+    <release date="2018-11-05" version="2.1.0">
       <description>
         <p>New:</p>
         <ul>
           <li>Image preview in cover/artist chooser dialog (by kaiman)</li>
-          <li>[Sort by] option for Albums View</li>
+          <li>[Sort by] (Artis-Album or Album-Artist) option for Albums View</li>
         </ul>
         <p>Improved:</p>
         <ul>
