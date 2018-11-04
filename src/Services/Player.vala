@@ -292,6 +292,8 @@ namespace PlayMyMusic.Services {
 
             if (next_track != null) {
                 set_track (next_track, play_mode);
+            } else {
+                state_changed (Gst.State.NULL);
             }
         }
 
@@ -357,7 +359,6 @@ namespace PlayMyMusic.Services {
                 warning ("Error: %s\n%s\n", err.message, debug);
                 break;
             case Gst.MessageType.EOS:
-                state_changed (Gst.State.NULL);
                 next ();
                 break;
             default:
