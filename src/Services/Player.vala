@@ -164,6 +164,9 @@ namespace PlayMyMusic.Services {
                 next ();
                 return false;
             }
+
+            var last_state = get_state ();
+
             stop ();
             if (current_track.uri.has_prefix ("cdda://")) {
                 playbin.uri = "cdda://%d".printf (current_track.track);
@@ -173,7 +176,9 @@ namespace PlayMyMusic.Services {
 
             playbin.set_state (Gst.State.PLAYING);
             while (duration == 0) {};
-            pause ();
+            if (last_state != Gst.State.PLAYING) {
+                pause ();
+            }
             current_duration_changed (duration);
 
             if (progress > 0) {
