@@ -51,6 +51,14 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release date="2018-11-15" version="2.1.1">
+      <description>
+        <p>Improved:</p>
+        <ul>
+          <li>Select playlist button when copy queue into a new playlist</li>
+        </ul>
+      </description>
+    </release>
     <release date="2018-11-05" version="2.1.0">
       <description>
         <p>New:</p>
