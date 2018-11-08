@@ -57,6 +57,10 @@
         <ul>
           <li>Select playlist button when copy queue into a new playlist</li>
         </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>German</li>
+        </ul>
       </description>
     </release>
     <release date="2018-11-05" version="2.1.0">
