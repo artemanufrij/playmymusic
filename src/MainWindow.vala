@@ -682,7 +682,8 @@ namespace PlayMyMusic {
                 }
             });
             queue.moved_to_playlist.connect (() => {
-                show_playlists ();
+                // CHOOSE PLAYLIST VIEW
+                view_mode.selected = 3;
             });
             queue_popover.add (queue);
 
