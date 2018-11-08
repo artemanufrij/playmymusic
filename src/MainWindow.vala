@@ -27,8 +27,8 @@
 
 namespace PlayMyMusic {
     public class MainWindow : Gtk.Window {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Settings settings;
+        Services.LibraryManager library_manager;
+        Settings settings;
 
         public signal void ctrl_press ();
         public signal void ctrl_release ();
@@ -88,7 +88,7 @@ namespace PlayMyMusic {
         };
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
+            settings = Settings.get_default ();
             settings.notify["use-dark-theme"].connect (() => {
                 Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
             });
@@ -101,7 +101,7 @@ namespace PlayMyMusic {
             settings.notify["sort-mode-album-view"].connect (() => {
                 set_sort_mode_album_view ();
             });
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
             library_manager.sync_started.connect (() => {
                 Idle.add (() => {
                     headerbar.pack_end (spinner);
