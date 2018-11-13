@@ -294,7 +294,7 @@ namespace PlayMyMusic.Services {
                 children.close ();
                 children.dispose ();
             } catch (Error err) {
-                                warning (err.message);
+                warning (err.message);
             }
             directory.dispose ();
         }
@@ -359,19 +359,51 @@ namespace PlayMyMusic.Services {
             db_manager.resort_track_in_playlist (playlist, track, new_sort_value);
         }
 
+        public void export_playlist (Objects.Playlist playlist) {
+
+            var file = new Gtk.FileChooserDialog (
+                _ ("Choose an image…"), PlayMyMusicApp.instance.mainwindow,
+                Gtk.FileChooserAction.SAVE,
+                _ ("_Cancel"), Gtk.ResponseType.CANCEL,
+                _ ("_Save"), Gtk.ResponseType.ACCEPT);
+
+            var filter = new Gtk.FileFilter ();
+            filter.set_filter_name (_ ("Playlist"));
+            filter.add_mime_type ("audio/x-mpegurl");
+
+            file.add_filter (filter);
+
+            var file_name = playlist.title + ".m3u";
+            file.set_current_name (file_name);
+
+            if (file.run () == Gtk.ResponseType.ACCEPT && file.get_filename () != null) {
+                var file_content = "#EXTM3U";
+                foreach (var track in playlist.tracks) {
+                    file_content += "\n#EXTINF:-1," + track.album.artist.name + " - " + track.title;
+                    file_content += "\n" + track.uri;
+                }
+
+                try {
+                    FileUtils.set_contents (file.get_filename (), file_content);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+            }
+
+            file.destroy ();
+        }
+
         public async void load_database_cache () {
-            new Thread <void*> (
-                "load_database_cache",
-                () => {
-                    uint dummy_counter = 0;
-                    foreach (var artist in artists) {
-                        foreach (var album in artist.albums) {
-                            dummy_counter += album.tracks.length ();
-                        }
+            new Thread <void*> ("load_database_cache", () => {
+                uint dummy_counter = 0;
+                foreach (var artist in artists) {
+                    foreach (var album in artist.albums) {
+                        dummy_counter += album.tracks.length ();
                     }
-                    cache_loaded ();
-                    return null;
-                });
+                }
+                cache_loaded ();
+                return null;
+            });
         }
 
         //PLAYER REGION
@@ -402,7 +434,7 @@ namespace PlayMyMusic.Services {
             cover.set_preview_widget (preview_area);
             cover.set_use_preview_label (false);
             cover.set_select_multiple (false);
-            
+
             cover.update_preview.connect (() => {
                 string filename = cover.get_preview_filename ();
                 if (filename != null) {

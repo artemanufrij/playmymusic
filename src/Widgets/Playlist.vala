@@ -133,13 +133,20 @@ namespace PlayMyMusic.Widgets {
                 });
                 menu.add (menu_rename_playlist);
 
-                menu.add (new Gtk.SeparatorMenuItem ());
-
                 var menu_remove_playlist = new Gtk.MenuItem.with_label (_("Remove Playlist"));
                 menu_remove_playlist.activate.connect (() => {
                     library_manager.remove_playlist (playlist);
                 });
                 menu.add (menu_remove_playlist);
+
+                menu.add (new Gtk.SeparatorMenuItem ());
+
+                var menu_export_playlist = new Gtk.MenuItem.with_label (_("Export Playlist…"));
+                menu_export_playlist.activate.connect (() => {
+                    library_manager.export_playlist (playlist);
+                });
+                menu.add (menu_export_playlist);
+
                 menu.show_all ();
             }
 
