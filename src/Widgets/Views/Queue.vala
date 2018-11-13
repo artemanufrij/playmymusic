@@ -68,7 +68,8 @@ namespace PlayMyMusic.Widgets.Views {
             queue.height_request = 320;
 
             var controls = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            controls.halign = Gtk.Align.END;
+            controls.halign = Gtk.Align.FILL;
+
             var button_trash_queue = new Gtk.Button.from_icon_name ("edit-delete-symbolic");
             button_trash_queue.tooltip_text = _("Clear the Queue");
             button_trash_queue.margin = 6;
@@ -95,8 +96,17 @@ namespace PlayMyMusic.Widgets.Views {
                 moved_to_playlist ();
             });
 
-            controls.pack_end (button_create_playlist);
-            controls.pack_end (button_trash_queue);
+            var button_export_playlist = new Gtk.Button.from_icon_name ("document-export-symbolic");
+            button_export_playlist.tooltip_text = _("Export Queue…");
+            button_export_playlist.margin = 6;
+            button_export_playlist.clicked.connect (() => {
+                library_manager.export_playlist (playlist, "Queue");
+            });
+
+            controls.pack_start (button_export_playlist, false, false);
+
+            controls.pack_end (button_create_playlist, false, false);
+            controls.pack_end (button_trash_queue, false, false);
 
             content = new Gtk.Grid ();
 

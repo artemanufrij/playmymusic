@@ -359,7 +359,7 @@ namespace PlayMyMusic.Services {
             db_manager.resort_track_in_playlist (playlist, track, new_sort_value);
         }
 
-        public void export_playlist (Objects.Playlist playlist) {
+        public void export_playlist (Objects.Playlist playlist, string? title = null) {
 
             var file = new Gtk.FileChooserDialog (
                 _ ("Choose an image…"), PlayMyMusicApp.instance.mainwindow,
@@ -373,7 +373,7 @@ namespace PlayMyMusic.Services {
 
             file.add_filter (filter);
 
-            var file_name = playlist.title + ".m3u";
+            var file_name = (title != null ? title : playlist.title) + ".m3u";
             file.set_current_name (file_name);
 
             if (file.run () == Gtk.ResponseType.ACCEPT && file.get_filename () != null) {
