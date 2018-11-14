@@ -57,27 +57,24 @@ namespace PlayMyMusic.Widgets.Views {
 
         construct {
             library_manager = Services.LibraryManager.instance;
-            library_manager.player_state_changed.connect (
-                (state) => {
-                    if (state == Gst.State.PLAYING ) {
-                        if (library_manager.player.current_radio != null) {
-                            grab_playing_radio ();
-                        } else {
-                            radios.unselect_all ();
-                        }
+            library_manager.player_state_changed.connect ((state) => {
+                if (state == Gst.State.PLAYING ) {
+                    if (library_manager.player.current_radio != null) {
+                        grab_playing_radio ();
+                    } else {
+                        radios.unselect_all ();
                     }
-                });
-            library_manager.added_new_radio.connect (
-                (radio) => {
-                    add_radion (radio);
-                    stack.visible_child_name = "content";
-                });
-            library_manager.removed_radio.connect (
-                () => {
-                    if (radios.get_children ().length () < 2) {
-                        stack.visible_child_name = "welcome";
-                    }
-                });
+                }
+            });
+            library_manager.added_new_radio.connect ((radio) => {
+                add_radion (radio);
+                stack.visible_child_name = "content";
+            });
+            library_manager.removed_radio.connect (() => {
+                if (radios.get_children ().length () < 2) {
+                    stack.visible_child_name = "welcome";
+                }
+            });
 
             try {
                 this.protocol_regex = new Regex ("""https?\:\/\/[\w+\d+]((\:\d+)?\/\S*)?""");
@@ -116,65 +113,51 @@ namespace PlayMyMusic.Widgets.Views {
 // NEW STATION POPOVER BEGIN
             var new_station = new Gtk.Grid ();
             new_station.row_spacing = 6;
-            new_station.column_spacing = 12;
+            new_station.column_spacing = 6;
             new_station.margin = 12;
 
             new_station_title = new Gtk.Entry ();
             new_station_title.placeholder_text = _ ("Station Name");
-            new_station_title.changed.connect (
-                () => {
-                    new_station_save.sensitive = valid_new_station ();
-                });
+            new_station_title.changed.connect (() => {
+                new_station_save.sensitive = valid_new_station ();
+            });
             new_station.attach (new_station_title, 1, 0);
 
             new_station_url = new Gtk.Entry ();
             new_station_url.placeholder_text = _ ("URL");
-            new_station_url.changed.connect (
-                () => {
-                    new_station_save.sensitive = valid_new_station ();
-                });
+            new_station_url.changed.connect (() => {
+                new_station_save.sensitive = valid_new_station ();
+            });
             new_station.attach (new_station_url, 1, 1);
 
-
             var new_station_cover_event_box = new Gtk.EventBox ();
-            new_station_cover_event_box.button_press_event.connect (
-                () => {
-                    var new_cover = library_manager.choose_new_cover ();
-                    if (new_cover != null) {
-                        try {
-                            new_station_cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 64);
-                        } catch (Error err) {
-                            warning (err.message);
-                        }
+            new_station_cover_event_box.button_press_event.connect (() => {
+                var new_cover = library_manager.choose_new_cover ();
+                if (new_cover != null) {
+                    try {
+                        new_station_cover.pixbuf = library_manager.align_and_scale_pixbuf (new Gdk.Pixbuf.from_file (new_cover), 64);
+                    } catch (Error err) {
+                        warning (err.message);
                     }
-                    return false;
-                });
+                }
+                return false;
+            });
             new_station_cover = new Gtk.Image ();
             new_station_cover.tooltip_text = _("Click to choose a new cover…");
-            new_station_cover.get_style_context ().add_class ("card");
             new_station_cover.width_request = 64;
             new_station_cover.height_request = 64;
-            new_station_cover.margin = 8;
             new_station_cover_event_box.add (new_station_cover);
             new_station.attach (new_station_cover_event_box, 0, 0, 1, 2);
-
-            var new_station_controls = new Gtk.Grid ();
-            new_station_controls.column_spacing = 6;
-            new_station_controls.margin_top = 6;
-            new_station_controls.column_homogeneous = true;
-            new_station_controls.hexpand = true;
 
             new_station_save = new Gtk.Button ();
             new_station_save.sensitive = false;
             new_station_save.halign = Gtk.Align.END;
             new_station_save.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-            new_station_save.clicked.connect (
-                () => {
-                    save_new_station ();
-                });
-            new_station_controls.attach (new_station_save, 1, 0);
+            new_station_save.clicked.connect (() => {
+                save_new_station ();
+            });
 
-            new_station.attach (new_station_controls, 0, 2, 2, 1);
+            new_station.attach (new_station_save, 0, 2, 2, 1);
 
             add_new_station_popover = new Gtk.Popover (null);
             add_new_station_popover.add (new_station);
@@ -184,26 +167,24 @@ namespace PlayMyMusic.Widgets.Views {
                 }
                 return false;
             });
-            add_button.clicked.connect (
-                () => {
-                    add_new_station_popover.set_relative_to (add_button);
-                    var r = new PlayMyMusic.Objects.Radio ();
-                        edit_station (r);
-                });
+            add_button.clicked.connect (() => {
+                add_new_station_popover.set_relative_to (add_button);
+                var r = new Objects.Radio ();
+                    edit_station (r);
+            });
 // NEW STATION POPOVER END
 
             var welcome = new Granite.Widgets.Welcome (_ ("No Radio Stations"), _ ("Add radio stations to your library."));
             welcome.append ("insert-link", _ ("Add Radio Station"), _ ("Add a Stream URL like .pls or .m3u."));
-            welcome.activated.connect (
-                (index) => {
-                    switch (index) {
-                    case 0 :
-                        add_new_station_popover.set_relative_to (welcome.get_button_from_index (index));
-                        var r = new PlayMyMusic.Objects.Radio ();
-                        edit_station (r);
-                        break;
-                    }
-                });
+            welcome.activated.connect ((index) => {
+                switch (index) {
+                case 0 :
+                    add_new_station_popover.set_relative_to (welcome.get_button_from_index (index));
+                    var r = new Objects.Radio ();
+                    edit_station (r);
+                    break;
+                }
+            });
 
             var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             content.expand = true;
@@ -222,25 +203,24 @@ namespace PlayMyMusic.Widgets.Views {
             show_radios_from_database.begin ();
         }
 
-        private void add_radion (PlayMyMusic.Objects.Radio radio) {
+        private void add_radion (Objects.Radio radio) {
             var r = new Widgets.Radio (radio);
             r.show_all ();
-            r.edit_request.connect (
-                () => {
-                    add_new_station_popover.set_relative_to (r);
-                        edit_station (r.radio);
-                });
+            r.edit_request.connect (() => {
+                add_new_station_popover.set_relative_to (r);
+                edit_station (r.radio);
+            });
             radios.add (r);
         }
 
         private bool valid_new_station () {
             var new_title = new_station_title.text.strip ();
             var new_url = new_station_url.text.down ().strip ();
-            PlayMyMusic.Objects.Radio ? db_radio = library_manager.db_manager.get_radio_by_url (new_url);
+            Objects.Radio ? db_radio = library_manager.db_manager.get_radio_by_url (new_url);
             return new_title != "" && new_url != "" && this.protocol_regex.match (new_url) && (db_radio == null || db_radio.ID == current_edit_station.ID);
         }
 
-        private void edit_station (PlayMyMusic.Objects.Radio radio) {
+        private void edit_station (Objects.Radio radio) {
             current_edit_station = radio;
             new_station_cover.pixbuf = radio.cover;
             new_station_title.text = radio.title;
@@ -283,7 +263,7 @@ namespace PlayMyMusic.Widgets.Views {
 
         private void grab_playing_radio () {
             foreach (var item in radios.get_children ()) {
-                if ((item as PlayMyMusic.Widgets.Radio).radio == library_manager.player.current_radio) {
+                if ((item as Widgets.Radio).radio == library_manager.player.current_radio) {
                     item.activate ();
                     return;
                 }
@@ -292,7 +272,7 @@ namespace PlayMyMusic.Widgets.Views {
         }
 
         private void play_station (Gtk.FlowBoxChild item) {
-            var radio = (item as PlayMyMusic.Widgets.Radio).radio;
+            var radio = (item as Widgets.Radio).radio;
             library_manager.play_radio (radio);
         }
 
@@ -327,7 +307,7 @@ namespace PlayMyMusic.Widgets.Views {
             }
 
             string[] filter_elements = filter.strip ().down ().split (" ");
-            var radio = (child as PlayMyMusic.Widgets.Radio).radio;
+            var radio = (child as Widgets.Radio).radio;
 
             foreach (string filter_element in filter_elements) {
                 if (!radio.title.down ().contains (filter_element) && !radio.url.down ().contains (filter_element)) {
