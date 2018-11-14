@@ -50,6 +50,17 @@ namespace PlayMyMusic.Objects {
             }
         }
 
+        public uint64 duration {
+            get {
+                uint64 return_value = 0;
+                foreach (var track in _tracks) {
+                    return_value += track.duration;
+                }
+
+                return return_value;
+            }
+        }
+
         protected GLib.List<Track> _tracks = null;
 
         public ulong artist_track_added_signal_id { get; set; default = 0; }

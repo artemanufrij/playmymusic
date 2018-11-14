@@ -35,12 +35,15 @@ namespace PlayMyMusic.Widgets {
         TrackStyle track_style;
 
         Gtk.Label playlist_title;
+        Gtk.Label playlist_counter;
+        Gtk.Label playlist_duration;
         Gtk.ListBox tracks;
         Gtk.Menu menu;
         Gtk.Popover rename_playlist_popover;
         Gtk.Entry rename_playlist_entry;
 
         bool only_mark = false;
+        string string_detail = _("%u Tracks");
 
         public signal void track_selected ();
 
@@ -59,6 +62,12 @@ namespace PlayMyMusic.Widgets {
 
             this.playlist.track_added.connect ((track) => {
                 add_track (track);
+                playlist_counter.label = string_detail.printf (playlist.tracks.length ());
+                playlist_duration.label = Utils.get_formated_duration (playlist.duration);
+            });
+            this.playlist.track_removed.connect (() => {
+                playlist_counter.label = string_detail.printf (playlist.tracks.length ());
+                playlist_duration.label = Utils.get_formated_duration (playlist.duration);
             });
             this.playlist.updated.connect (() => {
                 playlist_title.label = playlist.title;
@@ -88,9 +97,23 @@ namespace PlayMyMusic.Widgets {
                 playlist_title.halign = Gtk.Align.START;
                 playlist_title.get_style_context ().add_class ("h3");
                 playlist_title.margin_start = 12;
+                playlist_title.margin_end = 12;
                 playlist_title.ellipsize = Pango.EllipsizeMode.END;
                 event_box.add (playlist_title);
+
+                var details_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+                details_box.margin_start = 12;
+                details_box.margin_end = 12;
+
+                playlist_counter = new Gtk.Label (string_detail.printf (playlist.tracks.length ()));
+                playlist_counter.halign = Gtk.Align.START;
+                playlist_duration = new Gtk.Label (Utils.get_formated_duration (playlist.duration));
+
+                details_box.pack_start (playlist_counter, true, true, 0);
+                details_box.pack_end (playlist_duration, false, false, 0);
+
                 content.pack_start (event_box, false, false, 0);
+                content.pack_start (details_box, false, false, 0);
                 content.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, false, 0);
 
                 // POPOVER REGION
