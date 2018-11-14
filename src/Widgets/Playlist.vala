@@ -43,7 +43,8 @@ namespace PlayMyMusic.Widgets {
         Gtk.Entry rename_playlist_entry;
 
         bool only_mark = false;
-        string string_detail = _("%u Tracks");
+        string string_counter = _("<small>%u Tracks</small>");
+        string string_duration = "<small>%s</small>";
 
         public signal void track_selected ();
 
@@ -62,12 +63,12 @@ namespace PlayMyMusic.Widgets {
 
             this.playlist.track_added.connect ((track) => {
                 add_track (track);
-                playlist_counter.label = string_detail.printf (playlist.tracks.length ());
-                playlist_duration.label = Utils.get_formated_duration (playlist.duration);
+                playlist_counter.label = string_counter.printf (playlist.tracks.length ());
+                playlist_duration.label = string_duration.printf(Utils.get_formated_duration (playlist.duration));
             });
             this.playlist.track_removed.connect (() => {
-                playlist_counter.label = string_detail.printf (playlist.tracks.length ());
-                playlist_duration.label = Utils.get_formated_duration (playlist.duration);
+                playlist_counter.label = string_counter.printf (playlist.tracks.length ());
+                playlist_duration.label = string_duration.printf(Utils.get_formated_duration (playlist.duration));
             });
             this.playlist.updated.connect (() => {
                 playlist_title.label = playlist.title;
@@ -105,9 +106,12 @@ namespace PlayMyMusic.Widgets {
                 details_box.margin_start = 12;
                 details_box.margin_end = 12;
 
-                playlist_counter = new Gtk.Label (string_detail.printf (playlist.tracks.length ()));
+                playlist_counter = new Gtk.Label (string_counter.printf (playlist.tracks.length ()));
                 playlist_counter.halign = Gtk.Align.START;
-                playlist_duration = new Gtk.Label (Utils.get_formated_duration (playlist.duration));
+                playlist_counter.use_markup = true;
+
+                playlist_duration = new Gtk.Label (string_duration.printf(Utils.get_formated_duration (playlist.duration)));
+                playlist_duration.use_markup = true;
 
                 details_box.pack_start (playlist_counter, true, true, 0);
                 details_box.pack_end (playlist_duration, false, false, 0);
