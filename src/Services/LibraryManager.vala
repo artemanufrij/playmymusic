@@ -381,8 +381,14 @@ namespace PlayMyMusic.Services {
         public void import_playlist () {
             var filename = choose_playlist ();
             if (filename != null) {
-                string content;
-                if (FileUtils.get_contents (filename, out content)) {
+                string content = "";
+                try {
+                    FileUtils.get_contents (filename, out content);
+                } catch (Error err) {
+                    warning (err.message);
+                }
+
+                if (content != "") {
                     var lines = content.split ("\n");
 
                     var file_title = Path.get_basename (filename);
@@ -391,7 +397,7 @@ namespace PlayMyMusic.Services {
                     }
 
                     var playlist_title = file_title;
-                    for (int i = 0; db_manager.get_playlist_by_title (playlist_title) != null; i++) {
+                    for (int i = 2; db_manager.get_playlist_by_title (playlist_title) != null; i++) {
                         playlist_title = ("%s (%d)").printf (file_title, i);
                     }
 

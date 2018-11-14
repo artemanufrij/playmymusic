@@ -100,6 +100,13 @@ namespace PlayMyMusic.Widgets.Views {
             });
             action_toolbar.pack_start (add_button);
 
+            var import_button = new Gtk.Button.from_icon_name ("document-import-symbolic");
+            import_button.tooltip_text = _("Import Playlist");
+            import_button.clicked.connect (() => {
+                library_manager.import_playlist ();
+            });
+            action_toolbar.pack_start (import_button);
+
             new_playlist_popover = new Gtk.Popover (null);
 
             var new_playlist = new Gtk.Grid ();
