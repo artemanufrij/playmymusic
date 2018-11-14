@@ -62,6 +62,10 @@
         <ul>
           <li>Select playlist button when copy queue into a new playlist</li>
         </ul>
+        <p>Fixed:</p>
+        <ul>
+          <li>[Radio] UI fix 'new Radio' popup</li>
+        </ul>
         <p>Translation:</p>
         <ul>
           <li>German</li>
