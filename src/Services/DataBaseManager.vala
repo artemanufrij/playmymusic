@@ -729,6 +729,26 @@ namespace PlayMyMusic.Services {
             return return_value;
         }
 
+        public Objects.Track? get_track_by_uri (string uri) {
+            Objects.Track? return_value = null;
+            Sqlite.Statement stmt;
+
+            string sql = """
+                SELECT id, title, genre, track, disc, duration, path
+                FROM tracks
+                WHERE path=$URI;
+            """;
+
+            db.prepare_v2 (sql, sql.length, out stmt);
+            set_parameter_str (stmt, sql, "$URI", uri);
+
+            if (stmt.step () == Sqlite.ROW) {
+                return_value = _fill_track (stmt, null);
+            }
+            stmt.reset ();
+            return return_value;
+        }
+
         private Objects.Track _fill_track (Sqlite.Statement stmt, Objects.TracksContainer? container) {
             Objects.Track return_value = new Objects.Track (container);
             return_value.ID = stmt.column_int (0);
