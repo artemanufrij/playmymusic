@@ -55,7 +55,7 @@
       <description>
         <p>New:</p>
         <ul>
-          <li>[Playlist] Export Playlist as M3U format</li>
+          <li>[Playlist] Export/Import Playlist as M3U format</li>
           <li>[Playlist] Show track counter and playlist duration</li>
         </ul>
         <p>Improved:</p>
