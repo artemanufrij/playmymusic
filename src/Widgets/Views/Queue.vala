@@ -100,7 +100,8 @@ namespace PlayMyMusic.Widgets.Views {
             button_export_playlist.tooltip_text = _("Export Queue…");
             button_export_playlist.margin = 6;
             button_export_playlist.clicked.connect (() => {
-                library_manager.export_playlist (playlist, _("Queue"));
+                var date_time = new GLib.DateTime.now_local ().format ("%Y-%m-%d %H:%M:%S");
+                library_manager.export_playlist (playlist, _ ("Queue from %s").printf (date_time));
             });
 
             controls.pack_start (button_export_playlist, false, false);
