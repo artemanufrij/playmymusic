@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-03 15:58+0100\n"
+"POT-Creation-Date: 2018-11-17 16:27+0100\n"
 "PO-Revision-Date: 2018-02-24 03:59-0600\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: \n"
@@ -147,12 +147,12 @@ msgstr "eliminando…"
 msgid "Reading out database content"
 msgstr ""
 
-#: src/MainWindow.vala:414 src/MainWindow.vala:1010
+#: src/MainWindow.vala:414 src/MainWindow.vala:1011
 #, fuzzy
 msgid "Shuffle On"
 msgstr "Aleatorio"
 
-#: src/MainWindow.vala:417 src/MainWindow.vala:1013
+#: src/MainWindow.vala:417 src/MainWindow.vala:1014
 #, fuzzy
 msgid "Shuffle Off"
 msgstr "Aleatorio"
@@ -211,33 +211,33 @@ msgstr "Preferencias"
 msgid "Search Music"
 msgstr "Buscar música"
 
-#: src/MainWindow.vala:691
+#: src/MainWindow.vala:692
 msgid "Queue"
 msgstr ""
 
-#: src/MainWindow.vala:801 src/MainWindow.vala:809
+#: src/MainWindow.vala:802 src/MainWindow.vala:810
 #: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> por <b>%s</b>"
 
-#: src/MainWindow.vala:993
+#: src/MainWindow.vala:994
 #, fuzzy
 msgid "Repeat All"
 msgstr "Repetir"
 
-#: src/MainWindow.vala:997
+#: src/MainWindow.vala:998
 #, fuzzy
 msgid "Repeat One"
 msgstr "Repetir"
 
-#: src/MainWindow.vala:1001
+#: src/MainWindow.vala:1002
 #, fuzzy
 msgid "Repeat Off"
 msgstr "Repetir"
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
-#: src/Widgets/Views/RadiosView.vala:153
+#: src/Widgets/Views/RadiosView.vala:146
 msgid "Click to choose a new cover…"
 msgstr "Pulse para elegir una carátula nueva…"
 
@@ -246,7 +246,7 @@ msgid "Year"
 msgstr "Año"
 
 #: src/Dialogs/AlbumEditor.vala:121 src/Dialogs/ArtistEditor.vala:114
-#: src/Widgets/Views/RadiosView.vala:251
+#: src/Widgets/Views/RadiosView.vala:231
 msgid "Save"
 msgstr "Guardar"
 
@@ -304,31 +304,48 @@ msgstr "No hay archivos de música"
 msgid "deleting…"
 msgstr "eliminando…"
 
-#: src/Services/LibraryManager.vala:332
+#: src/Services/LibraryManager.vala:318
 msgid "New Playlist"
 msgstr "Lista nueva"
 
-#: src/Services/LibraryManager.vala:390
+#: src/Services/LibraryManager.vala:350 src/Services/LibraryManager.vala:446
 msgid "Choose an image…"
 msgstr "Elija una imagen…"
 
-#: src/Services/LibraryManager.vala:392 src/Services/LibraryManager.vala:433
+#: src/Services/LibraryManager.vala:352 src/Services/LibraryManager.vala:448
+#: src/Services/LibraryManager.vala:490 src/Services/LibraryManager.vala:511
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: src/Services/LibraryManager.vala:393 src/Services/LibraryManager.vala:434
+#: src/Services/LibraryManager.vala:353
+#, fuzzy
+msgid "_Save"
+msgstr "Guardar"
+
+#: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
+#, fuzzy
+msgid "Playlist (.m3u)"
+msgstr "Listas"
+
+#: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
+#: src/Services/LibraryManager.vala:512
 msgid "_Open"
 msgstr "_Abrir"
 
-#: src/Services/LibraryManager.vala:396
+#: src/Services/LibraryManager.vala:452
 msgid "Images"
 msgstr "Imágenes"
 
-#: src/Services/LibraryManager.vala:432
+#: src/Services/LibraryManager.vala:488
+#, fuzzy
+msgid "Choose a playlist…"
+msgstr "Elija una imagen…"
+
+#: src/Services/LibraryManager.vala:510
 msgid "Select a folder."
 msgstr "Seleccione una carpeta."
 
-#: src/Services/LibraryManager.vala:437
+#: src/Services/LibraryManager.vala:515
 msgid "Folder"
 msgstr "Carpeta"
 
@@ -365,18 +382,28 @@ msgstr "Combinar álbumes seleccionados"
 msgid "Edit Artist properties…"
 msgstr "Editar propiedades del artista…"
 
-#: src/Widgets/Playlist.vala:107
+#: src/Widgets/Playlist.vala:46
+#, c-format
+msgid "<small>%u Tracks</small>"
+msgstr ""
+
+#: src/Widgets/Playlist.vala:134
 msgid "Rename"
 msgstr "Cambiar nombre"
 
 #. CONTEXT MENU REGION
-#: src/Widgets/Playlist.vala:128
+#: src/Widgets/Playlist.vala:155
 msgid "Rename Playlist"
 msgstr "Cambiar nombre de lista"
 
-#: src/Widgets/Playlist.vala:138
+#: src/Widgets/Playlist.vala:163
 msgid "Remove Playlist"
 msgstr "Eliminar lista"
+
+#: src/Widgets/Playlist.vala:171
+#, fuzzy
+msgid "Export Playlist…"
+msgstr "No hay listas"
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -438,14 +465,14 @@ msgid "Import music from a source into your library."
 msgstr "Importe música a partir de un origen a la fonoteca."
 
 #: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:148
-#: src/Widgets/Views/RadiosView.vala:213
+#: src/Widgets/Views/PlaylistsView.vala:159
+#: src/Widgets/Views/RadiosView.vala:194
 msgid "No results"
 msgstr "No hay resultados"
 
 #: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:148
-#: src/Widgets/Views/RadiosView.vala:213
+#: src/Widgets/Views/PlaylistsView.vala:159
+#: src/Widgets/Views/RadiosView.vala:194
 msgid "Try another search"
 msgstr "Pruebe con otro término de búsqueda"
 
@@ -475,73 +502,89 @@ msgstr ""
 msgid "Add a playlist"
 msgstr "Añadir lista"
 
-#: src/Widgets/Views/PlaylistsView.vala:112
-#: src/Widgets/Views/RadiosView.vala:249
+#: src/Widgets/Views/PlaylistsView.vala:104
+#: src/Widgets/Views/PlaylistsView.vala:141
+#, fuzzy
+msgid "Import Playlist"
+msgstr "No hay listas"
+
+#: src/Widgets/Views/PlaylistsView.vala:119
+#: src/Widgets/Views/RadiosView.vala:229
 msgid "Add"
 msgstr "Añadir"
 
-#: src/Widgets/Views/PlaylistsView.vala:132
+#: src/Widgets/Views/PlaylistsView.vala:139
 msgid "No Playlists"
 msgstr "No hay listas"
 
-#: src/Widgets/Views/PlaylistsView.vala:132
+#: src/Widgets/Views/PlaylistsView.vala:139
 msgid "Add playlist to your library."
 msgstr "Añada listas a la fonoteca."
 
-#: src/Widgets/Views/PlaylistsView.vala:133
+#: src/Widgets/Views/PlaylistsView.vala:140
 #, fuzzy
 msgid "Create Playlist"
 msgstr "Crear lista nueva"
 
-#: src/Widgets/Views/PlaylistsView.vala:133
+#: src/Widgets/Views/PlaylistsView.vala:140
 #, fuzzy
 msgid "Create a playlist for manage your favorite songs."
 msgstr "Añada una lista para organizar sus canciones favoritas."
 
-#: src/Widgets/Views/Queue.vala:73
+#: src/Widgets/Views/PlaylistsView.vala:141
+#, fuzzy
+msgid "Import .m3u formated Playlist."
+msgstr "Quitar de la lista"
+
+#: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
 msgstr ""
 
-#: src/Widgets/Views/Queue.vala:83
+#: src/Widgets/Views/Queue.vala:84
 #, fuzzy
 msgid "Create new Playlist based on this Queue"
 msgstr "Crear lista nueva"
 
-#: src/Widgets/Views/Queue.vala:88
+#: src/Widgets/Views/Queue.vala:89
 #, c-format
 msgid "Queue from %s"
 msgstr ""
 
-#: src/Widgets/Views/Queue.vala:107
+#: src/Widgets/Views/Queue.vala:100
+#, fuzzy
+msgid "Export Queue…"
+msgstr "Importar música…"
+
+#: src/Widgets/Views/Queue.vala:117
 msgid "Queue is empty"
 msgstr ""
 
-#: src/Widgets/Views/RadiosView.vala:113
+#: src/Widgets/Views/RadiosView.vala:110
 msgid "Add a radio station"
 msgstr "Añadir estación de radio"
 
-#: src/Widgets/Views/RadiosView.vala:123
+#: src/Widgets/Views/RadiosView.vala:120
 msgid "Station Name"
 msgstr "Nombre de estación"
 
-#: src/Widgets/Views/RadiosView.vala:131
+#: src/Widgets/Views/RadiosView.vala:127
 msgid "URL"
 msgstr "URL"
 
 #. NEW STATION POPOVER END
-#: src/Widgets/Views/RadiosView.vala:195
+#: src/Widgets/Views/RadiosView.vala:177
 msgid "No Radio Stations"
 msgstr "No hay estaciones de radio"
 
-#: src/Widgets/Views/RadiosView.vala:195
+#: src/Widgets/Views/RadiosView.vala:177
 msgid "Add radio stations to your library."
 msgstr "Añada estaciones de radio a la fonoteca."
 
-#: src/Widgets/Views/RadiosView.vala:196
+#: src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
 msgstr "Añadir estación de radio"
 
-#: src/Widgets/Views/RadiosView.vala:196
+#: src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "Añada un URL de flujo de datos, como .pls o .m3u."
 

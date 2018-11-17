@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-03 15:58+0100\n"
+"POT-Creation-Date: 2018-11-17 16:27+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 金立龙 <trampover@gmail.com>\n"
 "Language-Team: \n"
@@ -136,11 +136,11 @@ msgstr "加载中..."
 msgid "Reading out database content"
 msgstr "读出数据库内容"
 
-#: src/MainWindow.vala:414 src/MainWindow.vala:1010
+#: src/MainWindow.vala:414 src/MainWindow.vala:1011
 msgid "Shuffle On"
 msgstr "随机播放"
 
-#: src/MainWindow.vala:417 src/MainWindow.vala:1013
+#: src/MainWindow.vala:417 src/MainWindow.vala:1014
 msgid "Shuffle Off"
 msgstr "顺序播放"
 
@@ -198,30 +198,30 @@ msgstr "首选项"
 msgid "Search Music"
 msgstr "搜索音乐"
 
-#: src/MainWindow.vala:691
+#: src/MainWindow.vala:692
 msgid "Queue"
 msgstr "播放队列"
 
-#: src/MainWindow.vala:801 src/MainWindow.vala:809
+#: src/MainWindow.vala:802 src/MainWindow.vala:810
 #: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> 主创 <b>%s</b>"
 
-#: src/MainWindow.vala:993
+#: src/MainWindow.vala:994
 msgid "Repeat All"
 msgstr "循环播放"
 
-#: src/MainWindow.vala:997
+#: src/MainWindow.vala:998
 msgid "Repeat One"
 msgstr "反复播放单曲"
 
-#: src/MainWindow.vala:1001
+#: src/MainWindow.vala:1002
 msgid "Repeat Off"
 msgstr "循环播放关闭"
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
-#: src/Widgets/Views/RadiosView.vala:153
+#: src/Widgets/Views/RadiosView.vala:146
 msgid "Click to choose a new cover…"
 msgstr "点击选择一个新封面..."
 
@@ -230,7 +230,7 @@ msgid "Year"
 msgstr "年份"
 
 #: src/Dialogs/AlbumEditor.vala:121 src/Dialogs/ArtistEditor.vala:114
-#: src/Widgets/Views/RadiosView.vala:251
+#: src/Widgets/Views/RadiosView.vala:231
 msgid "Save"
 msgstr "保存"
 
@@ -288,31 +288,48 @@ msgstr "找不到音乐文件"
 msgid "deleting…"
 msgstr "正在删除..."
 
-#: src/Services/LibraryManager.vala:332
+#: src/Services/LibraryManager.vala:318
 msgid "New Playlist"
 msgstr "新建播放列表"
 
-#: src/Services/LibraryManager.vala:390
+#: src/Services/LibraryManager.vala:350 src/Services/LibraryManager.vala:446
 msgid "Choose an image…"
 msgstr "选择图片"
 
-#: src/Services/LibraryManager.vala:392 src/Services/LibraryManager.vala:433
+#: src/Services/LibraryManager.vala:352 src/Services/LibraryManager.vala:448
+#: src/Services/LibraryManager.vala:490 src/Services/LibraryManager.vala:511
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: src/Services/LibraryManager.vala:393 src/Services/LibraryManager.vala:434
+#: src/Services/LibraryManager.vala:353
+#, fuzzy
+msgid "_Save"
+msgstr "保存"
+
+#: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
+#, fuzzy
+msgid "Playlist (.m3u)"
+msgstr "播放列表"
+
+#: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
+#: src/Services/LibraryManager.vala:512
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/Services/LibraryManager.vala:396
+#: src/Services/LibraryManager.vala:452
 msgid "Images"
 msgstr "图片"
 
-#: src/Services/LibraryManager.vala:432
+#: src/Services/LibraryManager.vala:488
+#, fuzzy
+msgid "Choose a playlist…"
+msgstr "选择图片"
+
+#: src/Services/LibraryManager.vala:510
 msgid "Select a folder."
 msgstr "选择文件夹"
 
-#: src/Services/LibraryManager.vala:437
+#: src/Services/LibraryManager.vala:515
 msgid "Folder"
 msgstr "文件夹"
 
@@ -349,18 +366,28 @@ msgstr "合并 %u 个选中的专辑"
 msgid "Edit Artist properties…"
 msgstr "编辑艺人属性..."
 
-#: src/Widgets/Playlist.vala:107
+#: src/Widgets/Playlist.vala:46
+#, c-format
+msgid "<small>%u Tracks</small>"
+msgstr ""
+
+#: src/Widgets/Playlist.vala:134
 msgid "Rename"
 msgstr "重命名"
 
 #. CONTEXT MENU REGION
-#: src/Widgets/Playlist.vala:128
+#: src/Widgets/Playlist.vala:155
 msgid "Rename Playlist"
 msgstr "更改播放列表名称"
 
-#: src/Widgets/Playlist.vala:138
+#: src/Widgets/Playlist.vala:163
 msgid "Remove Playlist"
 msgstr "删除播放列表"
+
+#: src/Widgets/Playlist.vala:171
+#, fuzzy
+msgid "Export Playlist…"
+msgstr "无播放列表"
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -421,14 +448,14 @@ msgid "Import music from a source into your library."
 msgstr "将音乐导入您的乐库。"
 
 #: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:148
-#: src/Widgets/Views/RadiosView.vala:213
+#: src/Widgets/Views/PlaylistsView.vala:159
+#: src/Widgets/Views/RadiosView.vala:194
 msgid "No results"
 msgstr "无结果"
 
 #: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
-#: src/Widgets/Views/PlaylistsView.vala:148
-#: src/Widgets/Views/RadiosView.vala:213
+#: src/Widgets/Views/PlaylistsView.vala:159
+#: src/Widgets/Views/RadiosView.vala:194
 msgid "Try another search"
 msgstr "尝试另一个搜索"
 
@@ -457,70 +484,86 @@ msgstr "隐藏移动设备面板"
 msgid "Add a playlist"
 msgstr "添加一个播放列表"
 
-#: src/Widgets/Views/PlaylistsView.vala:112
-#: src/Widgets/Views/RadiosView.vala:249
+#: src/Widgets/Views/PlaylistsView.vala:104
+#: src/Widgets/Views/PlaylistsView.vala:141
+#, fuzzy
+msgid "Import Playlist"
+msgstr "无播放列表"
+
+#: src/Widgets/Views/PlaylistsView.vala:119
+#: src/Widgets/Views/RadiosView.vala:229
 msgid "Add"
 msgstr "添加"
 
-#: src/Widgets/Views/PlaylistsView.vala:132
+#: src/Widgets/Views/PlaylistsView.vala:139
 msgid "No Playlists"
 msgstr "无播放列表"
 
-#: src/Widgets/Views/PlaylistsView.vala:132
+#: src/Widgets/Views/PlaylistsView.vala:139
 msgid "Add playlist to your library."
 msgstr "添加播放列表到您的乐库。"
 
-#: src/Widgets/Views/PlaylistsView.vala:133
+#: src/Widgets/Views/PlaylistsView.vala:140
 msgid "Create Playlist"
 msgstr "新建播放列表"
 
-#: src/Widgets/Views/PlaylistsView.vala:133
+#: src/Widgets/Views/PlaylistsView.vala:140
 msgid "Create a playlist for manage your favorite songs."
 msgstr "添加播放列表来管理您最喜爱的歌曲."
 
-#: src/Widgets/Views/Queue.vala:73
+#: src/Widgets/Views/PlaylistsView.vala:141
+#, fuzzy
+msgid "Import .m3u formated Playlist."
+msgstr "从播放列表中删除"
+
+#: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
 msgstr "清空播放队列"
 
-#: src/Widgets/Views/Queue.vala:83
+#: src/Widgets/Views/Queue.vala:84
 msgid "Create new Playlist based on this Queue"
 msgstr "基于播放队列建立新播放列表"
 
-#: src/Widgets/Views/Queue.vala:88
+#: src/Widgets/Views/Queue.vala:89
 #, c-format
 msgid "Queue from %s"
 msgstr "将 %s 的播放队列转换成的播放列表"
 
-#: src/Widgets/Views/Queue.vala:107
+#: src/Widgets/Views/Queue.vala:100
+#, fuzzy
+msgid "Export Queue…"
+msgstr "导入音乐"
+
+#: src/Widgets/Views/Queue.vala:117
 msgid "Queue is empty"
 msgstr "播放队列为空"
 
-#: src/Widgets/Views/RadiosView.vala:113
+#: src/Widgets/Views/RadiosView.vala:110
 msgid "Add a radio station"
 msgstr "添加一个电台"
 
-#: src/Widgets/Views/RadiosView.vala:123
+#: src/Widgets/Views/RadiosView.vala:120
 msgid "Station Name"
 msgstr "电台名"
 
-#: src/Widgets/Views/RadiosView.vala:131
+#: src/Widgets/Views/RadiosView.vala:127
 msgid "URL"
 msgstr ""
 
 #. NEW STATION POPOVER END
-#: src/Widgets/Views/RadiosView.vala:195
+#: src/Widgets/Views/RadiosView.vala:177
 msgid "No Radio Stations"
 msgstr "无广播电台"
 
-#: src/Widgets/Views/RadiosView.vala:195
+#: src/Widgets/Views/RadiosView.vala:177
 msgid "Add radio stations to your library."
 msgstr "添加一个电台到您的乐库。"
 
-#: src/Widgets/Views/RadiosView.vala:196
+#: src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
 msgstr "添加电台"
 
-#: src/Widgets/Views/RadiosView.vala:196
+#: src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "添加像.pls或.m3u之类的流式URL."
 

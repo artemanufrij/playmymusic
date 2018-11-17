@@ -353,7 +353,7 @@ namespace PlayMyMusic.Services {
                 _ ("_Save"), Gtk.ResponseType.ACCEPT);
 
             var filter = new Gtk.FileFilter ();
-            filter.set_filter_name (_ ("Playlist"));
+            filter.set_filter_name (_ ("Playlist (.m3u)"));
             filter.add_mime_type ("audio/x-mpegurl");
 
             file.add_filter (filter);
@@ -491,7 +491,7 @@ namespace PlayMyMusic.Services {
                 _ ("_Open"), Gtk.ResponseType.ACCEPT);
 
             var filter = new Gtk.FileFilter ();
-            filter.set_filter_name (_ ("Playlist"));
+            filter.set_filter_name (_ ("Playlist (.m3u)"));
             filter.add_mime_type ("audio/x-mpegurl");
 
             chooser.add_filter (filter);
