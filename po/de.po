@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:27+0100\n"
+"POT-Creation-Date: 2018-11-17 16:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -201,7 +201,7 @@ msgstr "Einstellungen"
 msgid "Search Music"
 msgstr "Musik suchen"
 
-#: src/MainWindow.vala:692
+#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
 msgid "Queue"
 msgstr "Wiedergabe"
 
@@ -305,14 +305,12 @@ msgid "_Cancel"
 msgstr "_Abbrechen"
 
 #: src/Services/LibraryManager.vala:353
-#, fuzzy
 msgid "_Save"
-msgstr "Speichern"
+msgstr "_Speichern"
 
 #: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
-#, fuzzy
 msgid "Playlist (.m3u)"
-msgstr "Playlisten"
+msgstr "Playlist (.m3u)"
 
 #: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
 #: src/Services/LibraryManager.vala:512
@@ -324,9 +322,8 @@ msgid "Images"
 msgstr "Bilder"
 
 #: src/Services/LibraryManager.vala:488
-#, fuzzy
 msgid "Choose a playlist…"
-msgstr "Bild auswählen…"
+msgstr "Playliste auswählen…"
 
 #: src/Services/LibraryManager.vala:510
 msgid "Select a folder."
@@ -372,7 +369,7 @@ msgstr "Artisten bearbeiten…"
 #: src/Widgets/Playlist.vala:46
 #, c-format
 msgid "<small>%u Tracks</small>"
-msgstr ""
+msgstr "<small>%u Tracks</small>"
 
 #: src/Widgets/Playlist.vala:134
 msgid "Rename"
@@ -388,9 +385,8 @@ msgid "Remove Playlist"
 msgstr "Playliste löschen"
 
 #: src/Widgets/Playlist.vala:171
-#, fuzzy
 msgid "Export Playlist…"
-msgstr "Keine Playlists"
+msgstr "Playliste exportieren…"
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -491,9 +487,8 @@ msgstr "Eine Playlist hinzufügen"
 
 #: src/Widgets/Views/PlaylistsView.vala:104
 #: src/Widgets/Views/PlaylistsView.vala:141
-#, fuzzy
 msgid "Import Playlist"
-msgstr "Keine Playlists"
+msgstr "Playliste importieren"
 
 #: src/Widgets/Views/PlaylistsView.vala:119
 #: src/Widgets/Views/RadiosView.vala:229
@@ -517,9 +512,8 @@ msgid "Create a playlist for manage your favorite songs."
 msgstr "Eine Playliste zum verwalten deiner Lieblingslieder erstellen."
 
 #: src/Widgets/Views/PlaylistsView.vala:141
-#, fuzzy
 msgid "Import .m3u formated Playlist."
-msgstr "Entferne von der Playlist"
+msgstr "Importiere Playliste im .m3u Format"
 
 #: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
@@ -535,9 +529,8 @@ msgid "Queue from %s"
 msgstr "Wiedergabe vom %s"
 
 #: src/Widgets/Views/Queue.vala:100
-#, fuzzy
 msgid "Export Queue…"
-msgstr "Musik importieren…"
+msgstr "Wiedergabe exportieren…"
 
 #: src/Widgets/Views/Queue.vala:117
 msgid "Queue is empty"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:27+0100\n"
+"POT-Creation-Date: 2018-11-17 16:32+0100\n"
 "PO-Revision-Date: 2018-02-24 03:59-0600\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: \n"
@@ -211,7 +211,7 @@ msgstr "Preferencias"
 msgid "Search Music"
 msgstr "Buscar música"
 
-#: src/MainWindow.vala:692
+#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
 msgid "Queue"
 msgstr ""
 

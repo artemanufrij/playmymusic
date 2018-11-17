@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:27+0100\n"
+"POT-Creation-Date: 2018-11-17 16:32+0100\n"
 "PO-Revision-Date: 2018-03-11 22:13+0000\n"
 "Last-Translator: Gustavo Marques\n"
 "Language: pt_BR\n"
@@ -203,7 +203,7 @@ msgstr "Preferencias"
 msgid "Search Music"
 msgstr "Pesquisar música"
 
-#: src/MainWindow.vala:692
+#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
 msgid "Queue"
 msgstr ""
 

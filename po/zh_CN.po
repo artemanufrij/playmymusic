@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:27+0100\n"
+"POT-Creation-Date: 2018-11-17 16:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 金立龙 <trampover@gmail.com>\n"
 "Language-Team: \n"
@@ -198,7 +198,7 @@ msgstr "首选项"
 msgid "Search Music"
 msgstr "搜索音乐"
 
-#: src/MainWindow.vala:692
+#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
 msgid "Queue"
 msgstr "播放队列"
 

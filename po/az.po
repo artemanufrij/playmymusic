@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:27+0100\n"
+"POT-Creation-Date: 2018-11-17 16:32+0100\n"
 "Last-Translator: manymous <many.mous.hacking@gmail.com>\n"
 "Language-Team: \n"
 "Language: az\n"
@@ -200,7 +200,7 @@ msgstr "Seçimlər"
 msgid "Search Music"
 msgstr "Musiqi axtarın"
 
-#: src/MainWindow.vala:692
+#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
 msgid "Queue"
 msgstr ""
 
