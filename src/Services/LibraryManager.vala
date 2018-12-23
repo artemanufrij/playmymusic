@@ -407,7 +407,15 @@ namespace PlayMyMusic.Services {
 
                     foreach (var line in lines) {
                         if (!line.has_prefix ("#")) {
-                            var track = db_manager.get_track_by_uri (line);
+                            string fname = line;
+                            if (!fname.has_prefix ("/")) {
+                                fname = Path.get_dirname (filename) + "/" + line;
+                            }
+                            try {
+                                fname = FileUtils.read_link (fname);
+                            } catch (FileError err) {}
+                            fname = GLib.File.new_for_path (Path.get_dirname (filename) + "/" + fname).resolve_relative_path (".").get_path ();
+                            var track = db_manager.get_track_by_uri ("file://" + fname);
                             if (track != null) {
                                 add_track_into_playlist (playlist, track.ID);
                             }
