@@ -406,19 +406,19 @@ namespace PlayMyMusic.Services {
                     db_manager.insert_playlist (playlist);
 
                     foreach (var line in lines) {
-                        if (!line.has_prefix ("#")) {
-                            string fname = line;
-                            if (!fname.has_prefix ("/")) {
-                                fname = Path.get_dirname (filename) + "/" + line;
+                        line = line.strip ();
+                        if (!line.has_prefix ("#") && line.length > 0) {
+                            string file_uri = lf_manager.get_file_uri (line, Path.get_dirname (filename));
+                            if (file_uri == null) {
+                                stdout.printf ("%s cannot be added to the imported playlist\n", line);
+                                continue;
                             }
-                            try {
-                                fname = FileUtils.read_link (fname);
-                            } catch (FileError err) {}
-                            fname = GLib.File.new_for_path (Path.get_dirname (filename) + "/" + fname).resolve_relative_path (".").get_path ();
-                            var track = db_manager.get_track_by_uri ("file://" + fname);
-                            if (track != null) {
-                                add_track_into_playlist (playlist, track.ID);
+                            var track = db_manager.get_track_by_uri ("file://" + file_uri);
+                            if (track == null) {
+                                stdout.printf ("%s is not part of the music library: triggering signal to import it\n", file_uri);
+                                continue;
                             }
+                            add_track_into_playlist (playlist, track.ID);
                         }
                     }
                 }
@@ -471,11 +471,11 @@ namespace PlayMyMusic.Services {
                 string filename = chooser.get_preview_filename ();
                 if (filename != null) {
                     try {
-            	        Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file_at_scale (filename, 150, 150, true);
-            	        preview_area.set_from_pixbuf (pixbuf);
-            	        preview_area.show ();
+                        Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file_at_scale (filename, 150, 150, true);
+                        preview_area.set_from_pixbuf (pixbuf);
+                        preview_area.show ();
                     } catch (Error e) {
-            	        preview_area.hide ();
+                        preview_area.hide ();
                     }
                 } else {
                     preview_area.hide ();
