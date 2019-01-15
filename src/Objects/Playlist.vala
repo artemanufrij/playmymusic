@@ -28,6 +28,7 @@
 namespace PlayMyMusic.Objects {
     public class Playlist : TracksContainer {
         public signal void tracks_resorted ();
+        public signal void started_init_playing ();
         public new GLib.List<Track> tracks {
             get {
                 if (_tracks == null) {

@@ -53,18 +53,21 @@ namespace PlayMyMusic {
         public int last_track_id { get; set; }
         public double track_progress { get; set; }
         public string track_source { get; set; }
+        public bool remember_track_progress { get; set; }
         public bool play_in_background { get; set; }
         public bool sync_files { get; set; }
         public string [] artists { get; set; }
         public string [] covers { get; set; }
         public string library_location { get; set; }
         public int view_index { get; set; }
+        public string [] hidden_tracks_columns { get; set; }
         public bool load_content_from_musicbrainz { get; set; }
         public bool use_dark_theme { get; set; }
         public bool save_custom_covers { get; set; }
         public bool save_id3_tags { get; set; }
         public bool import_into_library { get; set; }
         public bool remove_playlist_if_empty { get; set; }
+        public int sort_mode_album_view { get; set; }
 
         private Settings () {
             base ("com.github.artemanufrij.playmymusic");

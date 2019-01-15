@@ -62,12 +62,14 @@ namespace PlayMyMusic.Widgets {
             playing_track.use_markup = true;
             playing_track.ellipsize = Pango.EllipsizeMode.END;
             playing_track.set_has_window (true);
-            playing_track.events |= Gdk.EventMask.BUTTON_RELEASE_MASK;
-            playing_track.button_release_event.connect (() => {
+
+            var event_box = new Gtk.EventBox ();
+            event_box.button_release_event.connect (() => {
                 goto_current_track (current_track);
                 return false;
             });
-            content.attach (playing_track, 0, 0);
+            event_box.add (playing_track);
+            content.attach (event_box, 0, 0);
 
             timeline = new Granite.SeekBar (0);
             timeline.scale.change_value.connect ((scroll, new_value) => {

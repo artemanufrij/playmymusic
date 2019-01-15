@@ -53,7 +53,7 @@ namespace PlayMyMusic.Services {
         dynamic Gst.Element playbin;
         Gst.Bus bus;
 
-        public Objects.Track? current_track { get; private set; }
+        public Objects.Track? current_track { get; set; }
         public Objects.Radio? current_radio { get; private set; }
         public File? current_file { get; private set; }
 
@@ -74,9 +74,6 @@ namespace PlayMyMusic.Services {
             get {
                 int64 d = 0;
                 this.playbin.query_duration (fmt, out d);
-                if (d == 0 && current_track != null) {
-                    d = (int64)current_track.duration;
-                }
                 return d;
             }
         }
@@ -156,7 +153,7 @@ namespace PlayMyMusic.Services {
             play ();
         }
 
-        public bool load_track (Objects.Track? track, PlayMode play_mode) {
+        public bool load_track (Objects.Track? track, PlayMode play_mode, double progress = 0) {
             if (track == current_track || track == null) {
                 return false;
             }
@@ -167,20 +164,37 @@ namespace PlayMyMusic.Services {
                 next ();
                 return false;
             }
+
+            var last_state = get_state ();
+
             stop ();
             if (current_track.uri.has_prefix ("cdda://")) {
                 playbin.uri = "cdda://%d".printf (current_track.track);
             } else {
                 playbin.uri = current_track.uri;
             }
+
+            playbin.set_state (Gst.State.PLAYING);
+            while (duration == 0) {};
+            if (last_state != Gst.State.PLAYING) {
+                pause ();
+            }
+            current_duration_changed (duration);
+
+            if (progress > 0) {
+                seek_to_progress (progress);
+                current_progress_changed (progress);
+            }
+
             return true;
         }
 
         public void set_track (Objects.Track? track, PlayMode play_mode) {
-            current_duration_changed (0);
+            if (track == null) {
+                current_duration_changed (0);
+            }
             if (load_track (track, play_mode)) {
                 play ();
-                current_duration_changed (duration);
             }
         }
 
@@ -249,14 +263,14 @@ namespace PlayMyMusic.Services {
                         }
                     }
                 } else if (play_mode == PlayMode.PLAYLIST) {
-                    if (settings.shuffle_mode) {
+                    if (settings.shuffle_mode && current_track.playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
                         next_track = current_track.playlist.get_shuffle_track (current_track);
                     } else {
                         next_track = current_track.playlist.get_next_track (current_track);
                     }
 
                     if (next_track == null && settings.repeat_mode != RepeatMode.OFF && current_track.playlist.has_available_tracks ()) {
-                        if (settings.shuffle_mode) {
+                        if (settings.shuffle_mode && current_track.playlist.title != PlayMyMusicApp.instance.QUEUE_SYS_NAME) {
                             next_track = current_track.playlist.get_shuffle_track (null);
                         } else {
                             next_track = current_track.playlist.get_first_track ();
@@ -283,6 +297,8 @@ namespace PlayMyMusic.Services {
 
             if (next_track != null) {
                 set_track (next_track, play_mode);
+            } else {
+                state_changed (Gst.State.NULL);
             }
         }
 
@@ -335,6 +351,10 @@ namespace PlayMyMusic.Services {
             return state;
         }
 
+        public void set_playmode (PlayMode play_mode) {
+            _play_mode = play_mode;
+        }
+
         private bool bus_callback (Gst.Bus bus, Gst.Message message) {
             switch (message.type) {
             case Gst.MessageType.ERROR:
@@ -344,7 +364,6 @@ namespace PlayMyMusic.Services {
                 warning ("Error: %s\n%s\n", err.message, debug);
                 break;
             case Gst.MessageType.EOS:
-                state_changed (Gst.State.NULL);
                 next ();
                 break;
             default:
