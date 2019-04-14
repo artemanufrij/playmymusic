@@ -34,7 +34,8 @@
   <url type="help">https://github.com/artemanufrij/playmymusic/issues</url>
   <url type="donation">https://www.paypal.me/ArtemAnufrij</url>
   <url type="translate">https://github.com/artemanufrij/playmymusic</url>
-  <update_contact>artem.anufrij@live.de</update_contact>  ​  <launchable type="desktop-id">com.github.artemanufrij.playmymusic.desktop</launchable>
+  <update_contact>artem.anufrij@live.de</update_contact>
+  <launchable type="desktop-id">com.github.artemanufrij.playmymusic.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <caption>Albums</caption>
@@ -55,24 +56,19 @@
         <p>New:</p>
         <ul>
           <li>[Playlist] Export/Import Playlist as M3U format</li>
-
           <li>[Playlist] Show track counter and playlist duration</li>
-
         </ul>
         <p>Improved:</p>
         <ul>
           <li>Select playlist button when copy queue into a new playlist</li>
-
         </ul>
         <p>Fixed:</p>
         <ul>
           <li>[Radio] UI fix 'new Radio' popup</li>
-
         </ul>
         <p>Translation:</p>
         <ul>
           <li>German</li>
-
         </ul>
       </description>
     </release>
@@ -81,28 +77,21 @@
         <p>New:</p>
         <ul>
           <li>Image preview in cover/artist chooser dialog (by kaiman)</li>
-
           <li>[Sort by] (Artis-Album or Album-Artist) option for Albums View</li>
-
         </ul>
         <p>Improved:</p>
         <ul>
           <li>Option [on/off] for saving track progress</li>
-
         </ul>
         <p>Fixed:</p>
         <ul>
           <li>Radio icon inside "new radio" popup</li>
-
         </ul>
         <p>Translation:</p>
         <ul>
           <li>Russian (by Camellan)</li>
-
           <li>Chinese (by kaiman)</li>
-
           <li>German</li>
-
         </ul>
       </description>
     </release>
@@ -111,30 +100,22 @@
         <p>New:</p>
         <ul>
           <li>Queue functionality</li>
-
           <li>Save and restore last played song and progress</li>
-
           <li>Switch columns visibility for tracks view</li>
-
         </ul>
         <p>Fixed:</p>
         <ul>
           <li>Click on headerbar choose current track</li>
-
           <li>UI: select current track in tracks view</li>
-
         </ul>
         <p>Improved:</p>
         <ul>
           <li>Reorder controls on header bar</li>
-
           <li>Drag and Drop behavior for Playlists</li>
-
         </ul>
         <p>Translation:</p>
         <ul>
           <li>Danish (by rasmus91)</li>
-
         </ul>
       </description>
     </release>
@@ -143,14 +124,11 @@
         <p>Fixed:</p>
         <ul>
           <li>Restore correct window size</li>
-
         </ul>
         <p>Translation:</p>
         <ul>
           <li>Dutch (by Heimen Stoffels)</li>
-
           <li>Italian (by papou84)</li>
-
         </ul>
       </description>
     </release>
@@ -159,30 +137,23 @@
         <p>New:</p>
         <ul>
           <li>[optional] Delete Playlist if last Track was removed</li>
-
           <li>Toggle playing by Space Key</li>
-
           <li>Add Track into Playlist from Trackview</li>
-
           <li>RadioView: [Ctrl]+[Enter] for accept changes in editor</li>
-
         </ul>
         <p>Fixed:</p>
         <ul>
           <li>Player doesn't show '0' it the timeline if playing is paused</li>
-
           <li>Better focus grabing</li>
-
         </ul>
         <p>Improved:</p>
         <ul>
           <li>Faster start up behaviour</li>
-
         </ul>
       </description>
     </release>
     <release date="2018-07-24" version="1.1.0">
-      <description>                Prepare for JUNO            </description>
+      <description>Prepare for JUNO</description>
     </release>
     <release date="2018-04-15" version="1.0.3">
       <description>
