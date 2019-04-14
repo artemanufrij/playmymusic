@@ -19,7 +19,7 @@ msgstr ""
 
 #: src/MainWindow.vala:110
 msgid "Synchronizing library"
-msgstr ""
+msgstr "Synchronisation de la bibliothèque"
 
 #: src/MainWindow.vala:136
 msgid "Pause"
@@ -83,7 +83,7 @@ msgstr "CD audio"
 
 #: src/MainWindow.vala:538
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: src/MainWindow.vala:544
 msgid "Change Music Folder…"
@@ -123,11 +123,11 @@ msgstr "Préférences"
 
 #: src/MainWindow.vala:634
 msgid "Light background"
-msgstr ""
+msgstr "Thème clair"
 
 #: src/MainWindow.vala:635
 msgid "Dark background"
-msgstr ""
+msgstr "Thème sombre"
 
 #: src/MainWindow.vala:646
 msgid "Search Music"
