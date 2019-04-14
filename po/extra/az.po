@@ -1,15 +1,15 @@
 # Azerbaijani translations for extra package.
 # Copyright (C) 2019 THE extra'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the extra package.
-# Automatically generated, 2019.
+# manymous <many.mous.hacking@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 17:24+0200\n"
+"POT-Creation-Date: 2019-04-14 18:56+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
-"Last-Translator: Automatically generated\n"
+"Last-Translator: manymous <many.mous.hacking@gmail.com>\n"
 "Language-Team: none\n"
 "Language: az\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,15 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.desktop.in:4
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
 msgid "Melody"
-msgstr ""
+msgstr "Melodiya"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:5
 msgid "Listen your music"
-msgstr ""
+msgstr "Musiqinizi dinləyin"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
-msgstr ""
+msgstr "musiqi;radio;pleylist;"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:8
 msgid "com.github.artemanufrij.playmymusic"
@@ -36,7 +36,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:18
 msgid "Play/Pause"
-msgstr ""
+msgstr "Play/Pauza"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:20
 msgid "media-playback-start-symbolic"
@@ -44,7 +44,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:23
 msgid "Next"
-msgstr ""
+msgstr "İrəli"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:25
 msgid "media-skip-forward-symbolic"
@@ -52,11 +52,11 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:28
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:30
 msgid "media-skip-backward-symbolic"
-msgstr ""
+msgstr "media-skip-backward-symbolic"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
 msgid ""
@@ -71,11 +71,11 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
-msgstr ""
+msgstr "Xüsusiyyətləri:"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
 msgid "Show all Albums from your library"
-msgstr ""
+msgstr "Kitabxanadan bütün albomları göstərin"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
 msgid "Group tracks by Artists"
@@ -83,24 +83,24 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
 msgid "Manage your Playlists"
-msgstr ""
+msgstr "PlayList'i idarə edin"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
 msgid "Listen to online Radio"
-msgstr ""
+msgstr "Online Radio qulaq asın"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:524
 msgid "Audio CD support"
-msgstr ""
+msgstr "Audio CD dəstəyi"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
 msgid "Manage your MTP device"
-msgstr ""
+msgstr "MTP cihazınızı idarə edin"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
 msgid "ID3-Tag support"
-msgstr ""
+msgstr "ID3-Tag dəstəyi"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
 msgid "Artem Anufrij"
@@ -108,15 +108,15 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:40
 msgid "Albums"
-msgstr ""
+msgstr "Albomlar"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:44
 msgid "Artists"
-msgstr ""
+msgstr "Sənətkar'lar"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:48
 msgid "Tracks"
-msgstr ""
+msgstr "Parça'lar"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:55
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:81

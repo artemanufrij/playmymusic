@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 17:24+0200\n"
+"POT-Creation-Date: 2019-04-14 18:56+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,15 +21,15 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.desktop.in:4
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
 msgid "Melody"
-msgstr ""
+msgstr "Melodi"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:5
 msgid "Listen your music"
-msgstr ""
+msgstr "Lyt til musik"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
-msgstr ""
+msgstr "musik;radio;playlister;"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:8
 msgid "com.github.artemanufrij.playmymusic"
@@ -45,7 +45,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:23
 msgid "Next"
-msgstr ""
+msgstr "Næste"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:25
 msgid "media-skip-forward-symbolic"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:28
 msgid "Previous"
-msgstr ""
+msgstr "Forrige"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:30
 msgid "media-skip-backward-symbolic"
@@ -63,16 +63,20 @@ msgstr ""
 msgid ""
 "A music player for listening local music files, online radios and Audio CD's"
 msgstr ""
+"En musikafspiller til at lytte til lokale musikfiler, onlineradio og lyd "
+"CD'er"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
 msgid ""
 "A very fast music player designed extra for large local libraries which also "
 "supports online radios and downloading album covers"
 msgstr ""
+"En meget hurtig musikafspiller designet til ekstra store lokale biblioteker, "
+"som også understøtter online radio og download af album cover"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
-msgstr ""
+msgstr "Funktioner:"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
 msgid "Show all Albums from your library"
@@ -80,7 +84,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
 msgid "Group tracks by Artists"
-msgstr ""
+msgstr "Gruppér numre efter Kunstner"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
 msgid "Manage your Playlists"
@@ -88,7 +92,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
 msgid "Listen to online Radio"
-msgstr ""
+msgstr "Lyt til online Radio"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:524
@@ -97,11 +101,11 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
 msgid "Manage your MTP device"
-msgstr ""
+msgstr "Håndtér dit MTP apparat"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
 msgid "ID3-Tag support"
-msgstr ""
+msgstr "ID3-Tag understøttelse"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
 msgid "Artem Anufrij"
@@ -109,11 +113,11 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:40
 msgid "Albums"
-msgstr ""
+msgstr "Albummer"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:44
 msgid "Artists"
-msgstr ""
+msgstr "Kunstnere"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:48
 msgid "Tracks"

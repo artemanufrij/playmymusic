@@ -1,15 +1,15 @@
 # Portuguese translations for extra package.
 # Copyright (C) 2019 THE extra'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the extra package.
-# Automatically generated, 2019.
+# Gustavo Marques, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 17:24+0200\n"
+"POT-Creation-Date: 2019-04-14 18:56+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
-"Last-Translator: Automatically generated\n"
+"Last-Translator: Gustavo Marques\n"
 "Language-Team: none\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:23
 msgid "Next"
-msgstr ""
+msgstr "Próxima"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:25
 msgid "media-skip-forward-symbolic"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:28
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:30
 msgid "media-skip-backward-symbolic"
@@ -109,11 +109,11 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:40
 msgid "Albums"
-msgstr ""
+msgstr "Álbuns "
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:44
 msgid "Artists"
-msgstr ""
+msgstr "Artistas"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:48
 msgid "Tracks"
@@ -438,7 +438,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:327
 msgid "Grab album cover from MusicBrainz"
-msgstr ""
+msgstr "Carregar Informação do Artista de MusicBrainz"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:333
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:371
@@ -534,7 +534,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:424
 msgid "Merge Albums"
-msgstr ""
+msgstr " "
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:425
 msgid "Album Editor [F2]"

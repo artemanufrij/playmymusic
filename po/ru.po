@@ -1,15 +1,15 @@
 # Russian translations for com.github.artemanufrij.playmymusic package.
 # Copyright (C) 2019 THE com.github.artemanufrij.playmymusic'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the com.github.artemanufrij.playmymusic package.
-# Automatically generated, 2019.
+# Andrey Kultyapov <camellan@yandex.ru>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: com.github.artemanufrij.playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 17:24+0200\n"
+"POT-Creation-Date: 2019-04-14 18:56+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
-"Last-Translator: Automatically generated\n"
+"Last-Translator: Andrey Kultyapov <camellan@yandex.ru>\n"
 "Language-Team: none\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -20,31 +20,31 @@ msgstr ""
 
 #: src/MainWindow.vala:135
 msgid "Pause"
-msgstr ""
+msgstr "Пауза"
 
 #: src/MainWindow.vala:155 src/MainWindow.vala:281
 msgid "Melody"
-msgstr ""
+msgstr "Melody"
 
 #: src/MainWindow.vala:161 src/MainWindow.vala:387
 msgid "Play"
-msgstr ""
+msgstr "Воспроизвести"
 
 #: src/MainWindow.vala:337
 msgid "Loading…"
-msgstr ""
+msgstr "Загрузка…"
 
 #: src/MainWindow.vala:337
 msgid "Reading out database content"
-msgstr ""
+msgstr "Чтение содержимого базы данных"
 
 #: src/MainWindow.vala:377
 msgid "Previous"
-msgstr ""
+msgstr "Предыдущий"
 
 #: src/MainWindow.vala:396
 msgid "Next"
-msgstr ""
+msgstr "Следующий"
 
 #: src/MainWindow.vala:414 src/MainWindow.vala:1011
 msgid "Shuffle On"
@@ -56,43 +56,43 @@ msgstr ""
 
 #: src/MainWindow.vala:451
 msgid "Albums"
-msgstr ""
+msgstr "Альбомы"
 
 #: src/MainWindow.vala:455
 msgid "Artists"
-msgstr ""
+msgstr "Исполнители"
 
 #: src/MainWindow.vala:460
 msgid "Tracks"
-msgstr ""
+msgstr "Песни"
 
 #: src/MainWindow.vala:465
 msgid "Playlists"
-msgstr ""
+msgstr "Плейлисты"
 
 #: src/MainWindow.vala:470
 msgid "Radio Stations"
-msgstr ""
+msgstr "Радио"
 
 #: src/MainWindow.vala:477
 msgid "Audio CD"
-msgstr ""
+msgstr "Аудио CD"
 
 #: src/MainWindow.vala:542
 msgid "Change Music Folder…"
-msgstr ""
+msgstr "Изменить папку музыки…"
 
 #: src/MainWindow.vala:551
 msgid "Import Music…"
-msgstr ""
+msgstr "Импорт музыки…"
 
 #: src/MainWindow.vala:559
 msgid "Reset all views"
-msgstr ""
+msgstr "Сбросить все виды"
 
 #: src/MainWindow.vala:565
 msgid "Resync Library"
-msgstr ""
+msgstr "Пересканировать медиатеку"
 
 #: src/MainWindow.vala:570
 msgid "Sort by"
@@ -112,21 +112,21 @@ msgstr ""
 
 #: src/MainWindow.vala:598 src/Dialogs/Preferences.vala:54
 msgid "Preferences"
-msgstr ""
+msgstr "Параметры"
 
 #: src/MainWindow.vala:642
 msgid "Search Music"
-msgstr ""
+msgstr "Поиск музыки"
 
 #: src/MainWindow.vala:692
 msgid "Queue"
-msgstr ""
+msgstr "Очередь"
 
 #: src/MainWindow.vala:802 src/MainWindow.vala:810
 #: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> от <b>%s</b>"
 
 #: src/MainWindow.vala:994
 msgid "Repeat All"
@@ -143,44 +143,44 @@ msgstr ""
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 #: src/Widgets/Views/RadiosView.vala:146
 msgid "Click to choose a new cover…"
-msgstr ""
+msgstr "Нажмите для выбора новой обложки…"
 
 #: src/Dialogs/AlbumEditor.vala:110
 msgid "Year"
-msgstr ""
+msgstr "Год"
 
 #: src/Dialogs/AlbumEditor.vala:121 src/Dialogs/ArtistEditor.vala:114
 #: src/Widgets/Views/RadiosView.vala:231
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 #: src/Dialogs/Preferences.vala:94
 msgid "Play in background if closed"
-msgstr ""
+msgstr "Играть в фоне после закрытия"
 
 #: src/Dialogs/Preferences.vala:96
 msgid "Sync files on start up"
-msgstr ""
+msgstr "Синхронизировать файлы при запуске"
 
 #: src/Dialogs/Preferences.vala:99
 msgid "Load Content from MusicBrainz"
-msgstr ""
+msgstr "Загружать данные исполнителя из MusicBrainz"
 
 #: src/Dialogs/Preferences.vala:101
 msgid "Save custom Covers in Library folder"
-msgstr ""
+msgstr "Сохранять пользовательские обложки в папку медиотеки"
 
 #: src/Dialogs/Preferences.vala:103
 msgid "Save changes into ID3-Tag"
-msgstr ""
+msgstr "Сохранить изменения в ID3-теги"
 
 #: src/Dialogs/Preferences.vala:106
 msgid "Copy Imported Files into Library"
-msgstr ""
+msgstr "Копировать импортированные файлы в медиатеку"
 
 #: src/Dialogs/Preferences.vala:108
 msgid "Remove Playlist if last Track was removed"
-msgstr ""
+msgstr "Удалять плейлист, если последний трек был удален"
 
 #: src/Dialogs/Preferences.vala:111
 msgid "Remember Track progress"
@@ -188,38 +188,38 @@ msgstr ""
 
 #: src/Dialogs/Preferences.vala:116
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 #: src/Objects/AudioCD.vala:67 src/Objects/AudioCD.vala:68
 #: src/Services/TagManager.vala:48
 msgid "Unknown"
-msgstr ""
+msgstr "Неизвестно"
 
 #: src/Objects/AudioCD.vala:105
 #, c-format
 msgid "Track %d"
-msgstr ""
+msgstr "Трек %d"
 
 #: src/Objects/MobilePhone.vala:45
 msgid "No Music Files found"
-msgstr ""
+msgstr "Аудиофайлы не найдены"
 
 #: src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
-msgstr ""
+msgstr "удаление…"
 
 #: src/Services/LibraryManager.vala:318
 msgid "New Playlist"
-msgstr ""
+msgstr "Новый плейлист"
 
 #: src/Services/LibraryManager.vala:350 src/Services/LibraryManager.vala:446
 msgid "Choose an image…"
-msgstr ""
+msgstr "Выбрать изображение…"
 
 #: src/Services/LibraryManager.vala:352 src/Services/LibraryManager.vala:448
 #: src/Services/LibraryManager.vala:490 src/Services/LibraryManager.vala:511
 msgid "_Cancel"
-msgstr ""
+msgstr "_Отмена"
 
 #: src/Services/LibraryManager.vala:353
 msgid "_Save"
@@ -232,11 +232,11 @@ msgstr ""
 #: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
 #: src/Services/LibraryManager.vala:512
 msgid "_Open"
-msgstr ""
+msgstr "_Открыть"
 
 #: src/Services/LibraryManager.vala:452
 msgid "Images"
-msgstr ""
+msgstr "Изображения"
 
 #: src/Services/LibraryManager.vala:488
 msgid "Choose a playlist…"
@@ -244,44 +244,44 @@ msgstr ""
 
 #: src/Services/LibraryManager.vala:510
 msgid "Select a folder."
-msgstr ""
+msgstr "Выбрать папку."
 
 #: src/Services/LibraryManager.vala:515
 msgid "Folder"
-msgstr ""
+msgstr "Папка"
 
 #: src/Widgets/Album.vala:200 src/Widgets/Artist.vala:188
 #: src/Widgets/Views/AlbumView.vala:65 src/Widgets/Views/AudioCDView.vala:98
 msgid "Set new Cover…"
-msgstr ""
+msgstr "Выбрать новую обложку…"
 
 #: src/Widgets/Album.vala:218
 msgid "Edit Album properties…"
-msgstr ""
+msgstr "Редактировать параметры альбома…"
 
 #: src/Widgets/Album.vala:225 src/Widgets/Track.vala:230
 #: src/Widgets/Views/TracksView.vala:348
 msgid "Add into Playlist"
-msgstr ""
+msgstr "Добавить в плейлист"
 
 #: src/Widgets/Album.vala:230 src/Widgets/Artist.vala:213
 #: src/Widgets/Track.vala:248
 msgid "Send to"
-msgstr ""
+msgstr "Отправить на"
 
 #: src/Widgets/Album.vala:256 src/Widgets/Track.vala:264
 #: src/Widgets/Views/TracksView.vala:303
 msgid "Create New Playlist"
-msgstr ""
+msgstr "Создать новый плейлист"
 
 #: src/Widgets/Album.vala:305 src/Widgets/Artist.vala:260
 #, c-format
 msgid "Merge %u selected Albums"
-msgstr ""
+msgstr "Объединить %u выбранные альбомы"
 
 #: src/Widgets/Artist.vala:206
 msgid "Edit Artist properties…"
-msgstr ""
+msgstr "Редактировать параметры исполнителя…"
 
 #: src/Widgets/Playlist.vala:46
 #, c-format
@@ -290,15 +290,15 @@ msgstr ""
 
 #: src/Widgets/Playlist.vala:134
 msgid "Rename"
-msgstr ""
+msgstr "Переименовать"
 
 #: src/Widgets/Playlist.vala:155
 msgid "Rename Playlist"
-msgstr ""
+msgstr "Переименовать плейлист"
 
 #: src/Widgets/Playlist.vala:163
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Удалить плейлист"
 
 #: src/Widgets/Playlist.vala:171
 msgid "Export Playlist…"
@@ -306,11 +306,11 @@ msgstr ""
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
-msgstr ""
+msgstr "Редактировать радиостанцию…"
 
 #: src/Widgets/Radio.vala:103
 msgid "Remove Radio Station"
-msgstr ""
+msgstr "Удалить радиостанцию"
 
 #: src/Widgets/Track.vala:68
 #, c-format
@@ -318,72 +318,74 @@ msgid ""
 "File couldn't be found\n"
 "%s"
 msgstr ""
+"Файл не найден\n"
+"%s"
 
 #: src/Widgets/Track.vala:211 src/Widgets/Views/TracksView.vala:330
 msgid "Add to Queue"
-msgstr ""
+msgstr "Добавить в очередь"
 
 #: src/Widgets/Track.vala:234
 msgid "Remove from Playlist"
-msgstr ""
+msgstr "Удалить из плейлиста"
 
 #: src/Widgets/Track.vala:236
 msgid "Remove from Queue"
-msgstr ""
+msgstr "Удалить из очереди"
 
 #: src/Widgets/TrackTimeLine.vala:95 src/Widgets/TrackTimeLine.vala:99
 #, c-format
 msgid "<b>%s</b> from <b>%s</b> by <b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b> из <b>%s</b> от <b>%s</b>"
 
 #: src/Widgets/Views/AlbumsView.vala:122
 msgid "Get Some Tunes"
-msgstr ""
+msgstr "Нет музыки"
 
 #: src/Widgets/Views/AlbumsView.vala:122
 msgid "Add music to your library."
-msgstr ""
+msgstr "Добавьте музыку в свою медиатеку."
 
 #: src/Widgets/Views/AlbumsView.vala:123
 msgid "Change Music Folder"
-msgstr ""
+msgstr "Выбрать папку с музыкой"
 
 #: src/Widgets/Views/AlbumsView.vala:123
 msgid "Load music from a folder, a network or an external disk."
-msgstr ""
+msgstr "Загрузить музыку из папки, сети или внешнего диска."
 
 #: src/Widgets/Views/AlbumsView.vala:124
 msgid "Import Music"
-msgstr ""
+msgstr "Импортировать музыку"
 
 #: src/Widgets/Views/AlbumsView.vala:124
 msgid "Import music from a source into your library."
-msgstr ""
+msgstr "Импортируйте музыку из источника в свою медиатеку."
 
 #: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:159
 #: src/Widgets/Views/RadiosView.vala:194
 msgid "No results"
-msgstr ""
+msgstr "Нет результата"
 
 #: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:159
 #: src/Widgets/Views/RadiosView.vala:194
 msgid "Try another search"
-msgstr ""
+msgstr "Попробуйте другой запрос"
 
 #: src/Widgets/Views/ArtistView.vala:110
 msgid "Choose an Artist"
-msgstr ""
+msgstr "Выбор исполнителя"
 
 #: src/Widgets/Views/ArtistView.vala:110
 msgid "No Artist selected"
-msgstr ""
+msgstr "Ни один исполнитель не выбран"
 
 #: src/Widgets/Views/ArtistView.vala:163
 #, c-format
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr ""
+msgstr "<b>%d Дорожек</b> в <b>%d Альбом</b>(е/ах)"
 
 #: src/Widgets/Views/MobilePhone.vala:81
 msgid "Enable MTP on your mobile phone"
@@ -391,11 +393,11 @@ msgstr ""
 
 #: src/Widgets/Views/MobilePhone.vala:108
 msgid "Hide Mobile Panel"
-msgstr ""
+msgstr "Скрыть мобильную панель"
 
 #: src/Widgets/Views/PlaylistsView.vala:94
 msgid "Add a playlist"
-msgstr ""
+msgstr "Добавить плейлист"
 
 #: src/Widgets/Views/PlaylistsView.vala:104
 #: src/Widgets/Views/PlaylistsView.vala:141
@@ -405,23 +407,23 @@ msgstr ""
 #: src/Widgets/Views/PlaylistsView.vala:119
 #: src/Widgets/Views/RadiosView.vala:229
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: src/Widgets/Views/PlaylistsView.vala:139
 msgid "No Playlists"
-msgstr ""
+msgstr "Нет плейлистов"
 
 #: src/Widgets/Views/PlaylistsView.vala:139
 msgid "Add playlist to your library."
-msgstr ""
+msgstr "Добавьте плейлисты в свою медиатеку."
 
 #: src/Widgets/Views/PlaylistsView.vala:140
 msgid "Create Playlist"
-msgstr ""
+msgstr "Создать новый плейлист"
 
 #: src/Widgets/Views/PlaylistsView.vala:140
 msgid "Create a playlist for manage your favorite songs."
-msgstr ""
+msgstr "Добавьте плейлист для управления своими любимыми композициями."
 
 #: src/Widgets/Views/PlaylistsView.vala:141
 msgid "Import .m3u formated Playlist."
@@ -429,16 +431,16 @@ msgstr ""
 
 #: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
-msgstr ""
+msgstr "Очистить очередь"
 
 #: src/Widgets/Views/Queue.vala:84
 msgid "Create new Playlist based on this Queue"
-msgstr ""
+msgstr "Создать новый плейлист на основе этой очереди"
 
 #: src/Widgets/Views/Queue.vala:89 src/Widgets/Views/Queue.vala:104
 #, c-format
 msgid "Queue from %s"
-msgstr ""
+msgstr "Очередь из %s"
 
 #: src/Widgets/Views/Queue.vala:100
 msgid "Export Queue…"
@@ -446,68 +448,68 @@ msgstr ""
 
 #: src/Widgets/Views/Queue.vala:118
 msgid "Queue is empty"
-msgstr ""
+msgstr "Очередь очищена"
 
 #: src/Widgets/Views/RadiosView.vala:110
 msgid "Add a radio station"
-msgstr ""
+msgstr "Добавить радиостанцию"
 
 #: src/Widgets/Views/RadiosView.vala:120
 msgid "Station Name"
-msgstr ""
+msgstr "Название"
 
 #: src/Widgets/Views/RadiosView.vala:127
 msgid "URL"
-msgstr ""
+msgstr "Адрес"
 
 #: src/Widgets/Views/RadiosView.vala:177
 msgid "No Radio Stations"
-msgstr ""
+msgstr "Нет радиостанций"
 
 #: src/Widgets/Views/RadiosView.vala:177
 msgid "Add radio stations to your library."
-msgstr ""
+msgstr "Добавьте радиостанции в свою медиатеку."
 
 #: src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
-msgstr ""
+msgstr "Добавить радиостанцию"
 
 #: src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
-msgstr ""
+msgstr "Добавьте адрес потока .pls или .m3u."
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
-msgstr ""
+msgstr "№"
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:193
 msgid "Title"
-msgstr ""
+msgstr "Название"
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:200
 msgid "Album"
-msgstr ""
+msgstr "Альбом"
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:202
 msgid "Artist"
-msgstr ""
+msgstr "Исполнитель"
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:207
 msgid "Duration"
-msgstr ""
+msgstr "Продолжительность"
 
 #: src/Widgets/Views/TracksView.vala:165
 msgid "Choose a Track"
-msgstr ""
+msgstr "Выбор трека"
 
 #: src/Widgets/Views/TracksView.vala:165
 msgid "No track selected"
-msgstr ""
+msgstr "Ни один трек не выбран"
 
 #: src/Widgets/Views/TracksView.vala:351
 msgid "Columns Visibility"
-msgstr ""
+msgstr "Видимость столбцов"
 
 #: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
-msgstr ""
+msgstr "Вы не можете скрыть все столбцы"

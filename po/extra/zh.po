@@ -1,15 +1,15 @@
 # Chinese translations for extra package.
 # Copyright (C) 2019 THE extra'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the extra package.
-# Automatically generated, 2019.
+# 金立龙 <trampover@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 17:24+0200\n"
+"POT-Creation-Date: 2019-04-14 18:56+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
-"Last-Translator: Automatically generated\n"
+"Last-Translator: 金立龙 <trampover@gmail.com>\n"
 "Language-Team: none\n"
 "Language: zh\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:5
 msgid "Listen your music"
-msgstr ""
+msgstr "听您的音乐"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
@@ -36,7 +36,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:18
 msgid "Play/Pause"
-msgstr ""
+msgstr "播放/暂停"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:20
 msgid "media-playback-start-symbolic"
@@ -44,7 +44,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:23
 msgid "Next"
-msgstr ""
+msgstr "下一首"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:25
 msgid "media-skip-forward-symbolic"
@@ -52,7 +52,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:28
 msgid "Previous"
-msgstr ""
+msgstr "上一首"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:30
 msgid "media-skip-backward-symbolic"
@@ -61,62 +61,62 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
 msgid ""
 "A music player for listening local music files, online radios and Audio CD's"
-msgstr ""
+msgstr "一个欣赏本机音乐、在线电台和音乐CD的播放器。"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
 msgid ""
 "A very fast music player designed extra for large local libraries which also "
 "supports online radios and downloading album covers"
-msgstr ""
+msgstr "一个为大乐库和在线电台和在线下载专辑封面而设计轻巧快速的音乐播放器"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
-msgstr ""
+msgstr "特性："
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
 msgid "Show all Albums from your library"
-msgstr ""
+msgstr "显示您乐库中所有专辑"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
 msgid "Group tracks by Artists"
-msgstr ""
+msgstr "按艺人分组曲目"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
 msgid "Manage your Playlists"
-msgstr ""
+msgstr "管理您的播放列表"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
 msgid "Listen to online Radio"
-msgstr ""
+msgstr "倾听在线电台"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:524
 msgid "Audio CD support"
-msgstr ""
+msgstr "音频CD支持"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
 msgid "Manage your MTP device"
-msgstr ""
+msgstr "管理您的MTP设备"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
 msgid "ID3-Tag support"
-msgstr ""
+msgstr "ID3-Tag支持"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
 msgid "Artem Anufrij"
-msgstr ""
+msgstr "Artem Anufrij"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:40
 msgid "Albums"
-msgstr ""
+msgstr "专辑"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:44
 msgid "Artists"
-msgstr ""
+msgstr "艺人"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:48
 msgid "Tracks"
-msgstr ""
+msgstr "曲目"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:55
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:81
@@ -286,7 +286,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:161
 msgid "[optional] Delete Playlist if last Track was removed"
-msgstr ""
+msgstr "如果最后的曲目被删除则删除播放列表"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:163
 msgid "Toggle playing by Space Key"
@@ -319,7 +319,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:191
 msgid "[optional] Copy imported music files into library"
-msgstr ""
+msgstr "拷贝导入文件到乐库"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:195
 msgid "Show correct artist at sound indicator"
