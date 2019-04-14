@@ -35,7 +35,7 @@ msgstr "Lettura"
 
 #: src/MainWindow.vala:338
 msgid "Loading…"
-msgstr "Caricamento in corso..."
+msgstr "Caricamento in corso…"
 
 #: src/MainWindow.vala:338
 msgid "Reading out database content"
@@ -87,11 +87,11 @@ msgstr ""
 
 #: src/MainWindow.vala:544
 msgid "Change Music Folder…"
-msgstr "Cambiare la cartella Musica..."
+msgstr "Cambiare la cartella Musica…"
 
 #: src/MainWindow.vala:553
 msgid "Import Music…"
-msgstr "Importare Musica..."
+msgstr "Importare Musica…"
 
 #: src/MainWindow.vala:561
 msgid "Reset all views"
@@ -221,7 +221,7 @@ msgstr "Nessun File Musicale Trovato"
 
 #: src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
-msgstr "Cancelazzione in corso ..."
+msgstr "Cancelazzione in corso …"
 
 #: src/Services/LibraryManager.vala:318
 msgid "New Playlist"
@@ -268,7 +268,7 @@ msgstr "Cartella"
 #: src/Widgets/Album.vala:200 src/Widgets/Artist.vala:188
 #: src/Widgets/Views/AlbumView.vala:65 src/Widgets/Views/AudioCDView.vala:98
 msgid "Set new Cover…"
-msgstr "Cambiare la Copertina..."
+msgstr "Cambiare la Copertina…"
 
 #: src/Widgets/Album.vala:218
 msgid "Edit Album properties…"

@@ -34,7 +34,7 @@ msgstr "播放"
 
 #: src/MainWindow.vala:338
 msgid "Loading…"
-msgstr "加载中..."
+msgstr "加载中…"
 
 #: src/MainWindow.vala:338
 msgid "Reading out database content"
@@ -157,7 +157,7 @@ msgstr "循环播放关闭"
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 #: src/Widgets/Views/RadiosView.vala:146
 msgid "Click to choose a new cover…"
-msgstr "点击选择一个新封面..."
+msgstr "点击选择一个新封面…"
 
 #: src/Dialogs/AlbumEditor.vala:110
 msgid "Year"
@@ -220,7 +220,7 @@ msgstr "找不到音乐文件"
 
 #: src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
-msgstr "正在删除..."
+msgstr "正在删除…"
 
 #: src/Services/LibraryManager.vala:318
 msgid "New Playlist"
@@ -271,7 +271,7 @@ msgstr "设置新的封面."
 
 #: src/Widgets/Album.vala:218
 msgid "Edit Album properties…"
-msgstr "编辑专辑属性..."
+msgstr "编辑专辑属性…"
 
 #: src/Widgets/Album.vala:225 src/Widgets/Track.vala:230
 #: src/Widgets/Views/TracksView.vala:348
@@ -295,7 +295,7 @@ msgstr "合并 %u 个选中的专辑"
 
 #: src/Widgets/Artist.vala:206
 msgid "Edit Artist properties…"
-msgstr "编辑艺人属性..."
+msgstr "编辑艺人属性…"
 
 #: src/Widgets/Playlist.vala:46
 #, c-format
@@ -320,7 +320,7 @@ msgstr ""
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
-msgstr "编辑电台..."
+msgstr "编辑电台…"
 
 #: src/Widgets/Radio.vala:103
 msgid "Remove Radio Station"

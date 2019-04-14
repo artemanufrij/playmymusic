@@ -87,11 +87,11 @@ msgstr "Menu"
 
 #: src/MainWindow.vala:544
 msgid "Change Music Folder…"
-msgstr "Modifier le dossier de Musique..."
+msgstr "Modifier le dossier de Musique…"
 
 #: src/MainWindow.vala:553
 msgid "Import Music…"
-msgstr "Importer de la musique..."
+msgstr "Importer de la musique…"
 
 #: src/MainWindow.vala:561
 msgid "Reset all views"

@@ -87,11 +87,11 @@ msgstr ""
 
 #: src/MainWindow.vala:544
 msgid "Change Music Folder…"
-msgstr "Mudar diretório de músicas..."
+msgstr "Mudar diretório de músicas…"
 
 #: src/MainWindow.vala:553
 msgid "Import Music…"
-msgstr "Importar música..."
+msgstr "Importar música…"
 
 #: src/MainWindow.vala:561
 msgid "Reset all views"
@@ -221,7 +221,7 @@ msgstr "Nenhuma música achada"
 
 #: src/Objects/MobilePhoneMusicFolder.vala:86
 msgid "deleting…"
-msgstr "deletando..."
+msgstr "deletando…"
 
 #: src/Services/LibraryManager.vala:318
 msgid "New Playlist"
@@ -229,7 +229,7 @@ msgstr "Nova lista de reprodução"
 
 #: src/Services/LibraryManager.vala:350 src/Services/LibraryManager.vala:446
 msgid "Choose an image…"
-msgstr "Selecionar uma imagem..."
+msgstr "Selecionar uma imagem…"
 
 #: src/Services/LibraryManager.vala:352 src/Services/LibraryManager.vala:448
 #: src/Services/LibraryManager.vala:490 src/Services/LibraryManager.vala:511
@@ -268,7 +268,7 @@ msgstr "Diretório"
 #: src/Widgets/Album.vala:200 src/Widgets/Artist.vala:188
 #: src/Widgets/Views/AlbumView.vala:65 src/Widgets/Views/AudioCDView.vala:98
 msgid "Set new Cover…"
-msgstr "Selecionar nova capa..."
+msgstr "Selecionar nova capa…"
 
 #: src/Widgets/Album.vala:218
 msgid "Edit Album properties…"
@@ -321,7 +321,7 @@ msgstr ""
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
-msgstr "Editar estação de rádio..."
+msgstr "Editar estação de rádio…"
 
 #: src/Widgets/Radio.vala:103
 msgid "Remove Radio Station"

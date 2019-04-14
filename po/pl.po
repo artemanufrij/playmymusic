@@ -88,7 +88,7 @@ msgstr ""
 
 #: src/MainWindow.vala:544
 msgid "Change Music Folder…"
-msgstr "Zmień lokalizację Folderu Muzyki..."
+msgstr "Zmień lokalizację Folderu Muzyki…"
 
 #: src/MainWindow.vala:553
 msgid "Import Music…"
@@ -230,7 +230,7 @@ msgstr "Nowa Lista Odtwarzania"
 
 #: src/Services/LibraryManager.vala:350 src/Services/LibraryManager.vala:446
 msgid "Choose an image…"
-msgstr "Wybierz obraz..."
+msgstr "Wybierz obraz…"
 
 #: src/Services/LibraryManager.vala:352 src/Services/LibraryManager.vala:448
 #: src/Services/LibraryManager.vala:490 src/Services/LibraryManager.vala:511

@@ -187,7 +187,7 @@ namespace PlayMyMusic {
             options [0] = { "next", 0, 0, OptionArg.NONE, ref next, "Play next track", null };
             options [1] = { "prev", 0, 0, OptionArg.NONE, ref prev, "Play previous track", null };
             options [2] = { "play", 0, 0, OptionArg.NONE, ref play, "Toggle playing", null };
-            options [3] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_files, null, "[URI...]" };
+            options [3] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_files, null, "[URI…]" };
             options [4] = { null };
 
             var opt_context = new OptionContext ("actions");
