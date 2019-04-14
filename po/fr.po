@@ -115,7 +115,7 @@ msgstr "Préférences"
 
 #: src/MainWindow.vala:642
 msgid "Search Music"
-msgstr "Rechercher de la musique"
+msgstr "Chercher de la musique"
 
 #: src/MainWindow.vala:692
 msgid "Queue"
@@ -226,7 +226,7 @@ msgstr "_Enregistrer"
 
 #: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
 msgid "Playlist (.m3u)"
-msgstr "Liste de lecture (.m3u)"
+msgstr "Liste de lecture (M3U)"
 
 #: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
 #: src/Services/LibraryManager.vala:512
@@ -285,7 +285,7 @@ msgstr "Modifier les propriétés de l'artiste…"
 #: src/Widgets/Playlist.vala:46
 #, c-format
 msgid "<small>%u Tracks</small>"
-msgstr "<small>%u Pistes</small>"
+msgstr "<small>%u Piste(s)</small>"
 
 #: src/Widgets/Playlist.vala:134
 msgid "Rename"
@@ -385,7 +385,7 @@ msgstr "Aucun artiste choisi"
 #: src/Widgets/Views/ArtistView.vala:163
 #, c-format
 msgid "<b>%d Tracks</b> in <b>%d Album</b>(s)"
-msgstr "<b>%d pistes</b> dans <b>%d album</b>(s)"
+msgstr "<b>%d pistes</b>(s) dans <b>%d album</b>(s)"
 
 #: src/Widgets/Views/MobilePhone.vala:81
 msgid "Enable MTP on your mobile phone"
@@ -427,7 +427,7 @@ msgstr "Ajouter une liste de lecture pour gérer vos morceaux favoris."
 
 #: src/Widgets/Views/PlaylistsView.vala:141
 msgid "Import .m3u formated Playlist."
-msgstr "Importer une liste de lecture au format .m3u."
+msgstr "Importer une liste de lecture au format M3U."
 
 #: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
@@ -476,7 +476,7 @@ msgstr "Ajouter une radio"
 
 #: src/Widgets/Views/RadiosView.vala:178
 msgid "Add a Stream URL like .pls or .m3u."
-msgstr "Ajouter une URL de streaming en .pls ou .m3u"
+msgstr "Ajouter un URL de flux au format PLS ou M3U"
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
