@@ -274,7 +274,7 @@ msgstr "Copier les fichiers importés dans la bibliothèque"
 
 #: src/Dialogs/Preferences.vala:108
 msgid "Remove Playlist if last Track was removed"
-msgstr "Supprimer la liste de lecture si la dernière piste a été supprimée".
+msgstr "Supprimer la liste de lecture si la dernière piste a été supprimée"
 
 #: src/Dialogs/Preferences.vala:111
 msgid "Remember Track progress"
