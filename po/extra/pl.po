@@ -1,0 +1,733 @@
+# Polish translations for extra package.
+# Copyright (C) 2019 THE extra'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the extra package.
+# Automatically generated, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: extra\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-14 17:24+0200\n"
+"PO-Revision-Date: 2019-04-14 17:24+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:3
+#: data/com.github.artemanufrij.playmymusic.desktop.in:4
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
+msgid "Melody"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:5
+msgid "Listen your music"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:6
+msgid "music;radio;playlist;"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:8
+msgid "com.github.artemanufrij.playmymusic"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:18
+msgid "Play/Pause"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:20
+msgid "media-playback-start-symbolic"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:23
+msgid "Next"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:25
+msgid "media-skip-forward-symbolic"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:28
+msgid "Previous"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.desktop.in:30
+msgid "media-skip-backward-symbolic"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
+msgid ""
+"A music player for listening local music files, online radios and Audio CD's"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
+msgid ""
+"A very fast music player designed extra for large local libraries which also "
+"supports online radios and downloading album covers"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
+msgid "Features:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
+msgid "Show all Albums from your library"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
+msgid "Group tracks by Artists"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
+msgid "Manage your Playlists"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
+msgid "Listen to online Radio"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:524
+msgid "Audio CD support"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
+msgid "Manage your MTP device"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
+msgid "ID3-Tag support"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
+msgid "Artem Anufrij"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:40
+msgid "Albums"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:44
+msgid "Artists"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:48
+msgid "Tracks"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:55
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:81
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:111
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:159
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:189
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:218
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:248
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:270
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:290
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:324
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:346
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:354
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:391
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:405
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:421
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:453
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:486
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:505
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:513
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:522
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:548
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:566
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:580
+msgid "New:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:57
+msgid "[Playlist] Export/Import Playlist as M3U format"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:59
+msgid "[Playlist] Show track counter and playlist duration"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:62
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:88
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:127
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:177
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:222
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:239
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:262
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:303
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:337
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:396
+msgid "Improved:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:64
+msgid "Select playlist button when copy queue into a new playlist"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:67
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:93
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:120
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:143
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:170
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:193
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:210
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:235
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:274
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:316
+msgid "Fixed:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:69
+msgid "[Radio] UI fix 'new Radio' popup"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:72
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:98
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:134
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:148
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:200
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:227
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:253
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:278
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:294
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:308
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:363
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:383
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:413
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:444
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:465
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:497
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:539
+msgid "Translation:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:74
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:104
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:202
+msgid "German"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:83
+msgid "Image preview in cover/artist chooser dialog (by kaiman)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:85
+msgid "[Sort by] (Artis-Album or Album-Artist) option for Albums View"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:90
+msgid "Option [on/off] for saving track progress"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:95
+msgid "Radio icon inside \"new radio\" popup"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:100
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:204
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:280
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:415
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:446
+msgid "Russian (by Camellan)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:102
+msgid "Chinese (by kaiman)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:113
+msgid "Queue functionality"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:115
+msgid "Save and restore last played song and progress"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:117
+msgid "Switch columns visibility for tracks view"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:122
+msgid "Click on headerbar choose current track"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:124
+msgid "UI: select current track in tracks view"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:129
+msgid "Reorder controls on header bar"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:131
+msgid "Drag and Drop behavior for Playlists"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:136
+msgid "Danish (by rasmus91)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:145
+msgid "Restore correct window size"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:150
+msgid "Dutch (by Heimen Stoffels)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:152
+msgid "Italian (by papou84)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:161
+msgid "[optional] Delete Playlist if last Track was removed"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:163
+msgid "Toggle playing by Space Key"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:165
+msgid "Add Track into Playlist from Trackview"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:167
+msgid "RadioView: [Ctrl]+[Enter] for accept changes in editor"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:172
+msgid "Player doesn't show '0' it the timeline if playing is paused"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:174
+msgid "Better focus grabing"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:179
+msgid "Faster start up behaviour"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:185
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:284
+msgid "Prepare for JUNO"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:191
+msgid "[optional] Copy imported music files into library"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:195
+msgid "Show correct artist at sound indicator"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:196
+msgid "Search in Track View"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:197
+msgid "Order for Tracks without Track No in ID3 Tag"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:198
+msgid "Close behaviour for Artist and Album dialogs (by Sergii Fesenko)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:203
+msgid "French (by papou84)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:212
+msgid "Meson Errors"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:220
+msgid "Switch to meson"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:224
+msgid "Tooltip for album cover"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:225
+msgid "Fetching of Artist Art from MusicBrainz"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:229
+msgid "Danish (by Rasmus Lindegaard)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:237
+msgid "'and' char in Tracks View"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:241
+msgid "Context menu behaviour"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:242
+msgid "Removed multi selection button"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:250
+msgid "Double click on Album/Artist starts playing first track"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:251
+msgid "Double click on Track starts playing from begining"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:255
+msgid "Portuguese - Brazil (by Gustavo Marques)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:256
+msgid "Polish (by Michał Węglowski-Hodur)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:264
+msgid "Desktop Action Menu"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:272
+msgid "Shuffle and Repeat mode for Tracks View"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:276
+msgid "Remove cover cache file if album or artist was deleted"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:282
+msgid "Misc:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:292
+msgid "Hide button for Mobile Panel"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:296
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:310
+msgid "Catalan (by Adolfo Jayme-Barrientos)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:297
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:467
+msgid "Spanish (by Adolfo Jayme-Barrientos)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:305
+msgid "Speed up start behavior"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:306
+msgid "Small design changes in list view"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:318
+msgid "List View: sorting and small design changes"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:326
+msgid "List View for all music content"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:327
+msgid "Grab album cover from MusicBrainz"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:333
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:371
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:379
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:409
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:440
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:460
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:477
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:493
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:528
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:553
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:572
+msgid "Fix:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:335
+msgid "Endless spinner on first start (if no music files exist)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:339
+msgid "Mounting MTP-Devices"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:340
+msgid "Show \"No Result\" message if search term hasn't any results"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:348
+msgid "Desktop Actions: Next, Previous, Play/Pause"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:356
+msgid "Saving changes directly into file (ID3-tags)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:358
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:434
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:473
+msgid "Changes:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:360
+msgid "Generic name \"PlayMyMusic\" -&gt; \"Melody\""
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:361
+msgid "Lazy cover loading -&gt; less memory on startup"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:365
+msgid "Simplified Chinese (by trampover)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:373
+msgid "Endless spinner"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:381
+msgid "Spinner visibility while library is being scanned"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:385
+msgid "Spanish (by Alain)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:393
+msgid "Show song title from online radio in audio indicator"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:394
+msgid "Save/restore window position"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:398
+msgid "Start searching instand on key press"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:399
+msgid "Playlist Editor: Accept changes on press CTRL+Enter"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:407
+msgid "Reorder Playlist items by Drag an Drop"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:411
+msgid "Playlist behavior"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:423
+msgid "Option for saving custom covers into library"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:424
+msgid "Merge Albums"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:425
+msgid "Album Editor [F2]"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:426
+msgid "Merge Artists"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:427
+msgid "Artist Editor [F2]"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:428
+msgid "Multiple selection [CTRL]"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:436
+msgid "Moved 'Shuffle' and 'Repeat' buttons into header bar"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:437
+msgid "Hide MTP-View if playlists, radios or audio cd is choosed"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:438
+msgid "Switched from 'search for new files' to 'resync library'"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:442
+msgid ""
+"[MusicBrainz] fetch artist cover if name of artist contains '/' (like AC/DC)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:447
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:541
+msgid "Lithuanian (by welaq)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:455
+msgid "Hotkeys for switching between views: Alt+1,2,3,4,5"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:456
+msgid "[MTP] Copy Albums or Artists to your device by Drag and Drop"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:457
+msgid "[MTP] Sort music content in the mobile view"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:458
+msgid "[MTP] Don't expand all music content in the mobile view"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:462
+msgid "Shuffle Mode and Repeat behavior"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:463
+msgid "URI includes # inside location path"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:475
+msgid "Icon (by Alexey Varfolomeev)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:479
+msgid "Enable screensaver again after playing finished"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:480
+msgid "Improved MTP for UbuntuPhone"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:488
+msgid "Option for Dark Theme"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:489
+msgid "Repeat function for one song"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:490
+msgid "Online Radio Icon (by Alexey Varfolomeev)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:491
+msgid "Moved from 'path' to 'uri' for GVFS support"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:495
+msgid "Sorting Playlist inside context menu"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:499
+msgid "Russian (by Alexey Varfolomeev)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:507
+msgid "MTP-Support (Tested on Android)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:515
+msgid "Disable screensaver while playing"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:516
+msgid "Import files by Drag and Drop"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:525
+msgid "[artist view] Download artwork from MusicBrainz if exists"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:526
+msgid "A lot of improvements"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:530
+msgid "[online radio] Freeze on 'audio/aacp' stream"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:531
+msgid "Critical error when external file playing"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:532
+msgid "Crash if music files are not exist and play mode is 'repeat'"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:533
+msgid "Crash if you scan a NFS-mounted directory"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:535
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:558
+msgid "Change:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:537
+msgid "Moved to Granite SeekBar"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:542
+msgid "French (by nvivant)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:550
+msgid "[option] Look for new music files on start up [on/off]"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:551
+msgid "Added 16px icon"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:555
+msgid "Crash while importing files"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:556
+msgid "[artist view] Don't show track twice"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:560
+msgid "App icon"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:568
+msgid "Playlist support"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:569
+msgid "Play in Backgound"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:570
+msgid "Translation: Portuguese (by Rafael Campos Nunes)"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:574
+msgid "Crash on trying to stream online radio"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:582
+msgid "Sound Indicator"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:584
+msgid "Miscellaneous:"
+msgstr ""
+
+#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:586
+msgid "Small style improvements"
+msgstr ""
