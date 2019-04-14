@@ -107,6 +107,7 @@ namespace PlayMyMusic {
                     headerbar.pack_end (spinner);
                     spinner.active = true;
                     spinner.show ();
+                    spinner.tooltip_text = _ ("Synchronizing library");
                     menu_item_resync.sensitive = false;
                     menu_item_reset.sensitive = false;
                     return false;
@@ -534,6 +535,7 @@ namespace PlayMyMusic {
 
         private void header_build_app_menu () {
             var app_menu = new Gtk.MenuButton ();
+            app_menu.tooltip_text = _ ("Menu");
             app_menu.valign = Gtk.Align.CENTER;
             app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
 
@@ -567,12 +569,12 @@ namespace PlayMyMusic {
                 library_manager.sync_library_content.begin ();
             });
 
-            var menu_sort = new Gtk.MenuItem.with_label (_("Sort by"));
+            var menu_sort = new Gtk.MenuItem.with_label (_ ("Sort by"));
             var menu_sort_sub = new Gtk.Menu ();
             menu_sort.set_submenu (menu_sort_sub);
-            menu_sort_1 = new Gtk.CheckMenuItem.with_label (_("Artist - Year - Album"));
-            menu_sort_2 = new Gtk.CheckMenuItem.with_label (_("Album - Artist"));
-            menu_sort_3 = new Gtk.CheckMenuItem.with_label (_("Artist - Album"));
+            menu_sort_1 = new Gtk.CheckMenuItem.with_label (_ ("Artist - Year - Album"));
+            menu_sort_2 = new Gtk.CheckMenuItem.with_label (_ ("Album - Artist"));
+            menu_sort_3 = new Gtk.CheckMenuItem.with_label (_ ("Artist - Album"));
             set_sort_mode_album_view ();
 
             menu_sort_1.toggled.connect (() => {
@@ -629,6 +631,8 @@ namespace PlayMyMusic {
             }
 
             var mode_switch = new Granite.ModeSwitch.from_icon_name ("display-brightness-symbolic", "weather-clear-night-symbolic");
+            mode_switch.primary_icon_tooltip_text = _ ("Light background");
+            mode_switch.secondary_icon_tooltip_text = _ ("Dark background");
             mode_switch.valign = Gtk.Align.CENTER;
             mode_switch.active = settings.use_dark_theme;
             mode_switch.notify["active"].connect (() => {
@@ -689,7 +693,7 @@ namespace PlayMyMusic {
 
             queue_button.valign = Gtk.Align.CENTER;
             queue_button.opacity = queue.playlist.has_tracks () ? 1 : 0.5;
-            queue_button.tooltip_text = _("Queue");
+            queue_button.tooltip_text = _ ("Queue");
 
             queue_button.clicked.connect (() => {
                 //WORKAROUND: Don't know how to avoid focus grabing of 'queue' object
