@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 18:56+0200\n"
+"POT-Creation-Date: 2019-04-14 19:49+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
 "Last-Translator: NathanBnm\n"
 "Language-Team: none\n"
@@ -25,7 +25,7 @@ msgstr "Melody"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:5
 msgid "Listen your music"
-msgstr "Ecouter votre musique"
+msgstr "Écoutez votre musique"
 
 #: data/com.github.artemanufrij.playmymusic.desktop.in:6
 msgid "music;radio;playlist;"
@@ -63,45 +63,50 @@ msgstr "media-skip-backward-symbolic"
 msgid ""
 "A music player for listening local music files, online radios and Audio CD's"
 msgstr ""
+"Un lecteur de musique pour écouter vos fichiers de musique locaux, des "
+"webradios et des CD audio"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
 msgid ""
 "A very fast music player designed extra for large local libraries which also "
 "supports online radios and downloading album covers"
 msgstr ""
+"Un lecteur de musique très rapide conçu pour les grandes bibliothèques "
+"musicales et qui supporte également les webradios et le téléchargement des "
+"pochettes d'album"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
 msgid "Features:"
-msgstr "Caractéristiques"
+msgstr "Fonctionnalités :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
 msgid "Show all Albums from your library"
-msgstr "Afficher tous les albums de votre bibliothèque"
+msgstr "Affichez tous les albums de votre bibliothèque"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
 msgid "Group tracks by Artists"
-msgstr "Trier les pistes par Artistes"
+msgstr "Triez les pistes par Artistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
 msgid "Manage your Playlists"
-msgstr "Gérer vos listes de lecture"
+msgstr "Gérez vos listes de lecture"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
 msgid "Listen to online Radio"
-msgstr "Écouter des webradios"
+msgstr "Écoutez des webradios"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:524
 msgid "Audio CD support"
-msgstr "Support du CD Audio"
+msgstr "Prise en charge des CD audio"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
 msgid "Manage your MTP device"
-msgstr "Gérer vos dispositifs MTP"
+msgstr "Gérez vos périphériques MTP"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
 msgid "ID3-Tag support"
-msgstr "Support des Tags ID3"
+msgstr "Pris en charge des Tags ID3"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
 msgid "Artem Anufrij"
@@ -143,15 +148,18 @@ msgstr "Pistes"
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:566
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:580
 msgid "New:"
-msgstr ""
+msgstr "Nouveau :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:57
 msgid "[Playlist] Export/Import Playlist as M3U format"
 msgstr ""
+"[Liste de lecture] Exportez/Importez des listes de lecture au format M3U"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:59
 msgid "[Playlist] Show track counter and playlist duration"
 msgstr ""
+"[Liste de lecture] Affichage du nombre de pistes et de la durée de la liste "
+"de lecture"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:62
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:88
@@ -164,11 +172,13 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:337
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:396
 msgid "Improved:"
-msgstr ""
+msgstr "Amélioration :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:64
 msgid "Select playlist button when copy queue into a new playlist"
 msgstr ""
+"Sélection du bouton de liste de lecture lors de la copie de la file "
+"d'attente vers une nouvelle liste de lecture"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:67
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:93
@@ -181,11 +191,11 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:274
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:316
 msgid "Fixed:"
-msgstr ""
+msgstr "Correction :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:69
 msgid "[Radio] UI fix 'new Radio' popup"
-msgstr ""
+msgstr "[Radio] Correction de l'interface, nouveau popup « Nouvelle radio »"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:72
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:98
@@ -211,23 +221,27 @@ msgstr "Traduction :"
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:104
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:202
 msgid "German"
-msgstr ""
+msgstr "Allemand"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:83
 msgid "Image preview in cover/artist chooser dialog (by kaiman)"
 msgstr ""
+"Aperçu de l'image dans la boîte de dialogue de modification de la pochette "
+"de l'album ou du visuel de l'artiste (par kaiman)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:85
 msgid "[Sort by] (Artis-Album or Album-Artist) option for Albums View"
 msgstr ""
+"[Trier par] Option (Artist-Album ou Album-Artiste) pour la vue des albums"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:90
 msgid "Option [on/off] for saving track progress"
 msgstr ""
+"Option [Activé/Désactivé] pour l'enregistrement de la progression des pistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:95
 msgid "Radio icon inside \"new radio\" popup"
-msgstr ""
+msgstr "Icône radio dans le popup « Nouvelle radio »"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:100
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:204
@@ -235,55 +249,56 @@ msgstr ""
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:415
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:446
 msgid "Russian (by Camellan)"
-msgstr ""
+msgstr "Russe (par Camellan)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:102
 msgid "Chinese (by kaiman)"
-msgstr ""
+msgstr "Chinois (par kaiman)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:113
 msgid "Queue functionality"
-msgstr ""
+msgstr "Fonctionnalité de la file d'attente"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:115
 msgid "Save and restore last played song and progress"
-msgstr ""
+msgstr "Enregistre et restaure la dernière chanson jouée et sa progression"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:117
 msgid "Switch columns visibility for tracks view"
-msgstr ""
+msgstr "Modification de la visibilité des colonnes pour la vue des pistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:122
 msgid "Click on headerbar choose current track"
-msgstr ""
+msgstr "Un clic sur la barre supérieure sélectionne la chanson courante"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:124
 msgid "UI: select current track in tracks view"
 msgstr ""
+"Interface :  Sélection de la piste en cours de lecture dns la vue des pistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:129
 msgid "Reorder controls on header bar"
-msgstr ""
+msgstr "Réorganisation des contrôles dans la barre supérieure"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:131
 msgid "Drag and Drop behavior for Playlists"
-msgstr ""
+msgstr "Glisser-déposer pour les listes de lecture"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:136
 msgid "Danish (by rasmus91)"
-msgstr ""
+msgstr "Danois (par rasmus91)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:145
 msgid "Restore correct window size"
-msgstr ""
+msgstr "Restauration de la taille de la fenêtre"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:150
 msgid "Dutch (by Heimen Stoffels)"
-msgstr ""
+msgstr "Néerlandais (par Heimen Stoffels)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:152
 msgid "Italian (by papou84)"
-msgstr ""
+msgstr "Italien (par papou84)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:161
 msgid "[optional] Delete Playlist if last Track was removed"
@@ -292,32 +307,36 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:163
 msgid "Toggle playing by Space Key"
-msgstr ""
+msgstr "Lecture/Pause avec la touche Espace"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:165
 msgid "Add Track into Playlist from Trackview"
-msgstr "Ajoutez un titre à la liste de lecture depuis la vue des titres"
+msgstr "Ajoutez un titre à la liste de lecture depuis la vue des pistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:167
 msgid "RadioView: [Ctrl]+[Enter] for accept changes in editor"
 msgstr ""
+"Vue des radios : [Ctrl]+[Enter] pour enregistrer les modifications dans "
+"l'éditeur"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:172
 msgid "Player doesn't show '0' it the timeline if playing is paused"
 msgstr ""
+"Le lecteur n'affiche pas « 0 » dans la barre de progression si la lecture "
+"est mise en pause"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:174
 msgid "Better focus grabing"
-msgstr ""
+msgstr "Meilleur gestion du focus"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:179
 msgid "Faster start up behaviour"
-msgstr ""
+msgstr "Démarrage plus rapide"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:185
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:284
 msgid "Prepare for JUNO"
-msgstr ""
+msgstr "Préparation pour JUNO"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:191
 msgid "[optional] Copy imported music files into library"
@@ -325,35 +344,37 @@ msgstr "[facultatif] Copiez les fichiers importés dans la bibliothèque"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:195
 msgid "Show correct artist at sound indicator"
-msgstr ""
+msgstr "Affichage de l'artiste correcr dans l'indicateur de volume"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:196
 msgid "Search in Track View"
-msgstr ""
+msgstr "Recherchez dans la vue des pistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:197
 msgid "Order for Tracks without Track No in ID3 Tag"
-msgstr ""
+msgstr "Ordre pour les pistes dans numéro de piste dans les Tags ID3"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:198
 msgid "Close behaviour for Artist and Album dialogs (by Sergii Fesenko)"
 msgstr ""
+"Possibilité de fermer les boîtes de dialogue pour les artistes et les albums "
+"(par Sergii Fesenko)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:203
 msgid "French (by papou84)"
-msgstr ""
+msgstr "Français (par papou84)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:212
 msgid "Meson Errors"
-msgstr ""
+msgstr "Erreurs avec meson"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:220
 msgid "Switch to meson"
-msgstr ""
+msgstr "Passage à meson"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:224
 msgid "Tooltip for album cover"
-msgstr ""
+msgstr "Indications pour les pochettes d'album"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:225
 msgid "Fetching of Artist Art from MusicBrainz"
@@ -361,81 +382,86 @@ msgstr "Récupération des visuels des artistes depuis MusicBrainz"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:229
 msgid "Danish (by Rasmus Lindegaard)"
-msgstr ""
+msgstr "Danois (par Rasmus Lindegaard)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:237
 msgid "'and' char in Tracks View"
-msgstr ""
+msgstr "Caractère « & » dans la vue des pistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:241
 msgid "Context menu behaviour"
-msgstr ""
+msgstr "Comportement du menu contextuel"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:242
 msgid "Removed multi selection button"
-msgstr ""
+msgstr "Supression du bouton de sélection multiple"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:250
 msgid "Double click on Album/Artist starts playing first track"
 msgstr ""
+"Un double clic sur un album ou un artiste lance la lecture de la première "
+"piste"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:251
 msgid "Double click on Track starts playing from begining"
 msgstr ""
+"Un double clic sur une piste lance la lecture de ce titre depuis le début"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:255
 msgid "Portuguese - Brazil (by Gustavo Marques)"
-msgstr ""
+msgstr "Portugais - Brésil (par Gustavo Marques)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:256
 msgid "Polish (by Michał Węglowski-Hodur)"
-msgstr ""
+msgstr "Polonais (par Michał Węglowski-Hodur)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:264
 msgid "Desktop Action Menu"
-msgstr ""
+msgstr "Menu d'action du lanceur"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:272
 msgid "Shuffle and Repeat mode for Tracks View"
-msgstr ""
+msgstr "Mode de lecture aléatoire et répétition pour la vue des pistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:276
 msgid "Remove cover cache file if album or artist was deleted"
 msgstr ""
+"Suppression du cache des pochettes et visuels si celui d'un album ou d'un "
+"artiste a été supprimé"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:282
 msgid "Misc:"
-msgstr ""
+msgstr "Divers :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:292
 msgid "Hide button for Mobile Panel"
-msgstr "Bouton de masquage pour le panneau de pérphérique mobile"
+msgstr "Bouton de masquage pour le panneau du téléphone portable"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:296
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:310
 msgid "Catalan (by Adolfo Jayme-Barrientos)"
-msgstr ""
+msgstr "Catalan (par Adolfo Jayme-Barrientos)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:297
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:467
 msgid "Spanish (by Adolfo Jayme-Barrientos)"
-msgstr ""
+msgstr "Espagnol (par Adolfo Jayme-Barrientos)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:305
 msgid "Speed up start behavior"
-msgstr ""
+msgstr "Démarrage plus rapide"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:306
 msgid "Small design changes in list view"
-msgstr ""
+msgstr "Petits ajustements graphiques dans la vue en liste"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:318
 msgid "List View: sorting and small design changes"
-msgstr ""
+msgstr "Vue en liste : Tri et quelques ajustements graphiques"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:326
 msgid "List View for all music content"
-msgstr ""
+msgstr "Vue en liste pour tous les contenus musicaux"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:327
 msgid "Grab album cover from MusicBrainz"
@@ -453,73 +479,85 @@ msgstr "Récupération des pochettes d'album depuis MusicBrainz"
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:553
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:572
 msgid "Fix:"
-msgstr ""
+msgstr "Correction :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:335
 msgid "Endless spinner on first start (if no music files exist)"
 msgstr ""
+"Icône de chargement infinie au démarrage (si aucun fichier de musique "
+"detecté)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:339
 msgid "Mounting MTP-Devices"
-msgstr ""
+msgstr "Montage des périphériques MTP"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:340
 msgid "Show \"No Result\" message if search term hasn't any results"
 msgstr ""
+"Affichage de « Aucun résultat » si la recherche ne donne pas de résultat"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:348
 msgid "Desktop Actions: Next, Previous, Play/Pause"
-msgstr ""
+msgstr "Actions du lanceur : Suivant, Précédent, Lecture/Pause"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:356
 msgid "Saving changes directly into file (ID3-tags)"
-msgstr "Sauvegarde des modifications directement dans le fichier (Tags ID3)"
+msgstr ""
+"Enregistrement des modifications directement dans le fichier (Tags ID3)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:358
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:434
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:473
 msgid "Changes:"
-msgstr ""
+msgstr "Modifications :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:360
 msgid "Generic name \"PlayMyMusic\" -&gt; \"Melody\""
-msgstr ""
+msgstr "Nom générique « PlayMyMusic » -&gt; « Melody »"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:361
 msgid "Lazy cover loading -&gt; less memory on startup"
 msgstr ""
+"Chargement plus lent des pochettes -&gt; Moins de mémoire utilisée au "
+"démarrage"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:365
 msgid "Simplified Chinese (by trampover)"
-msgstr ""
+msgstr "Chinois simplifié (par trampover)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:373
 msgid "Endless spinner"
-msgstr ""
+msgstr "Icône de chargement infinie"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:381
 msgid "Spinner visibility while library is being scanned"
 msgstr ""
+"Visibilité de l'icône de chargement lorsque la bibliothèque est en train "
+"d'être analysée"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:385
 msgid "Spanish (by Alain)"
-msgstr ""
+msgstr "Espagnol (par Alain)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:393
 msgid "Show song title from online radio in audio indicator"
 msgstr ""
+"Affichage du titre de la chanson dans l'indicateur de volume pour les "
+"webradios"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:394
 msgid "Save/restore window position"
-msgstr ""
+msgstr "Enregistrement/Restauration de la position de la fenêtre"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:398
 msgid "Start searching instand on key press"
-msgstr ""
+msgstr "Démarrage de la recherche dès l'appui sur une touche"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:399
 msgid "Playlist Editor: Accept changes on press CTRL+Enter"
 msgstr ""
+"Éditeur de liste de lecture : Enregistrement des modifications avec Ctrl"
+"+Enter"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:407
 msgid "Reorder Playlist items by Drag an Drop"
@@ -540,7 +578,7 @@ msgstr "Fusionnez des albums"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:425
 msgid "Album Editor [F2]"
-msgstr ""
+msgstr "Éditeur d'album [F2]"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:426
 msgid "Merge Artists"
@@ -548,69 +586,80 @@ msgstr "Fusionnez des artistes"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:427
 msgid "Artist Editor [F2]"
-msgstr ""
+msgstr "Éditeur d'artiste [F2]"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:428
 msgid "Multiple selection [CTRL]"
-msgstr ""
+msgstr "Séléction multiple [CTRL]"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:436
 msgid "Moved 'Shuffle' and 'Repeat' buttons into header bar"
 msgstr ""
+"Déplacement des icônes « Lecture aléatoire » et « Répétition » dans la barre "
+"supérieure"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:437
 msgid "Hide MTP-View if playlists, radios or audio cd is choosed"
 msgstr ""
+"Masquage de la vue MTP si la vue listes de lecture, radios ou CD audio est "
+"sélectionnée"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:438
 msgid "Switched from 'search for new files' to 'resync library'"
 msgstr ""
+"Modification de « Recherchez des modifications » à « Resynchroniser la "
+"bibliothèque »"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:442
 msgid ""
 "[MusicBrainz] fetch artist cover if name of artist contains '/' (like AC/DC)"
 msgstr ""
+"[MusicBrainz] Récupération de la pochette d'album si le nom de l'artiste "
+"contient « / » (comme AC/DC)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:447
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:541
 msgid "Lithuanian (by welaq)"
-msgstr ""
+msgstr "Lituanien (par welaq)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:455
 msgid "Hotkeys for switching between views: Alt+1,2,3,4,5"
-msgstr ""
+msgstr "Raccourcis clavier pour basculer entre les vues : Alt+1,2,3,4,5"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:456
 msgid "[MTP] Copy Albums or Artists to your device by Drag and Drop"
 msgstr ""
+"[MTP] Copiez des albums ou des artistes dans votre périphérique par glisser-"
+"déposer"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:457
 msgid "[MTP] Sort music content in the mobile view"
-msgstr ""
+msgstr "[MTP] Triez le contenu musical dans la vue du téléphone portable"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:458
 msgid "[MTP] Don't expand all music content in the mobile view"
 msgstr ""
+"[MTP] N'étend pas tout le contenu musical dans la vue du téléphone portable"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:462
 msgid "Shuffle Mode and Repeat behavior"
-msgstr ""
+msgstr "Mode lecture aléatoire et répétition"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:463
 msgid "URI includes # inside location path"
-msgstr ""
+msgstr "Les URI incluent # dans leur emplacement"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:475
 msgid "Icon (by Alexey Varfolomeev)"
-msgstr ""
+msgstr "icône (par Alexey Varfolomeev)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:479
 msgid "Enable screensaver again after playing finished"
-msgstr ""
+msgstr "Réactivation de la mise en veille après la fin de la lecture"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:480
 msgid "Improved MTP for UbuntuPhone"
-msgstr ""
+msgstr "Amélioration du MTP pour UbuntuPhone"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:488
 msgid "Option for Dark Theme"
@@ -618,92 +667,96 @@ msgstr "Option pour le thème sombre"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:489
 msgid "Repeat function for one song"
-msgstr ""
+msgstr "Fonction de répétition pour une piste"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:490
 msgid "Online Radio Icon (by Alexey Varfolomeev)"
-msgstr ""
+msgstr "Icône de webradio (par Alexey Varfolomeev)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:491
 msgid "Moved from 'path' to 'uri' for GVFS support"
-msgstr ""
+msgstr "Passage de « path » à « uri » pour la prise en charge de GVFS"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:495
 msgid "Sorting Playlist inside context menu"
-msgstr ""
+msgstr "Tri des listes de lecture dans le menu contextuel"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:499
 msgid "Russian (by Alexey Varfolomeev)"
-msgstr ""
+msgstr "Russe (par Alexey Varfolomeev)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:507
 msgid "MTP-Support (Tested on Android)"
-msgstr ""
+msgstr "Prise en charge du MTP (Testé sous Android)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:515
 msgid "Disable screensaver while playing"
-msgstr ""
+msgstr "Désactivation de la mise en veille pendant la lecture"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:516
 msgid "Import files by Drag and Drop"
-msgstr ""
+msgstr "Importez des fichiers par glisser-déposer"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:525
 msgid "[artist view] Download artwork from MusicBrainz if exists"
 msgstr ""
+"[Vue artiste] Téléchargement d'un visuel depuis MusicBrainz s'il existe"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:526
 msgid "A lot of improvements"
-msgstr ""
+msgstr "Beaucoup d'améliorations"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:530
 msgid "[online radio] Freeze on 'audio/aacp' stream"
-msgstr ""
+msgstr "[Webradio] Blocage sur les flux « audio/aacp »"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:531
 msgid "Critical error when external file playing"
-msgstr ""
+msgstr "Erreur critique lors de la lecture d'un fichier externe"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:532
 msgid "Crash if music files are not exist and play mode is 'repeat'"
 msgstr ""
+"Plantage si le fichier de musique n'existe pas et que le mode de lecture est "
+"« répéter »"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:533
 msgid "Crash if you scan a NFS-mounted directory"
-msgstr ""
+msgstr "Plantage si vous analysez un répertoire monté en NFS"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:535
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:558
 msgid "Change:"
-msgstr ""
+msgstr "Modification :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:537
 msgid "Moved to Granite SeekBar"
-msgstr ""
+msgstr "Passage à la barre de progression de Granite"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:542
 msgid "French (by nvivant)"
-msgstr ""
+msgstr "Français (par nvivant)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:550
 msgid "[option] Look for new music files on start up [on/off]"
 msgstr ""
+"[Option] Recherche de nouveaux fichiers au démarrage [Activé/Désactivé]"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:551
 msgid "Added 16px icon"
-msgstr ""
+msgstr "Ajout de l'icône 16px"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:555
 msgid "Crash while importing files"
-msgstr ""
+msgstr "Plantage lors de l'importation de fichiers"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:556
 msgid "[artist view] Don't show track twice"
-msgstr ""
+msgstr "[Vue artiste] N'affiche pas les pistes en double"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:560
 msgid "App icon"
-msgstr ""
+msgstr "Icône de l'application"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:568
 msgid "Playlist support"
@@ -715,20 +768,20 @@ msgstr "Poursuivre la lecture en arrière-plan"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:570
 msgid "Translation: Portuguese (by Rafael Campos Nunes)"
-msgstr ""
+msgstr "Trdauction : Portugais (par Rafael Campos Nunes)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:574
 msgid "Crash on trying to stream online radio"
-msgstr ""
+msgstr "Plantage lors de la tentative de lecture d'une webradio"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:582
 msgid "Sound Indicator"
-msgstr ""
+msgstr "Indicateur de volume"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:584
 msgid "Miscellaneous:"
-msgstr ""
+msgstr "Divers :"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:586
 msgid "Small style improvements"
-msgstr ""
+msgstr "Petits ajustements graphiques"

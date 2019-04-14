@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.artemanufrij.playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 18:56+0200\n"
+"POT-Creation-Date: 2019-04-14 19:49+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
 "Last-Translator: NathanBnm\n"
 "Language-Team: none\n"
@@ -27,7 +27,7 @@ msgstr "Melody"
 
 #: src/MainWindow.vala:161 src/MainWindow.vala:387
 msgid "Play"
-msgstr "Lire"
+msgstr "Lecture"
 
 #: src/MainWindow.vala:337
 msgid "Loading…"
@@ -71,7 +71,7 @@ msgstr "Listes de lecture"
 
 #: src/MainWindow.vala:470
 msgid "Radio Stations"
-msgstr "Stations radio"
+msgstr "Stations de radio"
 
 #: src/MainWindow.vala:477
 msgid "Audio CD"
@@ -79,7 +79,7 @@ msgstr "CD audio"
 
 #: src/MainWindow.vala:542
 msgid "Change Music Folder…"
-msgstr "Changer de dossier Musique..."
+msgstr "Modifier le dossier de Musique..."
 
 #: src/MainWindow.vala:551
 msgid "Import Music…"
@@ -115,7 +115,7 @@ msgstr "Préférences"
 
 #: src/MainWindow.vala:642
 msgid "Search Music"
-msgstr "Chercher de la musique"
+msgstr "Rechercher de la musique"
 
 #: src/MainWindow.vala:692
 msgid "Queue"
@@ -163,15 +163,15 @@ msgstr "Synchroniser les fichiers au démarrage"
 
 #: src/Dialogs/Preferences.vala:99
 msgid "Load Content from MusicBrainz"
-msgstr "Charger les contenus depuis MusicBrainz"
+msgstr "Charger le contenu depuis MusicBrainz"
 
 #: src/Dialogs/Preferences.vala:101
 msgid "Save custom Covers in Library folder"
-msgstr "Sauvegarder les pochettes dans le dossier de la bibliothèque"
+msgstr "Enregistrer les pochettes dans le dossier de la bibliothèque"
 
 #: src/Dialogs/Preferences.vala:103
 msgid "Save changes into ID3-Tag"
-msgstr "Sauvegarder les changements dans les Tags ID3"
+msgstr "Enregistrer les modifications dans les Tags ID3"
 
 #: src/Dialogs/Preferences.vala:106
 msgid "Copy Imported Files into Library"
@@ -213,7 +213,7 @@ msgstr "Nouvelle liste de lecture"
 
 #: src/Services/LibraryManager.vala:350 src/Services/LibraryManager.vala:446
 msgid "Choose an image…"
-msgstr "Choisissez une image…"
+msgstr "Choisir une image…"
 
 #: src/Services/LibraryManager.vala:352 src/Services/LibraryManager.vala:448
 #: src/Services/LibraryManager.vala:490 src/Services/LibraryManager.vala:511
@@ -276,11 +276,11 @@ msgstr "Créer une nouvelle liste de lecture"
 #: src/Widgets/Album.vala:305 src/Widgets/Artist.vala:260
 #, c-format
 msgid "Merge %u selected Albums"
-msgstr "Fusionner %u les albums sélectionnés"
+msgstr "Fusionner les %u albums sélectionnés"
 
 #: src/Widgets/Artist.vala:206
 msgid "Edit Artist properties…"
-msgstr "Modifier les propriétés de l'artiste"
+msgstr "Modifier les propriétés de l'artiste…"
 
 #: src/Widgets/Playlist.vala:46
 #, c-format
@@ -343,16 +343,16 @@ msgstr "Obtenir des morceaux"
 
 #: src/Widgets/Views/AlbumsView.vala:122
 msgid "Add music to your library."
-msgstr "Ajouter de la musique depuis votre bibliothèque"
+msgstr "Ajoutez de la musique depuis votre bibliothèque."
 
 #: src/Widgets/Views/AlbumsView.vala:123
 msgid "Change Music Folder"
-msgstr "Modifier le dossier Musique"
+msgstr "Modifier le dossier de Musique"
 
 #: src/Widgets/Views/AlbumsView.vala:123
 msgid "Load music from a folder, a network or an external disk."
 msgstr ""
-"Charger de la musique depuis un dossier, le réseau ou un disque externe"
+"Charger de la musique depuis un dossier, le réseau ou un disque externe."
 
 #: src/Widgets/Views/AlbumsView.vala:124
 msgid "Import Music"
@@ -360,7 +360,7 @@ msgstr "Importer de la musique"
 
 #: src/Widgets/Views/AlbumsView.vala:124
 msgid "Import music from a source into your library."
-msgstr "Importer de la musique depuis votre bibliothèque"
+msgstr "Importer de la musique depuis une source vers votre bibliothèque."
 
 #: src/Widgets/Views/AlbumsView.vala:143 src/Widgets/Views/ArtistsView.vala:110
 #: src/Widgets/Views/PlaylistsView.vala:159
@@ -372,7 +372,7 @@ msgstr "Aucun résultat"
 #: src/Widgets/Views/PlaylistsView.vala:159
 #: src/Widgets/Views/RadiosView.vala:194
 msgid "Try another search"
-msgstr "Modifiez votre recherche"
+msgstr "Essayez de modifier votre recherche"
 
 #: src/Widgets/Views/ArtistView.vala:110
 msgid "Choose an Artist"
@@ -393,7 +393,7 @@ msgstr "Activez le MTP sur votre téléphone portable"
 
 #: src/Widgets/Views/MobilePhone.vala:108
 msgid "Hide Mobile Panel"
-msgstr "Cacher le panneau du téléphone portable"
+msgstr "Masquer le panneau du téléphone portable"
 
 #: src/Widgets/Views/PlaylistsView.vala:94
 msgid "Add a playlist"
@@ -440,7 +440,7 @@ msgstr "Créer une nouvelle liste de lecture à partir de la file d'attente"
 #: src/Widgets/Views/Queue.vala:89 src/Widgets/Views/Queue.vala:104
 #, c-format
 msgid "Queue from %s"
-msgstr "Placé en file d'attente à partir de"
+msgstr "Placé en file d'attente à partir de %s"
 
 #: src/Widgets/Views/Queue.vala:100
 msgid "Export Queue…"
@@ -452,7 +452,7 @@ msgstr "La file d'attente est vide"
 
 #: src/Widgets/Views/RadiosView.vala:110
 msgid "Add a radio station"
-msgstr "Ajouter une radio"
+msgstr "Ajouter une station de radio"
 
 #: src/Widgets/Views/RadiosView.vala:120
 msgid "Station Name"
