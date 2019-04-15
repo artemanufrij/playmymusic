@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.artemanufrij.playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-14 23:39+0200\n"
+"POT-Creation-Date: 2019-04-15 10:59+0200\n"
 "PO-Revision-Date: 2019-04-14 17:24+0200\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <vistausss@outlook.com>\n"
@@ -51,11 +51,11 @@ msgstr "Volgende"
 
 #: src/MainWindow.vala:415 src/MainWindow.vala:1015
 msgid "Shuffle On"
-msgstr ""
+msgstr "Willekeurig ingeschakeld"
 
 #: src/MainWindow.vala:418 src/MainWindow.vala:1018
 msgid "Shuffle Off"
-msgstr ""
+msgstr "Willekeurig uitgeschakeld"
 
 #: src/MainWindow.vala:452
 msgid "Albums"
@@ -103,19 +103,19 @@ msgstr "Verzameling opnieuw synchroniseren"
 
 #: src/MainWindow.vala:572
 msgid "Sort by"
-msgstr ""
+msgstr "Sorteren op"
 
 #: src/MainWindow.vala:575
 msgid "Artist - Year - Album"
-msgstr ""
+msgstr "Artiest - Jaar - Album"
 
 #: src/MainWindow.vala:576
 msgid "Album - Artist"
-msgstr ""
+msgstr "Album - Artiest"
 
 #: src/MainWindow.vala:577
 msgid "Artist - Album"
-msgstr ""
+msgstr "Artiest - Album"
 
 #: src/MainWindow.vala:600 src/Dialogs/Preferences.vala:54
 msgid "Preferences"
@@ -135,7 +135,7 @@ msgstr "Muziek doorzoeken"
 
 #: src/MainWindow.vala:696
 msgid "Queue"
-msgstr ""
+msgstr "Wachtrij"
 
 #: src/MainWindow.vala:806 src/MainWindow.vala:814
 #: src/Widgets/Views/TracksView.vala:435
@@ -145,15 +145,15 @@ msgstr "<b>%s</b> door <b>%s</s>"
 
 #: src/MainWindow.vala:998
 msgid "Repeat All"
-msgstr ""
+msgstr "Alles herhalen"
 
 #: src/MainWindow.vala:1002
 msgid "Repeat One"
-msgstr ""
+msgstr "Eén herhalen"
 
 #: src/MainWindow.vala:1006
 msgid "Repeat Off"
-msgstr ""
+msgstr "Herhalen uitgeschakeld"
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 #: src/Widgets/Views/RadiosView.vala:146
@@ -195,11 +195,11 @@ msgstr "Geïmporteerde bestanden kopiëren naar verzameling"
 
 #: src/Dialogs/Preferences.vala:108
 msgid "Remove Playlist if last Track was removed"
-msgstr ""
+msgstr "Afspeellijst verwijderen na verwijderen van laatste nummer"
 
 #: src/Dialogs/Preferences.vala:111
 msgid "Remember Track progress"
-msgstr ""
+msgstr "Afspeelvoortgang onthouden"
 
 #: src/Dialogs/Preferences.vala:116
 msgid "Close"
@@ -238,11 +238,11 @@ msgstr "_Annuleren"
 
 #: src/Services/LibraryManager.vala:353
 msgid "_Save"
-msgstr ""
+msgstr "Op_slaan"
 
 #: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
 msgid "Playlist (.m3u)"
-msgstr ""
+msgstr "Afspeellijst (.m3u)"
 
 #: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
 #: src/Services/LibraryManager.vala:512
@@ -255,7 +255,7 @@ msgstr "Afbeeldingen"
 
 #: src/Services/LibraryManager.vala:488
 msgid "Choose a playlist…"
-msgstr ""
+msgstr "Kies een afspeellijst…"
 
 #: src/Services/LibraryManager.vala:510
 msgid "Select a folder."
@@ -301,7 +301,7 @@ msgstr "Artiesteigenschappen bewerken…"
 #: src/Widgets/Playlist.vala:46
 #, c-format
 msgid "<small>%u Tracks</small>"
-msgstr ""
+msgstr "<small>%u nummers</small>"
 
 #: src/Widgets/Playlist.vala:134
 msgid "Rename"
@@ -317,7 +317,7 @@ msgstr "Afspeellijst verwijderen"
 
 #: src/Widgets/Playlist.vala:171
 msgid "Export Playlist…"
-msgstr ""
+msgstr "Afspeellijst exporteren…"
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -338,7 +338,7 @@ msgstr ""
 
 #: src/Widgets/Track.vala:211 src/Widgets/Views/TracksView.vala:330
 msgid "Add to Queue"
-msgstr ""
+msgstr "Toevoegen aan wachtrij"
 
 #: src/Widgets/Track.vala:234
 msgid "Remove from Playlist"
@@ -346,7 +346,7 @@ msgstr "Verwijderen uit afspeellijst"
 
 #: src/Widgets/Track.vala:236
 msgid "Remove from Queue"
-msgstr ""
+msgstr "Verwijderen uit wachtrij"
 
 #: src/Widgets/TrackTimeLine.vala:95 src/Widgets/TrackTimeLine.vala:99
 #, c-format
@@ -404,7 +404,7 @@ msgstr "<b>%d nummers</b> in <b>%d album</b>(s)"
 
 #: src/Widgets/Views/MobilePhone.vala:81
 msgid "Enable MTP on your mobile phone"
-msgstr ""
+msgstr "Schakel MTP in op je mobiele telefoon"
 
 #: src/Widgets/Views/MobilePhone.vala:108
 msgid "Hide Mobile Panel"
@@ -417,7 +417,7 @@ msgstr "Afspeellijst toevoegen"
 #: src/Widgets/Views/PlaylistsView.vala:104
 #: src/Widgets/Views/PlaylistsView.vala:141
 msgid "Import Playlist"
-msgstr ""
+msgstr "Afspeellijst importeren"
 
 #: src/Widgets/Views/PlaylistsView.vala:119
 #: src/Widgets/Views/RadiosView.vala:229
@@ -442,28 +442,28 @@ msgstr "Creëer een afspeellijst voor bet beheren van je favoriete nummers."
 
 #: src/Widgets/Views/PlaylistsView.vala:141
 msgid "Import .m3u formated Playlist."
-msgstr ""
+msgstr "Importeer een .m3u-opgemaakte afspeellijst."
 
 #: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
-msgstr ""
+msgstr "Wachtrij wissen"
 
 #: src/Widgets/Views/Queue.vala:84
 msgid "Create new Playlist based on this Queue"
-msgstr ""
+msgstr "Nieuwe afspeellijst creëren op basis van deze wachtrij"
 
 #: src/Widgets/Views/Queue.vala:89 src/Widgets/Views/Queue.vala:104
 #, c-format
 msgid "Queue from %s"
-msgstr ""
+msgstr "Wachtrij op basis van %s"
 
 #: src/Widgets/Views/Queue.vala:100
 msgid "Export Queue…"
-msgstr ""
+msgstr "Wachtrij exporteren…"
 
 #: src/Widgets/Views/Queue.vala:118
 msgid "Queue is empty"
-msgstr ""
+msgstr "Wachtrij is leeg"
 
 #: src/Widgets/Views/RadiosView.vala:110
 msgid "Add a radio station"
@@ -523,8 +523,8 @@ msgstr "Geen nummer gekozen"
 
 #: src/Widgets/Views/TracksView.vala:351
 msgid "Columns Visibility"
-msgstr ""
+msgstr "Zichtbaarheid van kolommen"
 
 #: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
-msgstr ""
+msgstr "Je kunt niet alle kolommen verbergen"
