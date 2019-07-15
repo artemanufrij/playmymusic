@@ -89,5 +89,31 @@ namespace PlayMyMusic.Services {
                 return null;
             });
         }
+
+        public string get_file_uri (string path, string parent = "") {
+            string file_uri = path;
+            if (!path.has_prefix ("/")) {
+                file_uri = "%s/%s".printf(parent, path);
+                stdout.printf ("%s seems not an absolute path: adding parent (%s)\n", path, file_uri);
+            }
+
+            File path_file = File.new_for_path(file_uri);
+            try {
+                FileInfo path_file_info = path_file.query_info ("%s,%s".printf (FileAttribute.STANDARD_SYMLINK_TARGET, FileAttribute.STANDARD_IS_SYMLINK), FileQueryInfoFlags.NONE);
+                if (path_file_info.get_is_symlink ()) {
+                    stdout.printf ("%s is symlink: getting target...\n", file_uri);
+                    file_uri = path_file_info.get_symlink_target ();
+                    file_uri = (!file_uri.has_prefix ("/")) ? "%s/%s".printf(parent, file_uri) : file_uri;
+                    stdout.printf ("Target: %s\n", file_uri);
+                    path_file = File.new_for_path (file_uri);
+                }
+            } catch (Error error) {
+                // cannot parse file symlinks informations
+                // ignore it
+            }
+
+            stdout.printf ("Returning absolute path: %s\n", path_file.resolve_relative_path (".").get_path ());
+            return path_file.resolve_relative_path (".").get_path ();
+        }
     }
 }
