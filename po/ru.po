@@ -1,241 +1,160 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Russian translations for com.github.artemanufrij.playmymusic package.
+# Copyright (C) 2019 THE com.github.artemanufrij.playmymusic'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.artemanufrij.playmymusic package.
+# Andrey Kultyapov <camellan@yandex.ru>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: playmymusic\n"
+"Project-Id-Version: com.github.artemanufrij.playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:32+0100\n"
-"PO-Revision-Date: 2018-10-27 20:58+0400\n"
+"POT-Creation-Date: 2019-04-15 10:59+0200\n"
+"PO-Revision-Date: 2019-04-14 17:24+0200\n"
 "Last-Translator: Andrey Kultyapov <camellan@yandex.ru>\n"
-"Language-Team: \n"
+"Language-Team: none\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Basepath: ../src\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: .\n"
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
-#: data/com.github.artemanufrij.playmymusic.desktop.in:3
-#: data/com.github.artemanufrij.playmymusic.desktop.in:4
-#: src/MainWindow.vala:155 src/MainWindow.vala:281
-msgid "Melody"
-msgstr "Melody"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
-msgid ""
-"A music player for listening local music files, online radios and Audio CD's"
+#: src/MainWindow.vala:110
+msgid "Synchronizing library"
 msgstr ""
-"Музыкальный плеер для прослушивания локальной музыки, онлайн радио и аудио CD"
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
-msgid ""
-"A very fast music player designed extra for large local libraries which also "
-"supports online radios and downloading album covers"
-msgstr ""
-"Очень быстрый музыкальный плеер, созданный для больших локальных медиатек с "
-"поддержкой онлайн-радио и загрузкой обложек альбомов"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
-msgid "Features:"
-msgstr "Особенности:"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
-msgid "Show all Albums from your library"
-msgstr "Просмотр всех альбомов из вашей медиатеки"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
-msgid "Group tracks by Artists"
-msgstr "Группировка песен по исполнителям"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
-msgid "Manage your Playlists"
-msgstr "Управление вашими плейлистами"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
-msgid "Listen to online Radio"
-msgstr "Прослушивание онлайн радио"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
-msgid "Audio CD support"
-msgstr "Поддержка аудио CD"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
-msgid "Manage your MTP device"
-msgstr "Управление вашими MTP-устройствами"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
-msgid "ID3-Tag support"
-msgstr "Поддержка ID3-тегов"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
-msgid "Artem Anufrij"
-msgstr "Artem Anufrij"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
-#: src/MainWindow.vala:451
-msgid "Albums"
-msgstr "Альбомы"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
-#: src/MainWindow.vala:455
-msgid "Artists"
-msgstr "Исполнители"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:49
-#: src/MainWindow.vala:460
-msgid "Tracks"
-msgstr "Песни"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:5
-msgid "Listen your music"
-msgstr "Слушайте музыку"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:6
-msgid "music;radio;playlist;"
-msgstr "music;radio;playlist;"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:8
-msgid "com.github.artemanufrij.playmymusic"
-msgstr "com.github.artemanufrij.playmymusic"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:18
-msgid "Play/Pause"
-msgstr "Воспр./Пауза"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:20
-msgid "media-playback-start-symbolic"
-msgstr "media-playback-start-symbolic"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:23
-#: src/MainWindow.vala:396
-msgid "Next"
-msgstr "Следующий"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:25
-msgid "media-skip-forward-symbolic"
-msgstr "media-skip-forward-symbolic"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:28
-#: src/MainWindow.vala:377
-msgid "Previous"
-msgstr "Предыдущий"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:30
-msgid "media-skip-backward-symbolic"
-msgstr "media-skip-backward-symbolic"
-
-#: src/MainWindow.vala:135
+#: src/MainWindow.vala:136
 msgid "Pause"
 msgstr "Пауза"
 
-#: src/MainWindow.vala:161 src/MainWindow.vala:387
+#: src/MainWindow.vala:156 src/MainWindow.vala:282
+msgid "Melody"
+msgstr "Melody"
+
+#: src/MainWindow.vala:162 src/MainWindow.vala:388
 msgid "Play"
 msgstr "Воспроизвести"
 
-#: src/MainWindow.vala:337
+#: src/MainWindow.vala:338
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: src/MainWindow.vala:337
+#: src/MainWindow.vala:338
 msgid "Reading out database content"
 msgstr "Чтение содержимого базы данных"
 
-#: src/MainWindow.vala:414 src/MainWindow.vala:1011
-#, fuzzy
+#: src/MainWindow.vala:378
+msgid "Previous"
+msgstr "Предыдущий"
+
+#: src/MainWindow.vala:397
+msgid "Next"
+msgstr "Следующий"
+
+#: src/MainWindow.vala:415 src/MainWindow.vala:1015
 msgid "Shuffle On"
-msgstr "Перемешать"
+msgstr ""
 
-#: src/MainWindow.vala:417 src/MainWindow.vala:1014
-#, fuzzy
+#: src/MainWindow.vala:418 src/MainWindow.vala:1018
 msgid "Shuffle Off"
-msgstr "Перемешать"
+msgstr ""
 
-#: src/MainWindow.vala:465
+#: src/MainWindow.vala:452
+msgid "Albums"
+msgstr "Альбомы"
+
+#: src/MainWindow.vala:456
+msgid "Artists"
+msgstr "Исполнители"
+
+#: src/MainWindow.vala:461
+msgid "Tracks"
+msgstr "Песни"
+
+#: src/MainWindow.vala:466
 msgid "Playlists"
 msgstr "Плейлисты"
 
-#: src/MainWindow.vala:470
+#: src/MainWindow.vala:471
 msgid "Radio Stations"
 msgstr "Радио"
 
-#: src/MainWindow.vala:477
+#: src/MainWindow.vala:478
 msgid "Audio CD"
 msgstr "Аудио CD"
 
-#: src/MainWindow.vala:542
+#: src/MainWindow.vala:538
+msgid "Menu"
+msgstr ""
+
+#: src/MainWindow.vala:544
 msgid "Change Music Folder…"
 msgstr "Изменить папку музыки…"
 
-#: src/MainWindow.vala:551
+#: src/MainWindow.vala:553
 msgid "Import Music…"
 msgstr "Импорт музыки…"
 
-#: src/MainWindow.vala:559
+#: src/MainWindow.vala:561
 msgid "Reset all views"
 msgstr "Сбросить все виды"
 
-#: src/MainWindow.vala:565
+#: src/MainWindow.vala:567
 msgid "Resync Library"
 msgstr "Пересканировать медиатеку"
 
-#: src/MainWindow.vala:570
+#: src/MainWindow.vala:572
 msgid "Sort by"
 msgstr ""
 
-#: src/MainWindow.vala:573
+#: src/MainWindow.vala:575
 msgid "Artist - Year - Album"
 msgstr ""
 
-#: src/MainWindow.vala:574
-#, fuzzy
+#: src/MainWindow.vala:576
 msgid "Album - Artist"
-msgstr "Исполнитель"
+msgstr ""
 
-#: src/MainWindow.vala:575
-#, fuzzy
+#: src/MainWindow.vala:577
 msgid "Artist - Album"
-msgstr "Исполнитель"
+msgstr ""
 
-#: src/MainWindow.vala:598 src/Dialogs/Preferences.vala:54
+#: src/MainWindow.vala:600 src/Dialogs/Preferences.vala:54
 msgid "Preferences"
 msgstr "Параметры"
 
-#: src/MainWindow.vala:642
+#: src/MainWindow.vala:634
+msgid "Light background"
+msgstr ""
+
+#: src/MainWindow.vala:635
+msgid "Dark background"
+msgstr ""
+
+#: src/MainWindow.vala:646
 msgid "Search Music"
 msgstr "Поиск музыки"
 
-#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
+#: src/MainWindow.vala:696
 msgid "Queue"
 msgstr "Очередь"
 
-#: src/MainWindow.vala:802 src/MainWindow.vala:810
+#: src/MainWindow.vala:806 src/MainWindow.vala:814
 #: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> от <b>%s</b>"
 
-#: src/MainWindow.vala:994
-#, fuzzy
-msgid "Repeat All"
-msgstr "Повтор"
-
 #: src/MainWindow.vala:998
-#, fuzzy
-msgid "Repeat One"
-msgstr "Повтор"
+msgid "Repeat All"
+msgstr ""
 
 #: src/MainWindow.vala:1002
-#, fuzzy
+msgid "Repeat One"
+msgstr ""
+
+#: src/MainWindow.vala:1006
 msgid "Repeat Off"
-msgstr "Повтор"
+msgstr ""
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 #: src/Widgets/Views/RadiosView.vala:146
@@ -319,14 +238,12 @@ msgid "_Cancel"
 msgstr "_Отмена"
 
 #: src/Services/LibraryManager.vala:353
-#, fuzzy
 msgid "_Save"
-msgstr "Сохранить"
+msgstr ""
 
 #: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
-#, fuzzy
 msgid "Playlist (.m3u)"
-msgstr "Плейлисты"
+msgstr ""
 
 #: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
 #: src/Services/LibraryManager.vala:512
@@ -338,9 +255,8 @@ msgid "Images"
 msgstr "Изображения"
 
 #: src/Services/LibraryManager.vala:488
-#, fuzzy
 msgid "Choose a playlist…"
-msgstr "Выбрать изображение…"
+msgstr ""
 
 #: src/Services/LibraryManager.vala:510
 msgid "Select a folder."
@@ -392,7 +308,6 @@ msgstr ""
 msgid "Rename"
 msgstr "Переименовать"
 
-#. CONTEXT MENU REGION
 #: src/Widgets/Playlist.vala:155
 msgid "Rename Playlist"
 msgstr "Переименовать плейлист"
@@ -402,9 +317,8 @@ msgid "Remove Playlist"
 msgstr "Удалить плейлист"
 
 #: src/Widgets/Playlist.vala:171
-#, fuzzy
 msgid "Export Playlist…"
-msgstr "Нет плейлистов"
+msgstr ""
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -503,9 +417,8 @@ msgstr "Добавить плейлист"
 
 #: src/Widgets/Views/PlaylistsView.vala:104
 #: src/Widgets/Views/PlaylistsView.vala:141
-#, fuzzy
 msgid "Import Playlist"
-msgstr "Нет плейлистов"
+msgstr ""
 
 #: src/Widgets/Views/PlaylistsView.vala:119
 #: src/Widgets/Views/RadiosView.vala:229
@@ -529,9 +442,8 @@ msgid "Create a playlist for manage your favorite songs."
 msgstr "Добавьте плейлист для управления своими любимыми композициями."
 
 #: src/Widgets/Views/PlaylistsView.vala:141
-#, fuzzy
 msgid "Import .m3u formated Playlist."
-msgstr "Удалить из плейлиста"
+msgstr ""
 
 #: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
@@ -541,17 +453,16 @@ msgstr "Очистить очередь"
 msgid "Create new Playlist based on this Queue"
 msgstr "Создать новый плейлист на основе этой очереди"
 
-#: src/Widgets/Views/Queue.vala:89
+#: src/Widgets/Views/Queue.vala:89 src/Widgets/Views/Queue.vala:104
 #, c-format
 msgid "Queue from %s"
 msgstr "Очередь из %s"
 
 #: src/Widgets/Views/Queue.vala:100
-#, fuzzy
 msgid "Export Queue…"
-msgstr "Импорт музыки…"
+msgstr ""
 
-#: src/Widgets/Views/Queue.vala:117
+#: src/Widgets/Views/Queue.vala:118
 msgid "Queue is empty"
 msgstr "Очередь очищена"
 
@@ -567,7 +478,6 @@ msgstr "Название"
 msgid "URL"
 msgstr "Адрес"
 
-#. NEW STATION POPOVER END
 #: src/Widgets/Views/RadiosView.vala:177
 msgid "No Radio Stations"
 msgstr "Нет радиостанций"
@@ -584,7 +494,6 @@ msgstr "Добавить радиостанцию"
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "Добавьте адрес потока .pls или .m3u."
 
-#. FOR CONTEXT MENU
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
 msgstr "№"
@@ -620,15 +529,3 @@ msgstr "Видимость столбцов"
 #: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
 msgstr "Вы не можете скрыть все столбцы"
-
-#~ msgid "Use Dark Theme"
-#~ msgstr "Использовать тёмную тему"
-
-#~ msgid "Choose a Cover"
-#~ msgstr "Выбрать обложку"
-
-#~ msgid "Add Playlist"
-#~ msgstr "Добавить плейлист"
-
-#~ msgid "Merge selected Artists"
-#~ msgstr "Объединить выбранных исполнителей"

@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Artem Anufrij <artem.anufrij@live.de>
 Build-Depends: appstream,
                debhelper (>= 9),
+               gettext,
                desktop-file-utils,
                libgranite-dev,
                libjson-glib-dev,
@@ -13,7 +14,7 @@ Build-Depends: appstream,
                libtagc0-dev,
                meson,
                valac (>= 0.26)
-Standards-Version: 3.9.3
+Standards-Version: 4.1.1
 
 Package: com.github.artemanufrij.playmymusic
 Architecture: any

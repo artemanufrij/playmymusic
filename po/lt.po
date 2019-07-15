@@ -1,242 +1,160 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# Moo, 2017.
+# Lithuanian translations for com.github.artemanufrij.playmymusic package.
+# Copyright (C) 2019 THE com.github.artemanufrij.playmymusic'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.artemanufrij.playmymusic package.
+# Moo, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: com.github.artemanufrij.playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:32+0100\n"
-"PO-Revision-Date: 2017-10-18 22:34+0300\n"
+"POT-Creation-Date: 2019-04-15 10:59+0200\n"
+"PO-Revision-Date: 2019-04-14 17:24+0200\n"
 "Last-Translator: Moo\n"
-"Language-Team: \n"
+"Language-Team: none\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
-#: data/com.github.artemanufrij.playmymusic.desktop.in:3
-#: data/com.github.artemanufrij.playmymusic.desktop.in:4
-#: src/MainWindow.vala:155 src/MainWindow.vala:281
-msgid "Melody"
+#: src/MainWindow.vala:110
+msgid "Synchronizing library"
 msgstr ""
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
-msgid ""
-"A music player for listening local music files, online radios and Audio CD's"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
-msgid ""
-"A very fast music player designed extra for large local libraries which also "
-"supports online radios and downloading album covers"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
-msgid "Features:"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
-#, fuzzy
-msgid "Show all Albums from your library"
-msgstr "Pridėti grojaraštį jūsų mėgstamų dainų tvarkymui."
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
-msgid "Group tracks by Artists"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
-#, fuzzy
-msgid "Manage your Playlists"
-msgstr "Grojaraščiai"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
-msgid "Listen to online Radio"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
-#, fuzzy
-msgid "Audio CD support"
-msgstr "Garso CD"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
-msgid "Manage your MTP device"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
-msgid "ID3-Tag support"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
-msgid "Artem Anufrij"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
-#: src/MainWindow.vala:451
-msgid "Albums"
-msgstr "Albumai"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
-#: src/MainWindow.vala:455
-msgid "Artists"
-msgstr "Atlikėjai"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:49
-#: src/MainWindow.vala:460
-#, fuzzy
-msgid "Tracks"
-msgstr "Takelis %d"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:5
-msgid "Listen your music"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:6
-msgid "music;radio;playlist;"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:8
-msgid "com.github.artemanufrij.playmymusic"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:18
-#, fuzzy
-msgid "Play/Pause"
-msgstr "Pristabdyti"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:20
-msgid "media-playback-start-symbolic"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:23
-#: src/MainWindow.vala:396
-msgid "Next"
-msgstr "Kitas"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:25
-msgid "media-skip-forward-symbolic"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:28
-#: src/MainWindow.vala:377
-msgid "Previous"
-msgstr "Ankstesnis"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:30
-msgid "media-skip-backward-symbolic"
-msgstr ""
-
-#: src/MainWindow.vala:135
+#: src/MainWindow.vala:136
 msgid "Pause"
 msgstr "Pristabdyti"
 
-#: src/MainWindow.vala:161 src/MainWindow.vala:387
+#: src/MainWindow.vala:156 src/MainWindow.vala:282
+msgid "Melody"
+msgstr ""
+
+#: src/MainWindow.vala:162 src/MainWindow.vala:388
 msgid "Play"
 msgstr "Groti"
 
-#: src/MainWindow.vala:337
-#, fuzzy
+#: src/MainWindow.vala:338
 msgid "Loading…"
-msgstr "ištrinama…"
+msgstr ""
 
-#: src/MainWindow.vala:337
+#: src/MainWindow.vala:338
 msgid "Reading out database content"
 msgstr ""
 
-#: src/MainWindow.vala:414 src/MainWindow.vala:1011
-#, fuzzy
+#: src/MainWindow.vala:378
+msgid "Previous"
+msgstr "Ankstesnis"
+
+#: src/MainWindow.vala:397
+msgid "Next"
+msgstr "Kitas"
+
+#: src/MainWindow.vala:415 src/MainWindow.vala:1015
 msgid "Shuffle On"
-msgstr "Maišyti"
+msgstr ""
 
-#: src/MainWindow.vala:417 src/MainWindow.vala:1014
-#, fuzzy
+#: src/MainWindow.vala:418 src/MainWindow.vala:1018
 msgid "Shuffle Off"
-msgstr "Maišyti"
+msgstr ""
 
-#: src/MainWindow.vala:465
+#: src/MainWindow.vala:452
+msgid "Albums"
+msgstr "Albumai"
+
+#: src/MainWindow.vala:456
+msgid "Artists"
+msgstr "Atlikėjai"
+
+#: src/MainWindow.vala:461
+msgid "Tracks"
+msgstr ""
+
+#: src/MainWindow.vala:466
 msgid "Playlists"
 msgstr "Grojaraščiai"
 
-#: src/MainWindow.vala:470
+#: src/MainWindow.vala:471
 msgid "Radio Stations"
 msgstr "Radijo stotys"
 
-#: src/MainWindow.vala:477
+#: src/MainWindow.vala:478
 msgid "Audio CD"
 msgstr "Garso CD"
 
-#: src/MainWindow.vala:542
+#: src/MainWindow.vala:538
+msgid "Menu"
+msgstr ""
+
+#: src/MainWindow.vala:544
 msgid "Change Music Folder…"
 msgstr "Keisti muzikos aplanką…"
 
-#: src/MainWindow.vala:551
+#: src/MainWindow.vala:553
 msgid "Import Music…"
 msgstr "Importuoti muziką…"
 
-#: src/MainWindow.vala:559
+#: src/MainWindow.vala:561
 msgid "Reset all views"
 msgstr "Atstatyti visus rodinius"
 
-#: src/MainWindow.vala:565
-#, fuzzy
+#: src/MainWindow.vala:567
 msgid "Resync Library"
-msgstr "Iš naujo peržiūrėti biblioteką"
+msgstr ""
 
-#: src/MainWindow.vala:570
+#: src/MainWindow.vala:572
 msgid "Sort by"
 msgstr ""
 
-#: src/MainWindow.vala:573
+#: src/MainWindow.vala:575
 msgid "Artist - Year - Album"
 msgstr ""
 
-#: src/MainWindow.vala:574
-#, fuzzy
+#: src/MainWindow.vala:576
 msgid "Album - Artist"
-msgstr "Atlikėjai"
+msgstr ""
 
-#: src/MainWindow.vala:575
-#, fuzzy
+#: src/MainWindow.vala:577
 msgid "Artist - Album"
-msgstr "Atlikėjai"
+msgstr ""
 
-#: src/MainWindow.vala:598 src/Dialogs/Preferences.vala:54
+#: src/MainWindow.vala:600 src/Dialogs/Preferences.vala:54
 msgid "Preferences"
 msgstr "Nuostatos"
 
-#: src/MainWindow.vala:642
+#: src/MainWindow.vala:634
+msgid "Light background"
+msgstr ""
+
+#: src/MainWindow.vala:635
+msgid "Dark background"
+msgstr ""
+
+#: src/MainWindow.vala:646
 msgid "Search Music"
 msgstr "Ieškoti muzikos"
 
-#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
+#: src/MainWindow.vala:696
 msgid "Queue"
 msgstr ""
 
-#: src/MainWindow.vala:802 src/MainWindow.vala:810
+#: src/MainWindow.vala:806 src/MainWindow.vala:814
 #: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b>, atlieka<b>%s</b>"
 
-#: src/MainWindow.vala:994
-#, fuzzy
-msgid "Repeat All"
-msgstr "Kartoti"
-
 #: src/MainWindow.vala:998
-#, fuzzy
-msgid "Repeat One"
-msgstr "Kartoti"
+msgid "Repeat All"
+msgstr ""
 
 #: src/MainWindow.vala:1002
-#, fuzzy
+msgid "Repeat One"
+msgstr ""
+
+#: src/MainWindow.vala:1006
 msgid "Repeat Off"
-msgstr "Kartoti"
+msgstr ""
 
 #: src/Dialogs/AlbumEditor.vala:83 src/Dialogs/ArtistEditor.vala:82
 #: src/Widgets/Views/RadiosView.vala:146
@@ -257,14 +175,12 @@ msgid "Play in background if closed"
 msgstr "Užvėrus, groti fone"
 
 #: src/Dialogs/Preferences.vala:96
-#, fuzzy
 msgid "Sync files on start up"
-msgstr "Paleidus programą, ieškoti naujų failų"
+msgstr ""
 
 #: src/Dialogs/Preferences.vala:99
-#, fuzzy
 msgid "Load Content from MusicBrainz"
-msgstr "Įkelti atlikėjo duomenis iš MusicBrainz"
+msgstr ""
 
 #: src/Dialogs/Preferences.vala:101
 msgid "Save custom Covers in Library folder"
@@ -322,14 +238,12 @@ msgid "_Cancel"
 msgstr "_Atsisakyti"
 
 #: src/Services/LibraryManager.vala:353
-#, fuzzy
 msgid "_Save"
-msgstr "Įrašyti"
+msgstr ""
 
 #: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
-#, fuzzy
 msgid "Playlist (.m3u)"
-msgstr "Grojaraščiai"
+msgstr ""
 
 #: src/Services/LibraryManager.vala:449 src/Services/LibraryManager.vala:491
 #: src/Services/LibraryManager.vala:512
@@ -341,9 +255,8 @@ msgid "Images"
 msgstr "Paveikslai"
 
 #: src/Services/LibraryManager.vala:488
-#, fuzzy
 msgid "Choose a playlist…"
-msgstr "Pasirinkti paveikslą…"
+msgstr ""
 
 #: src/Services/LibraryManager.vala:510
 msgid "Select a folder."
@@ -395,7 +308,6 @@ msgstr ""
 msgid "Rename"
 msgstr "Pervadinti"
 
-#. CONTEXT MENU REGION
 #: src/Widgets/Playlist.vala:155
 msgid "Rename Playlist"
 msgstr "Pervadinti grojaraštį"
@@ -405,9 +317,8 @@ msgid "Remove Playlist"
 msgstr "Šalinti grojaraštį"
 
 #: src/Widgets/Playlist.vala:171
-#, fuzzy
 msgid "Export Playlist…"
-msgstr "Grojaraščiai"
+msgstr ""
 
 #: src/Widgets/Radio.vala:95
 msgid "Edit Radio Station…"
@@ -435,9 +346,8 @@ msgid "Remove from Playlist"
 msgstr "Šalinti iš grojaraščio"
 
 #: src/Widgets/Track.vala:236
-#, fuzzy
 msgid "Remove from Queue"
-msgstr "Šalinti iš grojaraščio"
+msgstr ""
 
 #: src/Widgets/TrackTimeLine.vala:95 src/Widgets/TrackTimeLine.vala:99
 #, c-format
@@ -449,9 +359,8 @@ msgid "Get Some Tunes"
 msgstr ""
 
 #: src/Widgets/Views/AlbumsView.vala:122
-#, fuzzy
 msgid "Add music to your library."
-msgstr "Importuokite muziką iš šaltinio į savo biblioteką."
+msgstr ""
 
 #: src/Widgets/Views/AlbumsView.vala:123
 msgid "Change Music Folder"
@@ -482,9 +391,8 @@ msgid "Try another search"
 msgstr ""
 
 #: src/Widgets/Views/ArtistView.vala:110
-#, fuzzy
 msgid "Choose an Artist"
-msgstr "Pasirinkti viršelį"
+msgstr ""
 
 #: src/Widgets/Views/ArtistView.vala:110
 msgid "No Artist selected"
@@ -509,9 +417,8 @@ msgstr "Pridėti grojaraštį"
 
 #: src/Widgets/Views/PlaylistsView.vala:104
 #: src/Widgets/Views/PlaylistsView.vala:141
-#, fuzzy
 msgid "Import Playlist"
-msgstr "Grojaraščiai"
+msgstr ""
 
 #: src/Widgets/Views/PlaylistsView.vala:119
 #: src/Widgets/Views/RadiosView.vala:229
@@ -519,50 +426,43 @@ msgid "Add"
 msgstr "Pridėti"
 
 #: src/Widgets/Views/PlaylistsView.vala:139
-#, fuzzy
 msgid "No Playlists"
-msgstr "Grojaraščiai"
+msgstr ""
 
 #: src/Widgets/Views/PlaylistsView.vala:139
-#, fuzzy
 msgid "Add playlist to your library."
-msgstr "Pridėti grojaraštį jūsų mėgstamų dainų tvarkymui."
+msgstr ""
 
 #: src/Widgets/Views/PlaylistsView.vala:140
-#, fuzzy
 msgid "Create Playlist"
-msgstr "Sukurti naują grojaraštį"
+msgstr ""
 
 #: src/Widgets/Views/PlaylistsView.vala:140
-#, fuzzy
 msgid "Create a playlist for manage your favorite songs."
-msgstr "Pridėti grojaraštį jūsų mėgstamų dainų tvarkymui."
+msgstr ""
 
 #: src/Widgets/Views/PlaylistsView.vala:141
-#, fuzzy
 msgid "Import .m3u formated Playlist."
-msgstr "Šalinti iš grojaraščio"
+msgstr ""
 
 #: src/Widgets/Views/Queue.vala:74
 msgid "Clear the Queue"
 msgstr ""
 
 #: src/Widgets/Views/Queue.vala:84
-#, fuzzy
 msgid "Create new Playlist based on this Queue"
-msgstr "Sukurti naują grojaraštį"
+msgstr ""
 
-#: src/Widgets/Views/Queue.vala:89
+#: src/Widgets/Views/Queue.vala:89 src/Widgets/Views/Queue.vala:104
 #, c-format
 msgid "Queue from %s"
 msgstr ""
 
 #: src/Widgets/Views/Queue.vala:100
-#, fuzzy
 msgid "Export Queue…"
-msgstr "Importuoti muziką…"
+msgstr ""
 
-#: src/Widgets/Views/Queue.vala:117
+#: src/Widgets/Views/Queue.vala:118
 msgid "Queue is empty"
 msgstr ""
 
@@ -578,16 +478,13 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#. NEW STATION POPOVER END
 #: src/Widgets/Views/RadiosView.vala:177
-#, fuzzy
 msgid "No Radio Stations"
-msgstr "Radijo stotys"
+msgstr ""
 
 #: src/Widgets/Views/RadiosView.vala:177
-#, fuzzy
 msgid "Add radio stations to your library."
-msgstr "Pridėti radijo stotį"
+msgstr ""
 
 #: src/Widgets/Views/RadiosView.vala:178
 msgid "Add Radio Station"
@@ -597,7 +494,6 @@ msgstr "Pridėti radijo stotį"
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "Pridėkite srauto URL, tokius kaip .pls ar .m3u."
 
-#. FOR CONTEXT MENU
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
 msgstr ""
@@ -607,23 +503,20 @@ msgid "Title"
 msgstr ""
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:200
-#, fuzzy
 msgid "Album"
-msgstr "Albumai"
+msgstr ""
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:202
-#, fuzzy
 msgid "Artist"
-msgstr "Atlikėjai"
+msgstr ""
 
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:207
 msgid "Duration"
 msgstr ""
 
 #: src/Widgets/Views/TracksView.vala:165
-#, fuzzy
 msgid "Choose a Track"
-msgstr "Pasirinkti viršelį"
+msgstr ""
 
 #: src/Widgets/Views/TracksView.vala:165
 msgid "No track selected"
@@ -636,15 +529,3 @@ msgstr ""
 #: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
 msgstr ""
-
-#~ msgid "Use Dark Theme"
-#~ msgstr "Naudoti tamsią temą"
-
-#~ msgid "Choose a Cover"
-#~ msgstr "Pasirinkti viršelį"
-
-#~ msgid "Add Playlist"
-#~ msgstr "Pridėti grojaraštį"
-
-#~ msgid "Play My Music"
-#~ msgstr "Groti mano muziką"

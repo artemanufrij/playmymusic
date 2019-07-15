@@ -1,225 +1,157 @@
+# German translations for com.github.artemanufrij.playmymusic package.
+# Copyright (C) 2019 THE com.github.artemanufrij.playmymusic'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.artemanufrij.playmymusic package.
+# Automatically generated, 2019.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: com.github.artemanufrij.playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-17 16:32+0100\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2019-04-15 10:59+0200\n"
+"PO-Revision-Date: 2019-04-14 17:24+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.0.6\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:7
-#: data/com.github.artemanufrij.playmymusic.desktop.in:3
-#: data/com.github.artemanufrij.playmymusic.desktop.in:4
-#: src/MainWindow.vala:155 src/MainWindow.vala:281
-msgid "Melody"
-msgstr "Melody"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:8
-msgid ""
-"A music player for listening local music files, online radios and Audio CD's"
-msgstr ""
-"Ein Musik Player zum Abspielen von lokalen Musikdateien, online Radios und "
-"Audio CD's"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:10
-msgid ""
-"A very fast music player designed extra for large local libraries which also "
-"supports online radios and downloading album covers"
-msgstr ""
-"Ein sehr schneller Musikplayer, der speziell für große lokale Bibliotheken "
-"entwickelt wurde, welcher auch Online-Radios unterstützt und Albumcover "
-"herunterlädt"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:11
-msgid "Features:"
-msgstr "Funktionen:"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:13
-msgid "Show all Albums from your library"
-msgstr "Zeige alle Alben deiner Sammlung"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:14
-msgid "Group tracks by Artists"
-msgstr "Gruppierung aller Tracks für einen Artisten"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:15
-msgid "Manage your Playlists"
-msgstr "Verwalte deine Playlists"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:16
-msgid "Listen to online Radio"
-msgstr "Höre Online Radios"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:17
-msgid "Audio CD support"
-msgstr "Unterstützung von Audio CD"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:18
-msgid "Manage your MTP device"
-msgstr "Verwalte dein MTP Gerät"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:19
-msgid "ID3-Tag support"
-msgstr "Unterstützung von ID3-Tags"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:31
-msgid "Artem Anufrij"
-msgstr "Artem Anufrij"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:41
-#: src/MainWindow.vala:451
-msgid "Albums"
-msgstr "Albums"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:45
-#: src/MainWindow.vala:455
-msgid "Artists"
-msgstr "Artisten"
-
-#: data/com.github.artemanufrij.playmymusic.appdata.xml.in:49
-#: src/MainWindow.vala:460
-msgid "Tracks"
-msgstr "Tracks"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:5
-msgid "Listen your music"
-msgstr "Anhören von Musik"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:6
-msgid "music;radio;playlist;"
-msgstr "music;radio;playlist;"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:8
-msgid "com.github.artemanufrij.playmymusic"
+#: src/MainWindow.vala:110
+msgid "Synchronizing library"
 msgstr ""
 
-#: data/com.github.artemanufrij.playmymusic.desktop.in:18
-msgid "Play/Pause"
-msgstr "Abspielen/Pause"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:20
-msgid "media-playback-start-symbolic"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:23
-#: src/MainWindow.vala:396
-msgid "Next"
-msgstr "Nächstes"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:25
-msgid "media-skip-forward-symbolic"
-msgstr ""
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:28
-#: src/MainWindow.vala:377
-msgid "Previous"
-msgstr "Vorheriges"
-
-#: data/com.github.artemanufrij.playmymusic.desktop.in:30
-msgid "media-skip-backward-symbolic"
-msgstr "Fortschritt des zuletzt gespielten Tracks speichern"
-
-#: src/MainWindow.vala:135
+#: src/MainWindow.vala:136
 msgid "Pause"
 msgstr "Pause"
 
-#: src/MainWindow.vala:161 src/MainWindow.vala:387
+#: src/MainWindow.vala:156 src/MainWindow.vala:282
+msgid "Melody"
+msgstr "Melody"
+
+#: src/MainWindow.vala:162 src/MainWindow.vala:388
 msgid "Play"
 msgstr "Abspielen"
 
-#: src/MainWindow.vala:337
+#: src/MainWindow.vala:338
 msgid "Loading…"
 msgstr "Laden…"
 
-#: src/MainWindow.vala:337
+#: src/MainWindow.vala:338
 msgid "Reading out database content"
 msgstr "Datenbank wird ausgelesen"
 
-#: src/MainWindow.vala:414 src/MainWindow.vala:1011
+#: src/MainWindow.vala:378
+msgid "Previous"
+msgstr "Vorheriges"
+
+#: src/MainWindow.vala:397
+msgid "Next"
+msgstr "Nächstes"
+
+#: src/MainWindow.vala:415 src/MainWindow.vala:1015
 msgid "Shuffle On"
 msgstr "Zufällige Wiedergabe an"
 
-#: src/MainWindow.vala:417 src/MainWindow.vala:1014
+#: src/MainWindow.vala:418 src/MainWindow.vala:1018
 msgid "Shuffle Off"
 msgstr "Zufällige Wiedergabe aus"
 
-#: src/MainWindow.vala:465
+#: src/MainWindow.vala:452
+msgid "Albums"
+msgstr "Albums"
+
+#: src/MainWindow.vala:456
+msgid "Artists"
+msgstr "Artisten"
+
+#: src/MainWindow.vala:461
+msgid "Tracks"
+msgstr "Tracks"
+
+#: src/MainWindow.vala:466
 msgid "Playlists"
 msgstr "Playlisten"
 
-#: src/MainWindow.vala:470
+#: src/MainWindow.vala:471
 msgid "Radio Stations"
 msgstr "Radiostationen"
 
-#: src/MainWindow.vala:477
+#: src/MainWindow.vala:478
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/MainWindow.vala:542
+#: src/MainWindow.vala:538
+msgid "Menu"
+msgstr ""
+
+#: src/MainWindow.vala:544
 msgid "Change Music Folder…"
 msgstr "Musikverzeichnis ändern…"
 
-#: src/MainWindow.vala:551
+#: src/MainWindow.vala:553
 msgid "Import Music…"
 msgstr "Musik importieren…"
 
-#: src/MainWindow.vala:559
+#: src/MainWindow.vala:561
 msgid "Reset all views"
 msgstr "Alle Sichten zurücksetzen"
 
-#: src/MainWindow.vala:565
+#: src/MainWindow.vala:567
 msgid "Resync Library"
 msgstr "Sammlung abgleichen"
 
-#: src/MainWindow.vala:570
+#: src/MainWindow.vala:572
 msgid "Sort by"
 msgstr "Sortieren nach"
 
-#: src/MainWindow.vala:573
+#: src/MainWindow.vala:575
 msgid "Artist - Year - Album"
 msgstr "Artist - Jahr - Album"
 
-#: src/MainWindow.vala:574
+#: src/MainWindow.vala:576
 msgid "Album - Artist"
 msgstr "Album - Artist"
 
-#: src/MainWindow.vala:575
+#: src/MainWindow.vala:577
 msgid "Artist - Album"
 msgstr "Artist - Album"
 
-#: src/MainWindow.vala:598 src/Dialogs/Preferences.vala:54
+#: src/MainWindow.vala:600 src/Dialogs/Preferences.vala:54
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: src/MainWindow.vala:642
+#: src/MainWindow.vala:634
+msgid "Light background"
+msgstr ""
+
+#: src/MainWindow.vala:635
+msgid "Dark background"
+msgstr ""
+
+#: src/MainWindow.vala:646
 msgid "Search Music"
 msgstr "Musik suchen"
 
-#: src/MainWindow.vala:692 src/Widgets/Views/Queue.vala:103
+#: src/MainWindow.vala:696
 msgid "Queue"
 msgstr "Wiedergabe"
 
-#: src/MainWindow.vala:802 src/MainWindow.vala:810
+#: src/MainWindow.vala:806 src/MainWindow.vala:814
 #: src/Widgets/Views/TracksView.vala:435
 #, c-format
 msgid "<b>%s</b> by <b>%s</b>"
 msgstr "<b>%s</b> von <b>%s</b>"
 
-#: src/MainWindow.vala:994
+#: src/MainWindow.vala:998
 msgid "Repeat All"
 msgstr "Alle wiederholen"
 
-#: src/MainWindow.vala:998
+#: src/MainWindow.vala:1002
 msgid "Repeat One"
 msgstr "Einen wiederholen"
 
-#: src/MainWindow.vala:1002
+#: src/MainWindow.vala:1006
 msgid "Repeat Off"
 msgstr "Wiederholung aus"
 
@@ -375,7 +307,6 @@ msgstr "<small>%u Tracks</small>"
 msgid "Rename"
 msgstr "Umbenennen"
 
-#. CONTEXT MENU REGION
 #: src/Widgets/Playlist.vala:155
 msgid "Rename Playlist"
 msgstr "Playliste umbenennen"
@@ -523,7 +454,7 @@ msgstr "Wiedergabe leeren."
 msgid "Create new Playlist based on this Queue"
 msgstr "Neue Playlist auf Basis von dieser Wiedergabenliste erstellen"
 
-#: src/Widgets/Views/Queue.vala:89
+#: src/Widgets/Views/Queue.vala:89 src/Widgets/Views/Queue.vala:104
 #, c-format
 msgid "Queue from %s"
 msgstr "Wiedergabe vom %s"
@@ -532,7 +463,7 @@ msgstr "Wiedergabe vom %s"
 msgid "Export Queue…"
 msgstr "Wiedergabe exportieren…"
 
-#: src/Widgets/Views/Queue.vala:117
+#: src/Widgets/Views/Queue.vala:118
 msgid "Queue is empty"
 msgstr "Wiedergabe ist leer"
 
@@ -548,7 +479,6 @@ msgstr "Name"
 msgid "URL"
 msgstr "URL"
 
-#. NEW STATION POPOVER END
 #: src/Widgets/Views/RadiosView.vala:177
 msgid "No Radio Stations"
 msgstr "Keine Radiostationen"
@@ -565,7 +495,6 @@ msgstr "Radiostation hinzufügen"
 msgid "Add a Stream URL like .pls or .m3u."
 msgstr "Füge eine URL wie .pls oder .m3u hinzu."
 
-#. FOR CONTEXT MENU
 #: src/Widgets/Views/TracksView.vala:56 src/Widgets/Views/TracksView.vala:186
 msgid "Nr"
 msgstr "Nr"
@@ -601,12 +530,3 @@ msgstr "Spaltensichtbarkeit"
 #: src/Widgets/Views/TracksView.vala:384
 msgid "You can't hide all columns"
 msgstr "Du kannst nicht alle Spalten ausblenden"
-
-#~ msgid "Use Dark Theme"
-#~ msgstr "Dunkles Theme benutzen"
-
-#~ msgid "Choose a Cover"
-#~ msgstr "Ein Cover auswählen"
-
-#~ msgid "Add Playlist"
-#~ msgstr "Playliste hinzufügen"
