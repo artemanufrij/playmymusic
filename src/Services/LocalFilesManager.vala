@@ -68,10 +68,10 @@ namespace PlayMyMusic.Services {
                                 scan_local_files (target);
                             }
                         } else if (file_info.get_file_type () == FileType.DIRECTORY) {
-                            // Without usleep it crashes on smb:// protocol
-                            if (!directory.get_uri ().has_prefix ("file://")) {
+                            // Without usleep it crashes on smb:// protocol and mounted devices
+                            //if (!directory.get_uri ().has_prefix ("file://")) {
                                 Thread.usleep (1000000);
-                            }
+                            //}
                             scan_local_files (directory.get_uri () + "/" + file_info.get_name ());
                         } else {
                             string mime_type = file_info.get_content_type ();
