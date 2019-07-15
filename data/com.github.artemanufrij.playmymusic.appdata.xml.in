@@ -51,6 +51,19 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release date="2019-07-15" version="2.2.1">
+      <description>
+        <p>Fixed:</p>
+        <ul>
+          <li>Fix playlist import on relative paths and symlinks (by Davide Pucci)</li>
+        </ul>
+        <p>Translation:</p>
+        <ul>
+          <li>Dutch (by Heimen Stoffels)</li>
+          <li>French (by Nathan Bonnemains)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2018-11-20" version="2.2.0">
       <description>
         <p>New:</p>
