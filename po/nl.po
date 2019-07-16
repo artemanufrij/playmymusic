@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: com.github.artemanufrij.playmymusic\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-15 10:59+0200\n"
-"PO-Revision-Date: 2019-04-14 17:24+0200\n"
+"PO-Revision-Date: 2019-07-15 21:41+0200\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <vistausss@outlook.com>\n"
 "Language: nl\n"
@@ -16,10 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.1.1\n"
 
 #: src/MainWindow.vala:110
 msgid "Synchronizing library"
-msgstr ""
+msgstr "Bezig met synchroniseren van verzameling..."
 
 #: src/MainWindow.vala:136
 msgid "Pause"
@@ -83,7 +84,7 @@ msgstr "Audio-CD"
 
 #: src/MainWindow.vala:538
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: src/MainWindow.vala:544
 msgid "Change Music Folder…"
@@ -123,11 +124,11 @@ msgstr "Voorkeuren"
 
 #: src/MainWindow.vala:634
 msgid "Light background"
-msgstr ""
+msgstr "Lichte achtergrond"
 
 #: src/MainWindow.vala:635
 msgid "Dark background"
-msgstr ""
+msgstr "Donkere achtergrond"
 
 #: src/MainWindow.vala:646
 msgid "Search Music"
