@@ -109,6 +109,14 @@ namespace PlayMyMusic {
                     }
                 });
 
+            var action_quit = action_generator ("<Control>q", "quit");
+            action_quit.activate.connect (
+                () => {
+                    if (mainwindow != null) {
+                        mainwindow.destroy ();
+                    }
+                });
+
             create_cache_folders ();
         }
 
