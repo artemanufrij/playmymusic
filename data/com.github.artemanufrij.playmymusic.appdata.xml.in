@@ -7,16 +7,16 @@
   <name>Melody</name>
   <summary>A music player for listening to local music files, online radio, and audio CDs</summary>
   <description>
-    <p>A very fast music player designed for extra large local libraries that supports online radio and downloading album covers.</p>
+    <p>A fast music player designed for large local libraries that supports streaming online radio and downloading album covers.</p>
     <p>Features:</p>
     <ul>
       <li>Show all albums from your library</li>
       <li>Group tracks by artists</li>
       <li>Manage your playlists</li>
-      <li>Listen to online radio</li>
-      <li>Audio CD support</li>
+      <li>Stream online radio</li>
+      <li>Play audio CDs</li>
       <li>Manage your MTP device</li>
-      <li>ID3 tag support</li>
+      <li>Tag your MP3s with ID3 support</li>
     </ul>
   </description>
   <categories>
