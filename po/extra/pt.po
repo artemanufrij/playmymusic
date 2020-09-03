@@ -236,7 +236,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:84
 msgid "Option [on/off] for saving track progress"
-msgstr "Opção [ligar/desligar] para gravar o progresso da faixa"
+msgstr "Opção [ligar/desligar] para guardar o progresso da faixa"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:88
 msgid "Radio icon inside \"new radio\" popup"
@@ -260,7 +260,7 @@ msgstr "Funcionalidade de fila"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:103
 msgid "Save and restore last played song and progress"
-msgstr "Gravar e restaurar a última música tocada e respetivo progresso"
+msgstr "Guardar e restaurar a última música tocada e respetivo progresso"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:104
 msgid "Switch columns visibility for tracks view"
@@ -495,7 +495,7 @@ msgstr ""
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:327
 msgid "Saving changes directly into file (ID3-tags)"
-msgstr "Gravar alterações diretamente para dentro do ficheiro (etiquetas ID3)"
+msgstr "Guardar alterações diretamente para dentro do ficheiro (etiquetas ID3)"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:329
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:405
@@ -535,7 +535,7 @@ msgstr "Mostrar título da música do rádio da Internet no indicador de áudio"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:365
 msgid "Save/restore window position"
-msgstr "Gravar/Restaurar posição da janela"
+msgstr "Guardar/Restaurar posição da janela"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:369
 msgid "Start searching instand on key press"
@@ -556,7 +556,7 @@ msgstr "Comportamento da Lista de Reprodução"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:394
 msgid "Option for saving custom covers into library"
-msgstr "Opção para gravar capas personalizadas para dentro da biblioteca"
+msgstr "Opção para guardar capas personalizadas para dentro da biblioteca"
 
 #: data/com.github.artemanufrij.playmymusic.appdata.xml.in:395
 msgid "Merge Albums"
