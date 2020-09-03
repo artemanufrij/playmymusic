@@ -168,7 +168,7 @@ msgstr "Ano"
 #: src/Dialogs/AlbumEditor.vala:121 src/Dialogs/ArtistEditor.vala:114
 #: src/Widgets/Views/RadiosView.vala:231
 msgid "Save"
-msgstr "Gravar"
+msgstr "Guardar"
 
 #: src/Dialogs/Preferences.vala:94
 msgid "Play in background if closed"
@@ -184,11 +184,11 @@ msgstr "Carregar Conteúdo de MusicBrainz"
 
 #: src/Dialogs/Preferences.vala:101
 msgid "Save custom Covers in Library folder"
-msgstr "Gravar Capas personalizadas na pasta da Biblioteca"
+msgstr "Guardar Capas personalizadas na pasta da Biblioteca"
 
 #: src/Dialogs/Preferences.vala:103
 msgid "Save changes into ID3-Tag"
-msgstr "Gravar alterações para dentro da etiqueta ID3"
+msgstr "Guardar alterações para dentro da etiqueta ID3"
 
 #: src/Dialogs/Preferences.vala:106
 msgid "Copy Imported Files into Library"
@@ -239,7 +239,7 @@ msgstr "_Cancelar"
 
 #: src/Services/LibraryManager.vala:353
 msgid "_Save"
-msgstr "_Gravar"
+msgstr "_Guardar"
 
 #: src/Services/LibraryManager.vala:356 src/Services/LibraryManager.vala:494
 msgid "Playlist (.m3u)"
